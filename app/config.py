@@ -19,6 +19,10 @@ class Settings:
 
     TYPHOON_OCR_API_KEY: str = os.getenv("TYPHOON_OCR_API_KEY", "")
 
+    OCR_RATE_LIMIT_BURST: int = int(os.getenv("OCR_RATE_LIMIT_BURST", "2"))
+    OCR_RATE_LIMIT_SUSTAINED: int = int(os.getenv("OCR_RATE_LIMIT_SUSTAINED", "20"))
+    OCR_RATE_LIMIT_MAX_RETRIES: int = int(os.getenv("OCR_RATE_LIMIT_MAX_RETRIES", "3"))
+
     IMAGE_DIR: str = os.getenv("IMAGE_DIR", "tmp/images")
 
     EXPECTED_METER_COUNT: int = int(os.getenv("EXPECTED_METER_COUNT", "8"))
