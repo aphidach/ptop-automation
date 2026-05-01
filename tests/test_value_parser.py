@@ -1,4 +1,5 @@
 import pytest
+from decimal import Decimal
 
 from app.ocr.value_parser import ParseResult, parse_meter_value
 
@@ -12,6 +13,10 @@ class TestParseMeterValue:
     def test_comma_separated(self):
         result = parse_meter_value("12,500")
         assert result.value == 12500
+
+    def test_decimal_meter_value(self):
+        result = parse_meter_value("Total Energy kWh 135420.05")
+        assert result.value == Decimal("135420.05")
 
     def test_leading_zeros(self):
         result = parse_meter_value("012500")

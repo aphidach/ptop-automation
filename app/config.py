@@ -25,6 +25,8 @@ class Settings:
 
     IMAGE_DIR: str = os.getenv("IMAGE_DIR", "tmp/images")
 
+    CONFIRMATION_EXPIRY_SECONDS: int = int(os.getenv("CONFIRMATION_EXPIRY_SECONDS", "3600"))
+
     EXPECTED_METER_COUNT: int = int(os.getenv("EXPECTED_METER_COUNT", "8"))
     DEFAULT_RATE: float = float(os.getenv("DEFAULT_RATE", "4.2"))
     VALID_METER_IDS: list[str] = [

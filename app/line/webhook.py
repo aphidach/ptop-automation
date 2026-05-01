@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from fastapi import APIRouter, Request, Response
@@ -6,6 +7,7 @@ from linebot.v3.messaging import (
     ApiClient,
     Configuration,
     ReplyMessageRequest,
+    PushMessageRequest,
     TextMessage,
 )
 from linebot.v3.webhook import WebhookParser
@@ -24,8 +26,22 @@ from app.line.parser import (
     parse_command,
     is_valid_meter,
 )
-from app.services.session_service import set_latest_meter, get_latest_meter
+from app.services.session_service import (
+    finish_image_processing,
+    get_latest_meter,
+    set_latest_meter,
+    start_image_processing,
+)
+from app.services.confirmation_service import (
+    create_pending_confirmation,
+    build_confirmation_message,
+    confirm_pending,
+    manual_confirm,
+    cancel_pending,
+)
 from app.line.client import download_image, ImageDownloadError
+from app.ocr.rate_limiter import OcrRateLimiter
+from app.ocr.value_parser import parse_meter_value
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +50,7 @@ router = APIRouter()
 _webhook_parser = WebhookParser(channel_secret=settings.LINE_CHANNEL_SECRET)
 _messaging_config = Configuration(access_token=settings.LINE_CHANNEL_ACCESS_TOKEN)
 _messaging_api = AsyncMessagingApi(ApiClient(_messaging_config))
+_ocr_limiter = OcrRateLimiter()
 
 
 def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
@@ -49,10 +66,12 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
             valid = ", ".join(settings.VALID_METER_IDS)
             return f'ไม่พบ meter id "{cmd.meter_id}" ครับ\nmeter ที่ใช้ได้: {valid}'
         set_latest_meter(source_id, cmd.meter_id)
-        return f"รับทราบ {cmd.meter_id} = {cmd.value:,}"
+        _, reply = manual_confirm(source_id, cmd.meter_id, cmd.value)
+        return reply
 
     if cmd.type == OK:
-        return "ยืนยันสำเร็จครับ"
+        _, reply = confirm_pending(source_id)
+        return reply
 
     if cmd.type == STATUS:
         return "ยังไม่มีข้อมูลรอบนี้ครับ"
@@ -69,7 +88,7 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
         )
 
     if cmd.type == CANCEL:
-        return "ยกเลิกแล้วครับ"
+        return cancel_pending(source_id)
 
     return None
 
@@ -84,6 +103,52 @@ async def _reply_text(reply_token: str, text: str) -> None:
         )
     except Exception:
         logger.exception("Failed to reply via LINE API")
+
+
+async def _push_text(to: str, text: str) -> None:
+    try:
+        _messaging_api.push_message(
+            PushMessageRequest(to=to, messages=[TextMessage(text=text)])
+        )
+    except Exception:
+        logger.exception("Failed to push message via LINE API")
+
+
+async def _process_ocr_and_confirm(
+    source_id: str, meter_id: str, image_path: str, message_id: str
+) -> None:
+    try:
+        ocr_result = await _ocr_limiter.read_image(image_path)
+        if not ocr_result.success:
+            await _push_text(
+                source_id,
+                f"อ่านค่ามิเตอร์ไม่สำเร็จครับ กรุณาพิมพ์ค่าเอง เช่น {meter_id} 12508",
+            )
+            return
+
+        parsed = parse_meter_value(ocr_result.raw_text)
+        if not parsed.success:
+            await _push_text(
+                source_id,
+                f"อ่านค่ามิเตอร์ไม่ได้ครับ กรุณาพิมพ์ค่าเอง เช่น {meter_id} 12508",
+            )
+            return
+
+        pending = create_pending_confirmation(
+            source_id=source_id,
+            meter_id=meter_id,
+            ocr_value=parsed.value,
+            ocr_raw_text=ocr_result.raw_text[:200],
+            image_message_id=message_id,
+        )
+        msg = build_confirmation_message(pending)
+        await _push_text(source_id, msg)
+
+    except Exception:
+        logger.exception("OCR processing failed for source=%s meter=%s", source_id, meter_id)
+        await _push_text(source_id, "เกิดข้อผิดพลาดในการอ่านค่ามิเตอร์ครับ กรุณาลองใหม่")
+    finally:
+        finish_image_processing(source_id, message_id)
 
 
 @router.post("/webhook/line")
@@ -148,6 +213,10 @@ async def handle_webhook(request: Request):
                         )
                     continue
 
+                if not start_image_processing(source_id, message_id):
+                    logger.info("Skipping duplicate image message_id=%s", message_id)
+                    continue
+
                 try:
                     image_path = await download_image(message_id)
                     logger.info(
@@ -158,7 +227,13 @@ async def handle_webhook(request: Request):
                             reply_token,
                             f"รับรูป {meter_id} แล้วครับ กำลังอ่านค่ามิเตอร์...",
                         )
+                    asyncio.create_task(
+                        _process_ocr_and_confirm(
+                            source_id, meter_id, str(image_path), message_id
+                        )
+                    )
                 except ImageDownloadError as exc:
+                    finish_image_processing(source_id, message_id)
                     logger.error("Image download failed: %s", exc)
                     if reply_token:
                         await _reply_text(

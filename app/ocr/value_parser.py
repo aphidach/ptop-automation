@@ -1,15 +1,16 @@
 import logging
 import re
+from decimal import Decimal
 
 logger = logging.getLogger(__name__)
 
 METER_VALUE_MIN = 0
 METER_VALUE_MAX = 999999
 
-# Matches comma/space-separated thousands (e.g. 12,500 or 12 500)
-# or plain 4-7 digit numbers (e.g. 12500, 012500)
+# Matches decimal/integer meter readings, with optional comma/space thousands.
 _NUMBER_RE = re.compile(
-    r"(?<!\d)\d{1,3}(?:[,\s]\d{3})+(?!\d)" r"|(?<!\d)\d{4,7}(?!\d)"
+    r"(?<!\d)\d{1,3}(?:[,\s]\d{3})+(?:\.\d+)?(?!\d)"
+    r"|(?<!\d)\d{4,7}(?:\.\d+)?(?!\d)"
 )
 
 
@@ -17,7 +18,7 @@ class ParseResult:
     __slots__ = ("value", "candidates", "raw_text")
 
     def __init__(
-        self, value: int | None, candidates: list[int], raw_text: str
+        self, value: Decimal | None, candidates: list[Decimal], raw_text: str
     ):
         self.value = value
         self.candidates = candidates
@@ -28,17 +29,17 @@ class ParseResult:
         return self.value is not None
 
 
-def _normalize_number(text: str) -> int:
+def _normalize_number(text: str) -> Decimal:
     cleaned = text.replace(",", "").replace(" ", "")
-    return int(cleaned)
+    return Decimal(cleaned)
 
 
 def parse_meter_value(raw_text: str) -> ParseResult:
     if not raw_text or not raw_text.strip():
         return ParseResult(value=None, candidates=[], raw_text=raw_text)
 
-    candidates: list[int] = []
-    seen: set[int] = set()
+    candidates: list[Decimal] = []
+    seen: set[Decimal] = set()
 
     for match in _NUMBER_RE.findall(raw_text):
         num = _normalize_number(match)
@@ -50,7 +51,7 @@ def parse_meter_value(raw_text: str) -> ParseResult:
 
     if value is not None:
         logger.info(
-            "Parsed meter value: %d from %d candidates", value, len(candidates)
+            "Parsed meter value: %s from %d candidates", value, len(candidates)
         )
     else:
         logger.warning("No valid meter value found in OCR text")

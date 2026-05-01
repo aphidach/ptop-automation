@@ -1,9 +1,7 @@
 import re
 from dataclasses import dataclass
+from decimal import Decimal
 from typing import Optional
-
-from app.services.session_service import set_latest_meter, get_latest_meter
-
 
 METER = "meter"
 METER_VALUE = "meter_value"
@@ -18,12 +16,12 @@ UNKNOWN = "unknown"
 class ParsedCommand:
     type: str = UNKNOWN
     meter_id: Optional[str] = None
-    value: Optional[int] = None
+    value: Optional[Decimal] = None
     raw: str = ""
 
 
 _METER_ONLY = re.compile(r"^([Mm]\d+)$")
-_METER_VALUE = re.compile(r"^([Mm]\d+)\s+(\d+)$")
+_METER_VALUE = re.compile(r"^([Mm]\d+)\s+([0-9][0-9,]*(?:\.\d+)?)$")
 
 
 def parse_command(text: str) -> ParsedCommand:
@@ -44,7 +42,7 @@ def parse_command(text: str) -> ParsedCommand:
         return ParsedCommand(
             type=METER_VALUE,
             meter_id=m.group(1).upper(),
-            value=int(m.group(2)),
+            value=Decimal(m.group(2).replace(",", "")),
             raw=text,
         )
 

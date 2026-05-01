@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
+from decimal import Decimal
 from typing import Optional, Protocol
 
 logger = logging.getLogger(__name__)
@@ -10,8 +11,12 @@ logger = logging.getLogger(__name__)
 @dataclass
 class PendingConfirmation:
     meter_id: str
-    ocr_value: Optional[int] = None
-    manual_value: Optional[int] = None
+    ocr_value: Optional[Decimal] = None
+    manual_value: Optional[Decimal] = None
+    ocr_raw_text: str = ""
+    image_message_id: str = ""
+    batch_id: Optional[str] = None
+    created_at: Optional[float] = None
 
 
 @dataclass
@@ -21,6 +26,8 @@ class Session:
     latest_meter_id: Optional[str] = None
     pending_confirmation: Optional[PendingConfirmation] = None
     batch_id: Optional[str] = None
+    processing_image_message_ids: set[str] = field(default_factory=set)
+    processed_image_message_ids: set[str] = field(default_factory=set)
 
 
 class SessionStore(Protocol):
@@ -76,12 +83,22 @@ def get_latest_meter(source_id: str) -> Optional[str]:
 def set_pending_confirmation(
     source_id: str,
     meter_id: str,
-    ocr_value: Optional[int] = None,
-    manual_value: Optional[int] = None,
+    ocr_value: Optional[Decimal] = None,
+    manual_value: Optional[Decimal] = None,
+    ocr_raw_text: str = "",
+    image_message_id: str = "",
+    batch_id: Optional[str] = None,
+    created_at: Optional[float] = None,
 ) -> None:
     session = get_or_create_session(source_id)
     session.pending_confirmation = PendingConfirmation(
-        meter_id=meter_id, ocr_value=ocr_value, manual_value=manual_value,
+        meter_id=meter_id,
+        ocr_value=ocr_value,
+        manual_value=manual_value,
+        ocr_raw_text=ocr_raw_text,
+        image_message_id=image_message_id,
+        batch_id=batch_id,
+        created_at=created_at,
     )
 
 
@@ -94,6 +111,23 @@ def clear_pending_confirmation(source_id: str) -> None:
     session = _store.get(source_id)
     if session:
         session.pending_confirmation = None
+
+
+def start_image_processing(source_id: str, message_id: str) -> bool:
+    session = get_or_create_session(source_id)
+    if (
+        message_id in session.processing_image_message_ids
+        or message_id in session.processed_image_message_ids
+    ):
+        return False
+    session.processing_image_message_ids.add(message_id)
+    return True
+
+
+def finish_image_processing(source_id: str, message_id: str) -> None:
+    session = get_or_create_session(source_id)
+    session.processing_image_message_ids.discard(message_id)
+    session.processed_image_message_ids.add(message_id)
 
 
 def set_batch_id(source_id: str, batch_id: str) -> None:
