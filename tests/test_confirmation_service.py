@@ -12,6 +12,7 @@ from app.services.confirmation_service import (
     is_expired,
     manual_confirm,
 )
+from app.services.batch_service import BatchProgress
 from app.services.session_service import (
     PendingConfirmation,
     clear_pending_confirmation,
@@ -34,11 +35,20 @@ def _clean_sessions():
 def _mock_meter_service():
     from app.services.meter_service import ValidationResult, ReadingCalculation
     with patch("app.services.confirmation_service.validate_reading") as mock_validate, \
-         patch("app.services.confirmation_service.save_reading") as mock_save:
+         patch("app.services.confirmation_service.save_reading") as mock_save, \
+         patch("app.services.confirmation_service.update_batch_after_reading") as mock_update_batch, \
+         patch("app.services.confirmation_service.build_progress_message") as mock_progress_msg, \
+         patch("app.services.confirmation_service.get_or_create_batch") as mock_get_create_batch:
         mock_validate.return_value = ValidationResult(is_valid=True, warnings=[])
         mock_save.return_value = ReadingCalculation(
             last_value=12000, produced_unit=500, rate=Decimal("4.2"), amount=Decimal("2100"),
         )
+        mock_update_batch.return_value = BatchProgress(
+            batch_id="2026-W19-U1", week="2026-W19", status="collecting",
+            expected_meter_count=8, confirmed_meter_count=1, missing_meter_ids=["M2","M3","M4","M5","M6","M7","M8"],
+        )
+        mock_progress_msg.return_value = "เก็บแล้ว 1/8 ขาด M2, M3, M4, M5, M6, M7, M8"
+        mock_get_create_batch.return_value = {"batch_id": "2026-W19-U1"}
         yield mock_validate, mock_save
 
 
@@ -96,12 +106,13 @@ class TestIsExpired:
 
 class TestConfirmPending:
     def test_confirm_ocr_value(self):
-        create_pending_confirmation(source_id="U1", meter_id="M1", ocr_value=12500)
+        create_pending_confirmation(source_id="U1", meter_id="M1", ocr_value=12500, batch_id="2026-W19-U1")
         pending, reply = confirm_pending("U1")
         assert pending is not None
         assert pending.meter_id == "M1"
         assert "12,500" in reply
         assert "บันทึก" in reply
+        assert "1/8" in reply
 
     def test_confirm_clears_pending(self):
         create_pending_confirmation(source_id="U1", meter_id="M1", ocr_value=12500)

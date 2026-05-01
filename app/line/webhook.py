@@ -10,6 +10,7 @@ from linebot.v3.messaging import (
     PushMessageRequest,
     TextMessage,
 )
+from linebot.v3.messaging.exceptions import ApiException
 from linebot.v3.webhook import WebhookParser
 from linebot.v3.exceptions import InvalidSignatureError
 
@@ -28,6 +29,7 @@ from app.line.parser import (
 )
 from app.services.session_service import (
     finish_image_processing,
+    get_batch_id as get_session_batch_id,
     get_latest_meter,
     set_latest_meter,
     start_image_processing,
@@ -38,7 +40,9 @@ from app.services.confirmation_service import (
     confirm_pending,
     manual_confirm,
     cancel_pending,
+    _ensure_batch_id,
 )
+from app.services.batch_service import build_progress_message
 from app.line.client import download_image, ImageDownloadError
 from app.ocr.rate_limiter import OcrRateLimiter
 from app.ocr.value_parser import parse_meter_value
@@ -51,6 +55,11 @@ _webhook_parser = WebhookParser(channel_secret=settings.LINE_CHANNEL_SECRET)
 _messaging_config = Configuration(access_token=settings.LINE_CHANNEL_ACCESS_TOKEN)
 _messaging_api = AsyncMessagingApi(ApiClient(_messaging_config))
 _ocr_limiter = OcrRateLimiter()
+
+
+def _is_invalid_reply_token_error(exc: ApiException) -> bool:
+    body = exc.body.decode("utf-8", errors="ignore") if isinstance(exc.body, bytes) else str(exc.body)
+    return exc.status == 400 and "Invalid reply token" in body
 
 
 def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
@@ -74,6 +83,9 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
         return reply
 
     if cmd.type == STATUS:
+        batch_id = get_session_batch_id(source_id)
+        if batch_id:
+            return build_progress_message(batch_id)
         return "ยังไม่มีข้อมูลรอบนี้ครับ"
 
     if cmd.type == HELP:
@@ -101,6 +113,11 @@ async def _reply_text(reply_token: str, text: str) -> None:
                 messages=[TextMessage(text=text)],
             )
         )
+    except ApiException as exc:
+        if _is_invalid_reply_token_error(exc):
+            logger.warning("LINE reply token is invalid or already used")
+            return
+        logger.exception("Failed to reply via LINE API")
     except Exception:
         logger.exception("Failed to reply via LINE API")
 
@@ -134,12 +151,14 @@ async def _process_ocr_and_confirm(
             )
             return
 
+        batch_id = _ensure_batch_id(source_id)
         pending = create_pending_confirmation(
             source_id=source_id,
             meter_id=meter_id,
             ocr_value=parsed.value,
             ocr_raw_text=ocr_result.raw_text[:200],
             image_message_id=message_id,
+            batch_id=batch_id,
         )
         msg = build_confirmation_message(pending)
         await _push_text(source_id, msg)
@@ -173,6 +192,20 @@ async def handle_webhook(request: Request):
             if source
             else None
         )
+        delivery_context = getattr(event, "delivery_context", None)
+        is_redelivery = (
+            getattr(delivery_context, "is_redelivery", False)
+            if delivery_context
+            else False
+        )
+        if is_redelivery:
+            logger.info(
+                "Skipping redelivered LINE event: id=%s type=%s source_id=%s",
+                getattr(event, "webhook_event_id", None),
+                event_type,
+                source_id,
+            )
+            continue
 
         if event_type == "message":
             message = getattr(event, "message", None)
