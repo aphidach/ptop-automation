@@ -2,6 +2,8 @@ import re
 from dataclasses import dataclass
 from typing import Optional
 
+from app.services.session_service import set_latest_meter, get_latest_meter
+
 
 METER = "meter"
 METER_VALUE = "meter_value"
@@ -55,26 +57,3 @@ def parse_command(text: str) -> ParsedCommand:
 
 def is_valid_meter(meter_id: str, valid_ids: list[str]) -> bool:
     return meter_id in valid_ids
-
-
-@dataclass
-class UserSession:
-    latest_meter_id: Optional[str] = None
-
-
-_sessions: dict[str, UserSession] = {}
-
-
-def get_session(source_id: str) -> UserSession:
-    if source_id not in _sessions:
-        _sessions[source_id] = UserSession()
-    return _sessions[source_id]
-
-
-def set_latest_meter(source_id: str, meter_id: str) -> None:
-    session = get_session(source_id)
-    session.latest_meter_id = meter_id
-
-
-def get_latest_meter(source_id: str) -> Optional[str]:
-    return get_session(source_id).latest_meter_id

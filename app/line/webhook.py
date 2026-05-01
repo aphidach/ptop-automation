@@ -3,6 +3,7 @@ import logging
 from fastapi import APIRouter, Request, Response
 from linebot.v3.messaging import (
     AsyncMessagingApi,
+    ApiClient,
     Configuration,
     ReplyMessageRequest,
     TextMessage,
@@ -22,8 +23,9 @@ from app.line.parser import (
     ParsedCommand,
     parse_command,
     is_valid_meter,
-    set_latest_meter,
 )
+from app.services.session_service import set_latest_meter, get_latest_meter
+from app.line.client import download_image, ImageDownloadError
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +33,7 @@ router = APIRouter()
 
 _webhook_parser = WebhookParser(channel_secret=settings.LINE_CHANNEL_SECRET)
 _messaging_config = Configuration(access_token=settings.LINE_CHANNEL_ACCESS_TOKEN)
-_messaging_api = AsyncMessagingApi(_messaging_config)
+_messaging_api = AsyncMessagingApi(ApiClient(_messaging_config))
 
 
 def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
@@ -74,7 +76,7 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
 
 async def _reply_text(reply_token: str, text: str) -> None:
     try:
-        await _messaging_api.reply_message(
+        _messaging_api.reply_message(
             ReplyMessageRequest(
                 reply_token=reply_token,
                 messages=[TextMessage(text=text)],
@@ -133,6 +135,36 @@ async def handle_webhook(request: Request):
                         reply_token,
                         "พิมพ์คำสั่งไม่ถูกต้องครับ พิมพ์ HELP เพื่อดูคำสั่งที่ใช้ได้",
                     )
+
+            elif message_type == "image" and source_id and message_id:
+                reply_token = getattr(event, "reply_token", None)
+                meter_id = get_latest_meter(source_id)
+
+                if not meter_id:
+                    if reply_token:
+                        await _reply_text(
+                            reply_token,
+                            "กรุณาพิมพ์ meter id ก่อนส่งรูปครับ เช่น M1",
+                        )
+                    continue
+
+                try:
+                    image_path = await download_image(message_id)
+                    logger.info(
+                        "Downloaded image for meter_id=%s: %s", meter_id, image_path
+                    )
+                    if reply_token:
+                        await _reply_text(
+                            reply_token,
+                            f"รับรูป {meter_id} แล้วครับ กำลังอ่านค่ามิเตอร์...",
+                        )
+                except ImageDownloadError as exc:
+                    logger.error("Image download failed: %s", exc)
+                    if reply_token:
+                        await _reply_text(
+                            reply_token,
+                            "ดาวน์โหลดรูปไม่สำเร็จครับ กรุณาส่งรูปใหม่อีกครั้ง",
+                        )
         else:
             logger.info(
                 "LINE event: type=%s, source_type=%s, source_id=%s",
