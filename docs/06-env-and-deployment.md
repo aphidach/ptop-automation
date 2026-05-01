@@ -1,0 +1,124 @@
+# Environment and Deployment
+
+## Required Environment Variables
+
+```bash
+APP_ENV=development
+APP_BASE_URL=https://your-domain.example.com
+TIMEZONE=Asia/Bangkok
+
+LINE_CHANNEL_ACCESS_TOKEN=your_line_channel_access_token
+LINE_CHANNEL_SECRET=your_line_channel_secret
+
+GOOGLE_APPLICATION_CREDENTIALS=credentials/google-service-account.json
+GOOGLE_SHEETS_SPREADSHEET_ID=your_spreadsheet_id
+
+TYPHOON_OCR_API_KEY=your_opentyphoon_api_key
+
+EXPECTED_METER_COUNT=8
+DEFAULT_RATE=4.2
+```
+
+## Local Development
+
+Recommended tools:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+Expose local webhook with a tunnel such as ngrok or Cloudflare Tunnel:
+
+```bash
+ngrok http 8000
+```
+
+Set LINE webhook URL:
+
+```text
+https://your-tunnel-url/webhook/line
+```
+
+## Google Sheets Setup
+
+1. Create a Google Cloud project
+2. Enable Google Sheets API
+3. Create a service account
+4. Download service account JSON
+5. Place it at `credentials/google-service-account.json`
+6. Create the spreadsheet tabs from `docs/02-google-sheets-schema.md`
+7. Share the spreadsheet with the service account email as Editor
+
+Never commit the credential JSON file.
+
+Recommended `.gitignore` entries:
+
+```gitignore
+.env
+.venv/
+credentials/*.json
+tmp/
+reports/
+```
+
+## LINE Setup
+
+1. Create LINE Messaging API channel
+2. Copy channel secret and channel access token
+3. Enable webhook
+4. Disable auto-reply if it conflicts with bot responses
+5. Set webhook endpoint to `/webhook/line`
+6. Verify webhook
+
+Webhook endpoint must validate the LINE signature.
+
+## Deployment Options
+
+Good MVP options:
+
+- Render
+- Railway
+- Fly.io
+- Google Cloud Run
+- A small VPS
+
+For production, Cloud Run is a strong fit because Google Sheets and service account integration are straightforward.
+
+## Runtime Components
+
+Minimum:
+
+- FastAPI web server
+- Background OCR queue in same process
+- Google Sheets as durable storage
+
+Better:
+
+- FastAPI web server
+- Redis queue/session store
+- Worker process for OCR
+- Google Sheets for business records
+
+## Production Checklist
+
+- LINE signature verification enabled
+- Allowed source ids configured
+- OCR queue rate limit enabled
+- Retry and dead-letter logging enabled
+- Google credentials stored securely
+- `/api/ocr/test` protected or disabled
+- Report image hosting strategy decided
+- Health check endpoint configured
+- Logs include request ids and LINE event ids
+
+## Report Image Delivery
+
+LINE image messages usually require an accessible image URL. Recommended options:
+
+- Upload generated report image to Google Cloud Storage and send the public or signed URL
+- For MVP, use a simple static file endpoint if the backend is publicly reachable
+
+Do not rely on local file paths for LINE delivery in production.
