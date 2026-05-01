@@ -4,6 +4,7 @@ from decimal import Decimal
 from typing import Optional
 
 from app.config import settings
+from app.services.meter_service import save_reading, validate_reading
 from app.services.session_service import (
     PendingConfirmation,
     get_pending_confirmation,
@@ -74,8 +75,24 @@ def confirm_pending(source_id: str) -> tuple[Optional[PendingConfirmation], str]
     value = pending.manual_value if pending.manual_value is not None else pending.ocr_value
     if value is None:
         return None, "ไม่มีค่าที่รอยืนยันครับ"
-    # TODO: Save to Google Sheets (task 11)
-    logger.info("Confirmed reading: meter_id=%s value=%s", pending.meter_id, value)
+
+    batch_id = pending.batch_id or ""
+    validation = validate_reading(pending.meter_id, value, batch_id)
+    if not validation.is_valid:
+        warning_text = "\n".join(validation.warnings)
+        return pending, f"⚠ ไม่สามารถบันทึกได้:\n{warning_text}"
+
+    confirmation_method = "manual_edit" if pending.manual_value is not None else "ok"
+    save_reading(
+        meter_id=pending.meter_id,
+        current_value=value,
+        batch_id=batch_id,
+        line_source_id=source_id,
+        ocr_raw_text=pending.ocr_raw_text,
+        ocr_value=pending.ocr_value,
+        confirmation_method=confirmation_method,
+        image_message_id=pending.image_message_id,
+    )
     clear_pending_confirmation(source_id)
     return pending, f"บันทึก {pending.meter_id} = {format_meter_value(value)} เรียบร้อยครับ"
 

@@ -1,4 +1,5 @@
 import time
+from decimal import Decimal
 from unittest.mock import patch
 
 import pytest
@@ -27,6 +28,18 @@ def _clean_sessions():
     session_service._store = session_service.InMemorySessionStore()
     yield
     session_service._store = session_service.InMemorySessionStore()
+
+
+@pytest.fixture(autouse=True)
+def _mock_meter_service():
+    from app.services.meter_service import ValidationResult, ReadingCalculation
+    with patch("app.services.confirmation_service.validate_reading") as mock_validate, \
+         patch("app.services.confirmation_service.save_reading") as mock_save:
+        mock_validate.return_value = ValidationResult(is_valid=True, warnings=[])
+        mock_save.return_value = ReadingCalculation(
+            last_value=12000, produced_unit=500, rate=Decimal("4.2"), amount=Decimal("2100"),
+        )
+        yield mock_validate, mock_save
 
 
 class TestCreatePendingConfirmation:
