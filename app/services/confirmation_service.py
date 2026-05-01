@@ -5,7 +5,7 @@ from typing import Optional
 
 from app.config import settings
 from app.services.batch_service import (
-    build_progress_message,
+    format_progress_message,
     generate_batch_id,
     get_or_create_batch,
     update_batch_after_reading,
@@ -114,7 +114,7 @@ def confirm_pending(source_id: str) -> tuple[Optional[PendingConfirmation], str]
     clear_pending_confirmation(source_id)
 
     progress = update_batch_after_reading(batch_id)
-    progress_msg = build_progress_message(batch_id)
+    progress_msg = format_progress_message(progress)
     reply = f"บันทึก {pending.meter_id} = {format_meter_value(value)} เรียบร้อยครับ\n{progress_msg}"
     return pending, reply
 

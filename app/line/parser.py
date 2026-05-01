@@ -9,6 +9,7 @@ OK = "ok"
 STATUS = "status"
 HELP = "help"
 CANCEL = "cancel"
+GEN = "gen"
 UNKNOWN = "unknown"
 
 
@@ -36,6 +37,8 @@ def parse_command(text: str) -> ParsedCommand:
         return ParsedCommand(type=HELP, raw=text)
     if upper == "CANCEL":
         return ParsedCommand(type=CANCEL, raw=text)
+    if upper == "GEN":
+        return ParsedCommand(type=GEN, raw=text)
 
     m = _METER_VALUE.match(text)
     if m:

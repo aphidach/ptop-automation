@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from fastapi import APIRouter, Request, Response
+from gspread.exceptions import APIError
 from linebot.v3.messaging import (
     AsyncMessagingApi,
     ApiClient,
@@ -22,6 +23,7 @@ from app.line.parser import (
     STATUS,
     HELP,
     CANCEL,
+    GEN,
     UNKNOWN,
     ParsedCommand,
     parse_command,
@@ -46,6 +48,7 @@ from app.services.batch_service import build_progress_message
 from app.line.client import download_image, ImageDownloadError
 from app.ocr.rate_limiter import OcrRateLimiter
 from app.ocr.value_parser import parse_meter_value
+from app.report.generator import generate_report_image
 
 logger = logging.getLogger(__name__)
 
@@ -55,6 +58,10 @@ _webhook_parser = WebhookParser(channel_secret=settings.LINE_CHANNEL_SECRET)
 _messaging_config = Configuration(access_token=settings.LINE_CHANNEL_ACCESS_TOKEN)
 _messaging_api = AsyncMessagingApi(ApiClient(_messaging_config))
 _ocr_limiter = OcrRateLimiter()
+
+
+def _is_sheets_quota_error(exc: APIError) -> bool:
+    return "Quota exceeded" in str(exc) or "[429]" in str(exc)
 
 
 def _is_invalid_reply_token_error(exc: ApiException) -> bool:
@@ -88,6 +95,15 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
             return build_progress_message(batch_id)
         return "ยังไม่มีข้อมูลรอบนี้ครับ"
 
+    if cmd.type == GEN:
+        batch_id = get_session_batch_id(source_id)
+        if not batch_id:
+            return "ยังไม่มีข้อมูลรอบนี้ครับ"
+        image_path = generate_report_image(batch_id)
+        if not image_path:
+            return "ยังไม่มีข้อมูลสำหรับสร้างรูปครับ"
+        return f"สร้างรูปเรียบร้อยครับ\n{image_path}"
+
     if cmd.type == HELP:
         return (
             "คำสั่งที่ใช้ได้:\n"
@@ -95,6 +111,7 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
             "M1 12508 — ใส่ค่าเอง\n"
             "OK — ยืนยันค่า\n"
             "STATUS — ดูความคืบหน้า\n"
+            "GEN — สร้างรูปรายงาน\n"
             "CANCEL — ยกเลิก\n"
             "HELP — ดูคำสั่ง"
         )
@@ -225,7 +242,16 @@ async def handle_webhook(request: Request):
                 reply_token = getattr(event, "reply_token", None)
 
                 if cmd.type != UNKNOWN and reply_token:
-                    reply_text = _build_reply(cmd, source_id)
+                    try:
+                        reply_text = _build_reply(cmd, source_id)
+                    except APIError as exc:
+                        if not _is_sheets_quota_error(exc):
+                            raise
+                        logger.warning("Google Sheets quota exceeded while handling LINE command")
+                        reply_text = (
+                            "Google Sheets ใช้งานเกินโควตาชั่วคราวครับ "
+                            "กรุณาลองใหม่อีกครั้ง หรือพิมพ์ STATUS ภายหลัง"
+                        )
                     if reply_text:
                         await _reply_text(reply_token, reply_text)
                 elif cmd.type == UNKNOWN and reply_token:

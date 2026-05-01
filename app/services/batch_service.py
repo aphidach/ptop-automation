@@ -96,9 +96,8 @@ def update_batch_after_reading(batch_id: str) -> BatchProgress:
     return progress
 
 
-def build_progress_message(batch_id: str) -> str:
-    progress = get_batch_progress(batch_id)
-    if not progress:
+def format_progress_message(progress: Optional[BatchProgress]) -> str:
+    if progress is None:
         return "ไม่พบข้อมูลรอบนี้ครับ"
 
     count_text = f"{progress.confirmed_meter_count}/{progress.expected_meter_count}"
@@ -106,3 +105,7 @@ def build_progress_message(batch_id: str) -> str:
         missing_text = ", ".join(progress.missing_meter_ids)
         return f"เก็บแล้ว {count_text} ขาด {missing_text}"
     return f"เก็บครบแล้ว {count_text} 🎉"
+
+
+def build_progress_message(batch_id: str) -> str:
+    return format_progress_message(get_batch_progress(batch_id))

@@ -75,6 +75,7 @@ class SheetsClient:
     def __init__(self):
         self._gc: gspread.Client | None = None
         self._spreadsheet: gspread.Spreadsheet | None = None
+        self._worksheets: dict[str, gspread.Worksheet] = {}
 
     def _get_gc(self) -> gspread.Client:
         if self._gc is None:
@@ -91,11 +92,16 @@ class SheetsClient:
         return self._spreadsheet
 
     def get_worksheet(self, tab_name: str) -> gspread.Worksheet:
+        if tab_name in self._worksheets:
+            return self._worksheets[tab_name]
+
         spreadsheet = self._get_spreadsheet()
         try:
-            return spreadsheet.worksheet(tab_name)
+            worksheet = spreadsheet.worksheet(tab_name)
         except gspread.WorksheetNotFound:
             raise ValueError(f"Tab '{tab_name}' not found in spreadsheet")
+        self._worksheets[tab_name] = worksheet
+        return worksheet
 
     def read_all(self, tab_name: str) -> list[dict]:
         ws = self.get_worksheet(tab_name)

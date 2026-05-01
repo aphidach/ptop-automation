@@ -37,7 +37,6 @@ def _mock_meter_service():
     with patch("app.services.confirmation_service.validate_reading") as mock_validate, \
          patch("app.services.confirmation_service.save_reading") as mock_save, \
          patch("app.services.confirmation_service.update_batch_after_reading") as mock_update_batch, \
-         patch("app.services.confirmation_service.build_progress_message") as mock_progress_msg, \
          patch("app.services.confirmation_service.get_or_create_batch") as mock_get_create_batch:
         mock_validate.return_value = ValidationResult(is_valid=True, warnings=[])
         mock_save.return_value = ReadingCalculation(
@@ -47,9 +46,8 @@ def _mock_meter_service():
             batch_id="2026-W19-U1", week="2026-W19", status="collecting",
             expected_meter_count=8, confirmed_meter_count=1, missing_meter_ids=["M2","M3","M4","M5","M6","M7","M8"],
         )
-        mock_progress_msg.return_value = "เก็บแล้ว 1/8 ขาด M2, M3, M4, M5, M6, M7, M8"
         mock_get_create_batch.return_value = {"batch_id": "2026-W19-U1"}
-        yield mock_validate, mock_save
+        yield mock_validate, mock_save, mock_update_batch
 
 
 class TestCreatePendingConfirmation:
@@ -113,6 +111,13 @@ class TestConfirmPending:
         assert "12,500" in reply
         assert "บันทึก" in reply
         assert "1/8" in reply
+
+    def test_confirm_uses_updated_progress_without_reloading(self, _mock_meter_service):
+        create_pending_confirmation(source_id="U1", meter_id="M1", ocr_value=12500, batch_id="2026-W19-U1")
+        pending, reply = confirm_pending("U1")
+        assert pending is not None
+        assert "1/8" in reply
+        _mock_meter_service[2].assert_called_once_with("2026-W19-U1")
 
     def test_confirm_clears_pending(self):
         create_pending_confirmation(source_id="U1", meter_id="M1", ocr_value=12500)

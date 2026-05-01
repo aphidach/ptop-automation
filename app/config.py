@@ -24,6 +24,7 @@ class Settings:
     OCR_RATE_LIMIT_MAX_RETRIES: int = int(os.getenv("OCR_RATE_LIMIT_MAX_RETRIES", "3"))
 
     IMAGE_DIR: str = os.getenv("IMAGE_DIR", "tmp/images")
+    REPORT_DIR: str = os.getenv("REPORT_DIR", "reports")
 
     CONFIRMATION_EXPIRY_SECONDS: int = int(os.getenv("CONFIRMATION_EXPIRY_SECONDS", "3600"))
 
