@@ -82,23 +82,23 @@ def _ensure_batch_id(source_id: str) -> str:
     return batch_id
 
 
-def confirm_pending(source_id: str) -> tuple[Optional[PendingConfirmation], str]:
-    """Handle OK command. Returns (pending, reply_message)."""
+def confirm_pending(source_id: str) -> tuple[Optional[PendingConfirmation], str, Optional[str]]:
+    """Handle OK command. Returns (pending, reply_message, batch_id)."""
     pending = get_pending_confirmation(source_id)
     if not pending:
-        return None, "ไม่มีค่าที่รอยืนยันครับ"
+        return None, "ไม่มีค่าที่รอยืนยันครับ", None
     if is_expired(pending):
         clear_pending_confirmation(source_id)
-        return None, "หมดเวลายืนยันแล้ว กรุณาส่งรูปใหม่อีกครั้ง"
+        return None, "หมดเวลายืนยันแล้ว กรุณาส่งรูปใหม่อีกครั้ง", None
     value = pending.manual_value if pending.manual_value is not None else pending.ocr_value
     if value is None:
-        return None, "ไม่มีค่าที่รอยืนยันครับ"
+        return None, "ไม่มีค่าที่รอยืนยันครับ", None
 
     batch_id = pending.batch_id or _ensure_batch_id(source_id)
     validation = validate_reading(pending.meter_id, value, batch_id)
     if not validation.is_valid:
         warning_text = "\n".join(validation.warnings)
-        return pending, f"⚠ ไม่สามารถบันทึกได้:\n{warning_text}"
+        return pending, f"⚠ ไม่สามารถบันทึกได้:\n{warning_text}", None
 
     confirmation_method = "manual_edit" if pending.manual_value is not None else "ok"
     save_reading(
@@ -116,11 +116,13 @@ def confirm_pending(source_id: str) -> tuple[Optional[PendingConfirmation], str]
     progress = update_batch_after_reading(batch_id)
     progress_msg = format_progress_message(progress)
     reply = f"บันทึก {pending.meter_id} = {format_meter_value(value)} เรียบร้อยครับ\n{progress_msg}"
-    return pending, reply
+    return pending, reply, batch_id
 
 
-def manual_confirm(source_id: str, meter_id: str, value: Decimal) -> tuple[Optional[PendingConfirmation], str]:
-    """Handle M1 12508 command. Creates pending with manual value and immediately confirms."""
+def manual_confirm(source_id: str, meter_id: str, value: Decimal) -> tuple[Optional[PendingConfirmation], str, Optional[str]]:
+    """Handle M1 12508 command. Creates pending with manual value and immediately confirms.
+    Returns (pending, reply_message, batch_id).
+    """
     batch_id = _ensure_batch_id(source_id)
     set_pending_confirmation(
         source_id=source_id,

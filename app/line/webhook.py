@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import re
 
 from fastapi import APIRouter, Request, Response
 from gspread.exceptions import APIError
@@ -24,6 +25,7 @@ from app.line.parser import (
     HELP,
     CANCEL,
     GEN,
+    REPORT,
     UNKNOWN,
     ParsedCommand,
     parse_command,
@@ -49,6 +51,7 @@ from app.line.client import download_image, ImageDownloadError
 from app.ocr.rate_limiter import OcrRateLimiter
 from app.ocr.value_parser import parse_meter_value
 from app.report.generator import generate_report_image
+from app.report.sender import _build_report_url, send_report, send_report_if_complete
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +61,7 @@ _webhook_parser = WebhookParser(channel_secret=settings.LINE_CHANNEL_SECRET)
 _messaging_config = Configuration(access_token=settings.LINE_CHANNEL_ACCESS_TOKEN)
 _messaging_api = AsyncMessagingApi(ApiClient(_messaging_config))
 _ocr_limiter = OcrRateLimiter()
+_WEEK_REF = re.compile(r"^\d{4}-W\d{2}$", re.IGNORECASE)
 
 
 def _is_sheets_quota_error(exc: APIError) -> bool:
@@ -67,6 +71,14 @@ def _is_sheets_quota_error(exc: APIError) -> bool:
 def _is_invalid_reply_token_error(exc: ApiException) -> bool:
     body = exc.body.decode("utf-8", errors="ignore") if isinstance(exc.body, bytes) else str(exc.body)
     return exc.status == 400 and "Invalid reply token" in body
+
+
+def _resolve_batch_id(batch_ref: str | None, source_id: str) -> str | None:
+    if not batch_ref:
+        return get_session_batch_id(source_id)
+    if _WEEK_REF.match(batch_ref):
+        return f"{batch_ref.upper()}-{source_id}"
+    return batch_ref
 
 
 def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
@@ -82,11 +94,15 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
             valid = ", ".join(settings.VALID_METER_IDS)
             return f'ไม่พบ meter id "{cmd.meter_id}" ครับ\nmeter ที่ใช้ได้: {valid}'
         set_latest_meter(source_id, cmd.meter_id)
-        _, reply = manual_confirm(source_id, cmd.meter_id, cmd.value)
+        _, reply, batch_id = manual_confirm(source_id, cmd.meter_id, cmd.value)
+        if batch_id:
+            asyncio.create_task(send_report_if_complete(batch_id, source_id))
         return reply
 
     if cmd.type == OK:
-        _, reply = confirm_pending(source_id)
+        _, reply, batch_id = confirm_pending(source_id)
+        if batch_id:
+            asyncio.create_task(send_report_if_complete(batch_id, source_id))
         return reply
 
     if cmd.type == STATUS:
@@ -96,13 +112,22 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
         return "ยังไม่มีข้อมูลรอบนี้ครับ"
 
     if cmd.type == GEN:
-        batch_id = get_session_batch_id(source_id)
+        batch_id = _resolve_batch_id(cmd.batch_id, source_id)
         if not batch_id:
             return "ยังไม่มีข้อมูลรอบนี้ครับ"
         image_path = generate_report_image(batch_id)
         if not image_path:
             return "ยังไม่มีข้อมูลสำหรับสร้างรูปครับ"
-        return f"สร้างรูปเรียบร้อยครับ\n{image_path}"
+        filename = image_path.rsplit("/", 1)[-1]
+        image_url = _build_report_url(filename)
+        return f"สร้างรูปเรียบร้อยครับ\n{image_url}"
+
+    if cmd.type == REPORT:
+        batch_id = _resolve_batch_id(cmd.batch_id, source_id)
+        if not batch_id:
+            return "ยังไม่มีข้อมูลรอบนี้ครับ"
+        asyncio.create_task(send_report(batch_id, source_id))
+        return "กำลังส่งรูปรายงานครับ"
 
     if cmd.type == HELP:
         return (
@@ -112,6 +137,9 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
             "OK — ยืนยันค่า\n"
             "STATUS — ดูความคืบหน้า\n"
             "GEN — สร้างรูปรายงาน\n"
+            "GEN <batch_id|YYYY-Www> — สร้างรูปของรอบที่ระบุ\n"
+            "REPORT — ส่งรูปรายงานเป็นรูป\n"
+            "REPORT <batch_id> — ส่งรูปรายงานของรอบที่ระบุ\n"
             "CANCEL — ยกเลิก\n"
             "HELP — ดูคำสั่ง"
         )

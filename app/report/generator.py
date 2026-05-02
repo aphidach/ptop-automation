@@ -108,7 +108,7 @@ def build_report_data(batch_id: str) -> ReportData | None:
     total_amount = sum(rd.amount for rd in readings)
 
     return ReportData(
-        title="Solar Weekly Report",
+        title="รายงานผลิตไฟฟ้ารายสัปดาห์",
         week=batch.get("week", ""),
         date=batch.get("date", ""),
         readings=readings,
@@ -142,19 +142,19 @@ def generate_report_image(batch_id: str) -> str | None:
     y += 70
 
     # Subtitle: week + date
-    subtitle = f"Week: {data.week}   Date: {data.date}"
+    subtitle = f"สัปดาห์: {data.week}   วันที่: {data.date}"
     draw.text((WIDTH // 2, y), subtitle, fill=SUBTITLE_COLOR, font=font_subtitle, anchor="mt")
     y += 50
 
     # Table
     cols = [
-        ("Meter", 80),
-        ("Name", 180),
-        ("Current", 280),
-        ("Last", 380),
-        ("Unit", 470),
-        ("Rate", 560),
-        ("Amount", 680),
+        ("มิเตอร์", 80),
+        ("ชื่อ", 180),
+        ("ค่าปัจจุบัน", 280),
+        ("ค่าก่อนหน้า", 390),
+        ("หน่วย", 510),
+        ("ราคา/หน่วย", 600),
+        ("จำนวนเงิน", 740),
     ]
     col_x = [cx for _, cx in cols]
     col_labels = [label for label, _ in cols]
@@ -198,14 +198,14 @@ def generate_report_image(batch_id: str) -> str | None:
         fill=TOTAL_BG,
         outline=BORDER_COLOR,
     )
-    draw.text((table_left + 80, y + (row_height + 8) // 2), "TOTAL", fill=TOTAL_LABEL_COLOR, font=font_total, anchor="lm")
-    draw.text((table_left + 470, y + (row_height + 8) // 2), _fmt(data.total_produced_unit), fill=TOTAL_LABEL_COLOR, font=font_total, anchor="lm")
-    draw.text((table_left + 680, y + (row_height + 8) // 2), _fmt_baht(data.total_amount), fill=TOTAL_LABEL_COLOR, font=font_total, anchor="lm")
+    draw.text((table_left + 80, y + (row_height + 8) // 2), "รวม", fill=TOTAL_LABEL_COLOR, font=font_total, anchor="lm")
+    draw.text((table_left + 510, y + (row_height + 8) // 2), _fmt(data.total_produced_unit), fill=TOTAL_LABEL_COLOR, font=font_total, anchor="lm")
+    draw.text((table_left + 740, y + (row_height + 8) // 2), _fmt_baht(data.total_amount), fill=TOTAL_LABEL_COLOR, font=font_total, anchor="lm")
     y += row_height + 8
 
     # Footer
     y += 30
-    footer = f"Total Produced: {_fmt(data.total_produced_unit)} units    Total Amount: {_fmt_baht(data.total_amount)} THB"
+    footer = f"ผลิตรวม: {_fmt(data.total_produced_unit)} หน่วย    ยอดรวม: {_fmt_baht(data.total_amount)} บาท"
     draw.text((WIDTH // 2, y), footer, fill=TITLE_COLOR, font=font_subtitle, anchor="mt")
 
     img.save(str(output_path))

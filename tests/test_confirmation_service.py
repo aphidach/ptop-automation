@@ -105,18 +105,20 @@ class TestIsExpired:
 class TestConfirmPending:
     def test_confirm_ocr_value(self):
         create_pending_confirmation(source_id="U1", meter_id="M1", ocr_value=12500, batch_id="2026-W19-U1")
-        pending, reply = confirm_pending("U1")
+        pending, reply, batch_id = confirm_pending("U1")
         assert pending is not None
         assert pending.meter_id == "M1"
         assert "12,500" in reply
         assert "บันทึก" in reply
         assert "1/8" in reply
+        assert batch_id == "2026-W19-U1"
 
     def test_confirm_uses_updated_progress_without_reloading(self, _mock_meter_service):
         create_pending_confirmation(source_id="U1", meter_id="M1", ocr_value=12500, batch_id="2026-W19-U1")
-        pending, reply = confirm_pending("U1")
+        pending, reply, batch_id = confirm_pending("U1")
         assert pending is not None
         assert "1/8" in reply
+        assert batch_id == "2026-W19-U1"
         _mock_meter_service[2].assert_called_once_with("2026-W19-U1")
 
     def test_confirm_clears_pending(self):
@@ -125,17 +127,19 @@ class TestConfirmPending:
         assert get_pending_confirmation("U1") is None
 
     def test_no_pending_returns_error(self):
-        pending, reply = confirm_pending("U1")
+        pending, reply, batch_id = confirm_pending("U1")
         assert pending is None
         assert "ไม่มีค่าที่รอยืนยัน" in reply
+        assert batch_id is None
 
     def test_expired_returns_error(self):
         set_pending_confirmation(
             source_id="U1", meter_id="M1", ocr_value=12500, created_at=time.time() - 7200,
         )
-        pending, reply = confirm_pending("U1")
+        pending, reply, batch_id = confirm_pending("U1")
         assert pending is None
         assert "หมดเวลายืนยัน" in reply
+        assert batch_id is None
 
     def test_expired_clears_pending(self):
         set_pending_confirmation(
@@ -147,11 +151,12 @@ class TestConfirmPending:
 
 class TestManualConfirm:
     def test_manual_confirm_immediately_saves(self):
-        pending, reply = manual_confirm("U1", "M1", 12508)
+        pending, reply, batch_id = manual_confirm("U1", "M1", 12508)
         assert pending is not None
         assert pending.meter_id == "M1"
         assert "12,508" in reply
         assert "บันทึก" in reply
+        assert batch_id is not None
 
     def test_manual_confirm_clears_pending(self):
         manual_confirm("U1", "M1", 12508)

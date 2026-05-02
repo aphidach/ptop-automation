@@ -10,6 +10,7 @@ STATUS = "status"
 HELP = "help"
 CANCEL = "cancel"
 GEN = "gen"
+REPORT = "report"
 UNKNOWN = "unknown"
 
 
@@ -17,6 +18,7 @@ UNKNOWN = "unknown"
 class ParsedCommand:
     type: str = UNKNOWN
     meter_id: Optional[str] = None
+    batch_id: Optional[str] = None
     value: Optional[Decimal] = None
     raw: str = ""
 
@@ -39,6 +41,16 @@ def parse_command(text: str) -> ParsedCommand:
         return ParsedCommand(type=CANCEL, raw=text)
     if upper == "GEN":
         return ParsedCommand(type=GEN, raw=text)
+    if upper.startswith("GEN "):
+        batch_id = text.split(maxsplit=1)[1].strip()
+        if batch_id:
+            return ParsedCommand(type=GEN, batch_id=batch_id, raw=text)
+    if upper == "REPORT":
+        return ParsedCommand(type=REPORT, raw=text)
+    if upper.startswith("REPORT "):
+        batch_id = text.split(maxsplit=1)[1].strip()
+        if batch_id:
+            return ParsedCommand(type=REPORT, batch_id=batch_id, raw=text)
 
     m = _METER_VALUE.match(text)
     if m:

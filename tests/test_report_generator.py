@@ -11,6 +11,7 @@ from app.report.generator import (
     ReportReading,
     _fmt,
     _fmt_baht,
+    build_report_data,
     generate_report_image,
 )
 
@@ -25,9 +26,32 @@ def test_fmt_baht():
     assert _fmt_baht(Decimal("2133.60")) == "2,133.60"
 
 
+@patch("app.report.generator.repositories")
+def test_build_report_data_uses_thai_title(mock_repositories):
+    mock_repositories.get_batch_by_id.return_value = {
+        "week": "2026-W19",
+        "date": "2026-05-04",
+    }
+    mock_repositories.get_readings_by_batch.return_value = [
+        {
+            "meter_id": "M1",
+            "current_value": "12500",
+            "last_value": "12000",
+            "produced_unit": "500",
+            "rate": "4.2",
+            "amount": "2100",
+        }
+    ]
+    mock_repositories.get_meter_by_id.return_value = {"name": "Solar 1"}
+
+    data = build_report_data("2026-W19-U1")
+
+    assert data.title == "รายงานผลิตไฟฟ้ารายสัปดาห์"
+
+
 def _mock_report_data():
     return ReportData(
-        title="Solar Weekly Report",
+        title="รายงานผลิตไฟฟ้ารายสัปดาห์",
         week="2026-W19",
         date="2026-05-04",
         readings=[

@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from urllib.parse import urlparse
 
 import httpx
 
@@ -76,6 +77,66 @@ def _content_type_to_ext(content_type: str) -> str:
         "image/webp": ".webp",
     }
     return mapping.get(ct, ".jpg")
+
+
+async def push_text(to: str, text: str) -> None:
+    """Send a text message via LINE push API (no reply token needed)."""
+    from linebot.v3.messaging import (
+        AsyncMessagingApi,
+        ApiClient,
+        Configuration,
+        PushMessageRequest,
+        TextMessage,
+    )
+
+    config = Configuration(access_token=settings.LINE_CHANNEL_ACCESS_TOKEN)
+    api = AsyncMessagingApi(ApiClient(config))
+    try:
+        api.push_message(PushMessageRequest(to=to, messages=[TextMessage(text=text)]))
+    except Exception:
+        logger.exception("Failed to push text message via LINE API to %s", to)
+
+
+def _is_https_url(url: str) -> bool:
+    parsed = urlparse(url)
+    return parsed.scheme == "https" and bool(parsed.netloc)
+
+
+async def push_image(to: str, original_url: str, preview_url: str) -> bool:
+    """Send an image message via LINE push API (no reply token needed)."""
+    from linebot.v3.messaging import (
+        AsyncMessagingApi,
+        ApiClient,
+        Configuration,
+        ImageMessage,
+        PushMessageRequest,
+    )
+
+    if not _is_https_url(original_url) or not _is_https_url(preview_url):
+        logger.error(
+            "LINE image URLs must be HTTPS: original=%s preview=%s",
+            original_url,
+            preview_url,
+        )
+        return False
+
+    config = Configuration(access_token=settings.LINE_CHANNEL_ACCESS_TOKEN)
+    api = AsyncMessagingApi(ApiClient(config))
+    try:
+        api.push_message(
+            PushMessageRequest(
+                to=to,
+                messages=[ImageMessage(
+                    original_content_url=original_url,
+                    preview_image_url=preview_url,
+                )],
+            )
+        )
+    except Exception:
+        logger.exception("Failed to push image message via LINE API to %s", to)
+        return False
+
+    return True
 
 
 class ImageDownloadError(Exception):

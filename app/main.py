@@ -1,10 +1,18 @@
+from pathlib import Path
+
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.line.webhook import router as line_webhook_router
 
 app = FastAPI(title=settings.APP_NAME)
 app.include_router(line_webhook_router)
+
+# Serve report images via static endpoint (MVP approach)
+report_dir = Path(settings.REPORT_DIR)
+report_dir.mkdir(parents=True, exist_ok=True)
+app.mount("/reports", StaticFiles(directory=str(report_dir)), name="reports")
 
 
 @app.get("/health")
