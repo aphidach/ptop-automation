@@ -38,6 +38,7 @@ AMOUNT_COLORS = [
 FONT_CANDIDATES = [
     "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",
     "/System/Library/Fonts/Supplemental/Thonburi.ttf",
+    "/usr/share/fonts/truetype/tlwg/Garuda.ttf",
     "/usr/share/fonts/truetype/noto/NotoSansThai-Regular.ttf",
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
 ]
@@ -45,6 +46,7 @@ FONT_CANDIDATES = [
 FONT_BOLD_CANDIDATES = [
     "/System/Library/Fonts/Supplemental/Thonburi Bold.ttf",
     "/System/Library/Fonts/Supplemental/Arial Unicode Bold.ttf",
+    "/usr/share/fonts/truetype/tlwg/Garuda-Bold.ttf",
     "/usr/share/fonts/truetype/noto/NotoSansThai-Bold.ttf",
     "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
 ]
