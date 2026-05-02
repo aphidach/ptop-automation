@@ -22,6 +22,7 @@ class Settings:
     OCR_RATE_LIMIT_BURST: int = int(os.getenv("OCR_RATE_LIMIT_BURST", "2"))
     OCR_RATE_LIMIT_SUSTAINED: int = int(os.getenv("OCR_RATE_LIMIT_SUSTAINED", "20"))
     OCR_RATE_LIMIT_MAX_RETRIES: int = int(os.getenv("OCR_RATE_LIMIT_MAX_RETRIES", "3"))
+    OCR_MAX_PRODUCED_UNIT_KWH: str = os.getenv("OCR_MAX_PRODUCED_UNIT_KWH", "10000")
 
     IMAGE_DIR: str = os.getenv("IMAGE_DIR", "tmp/images")
     REPORT_DIR: str = os.getenv("REPORT_DIR", "reports")

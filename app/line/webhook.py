@@ -31,6 +31,7 @@ from app.line.messages import (
     build_history_summary_message,
     build_lower_value_warning,
     build_meter_request_message,
+    build_ocr_review_message,
     build_progress_message as build_progress_text,
     build_settings_confirm_change_message,
     build_settings_edit_prompt_message,
@@ -146,6 +147,7 @@ from app.services.session_service import (
 from app.services import history_service, settings_service
 from app.line.client import ImageDownloadError, download_image
 from app.report.sender import send_report, send_report_if_complete
+from app.ocr.confidence import score_ocr_reading
 from app.ocr.rate_limiter import OcrRateLimiter
 from app.ocr.value_parser import parse_meter_value
 
@@ -838,6 +840,15 @@ async def _process_ocr_and_confirm(
             await _push_to(source_id, build_unreadable_prompt(meter_id))
             return
 
+        confidence = score_ocr_reading(
+            meter_id=meter_id,
+            parsed_value=parsed.value,
+            parse_reason=parsed.reason or "",
+            raw_text=ocr_result.raw_text,
+            parse_confidence=parsed.confidence,
+            unit=parsed.unit,
+            candidates=parsed.candidates,
+        )
         batch_id = _ensure_batch_id(source_id)
         pending = create_pending_confirmation(
             source_id=source_id,
@@ -848,6 +859,18 @@ async def _process_ocr_and_confirm(
             batch_id=batch_id,
         )
         calc = calculate_reading(meter_id, parsed.value)
+        if confidence.is_low:
+            set_collection_state(source_id, COLLECTION_WAITING_MANUAL_VALUE)
+            await _push_to(
+                source_id,
+                build_ocr_review_message(
+                    meter_id=pending.meter_id,
+                    current_value=parsed.value,
+                    warnings=confidence.warnings,
+                ),
+            )
+            return
+
         set_collection_state(source_id, COLLECTION_WAITING_CONFIRMATION)
         await _push_to(
             source_id,
@@ -857,6 +880,8 @@ async def _process_ocr_and_confirm(
                 prev_value=calc.last_value,
                 produced=calc.produced_unit,
                 amount=calc.amount,
+                confidence_level=confidence.level,
+                confidence_warnings=confidence.warnings,
             ),
         )
     except Exception:

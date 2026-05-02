@@ -145,11 +145,33 @@ def build_confirmation_card(
     prev_value: Decimal,
     produced: Decimal,
     amount: Decimal,
+    confidence_level: str = "high",
+    confidence_warnings: Sequence[str] | None = None,
 ) -> FlexMessage:
     confirm_data = build_postback_data(action=POSTBACK_CONFIRM_READING, meter_id=meter_id)
     edit_data = build_postback_data(action=POSTBACK_EDIT_READING, meter_id=meter_id)
     retake_data = build_postback_data(action=POSTBACK_RETAKE_PHOTO, meter_id=meter_id)
     cancel_data = build_postback_data(action=POSTBACK_CANCEL_COLLECTION)
+
+    body_contents = [
+        {"type": "text", "text": "ตรวจพบค่า", "weight": "bold"},
+        {"type": "text", "text": meter_id, "size": "xxl", "weight": "bold"},
+        {"type": "text", "text": f"ค่าที่อ่านได้: {current_value} kWh"},
+        {"type": "text", "text": f"ครั้งก่อน: {prev_value} kWh"},
+        {"type": "text", "text": f"ผลิตเพิ่ม: {produced} kWh"},
+        {"type": "text", "text": f"รายได้: {amount} บาท"},
+    ]
+    if confidence_level != "high":
+        body_contents.append(
+            {
+                "type": "text",
+                "text": _confidence_text(confidence_level, confidence_warnings),
+                "wrap": True,
+                "color": "#B45309",
+                "size": "sm",
+            }
+        )
+    body_contents.append({"type": "text", "text": "ยืนยันค่าหรือไม่?"})
 
     contents = {
         "type": "bubble",
@@ -157,15 +179,7 @@ def build_confirmation_card(
             "type": "box",
             "layout": "vertical",
             "spacing": "sm",
-            "contents": [
-                {"type": "text", "text": "ตรวจพบค่า", "weight": "bold"},
-                {"type": "text", "text": meter_id, "size": "xxl", "weight": "bold"},
-                {"type": "text", "text": f"ค่าที่อ่านได้: {current_value} kWh"},
-                {"type": "text", "text": f"ครั้งก่อน: {prev_value} kWh"},
-                {"type": "text", "text": f"ผลิตเพิ่ม: {produced} kWh"},
-                {"type": "text", "text": f"รายได้: {amount} บาท"},
-                {"type": "text", "text": "ยืนยันค่าหรือไม่?"}
-            ],
+            "contents": body_contents,
             "paddingAll": "12px",
         },
         "footer": {
@@ -202,6 +216,35 @@ def build_confirmation_card(
         alt_text=f"ยืนยันค่ามิเตอร์ {meter_id}",
         contents=FlexContainer.from_dict(contents),
     )
+
+
+def build_ocr_review_message(
+    meter_id: str,
+    current_value: Decimal,
+    warnings: Sequence[str],
+) -> TextMessage:
+    warning_text = "\n".join(f"- {item}" for item in warnings[:3])
+    return _text_with_actions(
+        text=(
+            "ค่า OCR นี้เสี่ยงผิดพลาดครับ\n"
+            f"{meter_id}: {current_value} kWh\n"
+            f"{warning_text}\n"
+            f"กรุณาพิมพ์ค่าเอง เช่น {meter_id} 12508 หรือถ่ายใหม่"
+        ),
+        action_items=(
+            ("แก้เอง", "message", f"{meter_id} "),
+            ("ถ่ายใหม่", "postback", build_postback_data(action=POSTBACK_RETAKE_PHOTO, meter_id=meter_id)),
+            ("ยืนยันว่าใช่", "postback", build_postback_data(action=POSTBACK_FORCE_CONFIRM_READING, meter_id=meter_id)),
+        ),
+    )
+
+
+def _confidence_text(level: str, warnings: Sequence[str] | None) -> str:
+    if warnings:
+        return f"ควรตรวจสอบ: {warnings[0]}"
+    if level == "medium":
+        return "ควรตรวจสอบค่า OCR ก่อนยืนยัน"
+    return "ค่า OCR นี้มีความเสี่ยง ควรแก้เองหรือถ่ายใหม่"
 
 
 def build_duplicate_warning_card(
