@@ -83,7 +83,7 @@ class ParseResult:
 
 
 def _normalize_number(text: str) -> Decimal:
-    cleaned = text.replace(",", "").replace(" ", "")
+    cleaned = re.sub(r"[\s,]", "", text)
     return _clean_decimal(Decimal(cleaned))
 
 

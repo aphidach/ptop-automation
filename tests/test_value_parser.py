@@ -26,6 +26,10 @@ class TestParseMeterValue:
         result = parse_meter_value("12 500")
         assert result.value == 12500
 
+    def test_newline_separated(self):
+        result = parse_meter_value("12\n500")
+        assert result.value == 12500
+
     def test_comma_with_leading_zeros(self):
         result = parse_meter_value("012,500")
         assert result.value == 12500

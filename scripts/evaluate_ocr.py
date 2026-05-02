@@ -17,6 +17,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from app.config import settings
 from app.ocr.confidence import score_ocr_reading
+from app.ocr.google_vision import GoogleVisionOcrClient
 from app.ocr.rate_limiter import OcrRateLimiter
 from app.ocr.paddle import PaddleOcrClient
 from app.ocr.preprocess import PreprocessResult, prepare_meter_display_image
@@ -30,6 +31,7 @@ DEFAULT_TIMEZONE = "Asia/Bangkok"
 PARSER_MODE = "field_aware_energy"
 ENGINE_OPENTYPHOON = "opentyphoon"
 ENGINE_PADDLE = "paddle"
+ENGINE_GOOGLE = "google"
 ENGINE_ALL = "all"
 
 
@@ -104,7 +106,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--engine",
         default=ENGINE_OPENTYPHOON,
-        help="OCR engine: opentyphoon, paddle, all, or a comma-separated list.",
+        help="OCR engine: opentyphoon, paddle, google, all, or a comma-separated list.",
     )
     parser.add_argument(
         "--preprocess",
@@ -232,9 +234,9 @@ def parse_engines(value: str) -> list[str]:
     if not requested:
         return [ENGINE_OPENTYPHOON]
     if ENGINE_ALL in requested:
-        return [ENGINE_OPENTYPHOON, ENGINE_PADDLE]
+        return [ENGINE_OPENTYPHOON, ENGINE_PADDLE, ENGINE_GOOGLE]
 
-    supported = {ENGINE_OPENTYPHOON, ENGINE_PADDLE}
+    supported = {ENGINE_OPENTYPHOON, ENGINE_PADDLE, ENGINE_GOOGLE}
     unsupported = [engine for engine in requested if engine not in supported]
     if unsupported:
         raise ValueError(f"Unsupported OCR engine: {', '.join(unsupported)}")
@@ -252,12 +254,15 @@ async def evaluate_images(
     rows: list[EvaluationRow] = []
     opentyphoon_limiter: OcrRateLimiter | None = None
     paddle_client: PaddleOcrClient | None = None
+    google_client: GoogleVisionOcrClient | None = None
 
     for engine in engines:
         if engine == ENGINE_OPENTYPHOON:
             opentyphoon_limiter = opentyphoon_limiter or OcrRateLimiter()
         elif engine == ENGINE_PADDLE:
             paddle_client = paddle_client or PaddleOcrClient()
+        elif engine == ENGINE_GOOGLE:
+            google_client = google_client or GoogleVisionOcrClient()
 
         for image_path in images:
             preprocess = (
@@ -275,6 +280,11 @@ async def evaluate_images(
             elif engine == ENGINE_PADDLE and paddle_client:
                 ocr_result = await asyncio.to_thread(
                     paddle_client.read_image,
+                    str(ocr_image_path),
+                )
+            elif engine == ENGINE_GOOGLE and google_client:
+                ocr_result = await asyncio.to_thread(
+                    google_client.read_image,
                     str(ocr_image_path),
                 )
             else:

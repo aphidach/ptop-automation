@@ -6,6 +6,7 @@ httpx==0.28.1
 typhoon-ocr
 gspread==6.2.0
 google-auth==2.40.2
+google-cloud-vision
 boto3>=1.34
 pandas>=2.2
 matplotlib>=3.9
