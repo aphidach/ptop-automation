@@ -19,6 +19,12 @@ from app.services.session_service import (
     set_batch_id,
     get_batch_id,
 )
+from app.services.audit_service import (
+    log_event,
+    EVENT_DUPLICATE_READING,
+    EVENT_SHEETS_WRITE_FAILED,
+    EVENT_READING_SAVED,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -98,19 +104,27 @@ def confirm_pending(source_id: str) -> tuple[Optional[PendingConfirmation], str,
     validation = validate_reading(pending.meter_id, value, batch_id)
     if not validation.is_valid:
         warning_text = "\n".join(validation.warnings)
+        if "ถูกบันทึกไปแล้ว" in warning_text:
+            log_event(EVENT_DUPLICATE_READING, source_id, pending.meter_id, {"value": str(value)})
         return pending, f"⚠ ไม่สามารถบันทึกได้:\n{warning_text}", None
 
     confirmation_method = "manual_edit" if pending.manual_value is not None else "ok"
-    save_reading(
-        meter_id=pending.meter_id,
-        current_value=value,
-        batch_id=batch_id,
-        line_source_id=source_id,
-        ocr_raw_text=pending.ocr_raw_text,
-        ocr_value=pending.ocr_value,
-        confirmation_method=confirmation_method,
-        image_message_id=pending.image_message_id,
-    )
+    try:
+        save_reading(
+            meter_id=pending.meter_id,
+            current_value=value,
+            batch_id=batch_id,
+            line_source_id=source_id,
+            ocr_raw_text=pending.ocr_raw_text,
+            ocr_value=pending.ocr_value,
+            confirmation_method=confirmation_method,
+            image_message_id=pending.image_message_id,
+        )
+    except Exception as exc:
+        logger.exception("Failed to save reading: meter=%s value=%s", pending.meter_id, value)
+        log_event(EVENT_SHEETS_WRITE_FAILED, source_id, pending.meter_id, {"error": str(exc)[:200]})
+        return pending, "บันทึกไม่สำเร็จครับ กรุณาลองพิมพ์ OK อีกครั้ง", None
+    log_event(EVENT_READING_SAVED, source_id, pending.meter_id, {"value": str(value), "method": confirmation_method})
     clear_pending_confirmation(source_id)
 
     progress = update_batch_after_reading(batch_id)

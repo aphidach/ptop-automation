@@ -79,3 +79,8 @@ def update_batch_confirmed_count(batch_id: str, count: int) -> None:
         ws.update_cell(cell.row, col_confirmed, count)
         ws.update_cell(cell.row, col_updated_at, now)
     logger.info("Updated batch '%s' confirmed_meter_count to %d", batch_id, count)
+
+
+def append_audit_log(row: dict) -> None:
+    sheets_client.append_row("audit_log", row)
+    logger.info("Appended audit log: %s", row.get("event_id"))

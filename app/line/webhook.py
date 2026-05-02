@@ -55,6 +55,14 @@ from app.line.client import download_image, ImageDownloadError
 from app.ocr.rate_limiter import OcrRateLimiter
 from app.ocr.value_parser import parse_meter_value
 from app.report.sender import send_report, send_report_if_complete
+from app.services.audit_service import (
+    log_event,
+    EVENT_LINE_DOWNLOAD_FAILED,
+    EVENT_OCR_FAILED,
+    EVENT_OCR_UNREADABLE,
+    EVENT_SHEETS_WRITE_FAILED,
+    EVENT_INVALID_METER,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -111,6 +119,7 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
     if cmd.type == METER:
         if not is_valid_meter(cmd.meter_id, settings.VALID_METER_IDS):
             valid = ", ".join(settings.VALID_METER_IDS)
+            log_event(EVENT_INVALID_METER, source_id, cmd.meter_id, {"raw": cmd.meter_id})
             return f'ไม่พบ meter id "{cmd.meter_id}" ครับ\nmeter ที่ใช้ได้: {valid}'
         set_latest_meter(source_id, cmd.meter_id)
         return f"รับทราบ {cmd.meter_id} ส่งรูปได้เลยครับ"
@@ -118,6 +127,7 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
     if cmd.type == METER_VALUE:
         if not is_valid_meter(cmd.meter_id, settings.VALID_METER_IDS):
             valid = ", ".join(settings.VALID_METER_IDS)
+            log_event(EVENT_INVALID_METER, source_id, cmd.meter_id, {"raw": cmd.meter_id})
             return f'ไม่พบ meter id "{cmd.meter_id}" ครับ\nmeter ที่ใช้ได้: {valid}'
         set_latest_meter(source_id, cmd.meter_id)
         _, reply, batch_id = manual_confirm(source_id, cmd.meter_id, cmd.value)
@@ -199,6 +209,7 @@ async def _process_ocr_and_confirm(
     try:
         ocr_result = await _ocr_limiter.read_image(image_path)
         if not ocr_result.success:
+            log_event(EVENT_OCR_FAILED, source_id, meter_id, {"error": ocr_result.error[:200]})
             await _push_text(
                 source_id,
                 f"อ่านค่ามิเตอร์ไม่สำเร็จครับ กรุณาพิมพ์ค่าเอง เช่น {meter_id} 12508",
@@ -207,6 +218,7 @@ async def _process_ocr_and_confirm(
 
         parsed = parse_meter_value(ocr_result.raw_text)
         if not parsed.success:
+            log_event(EVENT_OCR_UNREADABLE, source_id, meter_id, {"raw_text": ocr_result.raw_text[:200]})
             await _push_text(
                 source_id,
                 f"อ่านค่ามิเตอร์ไม่ได้ครับ กรุณาพิมพ์ค่าเอง เช่น {meter_id} 12508",
@@ -227,6 +239,7 @@ async def _process_ocr_and_confirm(
 
     except Exception:
         logger.exception("OCR processing failed for source=%s meter=%s", source_id, meter_id)
+        log_event(EVENT_OCR_FAILED, source_id, meter_id, {"phase": "ocr_processing"})
         await _push_text(source_id, "เกิดข้อผิดพลาดในการอ่านค่ามิเตอร์ครับ กรุณาลองใหม่")
     finally:
         finish_image_processing(source_id, message_id)
@@ -291,8 +304,10 @@ async def handle_webhook(request: Request):
                         reply_text = _build_reply(cmd, source_id)
                     except APIError as exc:
                         if not _is_sheets_quota_error(exc):
+                            log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": str(exc)[:200]})
                             raise
                         logger.warning("Google Sheets quota exceeded while handling LINE command")
+                        log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": "quota_exceeded"})
                         reply_text = (
                             "Google Sheets ใช้งานเกินโควตาชั่วคราวครับ "
                             "กรุณาลองใหม่อีกครั้ง หรือพิมพ์ STATUS ภายหลัง"
@@ -339,6 +354,7 @@ async def handle_webhook(request: Request):
                 except ImageDownloadError as exc:
                     finish_image_processing(source_id, message_id)
                     logger.error("Image download failed: %s", exc)
+                    log_event(EVENT_LINE_DOWNLOAD_FAILED, source_id, meter_id, {"message_id": message_id, "error": str(exc)[:200]})
                     if reply_token:
                         await _reply_text(
                             reply_token,
