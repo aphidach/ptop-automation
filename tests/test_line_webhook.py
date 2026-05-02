@@ -9,6 +9,8 @@ from app.line.webhook import (
     _build_reply,
     _build_status_message,
     _coerce_manual_value_command,
+    _push_to,
+    _reply_to,
     _resolve_batch_id,
 )
 from app.services.session_service import (
@@ -212,3 +214,43 @@ def test_manual_value_state_accepts_bare_number_for_current_meter():
     assert cmd.type == METER_VALUE
     assert cmd.meter_id == "M4"
     assert cmd.value == Decimal("12508")
+
+
+@pytest.mark.anyio
+async def test_reply_to_accepts_sync_line_sdk_response():
+    class SyncLineApi:
+        def __init__(self):
+            self.request = None
+
+        def reply_message(self, request):
+            self.request = request
+            return object()
+
+    api = SyncLineApi()
+    with patch("app.line.webhook._messaging_api", api), \
+         patch("app.line.webhook.logger.exception") as mock_log_exception:
+        await _reply_to("reply-token", "hello")
+
+    assert api.request.reply_token == "reply-token"
+    assert api.request.messages[0].text == "hello"
+    mock_log_exception.assert_not_called()
+
+
+@pytest.mark.anyio
+async def test_push_to_accepts_sync_line_sdk_response():
+    class SyncLineApi:
+        def __init__(self):
+            self.request = None
+
+        def push_message(self, request):
+            self.request = request
+            return object()
+
+    api = SyncLineApi()
+    with patch("app.line.webhook._messaging_api", api), \
+         patch("app.line.webhook.logger.exception") as mock_log_exception:
+        await _push_to("U1", "hello")
+
+    assert api.request.to == "U1"
+    assert api.request.messages[0].text == "hello"
+    mock_log_exception.assert_not_called()

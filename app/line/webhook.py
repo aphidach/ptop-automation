@@ -1,4 +1,5 @@
 import asyncio
+import inspect
 import logging
 import re
 
@@ -189,12 +190,10 @@ async def _reply_to(sender_token: str, messages):
     payload = _normalize_message_payload(messages)
 
     try:
-        await _messaging_api.reply_message(
-            ReplyMessageRequest(
-                reply_token=sender_token,
-                messages=payload,
-            )
+        response = _messaging_api.reply_message(
+            ReplyMessageRequest(reply_token=sender_token, messages=payload)
         )
+        await _maybe_await(response)
     except ApiException as exc:
         if _is_invalid_reply_token_error(exc):
             logger.warning("LINE reply token is invalid or already used")
@@ -209,9 +208,15 @@ async def _push_to(sender_id: str, messages):
         return
     payload = _normalize_message_payload(messages)
     try:
-        await _messaging_api.push_message(PushMessageRequest(to=sender_id, messages=payload))
+        response = _messaging_api.push_message(PushMessageRequest(to=sender_id, messages=payload))
+        await _maybe_await(response)
     except Exception:
         logger.exception("Failed to push via LINE API")
+
+
+async def _maybe_await(response):
+    if inspect.isawaitable(response):
+        await response
 
 
 async def _handle_postback_safely(

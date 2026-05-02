@@ -16,13 +16,21 @@ from app.line.parser import (
 )
 
 RICHMENU_WIDTH = 2500
-RICHMENU_HEIGHT = 1686
+RICHMENU_HEIGHT = 1500
 RICHMENU_DIR = Path(__file__).resolve().parents[2] / "Richmenu image"
 RICHMENU_OUTPUT_DIR = Path(__file__).resolve().parents[2] / "tmp" / "richmenu"
 RICHMENU_IMAGE_NAME = "richmenu-v2-line.png"
 RICHMENU_SPEC_NAME = "richmenu-v2-line.json"
 RICHMENU_MAX_IMAGE_BYTES = 1_000_000
 _PNG_COLOR_ATTEMPTS = (256, 128, 64, 32)
+_PANUAN_STYLE_BOUNDS = (
+    {"x": 0, "y": 0, "width": 1503, "height": 1127},
+    {"x": 1530, "y": 0, "width": 465, "height": 543},
+    {"x": 2030, "y": 0, "width": 470, "height": 543},
+    {"x": 1530, "y": 586, "width": 465, "height": 543},
+    {"x": 2030, "y": 586, "width": 470, "height": 543},
+    {"x": 0, "y": 1170, "width": 2500, "height": 330},
+)
 
 
 @dataclass(frozen=True)
@@ -81,22 +89,12 @@ def _load_image(path: Path) -> Image.Image:
 
 def _build_spec(
     buttons: list[RichMenuButtonSpec],
-    widths: tuple[int, int, int],
-    heights: tuple[int, int],
+    bounds: tuple[dict[str, int], ...],
 ) -> dict:
     areas = []
-    for index, button in enumerate(buttons):
-        x = 0
-        for i in range(index % 3):
-            x += widths[i]
-        y = 0 if index < 3 else heights[0]
+    for button, area_bounds in zip(buttons, bounds):
         area = {
-            "bounds": {
-                "x": x,
-                "y": y,
-                "width": widths[index % 3],
-                "height": heights[index // 3],
-            },
+            "bounds": dict(area_bounds),
             "action": {
                 "type": "postback",
                 "data": f"action={button.action}",
@@ -148,18 +146,15 @@ def compose_richmenu_image(
     if len(button_specs) != 6:
         raise ValueError("Expected exactly 6 rich menu buttons")
 
-    # LINE-compatible fixed-size canvas for 3x2 layout.
+    # LINE-compatible fixed-size canvas matching the provided Panuan-style mock.
     canvas = Image.new("RGBA", (RICHMENU_WIDTH, RICHMENU_HEIGHT), (0, 0, 0, 255))
-    widths = (834, 833, 833)
-    heights = (843, 843)
+    bounds = _PANUAN_STYLE_BOUNDS
 
-    for index, spec in enumerate(button_specs):
-        x = 0
-        for i in range(index % 3):
-            x += widths[i]
-        y = 0 if index < 3 else heights[0]
-        width = widths[index % 3]
-        height = heights[index // 3]
+    for spec, area_bounds in zip(button_specs, bounds):
+        x = area_bounds["x"]
+        y = area_bounds["y"]
+        width = area_bounds["width"]
+        height = area_bounds["height"]
 
         source_path = source_directory / spec.image_file
         if source_path.exists():
@@ -174,7 +169,7 @@ def compose_richmenu_image(
     output_directory.mkdir(parents=True, exist_ok=True)
     image_path = output_directory / RICHMENU_IMAGE_NAME
     spec_path = output_directory / RICHMENU_SPEC_NAME
-    spec = _build_spec(button_specs, widths, heights)
+    spec = _build_spec(button_specs, bounds)
 
     image_path = _save_line_compatible_image(canvas, image_path)
     with spec_path.open("w", encoding="utf-8") as fp:

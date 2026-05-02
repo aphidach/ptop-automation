@@ -47,10 +47,10 @@ def test_richmenu_composition_is_deterministic_and_schema_complete(tmp_path):
     assert image_hash_a == image_hash_b
 
     with Image.open(image_path) as image:
-        assert image.size == (2500, 1686)
+        assert image.size == (2500, 1500)
 
     spec = json.loads(spec_path.read_text(encoding="utf-8"))
-    assert spec["size"] == {"width": 2500, "height": 1686}
+    assert spec["size"] == {"width": 2500, "height": 1500}
     assert len(spec["areas"]) == 6
     assert all(set(area) == {"bounds", "action"} for area in spec["areas"])
 
@@ -69,5 +69,6 @@ def test_richmenu_composition_is_deterministic_and_schema_complete(tmp_path):
     assert actions == expected
 
     first = spec["areas"][0]
-    assert first["bounds"] == {"x": 0, "y": 0, "width": 834, "height": 843}
-    assert spec["areas"][5]["bounds"] == {"x": 1667, "y": 843, "width": 833, "height": 843}
+    assert first["bounds"] == {"x": 0, "y": 0, "width": 1503, "height": 1127}
+    assert spec["areas"][1]["bounds"] == {"x": 1530, "y": 0, "width": 465, "height": 543}
+    assert spec["areas"][5]["bounds"] == {"x": 0, "y": 1170, "width": 2500, "height": 330}
