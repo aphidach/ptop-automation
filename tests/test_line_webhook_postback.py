@@ -11,6 +11,7 @@ from app.line.parser import (
     POSTBACK_HELP,
     POSTBACK_HISTORY,
     POSTBACK_HISTORY_CURRENT,
+    POSTBACK_HISTORY_SELECT_WEEK,
     POSTBACK_SELECT_METER,
     POSTBACK_SKIP_METER,
     POSTBACK_START_COLLECTION,
@@ -124,6 +125,7 @@ async def test_confirm_postback_moves_state_without_errors():
     mock_reply.assert_awaited_once_with("rt", "กำลังบันทึก M1 ครับ...")
     assert mock_push.await_count == 1
     pushed_messages = mock_push.await_args.args[1]
+    assert len(pushed_messages) == 2
     assert pushed_messages[0] == "บันทึก M1 เรียบร้อย"
 
 
@@ -184,6 +186,26 @@ async def test_history_current_postback_shows_summary_actions():
     payload = mock_reply.await_args.args[1]
     assert "ประวัติรอบปัจจุบัน" in payload.text
     assert "history_batch_detail" in str(payload)
+
+@pytest.mark.anyio
+async def test_history_select_week_postback_shows_recent_batches():
+    summaries = [
+        SimpleNamespace(
+            batch_id="2026-W18-U1",
+            week="2026-W18",
+            expected_meter_count=8,
+            confirmed_meter_count=8,
+        )
+    ]
+
+    with patch("app.line.webhook.history_service.get_recent_batch_summaries", return_value=summaries), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_HISTORY_SELECT_WEEK), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    assert "ประวัติย้อนหลัง 1 เดือน" in payload.text
+    assert "2026-W18" in payload.text
+    assert "history_batch" in str(payload)
 
 @pytest.mark.anyio
 async def test_settings_postback_branches_by_operator_role():

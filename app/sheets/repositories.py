@@ -31,6 +31,12 @@ def get_readings_by_batch(batch_id: str) -> list[dict]:
     return sheets_client.find_rows("readings", "batch_id", batch_id)
 
 
+def get_readings_by_source(line_source_id: str) -> list[dict]:
+    rows = sheets_client.find_rows("readings", "line_source_id", line_source_id)
+    rows.sort(key=lambda r: r.get("created_at", ""), reverse=True)
+    return rows
+
+
 def get_readings_by_meter(meter_id: str, line_source_id: str | None = None) -> list[dict]:
     rows = sheets_client.find_rows("readings", "meter_id", meter_id)
     if line_source_id:

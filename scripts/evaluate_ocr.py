@@ -105,7 +105,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--engine",
-        default=ENGINE_OPENTYPHOON,
+        default=ENGINE_GOOGLE,
         help="OCR engine: opentyphoon, paddle, google, all, or a comma-separated list.",
     )
     parser.add_argument(
@@ -232,7 +232,7 @@ def parse_decimal(value: str) -> Decimal:
 def parse_engines(value: str) -> list[str]:
     requested = [item.strip().lower() for item in value.split(",") if item.strip()]
     if not requested:
-        return [ENGINE_OPENTYPHOON]
+        return [ENGINE_GOOGLE]
     if ENGINE_ALL in requested:
         return [ENGINE_OPENTYPHOON, ENGINE_PADDLE, ENGINE_GOOGLE]
 

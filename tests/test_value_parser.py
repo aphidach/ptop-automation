@@ -150,6 +150,21 @@ class TestParseEnergyMeterValue:
         assert result.value == Decimal("84352")
         assert result.unit == "MWh"
 
+    def test_google_vision_muth_unit_is_treated_as_mwh(self):
+        result = parse_energy_meter_value("E Del\n58.196\nMuth")
+        assert result.value == Decimal("58196")
+        assert result.unit == "MWh"
+
+    def test_google_vision_mulh_integer_mwh_keeps_plausible_kwh_value(self):
+        result = parse_energy_meter_value("E Del 61270 Mulh")
+        assert result.value == Decimal("61270")
+        assert result.unit == "MWh"
+
+    def test_google_vision_muh_unit_after_noise_is_treated_as_mwh(self):
+        result = parse_energy_meter_value("E Del\nI\n84.352 Muh")
+        assert result.value == Decimal("84352")
+        assert result.unit == "MWh"
+
     def test_e_delivered_label_is_supported(self):
         result = parse_energy_meter_value("E Delivered 61.270 MWh")
         assert result.value == Decimal("61270")
@@ -171,6 +186,29 @@ class TestParseEnergyMeterValue:
             "Comm Frequency Hz Total Energy kWh\n50.0 135420.05"
         )
         assert result.value == Decimal("135420.05")
+
+    def test_google_vision_total_energy_uses_value_after_nearby_kwh_unit(self):
+        result = parse_energy_meter_value(
+            "Total Energy\n230, 16, 472\nkWh\n50.0 135420.05"
+        )
+        assert result.value == Decimal("135420.05")
+        assert result.source_label == "Total Energy"
+        assert result.unit == "kWh"
+
+    def test_mpr45s_detail_crop_combines_decimal_tail(self):
+        result = parse_energy_meter_value("ENTES\nMPR-45S\n0250509. IkW h")
+        assert result.value == Decimal("250509.1")
+        assert result.source_label == "MPR-45S energy row"
+        assert result.unit == "kWh"
+
+    def test_mpr45s_detail_crop_implies_missing_decimal_tail_low_confidence(self):
+        result = parse_energy_meter_value(
+            "ENTES\nMPR-45S\n[google_vision_mpr45s_detail]\n0250509 kW h"
+        )
+        assert result.value == Decimal("250509.1")
+        assert result.source_label == "MPR-45S energy row"
+        assert result.confidence == "low"
+        assert result.reason == "model_specific_implied_decimal_tail"
 
     def test_fallback_still_supports_plain_manual_value(self):
         result = parse_energy_meter_value("M1 12508")

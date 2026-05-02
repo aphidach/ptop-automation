@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal, InvalidOperation
 
 from app.config import settings
@@ -37,6 +38,44 @@ def get_previous_batch_summary(source_id: str, current_batch_id: str | None = No
     return None
 
 
+def get_recent_batch_summaries(
+    source_id: str,
+    *,
+    days: int = 31,
+    limit: int = 5,
+    now: datetime | None = None,
+) -> list[BatchSummary]:
+    cutoff = (now or datetime.now(timezone.utc)) - timedelta(days=days)
+    batch_refs: dict[str, datetime] = {}
+
+    for batch in repositories.get_batches_by_source(source_id):
+        batch_id = str(batch.get("batch_id", "")).strip()
+        if not batch_id:
+            continue
+        seen_at = _row_datetime(batch)
+        if seen_at and seen_at >= cutoff:
+            batch_refs[batch_id] = seen_at
+
+    for reading in repositories.get_readings_by_source(source_id):
+        batch_id = str(reading.get("batch_id", "")).strip()
+        if not batch_id:
+            continue
+        seen_at = _row_datetime(reading)
+        if seen_at and seen_at >= cutoff:
+            current = batch_refs.get(batch_id)
+            if current is None or seen_at > current:
+                batch_refs[batch_id] = seen_at
+
+    summaries = []
+    for batch_id, seen_at in sorted(batch_refs.items(), key=lambda item: item[1], reverse=True):
+        summary = get_batch_summary(batch_id)
+        if summary:
+            summaries.append(summary)
+        if len(summaries) >= limit:
+            break
+    return summaries
+
+
 def get_latest_report_batch_id(source_id: str) -> str | None:
     for batch in repositories.get_batches_by_source(source_id):
         if str(batch.get("report_image_url", "")).strip():
@@ -49,25 +88,29 @@ def get_latest_report_batch_id(source_id: str) -> str | None:
 
 def get_batch_summary(batch_id: str) -> BatchSummary | None:
     batch = repositories.get_batch_by_id(batch_id)
-    if not batch:
+    readings = repositories.get_readings_by_batch(batch_id)
+    if not batch and not readings:
         return None
 
-    readings = repositories.get_readings_by_batch(batch_id)
     confirmed_ids = {str(r.get("meter_id", "")) for r in readings if r.get("meter_id")}
+    expected = _to_int(batch.get("expected_meter_count") if batch else None, settings.EXPECTED_METER_COUNT)
     missing = [m for m in settings.VALID_METER_IDS if m not in confirmed_ids]
-    expected = _to_int(batch.get("expected_meter_count"), settings.EXPECTED_METER_COUNT)
+    first_reading = readings[0] if readings else {}
+    status = str(batch.get("status", "") if batch else "") or (
+        "complete" if len(confirmed_ids) >= expected else "collecting"
+    )
 
     return BatchSummary(
-        batch_id=str(batch.get("batch_id", batch_id)),
-        week=str(batch.get("week", "")),
-        status=str(batch.get("status", "")) or "collecting",
+        batch_id=str(batch.get("batch_id", batch_id) if batch else batch_id),
+        week=str(batch.get("week", "") if batch else first_reading.get("week", "")) or _week_from_batch_id(batch_id),
+        status=status,
         expected_meter_count=expected,
         confirmed_meter_count=len(confirmed_ids),
         missing_meter_ids=missing,
         produced_unit=sum((_to_decimal(r.get("produced_unit")) for r in readings), Decimal("0")),
         amount=sum((_to_decimal(r.get("amount")) for r in readings), Decimal("0")),
         readings=sorted(readings, key=lambda r: str(r.get("meter_id", ""))),
-        report_image_url=str(batch.get("report_image_url", "")),
+        report_image_url=str(batch.get("report_image_url", "") if batch else ""),
     )
 
 
@@ -87,3 +130,34 @@ def _to_int(value, fallback: int) -> int:
         return int(str(value or "").strip())
     except ValueError:
         return fallback
+
+
+def _row_datetime(row: dict) -> datetime | None:
+    for key in ("date", "created_at", "updated_at"):
+        parsed = _parse_datetime(row.get(key))
+        if parsed:
+            return parsed
+    return None
+
+
+def _parse_datetime(value) -> datetime | None:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        try:
+            parsed = datetime.strptime(text, "%Y-%m-%d")
+        except ValueError:
+            return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _week_from_batch_id(batch_id: str) -> str:
+    parts = str(batch_id).split("-")
+    if len(parts) >= 2 and parts[0].isdigit() and parts[1].upper().startswith("W"):
+        return f"{parts[0]}-{parts[1].upper()}"
+    return ""

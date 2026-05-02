@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from app.line.messages import (
     build_confirmation_card,
+    build_history_batch_list_message,
     build_history_menu_message,
     build_meter_request_message,
     build_settings_menu_message,
@@ -80,8 +81,33 @@ def test_history_menu_has_usable_actions():
 
     assert "ประวัติการบันทึกมิเตอร์" in payload["text"]
     assert "history_current" in str(payload)
+    assert "history_select_week" in str(payload)
     assert "history_meter" in str(payload)
     assert "latest_report" in str(payload)
+
+def test_history_batch_list_shows_recent_weeks():
+    summaries = [
+        type("Summary", (), {
+            "batch_id": "2026-W18-U1",
+            "week": "2026-W18",
+            "confirmed_meter_count": 8,
+            "expected_meter_count": 8,
+        })(),
+        type("Summary", (), {
+            "batch_id": "2026-W17-U1",
+            "week": "2026-W17",
+            "confirmed_meter_count": 7,
+            "expected_meter_count": 8,
+        })(),
+    ]
+
+    payload = _as_dict(build_history_batch_list_message(summaries))
+
+    assert "ประวัติย้อนหลัง 1 เดือน" in payload["text"]
+    assert "2026-W18: 8/8" in payload["text"]
+    assert "2026-W17: 7/8" in payload["text"]
+    assert "history_batch" in str(payload)
+    assert "batch_id=2026-W18-U1" in str(payload)
 
 def test_settings_operator_menu_does_not_show_edit_actions():
     payload = _as_dict(build_settings_menu_message(is_admin=False))

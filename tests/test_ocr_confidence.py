@@ -52,6 +52,34 @@ def test_field_aware_parse_with_unit_is_high_confidence_when_plausible():
     assert result.reason == "energy_label_unit_plausible"
 
 
+def test_model_specific_parse_with_unit_is_high_confidence_when_plausible():
+    result = score_ocr_reading(
+        meter_id="M5",
+        parsed_value=Decimal("250509.1"),
+        parse_reason="model_specific_energy_row",
+        raw_text="MPR-45S 0250509. IkW h",
+        unit="kWh",
+        use_history=False,
+    )
+
+    assert result.level == CONFIDENCE_HIGH
+    assert result.reason == "energy_label_unit_plausible"
+
+
+def test_implied_mpr45s_decimal_tail_is_low_confidence():
+    result = score_ocr_reading(
+        meter_id="M5",
+        parsed_value=Decimal("250509.1"),
+        parse_reason="model_specific_implied_decimal_tail",
+        raw_text="MPR-45S [google_vision_mpr45s_detail] 0250509 kW h",
+        unit="kWh",
+        use_history=False,
+    )
+
+    assert result.level == CONFIDENCE_LOW
+    assert any("MPR-45S" in warning for warning in result.warnings)
+
+
 def test_fallback_generic_parse_is_low_confidence():
     result = score_ocr_reading(
         meter_id="M1",
