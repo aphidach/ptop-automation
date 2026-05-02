@@ -54,8 +54,7 @@ from app.services.batch_service import build_progress_message
 from app.line.client import download_image, ImageDownloadError
 from app.ocr.rate_limiter import OcrRateLimiter
 from app.ocr.value_parser import parse_meter_value
-from app.report.generator import generate_report_image
-from app.report.sender import _build_report_url, send_report, send_report_if_complete
+from app.report.sender import send_report, send_report_if_complete
 
 logger = logging.getLogger(__name__)
 
@@ -139,12 +138,8 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
         batch_id = _resolve_batch_id(cmd.batch_id, source_id)
         if not batch_id:
             return "ยังไม่มีข้อมูลรอบนี้ครับ"
-        image_path = generate_report_image(batch_id)
-        if not image_path:
-            return "ยังไม่มีข้อมูลสำหรับสร้างรูปครับ"
-        filename = image_path.rsplit("/", 1)[-1]
-        image_url = _build_report_url(filename)
-        return f"สร้างรูปเรียบร้อยครับ\n{image_url}"
+        asyncio.create_task(send_report(batch_id, source_id))
+        return "กำลังส่งรูปรายงานครับ"
 
     if cmd.type == REPORT:
         batch_id = _resolve_batch_id(cmd.batch_id, source_id)

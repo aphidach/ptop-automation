@@ -51,7 +51,6 @@ async def send_report(batch_id: str, source_id: str, mark_reported: bool = False
         )
         return False
 
-    await push_text(source_id, "ส่งรายงานรายสัปดาห์เรียบร้อยครับ 🎉")
     if mark_reported:
         repositories.update_batch_status(batch_id, "reported")
     logger.info("Report sent for batch %s", batch_id)

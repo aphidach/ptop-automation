@@ -64,7 +64,7 @@ async def test_send_report_marks_reported_after_successful_image_push():
          patch("app.report.sender.repositories") as mock_repositories, \
          patch("app.report.sender.generate_report_image") as mock_generate, \
          patch("app.report.sender.push_image", new_callable=AsyncMock) as mock_push_image, \
-         patch("app.report.sender.push_text", new_callable=AsyncMock):
+         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text:
         mock_settings.APP_BASE_URL = "https://example.com"
         mock_repositories.get_batch_by_id.return_value = {"status": "complete"}
         mock_generate.return_value = "reports/2026-W19-U1.png"
@@ -73,6 +73,7 @@ async def test_send_report_marks_reported_after_successful_image_push():
         await send_report_if_complete("2026-W19-U1", "U1")
 
     mock_repositories.update_batch_status.assert_called_once_with("2026-W19-U1", "reported")
+    mock_push_text.assert_not_called()
 
 
 @pytest.mark.anyio
@@ -81,7 +82,7 @@ async def test_manual_send_report_does_not_mark_reported():
          patch("app.report.sender.repositories") as mock_repositories, \
          patch("app.report.sender.generate_report_image") as mock_generate, \
          patch("app.report.sender.push_image", new_callable=AsyncMock) as mock_push_image, \
-         patch("app.report.sender.push_text", new_callable=AsyncMock):
+         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text:
         mock_settings.APP_BASE_URL = "https://example.com"
         mock_generate.return_value = "reports/2026-W19-U1.png"
         mock_push_image.return_value = True
@@ -90,3 +91,4 @@ async def test_manual_send_report_does_not_mark_reported():
 
     assert sent is True
     mock_repositories.update_batch_status.assert_not_called()
+    mock_push_text.assert_not_called()

@@ -27,52 +27,36 @@ def test_gen_without_batch_returns_no_data_message():
     assert "ยังไม่มีข้อมูลรอบนี้" in reply
 
 
-def test_gen_generates_report_for_current_batch():
+def test_gen_schedules_image_send_for_current_batch():
     set_batch_id("U1", "2026-W19-U1")
 
-    with patch("app.line.webhook.generate_report_image") as mock_generate, \
-         patch("app.line.webhook._build_report_url") as mock_build_url:
-        mock_generate.return_value = "reports/2026-W19-U1.png"
-        mock_build_url.return_value = "http://localhost:8000/reports/2026-W19-U1.png"
+    with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task:
         reply = _build_reply(ParsedCommand(type=GEN), "U1")
 
-    mock_generate.assert_called_once_with("2026-W19-U1")
-    mock_build_url.assert_called_once_with("2026-W19-U1.png")
-    assert "สร้างรูปเรียบร้อย" in reply
-    assert "http://localhost:8000/reports/2026-W19-U1.png" in reply
+    mock_send_report.assert_called_once_with("2026-W19-U1", "U1")
+    mock_create_task.assert_called_once_with("send-report-task")
+    assert "กำลังส่งรูปรายงาน" in reply
 
 
-def test_gen_with_no_report_data_returns_message():
-    set_batch_id("U1", "2026-W19-U1")
-
-    with patch("app.line.webhook.generate_report_image", return_value=None):
-        reply = _build_reply(ParsedCommand(type=GEN), "U1")
-
-    assert "ยังไม่มีข้อมูลสำหรับสร้างรูป" in reply
-
-
-def test_gen_with_week_ref_generates_report_for_source_week():
-    with patch("app.line.webhook.generate_report_image") as mock_generate, \
-         patch("app.line.webhook._build_report_url") as mock_build_url:
-        mock_generate.return_value = "reports/2026-W18-U1.png"
-        mock_build_url.return_value = "http://localhost:8000/reports/2026-W18-U1.png"
+def test_gen_with_week_ref_schedules_image_send_for_source_week():
+    with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task:
         reply = _build_reply(ParsedCommand(type=GEN, batch_id="2026-w18"), "U1")
 
-    mock_generate.assert_called_once_with("2026-W18-U1")
-    mock_build_url.assert_called_once_with("2026-W18-U1.png")
-    assert "http://localhost:8000/reports/2026-W18-U1.png" in reply
+    mock_send_report.assert_called_once_with("2026-W18-U1", "U1")
+    mock_create_task.assert_called_once_with("send-report-task")
+    assert "กำลังส่งรูปรายงาน" in reply
 
 
-def test_gen_with_batch_id_generates_report_for_that_batch():
-    with patch("app.line.webhook.generate_report_image") as mock_generate, \
-         patch("app.line.webhook._build_report_url") as mock_build_url:
-        mock_generate.return_value = "reports/2026-W18-UabcDef.png"
-        mock_build_url.return_value = "http://localhost:8000/reports/2026-W18-UabcDef.png"
+def test_gen_with_batch_id_schedules_image_send_for_that_batch():
+    with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task:
         reply = _build_reply(ParsedCommand(type=GEN, batch_id="2026-W18-UabcDef"), "U1")
 
-    mock_generate.assert_called_once_with("2026-W18-UabcDef")
-    mock_build_url.assert_called_once_with("2026-W18-UabcDef.png")
-    assert "http://localhost:8000/reports/2026-W18-UabcDef.png" in reply
+    mock_send_report.assert_called_once_with("2026-W18-UabcDef", "U1")
+    mock_create_task.assert_called_once_with("send-report-task")
+    assert "กำลังส่งรูปรายงาน" in reply
 
 
 def test_resolve_batch_id_uses_current_session_when_empty():
