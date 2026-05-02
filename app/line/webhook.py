@@ -2,6 +2,7 @@ import asyncio
 import inspect
 import logging
 import re
+import uuid
 
 from decimal import Decimal, InvalidOperation
 from fastapi import APIRouter, Request, Response
@@ -17,13 +18,29 @@ from linebot.v3.messaging import (
 )
 from linebot.v3.messaging.exceptions import ApiException
 from linebot.v3.webhook import WebhookParser
+from starlette.requests import ClientDisconnect
 
 from app.config import settings
 from app.line.messages import (
     build_confirmation_card,
+    build_history_detail_message,
+    build_history_empty_message,
+    build_history_menu_message,
+    build_history_meter_message,
+    build_history_meter_select_message,
+    build_history_summary_message,
     build_lower_value_warning,
     build_meter_request_message,
     build_progress_message as build_progress_text,
+    build_settings_confirm_change_message,
+    build_settings_edit_prompt_message,
+    build_settings_menu_message,
+    build_settings_meter_detail_message,
+    build_settings_meters_message,
+    build_settings_not_admin_message,
+    build_settings_permissions_message,
+    build_settings_recipients_message,
+    build_settings_view_message,
     build_start_collection_card,
     build_unreadable_prompt,
 )
@@ -42,12 +59,30 @@ from app.line.parser import (
     POSTBACK_EDIT_READING,
     POSTBACK_FORCE_CONFIRM_READING,
     POSTBACK_HELP,
+    POSTBACK_HISTORY_BATCH,
+    POSTBACK_HISTORY_BATCH_DETAIL,
+    POSTBACK_HISTORY_CURRENT,
+    POSTBACK_HISTORY_METER,
+    POSTBACK_HISTORY_PREVIOUS,
+    POSTBACK_HISTORY_SELECT_WEEK,
     POSTBACK_REPLACE_READING,
     POSTBACK_RETAKE_PHOTO,
     POSTBACK_SELECT_METER,
     POSTBACK_SHOW_STATUS,
     POSTBACK_START_COLLECTION,
     POSTBACK_SETTINGS,
+    POSTBACK_SETTINGS_CANCEL_CHANGE,
+    POSTBACK_SETTINGS_CONFIRM_CHANGE,
+    POSTBACK_SETTINGS_CONTACT_ADMIN,
+    POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT,
+    POSTBACK_SETTINGS_EDIT_METER,
+    POSTBACK_SETTINGS_EDIT_RATE,
+    POSTBACK_SETTINGS_EDIT_REPORT_TITLE,
+    POSTBACK_SETTINGS_METER_DETAIL,
+    POSTBACK_SETTINGS_METERS,
+    POSTBACK_SETTINGS_PERMISSIONS,
+    POSTBACK_SETTINGS_RECIPIENTS,
+    POSTBACK_SETTINGS_VIEW,
     POSTBACK_WEEKLY_SUMMARY,
     POSTBACK_SKIP_METER,
     POSTBACK_LATEST_REPORT,
@@ -69,8 +104,10 @@ from app.services.audit_service import (
 from app.services.batch_service import build_progress_message, get_batch_progress
 from app.services.confirmation_service import (
     _ensure_batch_id,
+    clear_pending_confirmation,
     confirm_pending,
     create_pending_confirmation,
+    get_pending_confirmation,
     ensure_batch_id,
     cancel_pending,
     format_meter_value,
@@ -88,21 +125,25 @@ from app.services.session_service import (
     COLLECTION_REPORTING,
     clear_collection_meter,
     clear_collection_skip_meters,
-    clear_pending_confirmation,
+    clear_pending_setting_change,
     finish_image_processing,
     get_batch_id as get_session_batch_id,
     get_collection_current_meter,
     get_collection_state,
     get_latest_meter,
-    get_pending_confirmation,
+    get_pending_setting_change,
+    get_settings_input_key,
     is_collection_meter_skipped,
     reset_collection_session,
     set_collection_current_meter,
     set_collection_state,
     set_collection_meter_skipped,
+    set_pending_setting_change,
+    set_settings_input_key,
     start_image_processing,
     set_latest_meter,
 )
+from app.services import history_service, settings_service
 from app.line.client import ImageDownloadError, download_image
 from app.report.sender import send_report, send_report_if_complete
 from app.ocr.rate_limiter import OcrRateLimiter
@@ -297,6 +338,70 @@ def _build_status_message(source_id: str) -> str:
     if not lines:
         return "ยังไม่มีข้อมูลรอบนี้ครับ"
     return "\n".join(lines)
+
+def _build_settings_input_reply(text: str, source_id: str):
+    key = get_settings_input_key(source_id)
+    if not key:
+        return None
+    if not settings_service.is_admin(source_id):
+        set_settings_input_key(source_id, None)
+        return build_settings_not_admin_message()
+
+    valid, value_or_message = settings_service.validate_setting_input(key, text)
+    if not valid:
+        return value_or_message
+
+    values = settings_service.get_current_settings()
+    old_value = values.get(key, "")
+    change_id = f"chg_{uuid.uuid4().hex[:12]}"
+    set_pending_setting_change(
+        source_id=source_id,
+        change_id=change_id,
+        key=key,
+        old_value=old_value,
+        new_value=value_or_message,
+        label=settings_service.setting_label(key),
+        impact=settings_service.setting_impact(key),
+    )
+    set_settings_input_key(source_id, None)
+    change = get_pending_setting_change(source_id)
+    return build_settings_confirm_change_message(change)
+
+def _build_settings_edit_prompt(source_id: str, key: str):
+    if not settings_service.is_admin(source_id):
+        return build_settings_not_admin_message()
+    values = settings_service.get_current_settings()
+    set_settings_input_key(source_id, key)
+    clear_pending_setting_change(source_id)
+    return build_settings_edit_prompt_message(key, values.get(key, ""))
+
+async def _reply_history_current(source_id: str, reply_token: str) -> None:
+    summary = history_service.get_current_batch_summary(source_id, get_session_batch_id(source_id))
+    if not summary:
+        await _reply_to(reply_token, build_history_empty_message("ยังไม่มีประวัติการบันทึกในรอบนี้ครับ"))
+        return
+    if not summary.readings:
+        await _reply_to(reply_token, build_history_empty_message("รอบนี้ยังไม่มีค่ามิเตอร์ครับ"))
+        return
+    await _reply_to(reply_token, build_history_summary_message("ประวัติรอบปัจจุบัน", summary))
+
+async def _reply_history_previous(source_id: str, reply_token: str) -> None:
+    summary = history_service.get_previous_batch_summary(source_id, get_session_batch_id(source_id))
+    if not summary:
+        await _reply_to(reply_token, build_history_empty_message("ยังไม่มีประวัติสัปดาห์ก่อนครับ"))
+        return
+    await _reply_to(reply_token, build_history_summary_message("ประวัติสัปดาห์ก่อน", summary))
+
+async def _reply_history_detail(batch_id: str | None, source_id: str, reply_token: str) -> None:
+    target_batch_id = batch_id or get_session_batch_id(source_id)
+    summary = history_service.get_batch_summary(target_batch_id) if target_batch_id else None
+    if not summary:
+        await _reply_to(reply_token, build_history_empty_message("ไม่พบข้อมูลรอบนี้ครับ"))
+        return
+    if not summary.readings:
+        await _reply_to(reply_token, build_history_empty_message("รอบนี้ยังไม่มีค่ามิเตอร์ครับ"))
+        return
+    await _reply_to(reply_token, build_history_detail_message(summary))
 
 
 def _after_successful_confirmation(
@@ -512,11 +617,130 @@ async def _handle_postback(
         return
 
     if action == POSTBACK_HISTORY:
-        await _reply_to(reply_token, "ประวัติกำลังอยู่ในช่วงเตรียมใช้งาน กรุณาส่งคำสั่ง REPORT หรือดูรายงานจากแชต")
+        await _reply_to(reply_token, build_history_menu_message())
+        return
+
+    if action == POSTBACK_HISTORY_CURRENT:
+        await _reply_history_current(source_id, reply_token)
+        return
+
+    if action in (POSTBACK_HISTORY_PREVIOUS, POSTBACK_HISTORY_SELECT_WEEK):
+        await _reply_history_previous(source_id, reply_token)
+        return
+
+    if action == POSTBACK_HISTORY_BATCH:
+        summary = history_service.get_batch_summary(batch_id) if batch_id else None
+        if not summary:
+            await _reply_to(reply_token, build_history_empty_message("ไม่พบข้อมูลรอบนี้ครับ"))
+            return
+        await _reply_to(reply_token, build_history_summary_message("ประวัติรอบย้อนหลัง", summary))
+        return
+
+    if action == POSTBACK_HISTORY_BATCH_DETAIL:
+        await _reply_history_detail(batch_id, source_id, reply_token)
+        return
+
+    if action == POSTBACK_HISTORY_METER:
+        if not meter_id:
+            await _reply_to(reply_token, build_history_meter_select_message())
+            return
+        if not is_valid_meter(meter_id, settings.VALID_METER_IDS):
+            await _reply_to(reply_token, build_history_meter_select_message())
+            return
+        readings = history_service.get_meter_history(meter_id, source_id)
+        await _reply_to(reply_token, build_history_meter_message(meter_id, readings))
         return
 
     if action == POSTBACK_SETTINGS:
-        await _reply_to(reply_token, "ตั้งค่าอยู่ระหว่างอัปเดต กรุณาติดต่อผู้ดูแลระบบหากต้องการแก้ไขข้อมูล")
+        await _reply_to(reply_token, build_settings_menu_message(settings_service.is_admin(source_id)))
+        return
+
+    if action == POSTBACK_SETTINGS_VIEW:
+        await _reply_to(
+            reply_token,
+            build_settings_view_message(
+                settings_service.get_current_settings(),
+                settings_service.is_admin(source_id),
+            ),
+        )
+        return
+
+    if action == POSTBACK_SETTINGS_METERS:
+        await _reply_to(
+            reply_token,
+            build_settings_meters_message(
+                settings_service.get_meter_settings(),
+                settings_service.is_admin(source_id),
+            ),
+        )
+        return
+
+    if action == POSTBACK_SETTINGS_METER_DETAIL:
+        if not meter_id:
+            await _reply_to(reply_token, build_settings_meters_message(settings_service.get_meter_settings(), settings_service.is_admin(source_id)))
+            return
+        meter = settings_service.get_meter_detail(meter_id)
+        if not meter:
+            await _reply_to(reply_token, "ไม่พบมิเตอร์นี้ครับ")
+            return
+        await _reply_to(reply_token, build_settings_meter_detail_message(meter, settings_service.is_admin(source_id)))
+        return
+
+    if action == POSTBACK_SETTINGS_EDIT_RATE:
+        await _reply_to(reply_token, _build_settings_edit_prompt(source_id, settings_service.SETTING_DEFAULT_RATE))
+        return
+
+    if action == POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT:
+        await _reply_to(reply_token, _build_settings_edit_prompt(source_id, settings_service.SETTING_EXPECTED_METER_COUNT))
+        return
+
+    if action == POSTBACK_SETTINGS_EDIT_REPORT_TITLE:
+        await _reply_to(reply_token, _build_settings_edit_prompt(source_id, settings_service.SETTING_REPORT_TITLE))
+        return
+
+    if action == POSTBACK_SETTINGS_EDIT_METER:
+        await _reply_to(reply_token, "การแก้ข้อมูลมิเตอร์รายเครื่องจะเพิ่มในเฟสถัดไปครับ")
+        return
+
+    if action == POSTBACK_SETTINGS_RECIPIENTS:
+        if not settings_service.is_admin(source_id):
+            await _reply_to(reply_token, build_settings_not_admin_message())
+            return
+        await _reply_to(reply_token, build_settings_recipients_message(settings_service.get_current_settings(), True))
+        return
+
+    if action == POSTBACK_SETTINGS_PERMISSIONS:
+        if not settings_service.is_admin(source_id):
+            await _reply_to(reply_token, build_settings_not_admin_message())
+            return
+        await _reply_to(reply_token, build_settings_permissions_message(True))
+        return
+
+    if action == POSTBACK_SETTINGS_CONFIRM_CHANGE:
+        if not settings_service.is_admin(source_id):
+            await _reply_to(reply_token, build_settings_not_admin_message())
+            return
+        change = get_pending_setting_change(source_id)
+        if not change or (parsed.change_id and parsed.change_id != change.change_id):
+            await _reply_to(reply_token, "หมดเวลายืนยันการแก้ไขแล้วครับ")
+            return
+        settings_service.apply_setting_change(source_id, change.key, change.old_value, change.new_value)
+        clear_pending_setting_change(source_id)
+        set_settings_input_key(source_id, None)
+        await _reply_to(reply_token, build_settings_view_message(settings_service.get_current_settings(), True))
+        return
+
+    if action == POSTBACK_SETTINGS_CANCEL_CHANGE:
+        clear_pending_setting_change(source_id)
+        set_settings_input_key(source_id, None)
+        await _reply_to(reply_token, build_settings_menu_message(settings_service.is_admin(source_id)))
+        return
+
+    if action == POSTBACK_SETTINGS_CONTACT_ADMIN:
+        await _reply_to(
+            reply_token,
+            "กรุณาติดต่อผู้ดูแลระบบใน LINE group นี้ หรือแจ้ง Admin ให้เพิ่ม LINE user id ใน ADMIN_LINE_USER_IDS ครับ",
+        )
         return
 
     if action == POSTBACK_HELP:
@@ -574,7 +798,9 @@ async def _handle_postback(
 
     if action == POSTBACK_LATEST_REPORT:
         if not batch_id:
-            await _reply_to(reply_token, "ยังไม่มีข้อมูลรอบนี้ครับ")
+            batch_id = history_service.get_latest_report_batch_id(source_id)
+        if not batch_id:
+            await _reply_to(reply_token, build_history_empty_message("ยังไม่มีรูปรายงานสำหรับรอบนี้ครับ"))
             return
         asyncio.create_task(send_report(batch_id, source_id))
         await _reply_to(reply_token, "กำลังส่งรายงานล่าสุดครับ")
@@ -644,7 +870,11 @@ async def _process_ocr_and_confirm(
 
 @router.post("/webhook/line")
 async def handle_webhook(request: Request):
-    body = await request.body()
+    try:
+        body = await request.body()
+    except ClientDisconnect:
+        logger.info("LINE webhook client disconnected before request body was read")
+        return Response(status_code=204)
     signature = request.headers.get("X-Line-Signature", "")
 
     try:
@@ -712,6 +942,18 @@ async def handle_webhook(request: Request):
         if message_type == "text":
             text = getattr(message, "text", "")
             cmd = _coerce_manual_value_command(parse_command(text), text, source_id)
+            try:
+                settings_reply = _build_settings_input_reply(text, source_id) if cmd.type == UNKNOWN else None
+            except APIError as exc:
+                if not _is_sheets_quota_error(exc):
+                    log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": str(exc)[:200]})
+                    raise
+                logger.warning("Google Sheets quota exceeded while handling settings input")
+                log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": "quota_exceeded"})
+                settings_reply = _SHEETS_RETRY_MESSAGE
+            if settings_reply and reply_token:
+                await _reply_to(reply_token, settings_reply)
+                continue
             if cmd.type != UNKNOWN and reply_token:
                 try:
                     reply_text = _build_text_reply(cmd, source_id)

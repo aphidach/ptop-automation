@@ -40,6 +40,15 @@ class Settings:
     VALID_METER_IDS: list[str] = [
         m.strip() for m in os.getenv("VALID_METER_IDS", "M1,M2,M3,M4,M5,M6,M7,M8").split(",") if m.strip()
     ]
+    ADMIN_LINE_USER_IDS: list[str] = [
+        item.strip() for item in os.getenv("ADMIN_LINE_USER_IDS", "").split(",") if item.strip()
+    ]
+    OWNER_LINE_USER_IDS: list[str] = [
+        item.strip() for item in os.getenv("OWNER_LINE_USER_IDS", "").split(",") if item.strip()
+    ]
+    ALLOWED_LINE_SOURCE_IDS: list[str] = [
+        item.strip() for item in os.getenv("ALLOWED_LINE_SOURCE_IDS", "").split(",") if item.strip()
+    ]
 
 
 settings = Settings()

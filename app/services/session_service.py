@@ -11,12 +11,24 @@ logger = logging.getLogger(__name__)
 @dataclass
 class PendingConfirmation:
     meter_id: str
+    confirmation_id: Optional[str] = None
     ocr_value: Optional[Decimal] = None
     manual_value: Optional[Decimal] = None
     ocr_raw_text: str = ""
     image_message_id: str = ""
     batch_id: Optional[str] = None
     created_at: Optional[float] = None
+    expires_at: Optional[float] = None
+
+
+@dataclass
+class PendingSettingChange:
+    change_id: str
+    key: str
+    old_value: str
+    new_value: str
+    label: str
+    impact: str
 
 
 @dataclass
@@ -28,6 +40,8 @@ class Session:
     collection_current_meter_id: Optional[str] = None
     collection_skipped_meters: set[str] = field(default_factory=set)
     pending_confirmation: Optional[PendingConfirmation] = None
+    pending_setting_change: Optional[PendingSettingChange] = None
+    settings_input_key: Optional[str] = None
     batch_id: Optional[str] = None
     processing_image_message_ids: set[str] = field(default_factory=set)
     processed_image_message_ids: set[str] = field(default_factory=set)
@@ -145,15 +159,18 @@ def reset_collection_session(source_id: str) -> None:
 def set_pending_confirmation(
     source_id: str,
     meter_id: str,
+    confirmation_id: Optional[str] = None,
     ocr_value: Optional[Decimal] = None,
     manual_value: Optional[Decimal] = None,
     ocr_raw_text: str = "",
     image_message_id: str = "",
     batch_id: Optional[str] = None,
     created_at: Optional[float] = None,
+    expires_at: Optional[float] = None,
 ) -> None:
     session = get_or_create_session(source_id)
     session.pending_confirmation = PendingConfirmation(
+        confirmation_id=confirmation_id,
         meter_id=meter_id,
         ocr_value=ocr_value,
         manual_value=manual_value,
@@ -161,6 +178,7 @@ def set_pending_confirmation(
         image_message_id=image_message_id,
         batch_id=batch_id,
         created_at=created_at,
+        expires_at=expires_at,
     )
 
 
@@ -173,6 +191,47 @@ def clear_pending_confirmation(source_id: str) -> None:
     session = _store.get(source_id)
     if session:
         session.pending_confirmation = None
+
+
+def set_settings_input_key(source_id: str, key: Optional[str]) -> None:
+    session = get_or_create_session(source_id)
+    session.settings_input_key = key
+
+
+def get_settings_input_key(source_id: str) -> Optional[str]:
+    session = _store.get(source_id)
+    return session.settings_input_key if session else None
+
+
+def set_pending_setting_change(
+    source_id: str,
+    change_id: str,
+    key: str,
+    old_value: str,
+    new_value: str,
+    label: str,
+    impact: str,
+) -> None:
+    session = get_or_create_session(source_id)
+    session.pending_setting_change = PendingSettingChange(
+        change_id=change_id,
+        key=key,
+        old_value=old_value,
+        new_value=new_value,
+        label=label,
+        impact=impact,
+    )
+
+
+def get_pending_setting_change(source_id: str) -> Optional[PendingSettingChange]:
+    session = _store.get(source_id)
+    return session.pending_setting_change if session else None
+
+
+def clear_pending_setting_change(source_id: str) -> None:
+    session = _store.get(source_id)
+    if session:
+        session.pending_setting_change = None
 
 
 def start_image_processing(source_id: str, message_id: str) -> bool:

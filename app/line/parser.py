@@ -28,7 +28,25 @@ POSTBACK_WEEKLY_SUMMARY = "weekly_summary"
 POSTBACK_CANCEL_COLLECTION = "cancel_collection"
 POSTBACK_REPLACE_READING = "replace_reading"
 POSTBACK_HISTORY = "history"
+POSTBACK_HISTORY_CURRENT = "history_current"
+POSTBACK_HISTORY_PREVIOUS = "history_previous"
+POSTBACK_HISTORY_BATCH = "history_batch"
+POSTBACK_HISTORY_BATCH_DETAIL = "history_batch_detail"
+POSTBACK_HISTORY_METER = "history_meter"
+POSTBACK_HISTORY_SELECT_WEEK = "history_select_week"
 POSTBACK_SETTINGS = "settings"
+POSTBACK_SETTINGS_VIEW = "settings_view"
+POSTBACK_SETTINGS_METERS = "settings_meters"
+POSTBACK_SETTINGS_METER_DETAIL = "settings_meter_detail"
+POSTBACK_SETTINGS_EDIT_METER = "settings_edit_meter"
+POSTBACK_SETTINGS_EDIT_RATE = "settings_edit_rate"
+POSTBACK_SETTINGS_EDIT_REPORT_TITLE = "settings_edit_report_title"
+POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT = "settings_edit_expected_count"
+POSTBACK_SETTINGS_RECIPIENTS = "settings_recipients"
+POSTBACK_SETTINGS_PERMISSIONS = "settings_permissions"
+POSTBACK_SETTINGS_CONFIRM_CHANGE = "settings_confirm_change"
+POSTBACK_SETTINGS_CANCEL_CHANGE = "settings_cancel_change"
+POSTBACK_SETTINGS_CONTACT_ADMIN = "settings_contact_admin"
 POSTBACK_HELP = "help"
 
 
@@ -46,6 +64,8 @@ class ParsedPostback:
     type: str = POSTBACK_UNKNOWN
     meter_id: Optional[str] = None
     batch_id: Optional[str] = None
+    field: Optional[str] = None
+    change_id: Optional[str] = None
     replace: bool = False
     raw: str = ""
 
@@ -134,6 +154,8 @@ def parse_postback_action(raw: str) -> ParsedPostback:
         type=action,
         meter_id=_normalize_meter_id(data.get("meter_id")),
         batch_id=(data.get("batch_id") or "").strip() or None,
+        field=(data.get("field") or "").strip() or None,
+        change_id=(data.get("change_id") or "").strip() or None,
         replace=_normalize_bool(data.get("replace")),
         raw=raw,
     )

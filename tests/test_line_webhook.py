@@ -1,14 +1,17 @@
 from unittest.mock import Mock, patch
+from types import SimpleNamespace
 
 import pytest
 
 from decimal import Decimal
+from starlette.requests import ClientDisconnect
 
 from app.line.parser import METER_VALUE, ParsedCommand, GEN, HELP, REPORT, STATUS, CANCEL, METER, OK, UNKNOWN
 from app.line.webhook import (
     _build_reply,
     _build_status_message,
     _coerce_manual_value_command,
+    handle_webhook,
     _push_to,
     _reply_to,
     _resolve_batch_id,
@@ -27,7 +30,8 @@ from app.services.session_service import (
 def _clean_sessions():
     from app.services import session_service
     session_service._store = session_service.InMemorySessionStore()
-    yield
+    with patch("app.services.confirmation_service.get_latest_pending_confirmation", return_value=None):
+        yield
     session_service._store = session_service.InMemorySessionStore()
 
 
@@ -157,6 +161,27 @@ def test_status_shows_pending_confirmation():
     assert "รอยืนยัน: M1 = 12,500" in reply
 
 
+def test_status_shows_pending_confirmation_from_sheet_fallback():
+    with patch(
+        "app.services.confirmation_service.get_latest_pending_confirmation",
+        return_value={
+            "confirmation_id": "cnf_sheet",
+            "line_source_id": "U1",
+            "meter_id": "M1",
+            "batch_id": "2026-W19-U1",
+            "image_message_id": "msg1",
+            "ocr_value": "12500",
+            "ocr_raw_text": "12,500",
+            "status": "pending",
+            "expires_at": "200",
+            "created_at": "100",
+        },
+    ):
+        reply = _build_status_message("U1")
+
+    assert "รอยืนยัน: M1 = 12,500" in reply
+
+
 def test_status_shows_batch_progress():
     set_batch_id("U1", "2026-W19-U1")
 
@@ -254,3 +279,14 @@ async def test_push_to_accepts_sync_line_sdk_response():
     assert api.request.to == "U1"
     assert api.request.messages[0].text == "hello"
     mock_log_exception.assert_not_called()
+
+@pytest.mark.anyio
+async def test_handle_webhook_returns_204_on_client_disconnect():
+    async def disconnected_body():
+        raise ClientDisconnect()
+
+    request = SimpleNamespace(body=disconnected_body, headers={})
+
+    response = await handle_webhook(request)
+
+    assert response.status_code == 204

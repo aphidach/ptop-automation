@@ -18,6 +18,7 @@ LINE -> Python Backend -> OpenTyphoon OCR -> Google Sheets -> Report image -> LI
 - [Environment and Deployment](docs/06-env-and-deployment.md)
 - [MVP Roadmap](docs/07-roadmap.md)
 - [Version 2.0 LINE UX Design](docs/08-v2-line-ux-design.md)
+- [History and Settings LINE UX Design](docs/09-history-settings-ux-design.md)
 
 ## Recommended MVP
 

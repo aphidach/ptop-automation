@@ -37,6 +37,14 @@ class TestGetOrCreateBatch:
         assert result["status"] == "collecting"
         assert result["confirmed_meter_count"] == "0"
 
+    def test_creates_new_batch_with_expected_count_from_settings_sheet(self, mock_repo):
+        mock_repo.get_batch_by_id.return_value = None
+        mock_repo.get_settings.return_value = {"expected_meter_count": "6"}
+
+        result = get_or_create_batch("2026-W19-U1", "U1")
+
+        assert result["expected_meter_count"] == "6"
+
     def test_returns_existing_batch(self, mock_repo):
         existing = {"batch_id": "2026-W19-U1", "status": "collecting"}
         mock_repo.get_batch_by_id.return_value = existing
@@ -58,6 +66,19 @@ class TestGetBatchProgress:
         assert progress.confirmed_meter_count == 0
         assert progress.expected_meter_count == 8
         assert len(progress.missing_meter_ids) == 8
+
+    def test_progress_uses_expected_count_from_settings_sheet(self, mock_repo):
+        mock_repo.get_batch_by_id.return_value = {
+            "batch_id": "2026-W19-U1",
+            "week": "2026-W19",
+            "status": "collecting",
+        }
+        mock_repo.get_settings.return_value = {"expected_meter_count": "6"}
+        mock_repo.get_readings_by_batch.return_value = []
+
+        progress = get_batch_progress("2026-W19-U1")
+
+        assert progress.expected_meter_count == 6
 
     def test_progress_with_some_readings(self, mock_repo):
         mock_repo.get_batch_by_id.return_value = {

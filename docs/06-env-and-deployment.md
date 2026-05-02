@@ -146,3 +146,5 @@ R2_PUBLIC_URL=https://your-public-r2-domain.example.com
 ```
 
 Generated reports are uploaded to `reports/{batch_id}.png`, and the LINE image message uses `R2_PUBLIC_URL/reports/{batch_id}.png`.
+
+`R2_ENDPOINT` must be the account-level S3 API endpoint only. Do not append the bucket name because `R2_BUCKET` is configured separately.

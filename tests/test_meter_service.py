@@ -45,6 +45,14 @@ class TestCalculateReading:
         result = calculate_reading("M1", Decimal(1500))
         assert result.rate == Decimal("4.2")
 
+    def test_fallback_default_rate_uses_settings_sheet(self, _mock_repos):
+        _mock_repos.get_latest_reading.return_value = {"current_value": 1000}
+        _mock_repos.get_meter_by_id.return_value = None
+        _mock_repos.get_settings.return_value = {"default_rate": "4.5"}
+
+        result = calculate_reading("M1", Decimal(1500))
+        assert result.rate == Decimal("4.5")
+
     def test_custom_rate(self, _mock_repos):
         _mock_repos.get_latest_reading.return_value = {"current_value": 1000}
         _mock_repos.get_meter_by_id.return_value = {"default_rate": 5.5}

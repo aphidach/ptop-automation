@@ -1,10 +1,13 @@
-.PHONY: run install richmenu-check richmenu-validate richmenu-upload
+.PHONY: run install ocr-test richmenu-check richmenu-validate richmenu-upload
 
 run:
 	uv run uvicorn app.main:app --reload --port 8000
 
 install:
 	uv sync
+
+ocr-test:
+	uv run python scripts/evaluate_ocr.py
 
 richmenu-check:
 	uv run python scripts/upload_richmenu.py --local-only

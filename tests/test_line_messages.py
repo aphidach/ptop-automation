@@ -2,7 +2,9 @@ from decimal import Decimal
 
 from app.line.messages import (
     build_confirmation_card,
+    build_history_menu_message,
     build_meter_request_message,
+    build_settings_menu_message,
     build_start_collection_card,
 )
 from app.line.webhook import _normalize_message_payload
@@ -72,3 +74,25 @@ def test_normalize_line_message_payload_accepts_mixed_list():
 
     assert payload[0].text == "เริ่ม"
     assert payload[1] is message
+
+def test_history_menu_has_usable_actions():
+    payload = _as_dict(build_history_menu_message())
+
+    assert "ประวัติการบันทึกมิเตอร์" in payload["text"]
+    assert "history_current" in str(payload)
+    assert "history_meter" in str(payload)
+    assert "latest_report" in str(payload)
+
+def test_settings_operator_menu_does_not_show_edit_actions():
+    payload = _as_dict(build_settings_menu_message(is_admin=False))
+
+    assert "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ" in payload["text"]
+    assert "settings_view" in str(payload)
+    assert "settings_edit_rate" not in str(payload)
+
+def test_settings_admin_menu_shows_edit_actions():
+    payload = _as_dict(build_settings_menu_message(is_admin=True))
+
+    assert "เลือกสิ่งที่ต้องการจัดการ" in payload["text"]
+    assert "settings_edit_rate" in str(payload)
+    assert "settings_edit_report_title" in str(payload)

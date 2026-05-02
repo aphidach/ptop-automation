@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit
 
 from app.config import settings
 
@@ -34,7 +35,7 @@ def upload_report_image(image_path: str | Path) -> str:
 
     client = boto3.client(
         "s3",
-        endpoint_url=settings.R2_ENDPOINT,
+        endpoint_url=_build_endpoint_url(),
         aws_access_key_id=settings.R2_ACCESS_KEY_ID,
         aws_secret_access_key=settings.R2_SECRET_ACCESS_KEY,
         region_name="auto",
@@ -74,3 +75,8 @@ def _validate_config() -> None:
 def _build_public_url(key: str) -> str:
     base = settings.R2_PUBLIC_URL.rstrip("/")
     return f"{base}/{key}"
+
+
+def _build_endpoint_url() -> str:
+    parsed = urlsplit(settings.R2_ENDPOINT)
+    return urlunsplit((parsed.scheme, parsed.netloc, "", "", ""))

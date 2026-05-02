@@ -127,11 +127,12 @@ def _get_last_value(meter_id: str) -> Decimal:
 
 def _get_rate(meter_id: str) -> Decimal:
     """Get rate from meter master data, fallback to DEFAULT_RATE."""
+    sheet_default = _get_default_rate_setting()
     meter = repositories.get_meter_by_id(meter_id)
-    if meter:
-        raw = meter.get("default_rate", settings.DEFAULT_RATE)
+    if meter and meter.get("default_rate", "") != "":
+        raw = meter.get("default_rate", sheet_default)
     else:
-        raw = settings.DEFAULT_RATE
+        raw = sheet_default
     return Decimal(str(raw))
 
 
@@ -145,3 +146,12 @@ def _iso_week(dt: datetime) -> str:
     """Return ISO week string like '2026-W19'."""
     iso = dt.isocalendar()
     return f"{iso[0]}-W{iso[1]:02d}"
+
+
+def _get_default_rate_setting() -> Decimal:
+    values = repositories.get_settings()
+    if isinstance(values, dict):
+        raw = values.get("default_rate")
+        if raw:
+            return Decimal(str(raw))
+    return Decimal(str(settings.DEFAULT_RATE))

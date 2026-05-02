@@ -95,6 +95,12 @@ def test_parse_postback_confirm_with_replace_flag():
     assert parsed.replace is True
 
 
+def test_parse_settings_confirm_change_id():
+    parsed = parse_postback_action("action=settings_confirm_change&change_id=chg_123")
+    assert parsed.type == "settings_confirm_change"
+    assert parsed.change_id == "chg_123"
+
+
 def test_parse_force_confirm_postback():
     parsed = parse_postback_action("action=force_confirm_reading")
     assert parsed.type == POSTBACK_FORCE_CONFIRM_READING

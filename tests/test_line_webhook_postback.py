@@ -1,16 +1,22 @@
 from unittest.mock import AsyncMock, patch
+from types import SimpleNamespace
 
 import pytest
 from gspread.exceptions import APIError
 
 from app.line.parser import (
     ParsedPostback,
+    POSTBACK_CANCEL_COLLECTION,
     POSTBACK_CONFIRM_READING,
     POSTBACK_HELP,
     POSTBACK_HISTORY,
+    POSTBACK_HISTORY_CURRENT,
     POSTBACK_SELECT_METER,
     POSTBACK_SKIP_METER,
     POSTBACK_START_COLLECTION,
+    POSTBACK_SETTINGS,
+    POSTBACK_SETTINGS_CONFIRM_CHANGE,
+    POSTBACK_SETTINGS_EDIT_RATE,
 )
 from app.line.webhook import _handle_postback, _next_meter_to_capture
 from app.services.batch_service import BatchProgress
@@ -22,6 +28,7 @@ from app.services.session_service import (
     set_collection_meter_skipped,
     set_batch_id,
     set_collection_current_meter,
+    set_pending_setting_change,
     set_pending_confirmation,
 )
 
@@ -44,7 +51,8 @@ def _clean_sessions():
     from app.services import session_service
 
     session_service._store = session_service.InMemorySessionStore()
-    yield
+    with patch("app.services.confirmation_service.get_latest_pending_confirmation", return_value=None):
+        yield
     session_service._store = session_service.InMemorySessionStore()
 
 
@@ -132,12 +140,96 @@ async def test_confirm_postback_uses_pending_meter_in_loading_message():
 
 
 @pytest.mark.anyio
+async def test_cancel_collection_marks_pending_cancelled():
+    set_pending_confirmation(
+        source_id="U1",
+        meter_id="M2",
+        confirmation_id="cnf_1",
+        batch_id="2026-W19-U1",
+    )
+
+    with patch("app.services.confirmation_service.update_pending_confirmation_status") as mock_update, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock):
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_CANCEL_COLLECTION), "rt")
+
+    mock_update.assert_called_once_with("cnf_1", "cancelled")
+
+
+@pytest.mark.anyio
 async def test_help_and_history_postback_are_supported():
     with patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_HELP), "rt")
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_HISTORY), "rt")
 
     assert mock_reply.await_count == 2
+
+@pytest.mark.anyio
+async def test_history_current_postback_shows_summary_actions():
+    summary = SimpleNamespace(
+        batch_id="2026-W19-U1",
+        week="2026-W19",
+        status="collecting",
+        expected_meter_count=8,
+        confirmed_meter_count=1,
+        missing_meter_ids=["M2", "M3"],
+        produced_unit=100,
+        amount=420,
+        readings=[{"meter_id": "M1", "current_value": "100", "produced_unit": "100"}],
+    )
+
+    with patch("app.line.webhook.history_service.get_current_batch_summary", return_value=summary), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_HISTORY_CURRENT), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    assert "ประวัติรอบปัจจุบัน" in payload.text
+    assert "history_batch_detail" in str(payload)
+
+@pytest.mark.anyio
+async def test_settings_postback_branches_by_operator_role():
+    with patch("app.line.webhook.settings_service.is_admin", return_value=False), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    assert "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ" in payload.text
+    assert "settings_edit_rate" not in str(payload)
+
+@pytest.mark.anyio
+async def test_admin_edit_rate_creates_input_step():
+    with patch("app.line.webhook.settings_service.is_admin", return_value=True), \
+         patch("app.line.webhook.settings_service.get_current_settings", return_value={"default_rate": "4.2"}), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS_EDIT_RATE), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    assert "อัตราค่าไฟปัจจุบัน" in payload.text
+    assert "4.2" in payload.text
+
+@pytest.mark.anyio
+async def test_settings_confirm_change_applies_pending_change():
+    set_pending_setting_change(
+        source_id="U1",
+        change_id="chg_1",
+        key="default_rate",
+        old_value="4.2",
+        new_value="4.5",
+        label="อัตราค่าไฟ",
+        impact="ใช้ครั้งถัดไป",
+    )
+
+    with patch("app.line.webhook.settings_service.is_admin", return_value=True), \
+         patch("app.line.webhook.settings_service.apply_setting_change") as mock_apply, \
+         patch("app.line.webhook.settings_service.get_current_settings", return_value={"default_rate": "4.5"}), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback(
+            "U1",
+            ParsedPostback(type=POSTBACK_SETTINGS_CONFIRM_CHANGE, change_id="chg_1"),
+            "rt",
+        )
+
+    mock_apply.assert_called_once_with("U1", "default_rate", "4.2", "4.5")
+    assert "การตั้งค่าปัจจุบัน" in mock_reply.await_args.args[1].text
 
 
 def test_next_meter_linear_with_skipped_meters():
