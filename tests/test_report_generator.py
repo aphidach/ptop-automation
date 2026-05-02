@@ -22,8 +22,8 @@ def test_fmt():
 
 
 def test_fmt_baht():
-    assert _fmt_baht(Decimal("2100.00")) == "2,100.00"
-    assert _fmt_baht(Decimal("2133.60")) == "2,133.60"
+    assert _fmt_baht(Decimal("2100.00")) == "2,100"
+    assert _fmt_baht(Decimal("2133.60")) == "2,133.6"
 
 
 @patch("app.report.generator.repositories")
@@ -46,14 +46,15 @@ def test_build_report_data_uses_thai_title(mock_repositories):
 
     data = build_report_data("2026-W19-U1")
 
-    assert data.title == "รายงานผลิตไฟฟ้ารายสัปดาห์"
+    assert data.title == "ข้อมูลการผลิตไฟฟ้า Solar Cells On-Grid"
+    assert data.date == "วันที่ 4 เดือน พ.ค./2569"
 
 
 def _mock_report_data():
     return ReportData(
-        title="รายงานผลิตไฟฟ้ารายสัปดาห์",
+        title="ข้อมูลการผลิตไฟฟ้า Solar Cells On-Grid",
         week="2026-W19",
-        date="2026-05-04",
+        date="วันที่ 4 เดือน พ.ค./2569",
         readings=[
             ReportReading("M1", "Solar 1", Decimal(12500), Decimal(12000), Decimal(500), Decimal("4.2"), Decimal(2100)),
             ReportReading("M2", "Solar 2", Decimal(9800), Decimal(9500), Decimal(300), Decimal("4.2"), Decimal(1260)),

@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 import os
 from dataclasses import dataclass
+from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
 
@@ -16,15 +17,15 @@ logger = logging.getLogger(__name__)
 WIDTH = 1200
 HEIGHT = 1600
 BG_COLOR = "#FFFFFF"
-HEADER_BG = "#1B5E20"
-HEADER_FG = "#FFFFFF"
-ROW_EVEN = "#E8F5E9"
-ROW_ODD = "#FFFFFF"
-TOTAL_BG = "#C8E6C9"
-BORDER_COLOR = "#388E3C"
-TITLE_COLOR = "#1B5E20"
-SUBTITLE_COLOR = "#424242"
-TOTAL_LABEL_COLOR = "#1B5E20"
+HEADER_BG = "#C0C0C0"
+HEADER_FG = "#000000"
+ROW_EVEN = "#FFFFFF"
+ROW_ODD = "#F5F5F5"
+TOTAL_BG = "#FFEB3B"
+BORDER_COLOR = "#000000"
+TITLE_COLOR = "#000000"
+SUBTITLE_COLOR = "#000000"
+TOTAL_LABEL_COLOR = "#000000"
 
 FONT_CANDIDATES = [
     "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",
@@ -67,13 +68,30 @@ def _load_font(size: int) -> ImageFont.FreeTypeFont:
 
 
 def _fmt(value: Decimal) -> str:
-    """Format Decimal with comma separator, no decimal places."""
-    return f"{int(value):,}"
+    """Format Decimal with comma separator, 1 decimal when fractional."""
+    if value == value.to_integral_value():
+        return f"{int(value):,}"
+    return f"{value:,.1f}"
 
 
 def _fmt_baht(value: Decimal) -> str:
-    """Format Decimal as baht with 2 decimal places."""
-    return f"{value:,.2f}"
+    """Format Decimal as baht, 1 decimal when fractional."""
+    if value == value.to_integral_value():
+        return f"{int(value):,}"
+    return f"{value:,.1f}"
+
+
+def _format_thai_date(date_str: str) -> str:
+    """Convert ISO date (YYYY-MM-DD) to Thai Buddhist date format."""
+    try:
+        dt = datetime.strptime(date_str, "%Y-%m-%d")
+        months = [
+            "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
+            "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค.",
+        ]
+        return f"วันที่ {dt.day} เดือน {months[dt.month - 1]}/{dt.year + 543}"
+    except Exception:
+        return date_str
 
 
 def build_report_data(batch_id: str) -> ReportData | None:
@@ -108,9 +126,9 @@ def build_report_data(batch_id: str) -> ReportData | None:
     total_amount = sum(rd.amount for rd in readings)
 
     return ReportData(
-        title="รายงานผลิตไฟฟ้ารายสัปดาห์",
+        title="ข้อมูลการผลิตไฟฟ้า Solar Cells On-Grid",
         week=batch.get("week", ""),
-        date=batch.get("date", ""),
+        date=_format_thai_date(batch.get("date", "")),
         readings=readings,
         total_produced_unit=total_unit,
         total_amount=total_amount,
@@ -141,31 +159,29 @@ def generate_report_image(batch_id: str) -> str | None:
     draw.text((WIDTH // 2, y), data.title, fill=TITLE_COLOR, font=font_title, anchor="mt")
     y += 70
 
-    # Subtitle: week + date
-    subtitle = f"สัปดาห์: {data.week}   วันที่: {data.date}"
-    draw.text((WIDTH // 2, y), subtitle, fill=SUBTITLE_COLOR, font=font_subtitle, anchor="mt")
-    y += 50
+    # Date line
+    draw.text((WIDTH // 2, y), data.date, fill=SUBTITLE_COLOR, font=font_subtitle, anchor="mt")
+    y += 60
 
     # Table
     cols = [
-        ("มิเตอร์", 80),
-        ("ชื่อ", 180),
-        ("ค่าปัจจุบัน", 280),
-        ("ค่าก่อนหน้า", 390),
-        ("หน่วย", 510),
-        ("ราคา/หน่วย", 600),
-        ("จำนวนเงิน", 740),
+        ("จุดที่(กำลังไฟฟ้า)", 50),
+        ("อ่านครั้งหลัง(kWh)", 230),
+        ("อ่านครั้งก่อน(kWh)", 430),
+        ("ผลต่างได้(kWh)", 620),
+        ("อัตราหน่วย(บาท)", 790),
+        ("คิดเป็นเงิน(บาท)", 960),
     ]
     col_x = [cx for _, cx in cols]
-    col_labels = [label for label, _ in cols]
     table_left = 40
     table_right = WIDTH - 40
-    row_height = 44
+    row_height = 50
 
     # Header row
     draw.rectangle(
         [table_left, y, table_right, y + row_height],
         fill=HEADER_BG,
+        outline=BORDER_COLOR,
     )
     for label, cx in cols:
         draw.text((table_left + cx, y + row_height // 2), label, fill=HEADER_FG, font=font_header, anchor="lm")
@@ -180,8 +196,7 @@ def generate_report_image(batch_id: str) -> str | None:
             outline=BORDER_COLOR,
         )
         values = [
-            rd.meter_id,
-            rd.name,
+            f"{i + 1}.({rd.name})",
             _fmt(rd.current_value),
             _fmt(rd.last_value),
             _fmt(rd.produced_unit),
@@ -198,15 +213,9 @@ def generate_report_image(batch_id: str) -> str | None:
         fill=TOTAL_BG,
         outline=BORDER_COLOR,
     )
-    draw.text((table_left + 80, y + (row_height + 8) // 2), "รวม", fill=TOTAL_LABEL_COLOR, font=font_total, anchor="lm")
-    draw.text((table_left + 510, y + (row_height + 8) // 2), _fmt(data.total_produced_unit), fill=TOTAL_LABEL_COLOR, font=font_total, anchor="lm")
-    draw.text((table_left + 740, y + (row_height + 8) // 2), _fmt_baht(data.total_amount), fill=TOTAL_LABEL_COLOR, font=font_total, anchor="lm")
+    draw.text((table_left + 50, y + (row_height + 8) // 2), "รวมเป็นเงิน (บาท)", fill=TOTAL_LABEL_COLOR, font=font_total, anchor="lm")
+    draw.text((table_left + 960, y + (row_height + 8) // 2), _fmt_baht(data.total_amount), fill=TOTAL_LABEL_COLOR, font=font_total, anchor="lm")
     y += row_height + 8
-
-    # Footer
-    y += 30
-    footer = f"ผลิตรวม: {_fmt(data.total_produced_unit)} หน่วย    ยอดรวม: {_fmt_baht(data.total_amount)} บาท"
-    draw.text((WIDTH // 2, y), footer, fill=TITLE_COLOR, font=font_subtitle, anchor="mt")
 
     img.save(str(output_path))
     logger.info("Report image saved: %s", output_path)
