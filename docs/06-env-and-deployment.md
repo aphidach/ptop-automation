@@ -15,6 +15,8 @@ GOOGLE_SHEETS_SPREADSHEET_ID=your_spreadsheet_id
 
 TYPHOON_OCR_API_KEY=your_opentyphoon_api_key
 
+REPORT_IMAGE_STORAGE=local
+
 EXPECTED_METER_COUNT=8
 DEFAULT_RATE=4.2
 ```
@@ -118,7 +120,29 @@ Better:
 
 LINE image messages usually require an accessible image URL. Recommended options:
 
+- Upload generated report image to Cloudflare R2 and send its public HTTPS URL
 - Upload generated report image to Google Cloud Storage and send the public or signed URL
 - For MVP, use a simple static file endpoint if the backend is publicly reachable
 
 Do not rely on local file paths for LINE delivery in production.
+
+### Cloudflare R2
+
+Report images use local static hosting by default:
+
+```bash
+REPORT_IMAGE_STORAGE=local
+```
+
+To send report images through Cloudflare R2, create an R2 bucket, configure a public or custom HTTPS domain for that bucket, create an R2 access key with write access to the bucket, then set:
+
+```bash
+REPORT_IMAGE_STORAGE=r2
+R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
+R2_ACCESS_KEY_ID=your_r2_access_key_id
+R2_SECRET_ACCESS_KEY=your_r2_secret_access_key
+R2_BUCKET=your_r2_bucket
+R2_PUBLIC_URL=https://your-public-r2-domain.example.com
+```
+
+Generated reports are uploaded to `reports/{batch_id}.png`, and the LINE image message uses `R2_PUBLIC_URL/reports/{batch_id}.png`.

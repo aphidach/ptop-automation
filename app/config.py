@@ -25,6 +25,13 @@ class Settings:
 
     IMAGE_DIR: str = os.getenv("IMAGE_DIR", "tmp/images")
     REPORT_DIR: str = os.getenv("REPORT_DIR", "reports")
+    REPORT_IMAGE_STORAGE: str = os.getenv("REPORT_IMAGE_STORAGE", "local")
+
+    R2_ENDPOINT: str = os.getenv("R2_ENDPOINT", "")
+    R2_ACCESS_KEY_ID: str = os.getenv("R2_ACCESS_KEY_ID", "")
+    R2_SECRET_ACCESS_KEY: str = os.getenv("R2_SECRET_ACCESS_KEY", "")
+    R2_BUCKET: str = os.getenv("R2_BUCKET", "")
+    R2_PUBLIC_URL: str = os.getenv("R2_PUBLIC_URL", "")
 
     CONFIRMATION_EXPIRY_SECONDS: int = int(os.getenv("CONFIRMATION_EXPIRY_SECONDS", "3600"))
 

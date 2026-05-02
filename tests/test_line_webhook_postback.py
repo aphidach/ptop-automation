@@ -22,6 +22,7 @@ from app.services.session_service import (
     set_collection_meter_skipped,
     set_batch_id,
     set_collection_current_meter,
+    set_pending_confirmation,
 )
 
 
@@ -98,6 +99,7 @@ async def test_confirm_postback_moves_state_without_errors():
         "2026-W19-U1",
     )), \
          patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply, \
+         patch("app.line.webhook._push_to", new_callable=AsyncMock) as mock_push, \
          patch(
              "app.line.webhook.get_batch_progress",
              return_value=BatchProgress(
@@ -110,7 +112,23 @@ async def test_confirm_postback_moves_state_without_errors():
               ),
          ):
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_CONFIRM_READING, meter_id="M1"), "rt")
-    assert mock_reply.await_count >= 1
+
+    mock_reply.assert_awaited_once_with("rt", "กำลังบันทึก M1 ครับ...")
+    assert mock_push.await_count == 1
+    pushed_messages = mock_push.await_args.args[1]
+    assert pushed_messages[0] == "บันทึก M1 เรียบร้อย"
+
+
+@pytest.mark.anyio
+async def test_confirm_postback_uses_pending_meter_in_loading_message():
+    set_pending_confirmation(source_id="U1", meter_id="M2", batch_id="2026-W19-U1")
+
+    with patch("app.line.webhook.confirm_pending", return_value=(None, "ไม่มีค่าที่รอยืนยันครับ", None)), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply, \
+         patch("app.line.webhook._push_to", new_callable=AsyncMock):
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_CONFIRM_READING), "rt")
+
+    mock_reply.assert_awaited_once_with("rt", "กำลังบันทึก M2 ครับ...")
 
 
 @pytest.mark.anyio

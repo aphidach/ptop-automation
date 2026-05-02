@@ -388,6 +388,71 @@ def _build_text_reply(cmd: ParsedCommand, source_id: str) -> str | None:
     return None
 
 
+async def _send_confirm_reading_result(
+    source_id: str,
+    action: str,
+    meter_id: str | None,
+) -> None:
+    try:
+        pending, reply, confirmed_batch_id = confirm_pending(
+            source_id,
+            allow_lower_value=action == POSTBACK_FORCE_CONFIRM_READING,
+        )
+        if confirmed_batch_id:
+            _after_successful_confirmation(source_id, pending.meter_id if pending else "", confirmed_batch_id)
+            progress = get_batch_progress(confirmed_batch_id)
+            if progress and not progress.missing_meter_ids:
+                set_collection_state(source_id, COLLECTION_REPORTING)
+                await _push_to(source_id, "บันทึกครบ 8 เครื่องแล้วครับ\nกำลังสร้างรายงาน")
+                asyncio.create_task(send_report_if_complete(confirmed_batch_id, source_id))
+                return
+
+            messages = [
+                reply,
+                build_progress_text(
+                    pending.meter_id if pending else meter_id or "",
+                    progress.confirmed_meter_count if progress else 0,
+                    progress.expected_meter_count if progress else settings.EXPECTED_METER_COUNT,
+                    _next_meter_to_capture(source_id, confirmed_batch_id),
+                ),
+            ]
+            next_meter = _next_meter_to_capture(source_id, confirmed_batch_id)
+            if next_meter:
+                messages.append(build_meter_request_message(next_meter))
+            await _push_to(source_id, messages)
+            return
+
+        if pending is None:
+            await _push_to(source_id, reply)
+            return
+
+        value = pending.manual_value if pending.manual_value is not None else pending.ocr_value
+        warnings = validate_reading(pending.meter_id, value, pending.batch_id or "")
+        if "ถูกบันทึกไปแล้ว" in " ".join(warnings.warnings):
+            await _push_to(source_id, "รอบนี้มีค่าเดิมอยู่แล้วครับ\nการแทนที่ข้อมูลจะเพิ่มในเวอร์ชันถัดไป")
+            return
+        if "น้อยกว่า" in " ".join(warnings.warnings):
+            current = value or 0
+            calc = calculate_reading(pending.meter_id, current)
+            await _push_to(
+                source_id,
+                build_lower_value_warning(
+                    pending.meter_id,
+                    calc.last_value,
+                    current,
+                ),
+            )
+            return
+        await _push_to(source_id, reply)
+    except APIError as exc:
+        log_event(EVENT_SHEETS_WRITE_FAILED, source_id, meter_id or "", {"error": str(exc)[:200]})
+        if _is_sheets_quota_error(exc):
+            logger.warning("Google Sheets quota exceeded while confirming LINE postback")
+        else:
+            logger.exception("Google Sheets error while confirming LINE postback")
+        await _push_to(source_id, _SHEETS_RETRY_MESSAGE)
+
+
 async def _handle_postback(
     source_id: str,
     parsed: ParsedPostback,
@@ -478,56 +543,11 @@ async def _handle_postback(
         return
 
     if action in (POSTBACK_CONFIRM_READING, POSTBACK_FORCE_CONFIRM_READING):
-        pending, reply, confirmed_batch_id = confirm_pending(
-            source_id,
-            allow_lower_value=action == POSTBACK_FORCE_CONFIRM_READING,
-        )
-        if confirmed_batch_id:
-            _after_successful_confirmation(source_id, pending.meter_id if pending else "", confirmed_batch_id)
-            progress = get_batch_progress(confirmed_batch_id)
-            if progress and not progress.missing_meter_ids:
-                set_collection_state(source_id, COLLECTION_REPORTING)
-                await _reply_to(reply_token, "บันทึกครบ 8 เครื่องแล้วครับ\nกำลังสร้างรายงาน")
-                asyncio.create_task(send_report_if_complete(confirmed_batch_id, source_id))
-                return
-
-            messages = [
-                reply,
-                build_progress_text(
-                    pending.meter_id if pending else meter_id or "",
-                    progress.confirmed_meter_count if progress else 0,
-                    progress.expected_meter_count if progress else settings.EXPECTED_METER_COUNT,
-                    _next_meter_to_capture(source_id, confirmed_batch_id),
-                ),
-            ]
-            next_meter = _next_meter_to_capture(source_id, confirmed_batch_id)
-            if next_meter:
-                messages.append(build_meter_request_message(next_meter))
-            await _reply_to(reply_token, messages)
-            return
-
-        if pending is None:
-            await _reply_to(reply_token, reply)
-            return
-
-        value = pending.manual_value if pending.manual_value is not None else pending.ocr_value
-        warnings = validate_reading(pending.meter_id, value, pending.batch_id or "")
-        if "ถูกบันทึกไปแล้ว" in " ".join(warnings.warnings):
-            await _reply_to(reply_token, "รอบนี้มีค่าเดิมอยู่แล้วครับ\nการแทนที่ข้อมูลจะเพิ่มในเวอร์ชันถัดไป")
-            return
-        if "น้อยกว่า" in " ".join(warnings.warnings):
-            current = value or 0
-            calc = calculate_reading(pending.meter_id, current)
-            await _reply_to(
-                reply_token,
-                build_lower_value_warning(
-                    pending.meter_id,
-                    calc.last_value,
-                    current,
-                ),
-            )
-            return
-        await _reply_to(reply_token, reply)
+        pending = get_pending_confirmation(source_id)
+        target = meter_id or (pending.meter_id if pending else None)
+        loading_text = f"กำลังบันทึก {target} ครับ..." if target else "กำลังบันทึกครับ..."
+        await _reply_to(reply_token, loading_text)
+        await _send_confirm_reading_result(source_id, action, target)
         return
 
     if action == POSTBACK_EDIT_READING:

@@ -62,6 +62,25 @@ def update_batch_status(batch_id: str, status: str) -> None:
     logger.info("Updated batch '%s' status to '%s'", batch_id, status)
 
 
+def update_batch_report_image_url(batch_id: str, report_image_url: str) -> None:
+    ws = sheets_client.get_worksheet("batches")
+    headers = ws.row_values(1)
+    col_batch_id = headers.index("batch_id") + 1
+    col_report_image_url = headers.index("report_image_url") + 1
+    col_updated_at = headers.index("updated_at") + 1
+
+    cells = ws.findall(batch_id, in_column=col_batch_id)
+    if not cells:
+        logger.warning("Batch '%s' not found for report image URL update", batch_id)
+        return
+
+    now = datetime.now(timezone.utc).isoformat()
+    for cell in cells:
+        ws.update_cell(cell.row, col_report_image_url, report_image_url)
+        ws.update_cell(cell.row, col_updated_at, now)
+    logger.info("Updated batch '%s' report_image_url", batch_id)
+
+
 def update_batch_confirmed_count(batch_id: str, count: int) -> None:
     ws = sheets_client.get_worksheet("batches")
     headers = ws.row_values(1)
