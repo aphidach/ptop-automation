@@ -45,6 +45,10 @@ from app.services.confirmation_service import (
     manual_confirm,
     cancel_pending,
     _ensure_batch_id,
+    format_meter_value,
+)
+from app.services.session_service import (
+    get_pending_confirmation as get_session_pending,
 )
 from app.services.batch_service import build_progress_message
 from app.line.client import download_image, ImageDownloadError
@@ -81,6 +85,29 @@ def _resolve_batch_id(batch_ref: str | None, source_id: str) -> str | None:
     return batch_ref
 
 
+def _build_status_message(source_id: str) -> str:
+    lines: list[str] = []
+
+    meter_id = get_latest_meter(source_id)
+    if meter_id:
+        lines.append(f"มิเตอร์ปัจจุบัน: {meter_id}")
+
+    pending = get_session_pending(source_id)
+    if pending:
+        value = pending.manual_value if pending.manual_value is not None else pending.ocr_value
+        value_text = format_meter_value(value) if value is not None else "-"
+        lines.append(f"รอยืนยัน: {pending.meter_id} = {value_text}")
+
+    batch_id = get_session_batch_id(source_id)
+    if batch_id:
+        lines.append(build_progress_message(batch_id))
+
+    if not lines:
+        return "ยังไม่มีข้อมูลรอบนี้ครับ"
+
+    return "\n".join(lines)
+
+
 def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
     if cmd.type == METER:
         if not is_valid_meter(cmd.meter_id, settings.VALID_METER_IDS):
@@ -106,10 +133,7 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
         return reply
 
     if cmd.type == STATUS:
-        batch_id = get_session_batch_id(source_id)
-        if batch_id:
-            return build_progress_message(batch_id)
-        return "ยังไม่มีข้อมูลรอบนี้ครับ"
+        return _build_status_message(source_id)
 
     if cmd.type == GEN:
         batch_id = _resolve_batch_id(cmd.batch_id, source_id)
@@ -131,16 +155,14 @@ def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
 
     if cmd.type == HELP:
         return (
-            "คำสั่งที่ใช้ได้:\n"
-            "M1 — เลือก meter\n"
+            "📋 คำสั่งที่ใช้ได้:\n"
+            "M1 — เลือกมิเตอร์\n"
             "M1 12508 — ใส่ค่าเอง\n"
             "OK — ยืนยันค่า\n"
-            "STATUS — ดูความคืบหน้า\n"
-            "GEN — สร้างรูปรายงาน\n"
-            "GEN <batch_id|YYYY-Www> — สร้างรูปของรอบที่ระบุ\n"
-            "REPORT — ส่งรูปรายงานเป็นรูป\n"
-            "REPORT <batch_id> — ส่งรูปรายงานของรอบที่ระบุ\n"
             "CANCEL — ยกเลิก\n"
+            "STATUS — ดูสถานะ\n"
+            "GEN [รอบ] — สร้างรูปรายงาน\n"
+            "REPORT [รอบ] — ส่งรูปรายงาน\n"
             "HELP — ดูคำสั่ง"
         )
 

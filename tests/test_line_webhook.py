@@ -2,9 +2,15 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from app.line.parser import ParsedCommand, GEN, HELP, REPORT
-from app.line.webhook import _build_reply, _resolve_batch_id
-from app.services.session_service import set_batch_id
+from decimal import Decimal
+
+from app.line.parser import ParsedCommand, GEN, HELP, REPORT, STATUS, CANCEL, METER, OK
+from app.line.webhook import _build_reply, _build_status_message, _resolve_batch_id
+from app.services.session_service import (
+    set_batch_id,
+    set_latest_meter,
+    set_pending_confirmation,
+)
 
 
 @pytest.fixture(autouse=True)
@@ -117,12 +123,89 @@ def test_report_with_batch_id_schedules_image_send_for_that_batch():
     assert "กำลังส่งรูปรายงาน" in reply
 
 
-def test_help_includes_gen_command():
+def test_help_includes_all_commands():
     reply = _build_reply(ParsedCommand(type=HELP), "U1")
 
+    assert "M1" in reply
+    assert "OK" in reply
+    assert "CANCEL" in reply
+    assert "STATUS" in reply
     assert "GEN" in reply
-    assert "สร้างรูปรายงาน" in reply
-    assert "GEN <batch_id|YYYY-Www>" in reply
     assert "REPORT" in reply
-    assert "ส่งรูปรายงานเป็นรูป" in reply
-    assert "REPORT <batch_id>" in reply
+    assert "HELP" in reply
+
+
+def test_status_no_data():
+    reply = _build_status_message("U1")
+
+    assert "ยังไม่มีข้อมูลรอบนี้" in reply
+
+
+def test_status_shows_current_meter():
+    set_latest_meter("U1", "M3")
+
+    reply = _build_status_message("U1")
+
+    assert "มิเตอร์ปัจจุบัน: M3" in reply
+
+
+def test_status_shows_pending_confirmation():
+    set_pending_confirmation(
+        source_id="U1",
+        meter_id="M1",
+        ocr_value=Decimal("12500"),
+        batch_id="2026-W19-U1",
+        created_at=0,
+    )
+
+    reply = _build_status_message("U1")
+
+    assert "รอยืนยัน: M1 = 12,500" in reply
+
+
+def test_status_shows_batch_progress():
+    set_batch_id("U1", "2026-W19-U1")
+
+    with patch("app.line.webhook.build_progress_message", return_value="เก็บแล้ว 3/8 ขาด M4, M5, M6, M7, M8"):
+        reply = _build_status_message("U1")
+
+    assert "เก็บแล้ว 3/8" in reply
+
+
+def test_status_shows_meter_and_progress():
+    set_latest_meter("U1", "M3")
+    set_batch_id("U1", "2026-W19-U1")
+
+    with patch("app.line.webhook.build_progress_message", return_value="เก็บแล้ว 3/8 ขาด M4, M5, M6, M7, M8"):
+        reply = _build_status_message("U1")
+
+    assert "มิเตอร์ปัจจุบัน: M3" in reply
+    assert "เก็บแล้ว 3/8" in reply
+
+
+def test_cancel_no_pending():
+    reply = _build_reply(ParsedCommand(type=CANCEL), "U1")
+
+    assert "ไม่มีค่าที่รอยืนยัน" in reply
+
+
+def test_cancel_with_pending():
+    set_pending_confirmation(
+        source_id="U1",
+        meter_id="M1",
+        ocr_value=Decimal("12500"),
+        batch_id="2026-W19-U1",
+        created_at=0,
+    )
+
+    reply = _build_reply(ParsedCommand(type=CANCEL), "U1")
+
+    assert "ยกเลิก M1" in reply
+
+
+def test_status_via_build_reply():
+    set_latest_meter("U1", "M2")
+
+    reply = _build_reply(ParsedCommand(type=STATUS), "U1")
+
+    assert "มิเตอร์ปัจจุบัน: M2" in reply
