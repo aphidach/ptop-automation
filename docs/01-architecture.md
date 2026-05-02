@@ -8,8 +8,7 @@ flowchart TD
     L --> W["FastAPI /webhook/line"]
     W --> S["Conversation Session Service"]
     W --> C["LINE Content Downloader"]
-    C --> Q["OCR Queue / Rate Limiter"]
-    Q --> O["OpenTyphoon OCR"]
+    C --> O["Google Vision OCR"]
     O --> P["Meter Value Parser"]
     P --> H["Human Confirmation Flow"]
     H --> G["Google Sheets Client"]
@@ -29,8 +28,7 @@ app/
     client.py
     parser.py
   ocr/
-    opentyphoon.py
-    rate_limiter.py
+    google_vision.py
     value_parser.py
   sheets/
     client.py
@@ -54,7 +52,7 @@ sequenceDiagram
     participant User
     participant LINE
     participant API as Python Backend
-    participant OCR as OpenTyphoon OCR
+    participant OCR as Google Vision OCR
     participant Sheet as Google Sheets
 
     User->>LINE: Send "M1"
@@ -65,8 +63,8 @@ sequenceDiagram
     User->>LINE: Send image
     LINE->>API: Image webhook event
     API->>LINE: Download image by message_id
-    API->>OCR: OCR image via queue
-    OCR-->>API: Markdown/text result
+    API->>OCR: OCR image
+    OCR-->>API: Text result
     API->>API: Extract numeric meter value
     API-->>User: Confirm "M1 = 12500, OK?"
 

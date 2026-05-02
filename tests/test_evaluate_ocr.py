@@ -6,6 +6,7 @@ from scripts import evaluate_ocr
 
 
 def test_parse_engines_accepts_google_and_comparison_list():
+    assert evaluate_ocr.parse_engines("") == [evaluate_ocr.ENGINE_GOOGLE]
     assert evaluate_ocr.parse_engines("google") == [evaluate_ocr.ENGINE_GOOGLE]
     assert evaluate_ocr.parse_engines("opentyphoon,google") == [
         evaluate_ocr.ENGINE_OPENTYPHOON,

@@ -23,6 +23,7 @@ from starlette.requests import ClientDisconnect
 from app.config import settings
 from app.line.messages import (
     build_confirmation_card,
+    build_history_batch_list_message,
     build_history_detail_message,
     build_history_empty_message,
     build_history_menu_message,
@@ -32,7 +33,6 @@ from app.line.messages import (
     build_lower_value_warning,
     build_meter_request_message,
     build_ocr_review_message,
-    build_progress_message as build_progress_text,
     build_settings_confirm_change_message,
     build_settings_edit_prompt_message,
     build_settings_menu_message,
@@ -102,7 +102,7 @@ from app.services.audit_service import (
     EVENT_SHEETS_WRITE_FAILED,
     log_event,
 )
-from app.services.batch_service import build_progress_message, get_batch_progress
+from app.services.batch_service import build_progress_message, generate_batch_id, get_batch_progress
 from app.services.confirmation_service import (
     _ensure_batch_id,
     clear_pending_confirmation,
@@ -139,6 +139,7 @@ from app.services.session_service import (
     set_collection_current_meter,
     set_collection_state,
     set_collection_meter_skipped,
+    set_batch_id,
     set_pending_setting_change,
     set_settings_input_key,
     start_image_processing,
@@ -148,7 +149,7 @@ from app.services import history_service, settings_service
 from app.line.client import ImageDownloadError, download_image
 from app.report.sender import send_report, send_report_if_complete
 from app.ocr.confidence import score_ocr_reading
-from app.ocr.rate_limiter import OcrRateLimiter
+from app.ocr.google_vision import GoogleVisionOcrClient
 from app.ocr.value_parser import parse_meter_value
 
 logger = logging.getLogger(__name__)
@@ -158,7 +159,7 @@ router = APIRouter()
 _webhook_parser = WebhookParser(channel_secret=settings.LINE_CHANNEL_SECRET)
 _messaging_config = Configuration(access_token=settings.LINE_CHANNEL_ACCESS_TOKEN)
 _messaging_api = AsyncMessagingApi(ApiClient(_messaging_config))
-_ocr_limiter = OcrRateLimiter()
+_ocr_client = GoogleVisionOcrClient()
 _WEEK_REF = re.compile(r"^\d{4}-W\d{2}$", re.IGNORECASE)
 _BARE_VALUE = re.compile(r"^[0-9][0-9,]*(?:\.\d+)?$")
 _SHEETS_RETRY_MESSAGE = (
@@ -227,6 +228,16 @@ def _next_meter_to_capture(source_id: str, batch_id: str | None) -> str | None:
     return None
 
 
+def _restore_collection_from_current_batch(source_id: str) -> str | None:
+    batch_id = get_session_batch_id(source_id) or generate_batch_id(source_id)
+    progress = get_batch_progress(batch_id)
+    if not progress:
+        return None
+
+    set_batch_id(source_id, batch_id)
+    return _set_next_collection_meter(source_id, batch_id)
+
+
 async def _reply_to(sender_token: str, messages):
     if not sender_token:
         return
@@ -260,6 +271,10 @@ async def _push_to(sender_id: str, messages):
 async def _maybe_await(response):
     if inspect.isawaitable(response):
         await response
+
+
+async def _read_ocr_image(image_path: str):
+    return await asyncio.to_thread(_ocr_client.read_image, image_path)
 
 
 async def _handle_postback_safely(
@@ -514,15 +529,7 @@ async def _send_confirm_reading_result(
                 asyncio.create_task(send_report_if_complete(confirmed_batch_id, source_id))
                 return
 
-            messages = [
-                reply,
-                build_progress_text(
-                    pending.meter_id if pending else meter_id or "",
-                    progress.confirmed_meter_count if progress else 0,
-                    progress.expected_meter_count if progress else settings.EXPECTED_METER_COUNT,
-                    _next_meter_to_capture(source_id, confirmed_batch_id),
-                ),
-            ]
+            messages = [reply]
             next_meter = _next_meter_to_capture(source_id, confirmed_batch_id)
             if next_meter:
                 messages.append(build_meter_request_message(next_meter))
@@ -626,8 +633,13 @@ async def _handle_postback(
         await _reply_history_current(source_id, reply_token)
         return
 
-    if action in (POSTBACK_HISTORY_PREVIOUS, POSTBACK_HISTORY_SELECT_WEEK):
+    if action == POSTBACK_HISTORY_PREVIOUS:
         await _reply_history_previous(source_id, reply_token)
+        return
+
+    if action == POSTBACK_HISTORY_SELECT_WEEK:
+        summaries = history_service.get_recent_batch_summaries(source_id)
+        await _reply_to(reply_token, build_history_batch_list_message(summaries))
         return
 
     if action == POSTBACK_HISTORY_BATCH:
@@ -826,7 +838,7 @@ async def _process_ocr_and_confirm(
     message_id: str,
 ) -> None:
     try:
-        ocr_result = await _ocr_limiter.read_image(image_path)
+        ocr_result = await _read_ocr_image(image_path)
         if not ocr_result.success:
             log_event(EVENT_OCR_FAILED, source_id, meter_id, {"error": ocr_result.error[:200]})
             set_collection_state(source_id, COLLECTION_WAITING_MANUAL_VALUE)
@@ -1000,6 +1012,10 @@ async def handle_webhook(request: Request):
 
         if message_type == "image":
             meter_id = get_collection_current_meter(source_id) or get_latest_meter(source_id)
+            if not meter_id:
+                meter_id = _restore_collection_from_current_batch(source_id)
+                collection_state = get_collection_state(source_id)
+
             if collection_state in (COLLECTION_WAITING_CONFIRMATION, COLLECTION_PROCESSING_OCR):
                 if meter_id:
                     await _reply_to(reply_token, build_unreadable_prompt(meter_id))

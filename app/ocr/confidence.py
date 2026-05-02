@@ -58,6 +58,9 @@ def score_ocr_reading(
     if parse_reason == "fallback_generic_number":
         warnings.append("ใช้ตัวเลขสำรอง เพราะไม่พบป้ายกำกับพลังงาน")
 
+    if parse_reason == "model_specific_implied_decimal_tail":
+        warnings.append("ทศนิยมท้าย MPR-45S ไม่ชัด ใช้รูปแบบจอช่วยตีความ")
+
     if parsed_value > Decimal(METER_VALUE_MAX):
         warnings.append(f"ค่าที่อ่านได้สูงเกินช่วงที่รองรับ ({METER_VALUE_MAX} kWh)")
 
@@ -86,7 +89,7 @@ def score_ocr_reading(
             produced_unit=produced,
         )
 
-    if parse_reason == "energy_label_match" and unit:
+    if parse_reason in {"energy_label_match", "model_specific_energy_row"} and unit:
         return ConfidenceResult(
             level=CONFIDENCE_HIGH,
             reason="energy_label_unit_plausible",
@@ -95,7 +98,10 @@ def score_ocr_reading(
             produced_unit=produced,
         )
 
-    if parse_reason == "energy_label_match" or parse_confidence == CONFIDENCE_MEDIUM:
+    if (
+        parse_reason in {"energy_label_match", "model_specific_energy_row"}
+        or parse_confidence == CONFIDENCE_MEDIUM
+    ):
         return ConfidenceResult(
             level=CONFIDENCE_MEDIUM,
             reason="energy_label_without_unit",

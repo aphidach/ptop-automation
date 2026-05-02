@@ -13,11 +13,18 @@ from app.line.webhook import (
     _coerce_manual_value_command,
     handle_webhook,
     _push_to,
+    _read_ocr_image,
     _reply_to,
     _resolve_batch_id,
+    _restore_collection_from_current_batch,
 )
+from app.services.batch_service import BatchProgress
 from app.services.session_service import (
+    COLLECTION_WAITING_IMAGE,
     COLLECTION_WAITING_MANUAL_VALUE,
+    get_batch_id,
+    get_collection_current_meter,
+    get_collection_state,
     set_batch_id,
     set_collection_current_meter,
     set_collection_state,
@@ -85,6 +92,26 @@ def test_resolve_batch_id_converts_week_ref_to_source_batch_id():
 
 def test_resolve_batch_id_preserves_full_batch_id_case():
     assert _resolve_batch_id("2026-W18-UabcDef", "U1") == "2026-W18-UabcDef"
+
+
+def test_restore_collection_from_current_batch_uses_sheet_progress():
+    progress = BatchProgress(
+        batch_id="2026-W19-U1",
+        week="2026-W19",
+        status="collecting",
+        expected_meter_count=8,
+        confirmed_meter_count=1,
+        missing_meter_ids=["M2", "M3", "M4", "M5", "M6", "M7", "M8"],
+    )
+
+    with patch("app.line.webhook.generate_batch_id", return_value="2026-W19-U1"), \
+         patch("app.line.webhook.get_batch_progress", return_value=progress):
+        meter_id = _restore_collection_from_current_batch("U1")
+
+    assert meter_id == "M2"
+    assert get_batch_id("U1") == "2026-W19-U1"
+    assert get_collection_current_meter("U1") == "M2"
+    assert get_collection_state("U1") == COLLECTION_WAITING_IMAGE
 
 
 def test_report_without_batch_returns_no_data_message():
@@ -279,6 +306,30 @@ async def test_push_to_accepts_sync_line_sdk_response():
     assert api.request.to == "U1"
     assert api.request.messages[0].text == "hello"
     mock_log_exception.assert_not_called()
+
+
+@pytest.mark.anyio
+async def test_production_ocr_reader_uses_google_client(monkeypatch):
+    import app.line.webhook as webhook
+    from app.ocr.google_vision import GoogleVisionOcrClient
+
+    class FakeGoogleVisionClient:
+        def __init__(self):
+            self.image_path = None
+
+        def read_image(self, image_path):
+            self.image_path = image_path
+            return "ocr-result"
+
+    assert isinstance(webhook._ocr_client, GoogleVisionOcrClient)
+    fake_client = FakeGoogleVisionClient()
+    monkeypatch.setattr(webhook, "_ocr_client", fake_client)
+
+    result = await _read_ocr_image("meter.jpg")
+
+    assert result == "ocr-result"
+    assert fake_client.image_path == "meter.jpg"
+
 
 @pytest.mark.anyio
 async def test_handle_webhook_returns_204_on_client_disconnect():

@@ -1,5 +1,7 @@
 # OCR Model: OpenTyphoon
 
+Legacy comparison note: production OCR now uses Google Vision. Keep this page only for historical context and explicit evaluator comparisons.
+
 ## Selected Model
 
 Use:

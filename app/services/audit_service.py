@@ -6,8 +6,6 @@ import uuid
 from datetime import datetime, timezone
 from typing import Optional
 
-from app.sheets import repositories
-
 logger = logging.getLogger(__name__)
 
 # Event type constants
@@ -27,10 +25,7 @@ def log_event(
     meter_id: str = "",
     payload: Optional[dict] = None,
 ) -> None:
-    """Log an event to the audit_log Google Sheet tab.
-
-    Silently catches write failures so audit logging never breaks the main flow.
-    """
+    """Log an audit event without writing to Google Sheets."""
     event_id = f"evt_{uuid.uuid4().hex[:12]}"
     timestamp = datetime.now(timezone.utc).isoformat()
     payload_json = json.dumps(payload, default=str, ensure_ascii=False) if payload else ""
@@ -44,11 +39,4 @@ def log_event(
         "payload_json": payload_json,
     }
 
-    try:
-        repositories.append_audit_log(row)
-        logger.info("Audit log: %s source=%s meter=%s", event_type, line_source_id, meter_id)
-    except Exception:
-        logger.exception(
-            "Failed to write audit log: event_type=%s source=%s meter=%s",
-            event_type, line_source_id, meter_id,
-        )
+    logger.info("Audit event: %s", json.dumps(row, ensure_ascii=False))

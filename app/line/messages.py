@@ -23,10 +23,12 @@ from app.line.parser import (
     POSTBACK_LATEST_REPORT,
     POSTBACK_HELP,
     POSTBACK_HISTORY,
+    POSTBACK_HISTORY_BATCH,
     POSTBACK_HISTORY_BATCH_DETAIL,
     POSTBACK_HISTORY_CURRENT,
     POSTBACK_HISTORY_METER,
     POSTBACK_HISTORY_PREVIOUS,
+    POSTBACK_HISTORY_SELECT_WEEK,
     POSTBACK_SETTINGS,
     POSTBACK_SETTINGS_CANCEL_CHANGE,
     POSTBACK_SETTINGS_CONFIRM_CHANGE,
@@ -328,7 +330,7 @@ def build_history_menu_message() -> TextMessage:
         action_items=(
             ("รอบปัจจุบัน", "postback", build_postback_data(action=POSTBACK_HISTORY_CURRENT)),
             ("สัปดาห์ก่อน", "postback", build_postback_data(action=POSTBACK_HISTORY_PREVIOUS)),
-            ("เลือกรอบย้อนหลัง", "postback", build_postback_data(action=POSTBACK_HISTORY_PREVIOUS)),
+            ("เลือกรอบย้อนหลัง", "postback", build_postback_data(action=POSTBACK_HISTORY_SELECT_WEEK)),
             ("ดูตามมิเตอร์", "postback", build_postback_data(action=POSTBACK_HISTORY_METER)),
             ("รายงานล่าสุด", "postback", build_postback_data(action=POSTBACK_LATEST_REPORT)),
             ("กลับเมนูหลัก", "postback", build_postback_data(action=POSTBACK_HELP)),
@@ -344,6 +346,26 @@ def build_history_empty_message(text: str) -> TextMessage:
             ("Help", "postback", build_postback_data(action=POSTBACK_HELP)),
         ),
     )
+
+def build_history_batch_list_message(summaries: Sequence) -> TextMessage:
+    if not summaries:
+        return build_history_empty_message("ยังไม่มีประวัติย้อนหลังใน 1 เดือนนี้ครับ")
+
+    lines = ["ประวัติย้อนหลัง 1 เดือน", "", "เลือกรอบที่ต้องการดูครับ"]
+    for summary in summaries:
+        label = summary.week or summary.batch_id
+        lines.append(f"{label}: {summary.confirmed_meter_count}/{summary.expected_meter_count} เครื่อง")
+
+    items = [
+        (
+            summary.week or summary.batch_id,
+            "postback",
+            build_postback_data(action=POSTBACK_HISTORY_BATCH, batch_id=summary.batch_id),
+        )
+        for summary in summaries
+    ]
+    items.append(("กลับประวัติ", "postback", build_postback_data(action=POSTBACK_HISTORY)))
+    return _text_with_actions(text="\n".join(lines), action_items=items)
 
 def build_history_summary_message(title: str, summary) -> TextMessage:
     lines = [
