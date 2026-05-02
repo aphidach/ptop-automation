@@ -24,6 +24,9 @@ class Session:
     line_source_id: str
     line_user_id: Optional[str] = None
     latest_meter_id: Optional[str] = None
+    collection_state: str = "idle"
+    collection_current_meter_id: Optional[str] = None
+    collection_skipped_meters: set[str] = field(default_factory=set)
     pending_confirmation: Optional[PendingConfirmation] = None
     batch_id: Optional[str] = None
     processing_image_message_ids: set[str] = field(default_factory=set)
@@ -70,6 +73,16 @@ def get_session(source_id: str) -> Optional[Session]:
     return _store.get(source_id)
 
 
+COLLECTION_IDLE = "idle"
+COLLECTION_COLLECTING = "collecting"
+COLLECTION_WAITING_IMAGE = "waiting_image"
+COLLECTION_PROCESSING_OCR = "processing_ocr"
+COLLECTION_WAITING_CONFIRMATION = "waiting_confirmation"
+COLLECTION_WAITING_MANUAL_VALUE = "waiting_manual_value"
+COLLECTION_COMPLETED = "completed"
+COLLECTION_REPORTING = "reporting"
+
+
 def set_latest_meter(source_id: str, meter_id: str, user_id: Optional[str] = None) -> None:
     session = get_or_create_session(source_id, user_id)
     session.latest_meter_id = meter_id
@@ -78,6 +91,55 @@ def set_latest_meter(source_id: str, meter_id: str, user_id: Optional[str] = Non
 def get_latest_meter(source_id: str) -> Optional[str]:
     session = _store.get(source_id)
     return session.latest_meter_id if session else None
+
+
+def get_collection_state(source_id: str) -> str:
+    session = _store.get(source_id)
+    return session.collection_state if session else COLLECTION_IDLE
+
+
+def set_collection_state(source_id: str, state: str) -> None:
+    session = get_or_create_session(source_id)
+    session.collection_state = state
+
+
+def get_collection_current_meter(source_id: str) -> Optional[str]:
+    session = _store.get(source_id)
+    return session.collection_current_meter_id if session else None
+
+
+def set_collection_current_meter(source_id: str, meter_id: Optional[str]) -> None:
+    session = get_or_create_session(source_id)
+    session.collection_current_meter_id = meter_id
+
+
+def set_collection_meter_skipped(source_id: str, meter_id: str) -> None:
+    session = get_or_create_session(source_id)
+    session.collection_skipped_meters.add(meter_id)
+
+
+def is_collection_meter_skipped(source_id: str, meter_id: str) -> bool:
+    session = _store.get(source_id)
+    return bool(session and meter_id in session.collection_skipped_meters)
+
+
+def clear_collection_skip_meters(source_id: str) -> None:
+    session = _store.get(source_id)
+    if session:
+        session.collection_skipped_meters.clear()
+
+
+def clear_collection_meter(source_id: str) -> None:
+    session = _store.get(source_id)
+    if session:
+        session.collection_current_meter_id = None
+
+
+def reset_collection_session(source_id: str) -> None:
+    session = get_or_create_session(source_id)
+    session.collection_state = COLLECTION_IDLE
+    session.collection_current_meter_id = None
+    session.collection_skipped_meters.clear()
 
 
 def set_pending_confirmation(

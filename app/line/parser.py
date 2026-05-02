@@ -1,7 +1,9 @@
+import json
 import re
 from dataclasses import dataclass
 from decimal import Decimal
 from typing import Optional
+from urllib.parse import parse_qs
 
 METER = "meter"
 METER_VALUE = "meter_value"
@@ -12,6 +14,22 @@ CANCEL = "cancel"
 GEN = "gen"
 REPORT = "report"
 UNKNOWN = "unknown"
+POSTBACK_UNKNOWN = "postback_unknown"
+POSTBACK_START_COLLECTION = "start_collection"
+POSTBACK_SELECT_METER = "select_meter"
+POSTBACK_CONFIRM_READING = "confirm_reading"
+POSTBACK_FORCE_CONFIRM_READING = "force_confirm_reading"
+POSTBACK_EDIT_READING = "edit_reading"
+POSTBACK_RETAKE_PHOTO = "retake_photo"
+POSTBACK_SKIP_METER = "skip_meter"
+POSTBACK_SHOW_STATUS = "show_status"
+POSTBACK_LATEST_REPORT = "latest_report"
+POSTBACK_WEEKLY_SUMMARY = "weekly_summary"
+POSTBACK_CANCEL_COLLECTION = "cancel_collection"
+POSTBACK_REPLACE_READING = "replace_reading"
+POSTBACK_HISTORY = "history"
+POSTBACK_SETTINGS = "settings"
+POSTBACK_HELP = "help"
 
 
 @dataclass
@@ -23,8 +41,18 @@ class ParsedCommand:
     raw: str = ""
 
 
+@dataclass
+class ParsedPostback:
+    type: str = POSTBACK_UNKNOWN
+    meter_id: Optional[str] = None
+    batch_id: Optional[str] = None
+    replace: bool = False
+    raw: str = ""
+
+
 _METER_ONLY = re.compile(r"^([Mm]\d+)$")
 _METER_VALUE = re.compile(r"^([Mm]\d+)\s+([0-9][0-9,]*(?:\.\d+)?)$")
+_BOOL_TRUE = {"1", "true", "yes", "on"}
 
 
 def parse_command(text: str) -> ParsedCommand:
@@ -66,6 +94,64 @@ def parse_command(text: str) -> ParsedCommand:
         return ParsedCommand(type=METER, meter_id=m.group(1).upper(), raw=text)
 
     return ParsedCommand(type=UNKNOWN, raw=text)
+
+
+def parse_postback_action(raw: str) -> ParsedPostback:
+    raw = (raw or "").strip()
+    if not raw:
+        return ParsedPostback(type=POSTBACK_UNKNOWN, raw=raw)
+
+    data: dict[str, str] = {}
+    if raw.startswith("{") and raw.endswith("}"):
+        try:
+            payload = json.loads(raw)
+        except Exception:
+            payload = {}
+        if isinstance(payload, dict):
+            for key, value in payload.items():
+                if isinstance(value, str):
+                    data[key.strip()] = value.strip()
+                elif value is not None:
+                    data[key.strip()] = str(value)
+
+    if not data and "=" in raw:
+        parsed = parse_qs(raw, keep_blank_values=True)
+        for key, values in parsed.items():
+            if values:
+                data[key.strip()] = values[0].strip()
+    elif not data and ":" in raw:
+        action, _, meter_id = raw.partition(":")
+        if action:
+            data["action"] = action.strip()
+            if meter_id:
+                data["meter_id"] = meter_id.strip()
+
+    action = data.get("action", "").strip().lower()
+    if not action:
+        return ParsedPostback(type=POSTBACK_UNKNOWN, raw=raw)
+
+    return ParsedPostback(
+        type=action,
+        meter_id=_normalize_meter_id(data.get("meter_id")),
+        batch_id=(data.get("batch_id") or "").strip() or None,
+        replace=_normalize_bool(data.get("replace")),
+        raw=raw,
+    )
+
+
+def _normalize_meter_id(value: Optional[str]) -> Optional[str]:
+    if not value:
+        return None
+    candidate = value.strip().upper()
+    if not re.fullmatch(r"M\d+", candidate):
+        return None
+    return candidate
+
+
+def _normalize_bool(value: Optional[str]) -> bool:
+    if not value:
+        return False
+    return value.strip().lower() in _BOOL_TRUE
 
 
 def is_valid_meter(meter_id: str, valid_ids: list[str]) -> bool:

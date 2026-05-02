@@ -17,6 +17,7 @@ LINE -> Python Backend -> OpenTyphoon OCR -> Google Sheets -> Report image -> LI
 - [LINE Bot Conversation Flow](docs/05-line-bot-flow.md)
 - [Environment and Deployment](docs/06-env-and-deployment.md)
 - [MVP Roadmap](docs/07-roadmap.md)
+- [Version 2.0 LINE UX Design](docs/08-v2-line-ux-design.md)
 
 ## Recommended MVP
 

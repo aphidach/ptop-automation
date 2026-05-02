@@ -88,7 +88,15 @@ def _ensure_batch_id(source_id: str) -> str:
     return batch_id
 
 
-def confirm_pending(source_id: str) -> tuple[Optional[PendingConfirmation], str, Optional[str]]:
+def ensure_batch_id(source_id: str) -> str:
+    return _ensure_batch_id(source_id)
+
+
+def confirm_pending(
+    source_id: str,
+    *,
+    allow_lower_value: bool = False,
+) -> tuple[Optional[PendingConfirmation], str, Optional[str]]:
     """Handle OK command. Returns (pending, reply_message, batch_id)."""
     pending = get_pending_confirmation(source_id)
     if not pending:
@@ -101,7 +109,12 @@ def confirm_pending(source_id: str) -> tuple[Optional[PendingConfirmation], str,
         return None, "ไม่มีค่าที่รอยืนยันครับ", None
 
     batch_id = pending.batch_id or _ensure_batch_id(source_id)
-    validation = validate_reading(pending.meter_id, value, batch_id)
+    validation = validate_reading(
+        pending.meter_id,
+        value,
+        batch_id,
+        allow_lower_value=allow_lower_value,
+    )
     if not validation.is_valid:
         warning_text = "\n".join(validation.warnings)
         if "ถูกบันทึกไปแล้ว" in warning_text:

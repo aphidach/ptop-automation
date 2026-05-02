@@ -47,17 +47,19 @@ def validate_reading(
     meter_id: str,
     current_value: Decimal,
     batch_id: str,
+    allow_duplicate: bool = False,
+    allow_lower_value: bool = False,
 ) -> ValidationResult:
     """Validate a reading before saving. Returns warnings for edge cases."""
     warnings: list[str] = []
 
     last_value = _get_last_value(meter_id)
-    if current_value < last_value:
+    if current_value < last_value and not allow_lower_value:
         warnings.append(
             f"ค่าปัจจุบัน ({current_value}) น้อยกว่าค่าครั้งก่อน ({last_value})"
         )
 
-    if _is_duplicate_in_batch(meter_id, batch_id):
+    if _is_duplicate_in_batch(meter_id, batch_id) and not allow_duplicate:
         warnings.append(
             f"มิเตอร์ {meter_id} ถูกบันทึกไปแล้วในรอบนี้ ต้องการแทนที่หรือไม่?"
         )

@@ -4,10 +4,18 @@ import pytest
 
 from decimal import Decimal
 
-from app.line.parser import ParsedCommand, GEN, HELP, REPORT, STATUS, CANCEL, METER, OK
-from app.line.webhook import _build_reply, _build_status_message, _resolve_batch_id
+from app.line.parser import METER_VALUE, ParsedCommand, GEN, HELP, REPORT, STATUS, CANCEL, METER, OK, UNKNOWN
+from app.line.webhook import (
+    _build_reply,
+    _build_status_message,
+    _coerce_manual_value_command,
+    _resolve_batch_id,
+)
 from app.services.session_service import (
+    COLLECTION_WAITING_MANUAL_VALUE,
     set_batch_id,
+    set_collection_current_meter,
+    set_collection_state,
     set_latest_meter,
     set_pending_confirmation,
 )
@@ -193,3 +201,14 @@ def test_status_via_build_reply():
     reply = _build_reply(ParsedCommand(type=STATUS), "U1")
 
     assert "มิเตอร์ปัจจุบัน: M2" in reply
+
+
+def test_manual_value_state_accepts_bare_number_for_current_meter():
+    set_collection_state("U1", COLLECTION_WAITING_MANUAL_VALUE)
+    set_collection_current_meter("U1", "M4")
+
+    cmd = _coerce_manual_value_command(ParsedCommand(type=UNKNOWN, raw="12,508"), "12,508", "U1")
+
+    assert cmd.type == METER_VALUE
+    assert cmd.meter_id == "M4"
+    assert cmd.value == Decimal("12508")
