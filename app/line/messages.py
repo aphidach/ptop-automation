@@ -3303,6 +3303,7 @@ def _history_meter_latest_point_chart(latest_value: str, label: str) -> dict:
         "layout": "horizontal",
         "spacing": "sm",
         "alignItems": "center",
+        "height": "150px",
         "flex": 1,
         "contents": [
             {
@@ -3334,10 +3335,12 @@ def _history_meter_latest_point_chart(latest_value: str, label: str) -> dict:
             {
                 "type": "box",
                 "layout": "vertical",
-                "spacing": "xs",
-                "paddingAll": "12px",
+                "spacing": "sm",
+                "paddingAll": "16px",
                 "cornerRadius": "6px",
                 "backgroundColor": "#F1FAF2",
+                "height": "150px",
+                "justifyContent": "center",
                 "contents": [
                     {
                         "type": "text",
@@ -3351,7 +3354,7 @@ def _history_meter_latest_point_chart(latest_value: str, label: str) -> dict:
                     {
                         "type": "text",
                         "text": "●",
-                        "size": "xxl",
+                        "size": "sm",
                         "color": CARD_COLORS["primary"],
                         "align": "center",
                     },
@@ -3373,10 +3376,12 @@ def _history_meter_sparkline_chart(labels: Sequence[str], latest_value: str, spa
     return {
         "type": "box",
         "layout": "vertical",
-        "spacing": "xs",
-        "paddingAll": "10px",
+        "spacing": "sm",
+        "paddingAll": "14px",
         "cornerRadius": "6px",
         "backgroundColor": "#F1FAF2",
+        "height": "150px",
+        "justifyContent": "center",
         "flex": 1,
         "contents": [
             {
@@ -3391,7 +3396,7 @@ def _history_meter_sparkline_chart(labels: Sequence[str], latest_value: str, spa
             {
                 "type": "text",
                 "text": sparkline,
-                "size": "sm",
+                "size": "md",
                 "color": CARD_COLORS["primary"],
                 "align": "center",
                 "wrap": True,
@@ -3417,7 +3422,7 @@ def _history_meter_chart_panel(meter_id: str, readings: Sequence[dict], period_d
         "type": "box",
         "layout": "vertical",
         "spacing": "sm",
-        "paddingAll": "12px",
+        "paddingAll": "14px",
         "cornerRadius": "8px",
         "borderWidth": "1px",
         "borderColor": "#DDE3EA",

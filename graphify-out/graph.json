@@ -3175,7 +3175,7 @@
       "label": "_history_meter_sparkline_chart()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3372",
+      "source_location": "L3375",
       "id": "line_messages_history_meter_sparkline_chart",
       "community": 1,
       "norm_label": "_history_meter_sparkline_chart()"
@@ -3184,7 +3184,7 @@
       "label": "_history_meter_chart_panel()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3404",
+      "source_location": "L3409",
       "id": "line_messages_history_meter_chart_panel",
       "community": 1,
       "norm_label": "_history_meter_chart_panel()"
@@ -3193,7 +3193,7 @@
       "label": "_history_meter_footer_actions()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3473",
+      "source_location": "L3478",
       "id": "line_messages_history_meter_footer_actions",
       "community": 1,
       "norm_label": "_history_meter_footer_actions()"
@@ -3202,7 +3202,7 @@
       "label": "_history_meter_quick_actions()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3498",
+      "source_location": "L3503",
       "id": "line_messages_history_meter_quick_actions",
       "community": 1,
       "norm_label": "_history_meter_quick_actions()"
@@ -3211,7 +3211,7 @@
       "label": "build_history_meter_select_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3506",
+      "source_location": "L3511",
       "id": "line_messages_build_history_meter_select_message",
       "community": 1,
       "norm_label": "build_history_meter_select_message()"
@@ -3220,7 +3220,7 @@
       "label": "build_history_meter_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3577",
+      "source_location": "L3582",
       "id": "line_messages_build_history_meter_message",
       "community": 1,
       "norm_label": "build_history_meter_message()"
@@ -3229,7 +3229,7 @@
       "label": "_settings_rate_display()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3640",
+      "source_location": "L3645",
       "id": "line_messages_settings_rate_display",
       "community": 1,
       "norm_label": "_settings_rate_display()"
@@ -3238,7 +3238,7 @@
       "label": "build_settings_menu_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3648",
+      "source_location": "L3653",
       "id": "line_messages_build_settings_menu_message",
       "community": 1,
       "norm_label": "build_settings_menu_message()"
@@ -3247,7 +3247,7 @@
       "label": "build_report_summary_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3728",
+      "source_location": "L3733",
       "id": "line_messages_build_report_summary_message",
       "community": 1,
       "norm_label": "build_report_summary_message()"
@@ -3256,7 +3256,7 @@
       "label": "build_report_unavailable_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3769",
+      "source_location": "L3774",
       "id": "line_messages_build_report_unavailable_message",
       "community": 1,
       "norm_label": "build_report_unavailable_message()"
@@ -3265,7 +3265,7 @@
       "label": "_week_from_batch_id()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3827",
+      "source_location": "L3832",
       "id": "line_messages_week_from_batch_id",
       "community": 1,
       "norm_label": "_week_from_batch_id()"
@@ -3274,7 +3274,7 @@
       "label": "build_report_import_prompt_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3834",
+      "source_location": "L3839",
       "id": "line_messages_build_report_import_prompt_message",
       "community": 1,
       "norm_label": "build_report_import_prompt_message()"
@@ -3283,7 +3283,7 @@
       "label": "build_settings_sync_success_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3847",
+      "source_location": "L3852",
       "id": "line_messages_build_settings_sync_success_message",
       "community": 1,
       "norm_label": "build_settings_sync_success_message()"
@@ -3292,7 +3292,7 @@
       "label": "build_settings_sync_failed_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3859",
+      "source_location": "L3864",
       "id": "line_messages_build_settings_sync_failed_message",
       "community": 1,
       "norm_label": "build_settings_sync_failed_message()"
@@ -3301,7 +3301,7 @@
       "label": "build_report_import_preview_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3874",
+      "source_location": "L3879",
       "id": "line_messages_build_report_import_preview_message",
       "community": 1,
       "norm_label": "build_report_import_preview_message()"
@@ -3310,7 +3310,7 @@
       "label": "build_report_import_success_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3902",
+      "source_location": "L3907",
       "id": "line_messages_build_report_import_success_message",
       "community": 1,
       "norm_label": "build_report_import_success_message()"
@@ -3319,7 +3319,7 @@
       "label": "build_report_import_duplicate_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3920",
+      "source_location": "L3925",
       "id": "line_messages_build_report_import_duplicate_message",
       "community": 1,
       "norm_label": "build_report_import_duplicate_message()"
@@ -3328,7 +3328,7 @@
       "label": "_can_confirm_report_import()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3934",
+      "source_location": "L3939",
       "id": "line_messages_can_confirm_report_import",
       "community": 1,
       "norm_label": "_can_confirm_report_import()"
@@ -3337,7 +3337,7 @@
       "label": "build_settings_view_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3943",
+      "source_location": "L3948",
       "id": "line_messages_build_settings_view_message",
       "community": 1,
       "norm_label": "build_settings_view_message()"
@@ -3346,7 +3346,7 @@
       "label": "build_settings_meters_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4039",
+      "source_location": "L4044",
       "id": "line_messages_build_settings_meters_message",
       "community": 1,
       "norm_label": "build_settings_meters_message()"
@@ -3355,7 +3355,7 @@
       "label": "build_settings_meter_detail_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4060",
+      "source_location": "L4065",
       "id": "line_messages_build_settings_meter_detail_message",
       "community": 1,
       "norm_label": "build_settings_meter_detail_message()"
@@ -3364,7 +3364,7 @@
       "label": "build_settings_edit_prompt_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4086",
+      "source_location": "L4091",
       "id": "line_messages_build_settings_edit_prompt_message",
       "community": 1,
       "norm_label": "build_settings_edit_prompt_message()"
@@ -3373,7 +3373,7 @@
       "label": "build_settings_confirm_change_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4113",
+      "source_location": "L4118",
       "id": "line_messages_build_settings_confirm_change_message",
       "community": 1,
       "norm_label": "build_settings_confirm_change_message()"
@@ -3382,7 +3382,7 @@
       "label": "build_settings_recipients_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4135",
+      "source_location": "L4140",
       "id": "line_messages_build_settings_recipients_message",
       "community": 1,
       "norm_label": "build_settings_recipients_message()"
@@ -3391,7 +3391,7 @@
       "label": "build_settings_permissions_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4151",
+      "source_location": "L4156",
       "id": "line_messages_build_settings_permissions_message",
       "community": 1,
       "norm_label": "build_settings_permissions_message()"
@@ -3400,7 +3400,7 @@
       "label": "build_settings_not_admin_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4164",
+      "source_location": "L4169",
       "id": "line_messages_build_settings_not_admin_message",
       "community": 1,
       "norm_label": "build_settings_not_admin_message()"
@@ -3409,7 +3409,7 @@
       "label": "_message_decimal()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4174",
+      "source_location": "L4179",
       "id": "line_messages_message_decimal",
       "community": 1,
       "norm_label": "_message_decimal()"
@@ -3418,7 +3418,7 @@
       "label": "_format_number()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4181",
+      "source_location": "L4186",
       "id": "line_messages_format_number",
       "community": 1,
       "norm_label": "_format_number()"
@@ -3427,7 +3427,7 @@
       "label": "_bool_th()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4190",
+      "source_location": "L4195",
       "id": "line_messages_bool_th",
       "community": 1,
       "norm_label": "_bool_th()"

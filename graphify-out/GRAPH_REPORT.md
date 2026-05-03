@@ -1,7 +1,7 @@
 # Graph Report - repo-ptop-autometion  (2026-05-04)
 
 ## Corpus Check
-- 73 files · ~1,246,475 words
+- 73 files · ~1,246,485 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
