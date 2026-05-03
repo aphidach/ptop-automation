@@ -13,7 +13,7 @@ RUN pip install --no-cache-dir --no-compile --prefix=/install -r requirements-pr
 
 FROM python-base AS runtime
 
-ARG APP_VERSION=0.1.0
+ARG APP_VERSION=0.3.0
 ENV APP_VERSION=${APP_VERSION}
 LABEL org.opencontainers.image.title="solar-meter-bot" \
     org.opencontainers.image.description="LINE bot for solar meter OCR reporting" \

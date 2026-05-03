@@ -13,29 +13,29 @@ This project publishes deployable Docker images to GitHub Container Registry whe
 
 Keep these values aligned when cutting a new release.
 
-## First Release
+## Release v0.3.0
 
 Run checks and build the deployable package locally:
 
 ```bash
 rtk make test
-rtk make docker-build VERSION=0.1.0
+rtk make docker-build VERSION=0.3.0
 ```
 
-Create and push the first release tag:
+Create and push the release tag:
 
 ```bash
 rtk git status
-rtk make release-tag VERSION=0.1.0
-rtk git push origin v0.1.0
+rtk make release-tag VERSION=0.3.0
+rtk git push origin v0.3.0
 ```
 
-Commit the release changes before creating the tag. The `release-tag` target fails if the worktree has uncommitted changes, so `v0.1.0` points to the exact release commit.
+Commit the release changes before creating the tag. The `release-tag` target fails if the worktree has uncommitted changes, so `v0.3.0` points to the exact release commit.
 
-Pushing `v0.1.0` starts the release workflow. It creates a GitHub Release and publishes:
+Pushing `v0.3.0` starts the release workflow. It creates a GitHub Release and publishes:
 
 ```text
-ghcr.io/<owner>/<repo>:0.1.0
+ghcr.io/<owner>/<repo>:0.3.0
 ghcr.io/<owner>/<repo>:latest
 ```
 
@@ -44,13 +44,13 @@ ghcr.io/<owner>/<repo>:latest
 Build both the Python wheel and Docker image locally:
 
 ```bash
-rtk make package VERSION=0.1.0
+rtk make package VERSION=0.3.0
 ```
 
 Run the Docker image locally:
 
 ```bash
-rtk make docker-run VERSION=0.1.0
+rtk make docker-run VERSION=0.3.0
 rtk curl http://localhost:8000/health
 ```
 
@@ -59,7 +59,7 @@ rtk curl http://localhost:8000/health
 Pull and run the released image on a server:
 
 ```bash
-rtk docker pull ghcr.io/<owner>/<repo>:0.1.0
+rtk docker pull ghcr.io/<owner>/<repo>:0.3.0
 rtk docker run -d \
   --name solar-meter-bot \
   --restart unless-stopped \
@@ -67,7 +67,7 @@ rtk docker run -d \
   -p 8000:8000 \
   -v /absolute/path/to/credentials:/app/credentials:ro \
   -v /absolute/path/to/reports:/app/reports \
-  ghcr.io/<owner>/<repo>:0.1.0
+  ghcr.io/<owner>/<repo>:0.3.0
 ```
 
 Required deployment checks:
@@ -86,11 +86,11 @@ If report images must be visible outside the container, prefer `REPORT_IMAGE_STO
 
 ## Next Release
 
-For the current `0.3.0` release, confirm versions are aligned, then tag:
+For the next version, update `pyproject.toml`, `app/version.py`, and `Makefile`, then tag:
 
 ```bash
 rtk make test
-rtk make docker-build VERSION=0.3.0
-rtk make release-tag VERSION=0.3.0
-rtk git push origin v0.3.0
+rtk make docker-build VERSION=0.3.1
+rtk make release-tag VERSION=0.3.1
+rtk git push origin v0.3.1
 ```
