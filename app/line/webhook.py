@@ -827,10 +827,10 @@ async def _handle_postback(
 
     if action == POSTBACK_HISTORY_METER:
         if not meter_id:
-            await _reply_to(reply_token, build_history_meter_select_message())
+            await _reply_to(reply_token, build_history_meter_select_message(settings.VALID_METER_IDS))
             return
         if not is_valid_meter(meter_id, settings.VALID_METER_IDS):
-            await _reply_to(reply_token, build_history_meter_select_message())
+            await _reply_to(reply_token, build_history_meter_select_message(settings.VALID_METER_IDS))
             return
         readings = history_service.get_meter_history(meter_id, source_id)
         await _reply_to(reply_token, build_history_meter_message(meter_id, readings))
@@ -1037,6 +1037,8 @@ async def _handle_postback(
         return
 
     if action == POSTBACK_WEEKLY_SUMMARY:
+        if not batch_id:
+            batch_id = history_service.get_latest_report_batch_id(source_id)
         if not batch_id:
             await _reply_to(reply_token, "ยังไม่มีข้อมูลรอบนี้ครับ")
             return

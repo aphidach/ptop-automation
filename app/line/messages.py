@@ -294,6 +294,70 @@ def _postback_button(
     return button
 
 
+def _postback_menu_row(
+    label: str,
+    action: str,
+    *,
+    description: str | None = None,
+    **kwargs: str | int | bool | None,
+) -> dict:
+    text_contents = [
+        {
+            "type": "text",
+            "text": label,
+            "size": "sm",
+            "weight": "bold",
+            "color": CARD_COLORS["text"],
+            "wrap": True,
+        }
+    ]
+    if description:
+        text_contents.append(
+            {
+                "type": "text",
+                "text": description,
+                "size": "xs",
+                "color": CARD_COLORS["neutral_gray"],
+                "wrap": True,
+                "margin": "xs",
+            }
+        )
+
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "alignItems": "center",
+        "paddingAll": "10px",
+        "cornerRadius": "8px",
+        "borderWidth": "1px",
+        "borderColor": "#E0E0E0",
+        "action": {
+            "type": "postback",
+            "label": label[:QUICK_TEXT_LIMIT],
+            "data": build_postback_data(action=action, **kwargs),
+            "displayText": label,
+        },
+        "contents": [
+            {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "none",
+                "contents": text_contents,
+                "flex": 1,
+            },
+            {
+                "type": "text",
+                "text": ">",
+                "size": "md",
+                "color": CARD_COLORS["data_blue"],
+                "align": "end",
+                "flex": 0,
+            },
+        ],
+    }
+
+
 def _message_button(
     label: str,
     text: str,
@@ -661,6 +725,49 @@ def _meter_grid(
             },
         )
     return {"type": "box", "layout": "vertical", "spacing": "xs", "contents": rows}
+
+
+def _meter_select_grid(meter_ids: Sequence[str]) -> dict:
+    meter_boxes = [
+        {
+            "type": "box",
+            "layout": "vertical",
+            "height": "44px",
+            "cornerRadius": "8px",
+            "borderWidth": "1px",
+            "borderColor": "#C8E6C9",
+            "backgroundColor": CARD_COLORS["light_green"],
+            "justifyContent": "center",
+            "action": {
+                "type": "postback",
+                "label": meter_id[:QUICK_TEXT_LIMIT],
+                "data": build_postback_data(action=POSTBACK_HISTORY_METER, meter_id=meter_id),
+                "displayText": meter_id,
+            },
+            "contents": [
+                {
+                    "type": "text",
+                    "text": meter_id,
+                    "size": "sm",
+                    "weight": "bold",
+                    "align": "center",
+                    "color": CARD_COLORS["dark_green"],
+                }
+            ],
+            "flex": 1,
+        }
+        for meter_id in meter_ids
+    ]
+    rows = [
+        {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": meter_boxes[index:index + 4],
+        }
+        for index in range(0, len(meter_boxes), 4)
+    ]
+    return {"type": "box", "layout": "vertical", "spacing": "sm", "contents": rows}
 
 
 def _text_with_actions(
@@ -1237,17 +1344,40 @@ def build_history_menu_message() -> FlexMessage:
         subtitle="เลือกข้อมูลที่ต้องการดู",
         body_contents=(
             _body_text(
-                "เลือกรายการด้านล่างเพื่อดูข้อมูลรอบที่ต้องการ",
+                "เลือกเส้นทางด้านล่างเพื่อดูข้อมูลย้อนหลัง",
                 size="sm",
                 color=CARD_COLORS["text"],
             ),
+            _postback_menu_row(
+                "รอบปัจจุบัน",
+                POSTBACK_HISTORY_CURRENT,
+                description="ดูข้อมูลรอบที่กำลังบันทึก",
+            ),
+            _postback_menu_row(
+                "สัปดาห์ก่อน",
+                POSTBACK_HISTORY_PREVIOUS,
+                description="ดูรอบก่อนหน้าล่าสุด",
+            ),
+            _postback_menu_row(
+                "เลือกรอบย้อนหลัง",
+                POSTBACK_HISTORY_SELECT_WEEK,
+                description="เลือกรายการย้อนหลัง 1 เดือน",
+            ),
+            _postback_menu_row(
+                "ดูตามมิเตอร์",
+                POSTBACK_HISTORY_METER,
+                description="ดูประวัติรายเครื่อง",
+            ),
+        ),
+        secondary_actions=(
+            _postback_button("รายงานล่าสุด", POSTBACK_LATEST_REPORT),
+            _postback_button("Help", POSTBACK_HELP),
         ),
         quick_actions=(
             ("รอบปัจจุบัน", "postback", build_postback_data(action=POSTBACK_HISTORY_CURRENT)),
             ("สัปดาห์ก่อน", "postback", build_postback_data(action=POSTBACK_HISTORY_PREVIOUS)),
             ("เลือกรอบย้อนหลัง", "postback", build_postback_data(action=POSTBACK_HISTORY_SELECT_WEEK)),
             ("ดูตามมิเตอร์", "postback", build_postback_data(action=POSTBACK_HISTORY_METER)),
-            ("รายงานล่าสุด", "postback", build_postback_data(action=POSTBACK_LATEST_REPORT)),
         ),
     )
 
@@ -1281,25 +1411,46 @@ def build_history_batch_list_message(summaries: Sequence) -> TextMessage:
     items.append(("กลับประวัติ", "postback", build_postback_data(action=POSTBACK_HISTORY)))
     return _text_with_actions(text="\n".join(lines), action_items=items)
 
-def build_history_summary_message(title: str, summary) -> TextMessage:
-    lines = [
-        title,
-        "",
-        f"รอบ: {summary.week or summary.batch_id}",
-        f"สถานะ: {summary.status}",
-        f"บันทึกแล้ว: {summary.confirmed_meter_count}/{summary.expected_meter_count} เครื่อง",
+def build_history_summary_message(title: str, summary) -> FlexMessage:
+    week = summary.week or summary.batch_id
+    progress = f"{summary.confirmed_meter_count}/{summary.expected_meter_count} เครื่อง"
+    body_contents = [
+        _metric_row("รอบ", week, color=CARD_COLORS["text"]),
+        _metric_row("สถานะ", str(summary.status), color=CARD_COLORS["data_blue"]),
+        _metric_row("บันทึกแล้ว", progress, color=CARD_COLORS["dark_green"]),
     ]
     if summary.missing_meter_ids:
-        lines.append(f"ยังขาด: {', '.join(summary.missing_meter_ids)}")
-    lines.extend(
-        [
-            f"รวมผลิต: {_format_number(summary.produced_unit)} kWh",
-            f"ยอดเงินรวม: {_format_number(summary.amount)} บาท",
-        ]
+        body_contents.append(
+            _body_text(
+                f"ยังขาด: {', '.join(summary.missing_meter_ids)}",
+                color=CARD_COLORS["warning_text"],
+                size="xs",
+            )
+        )
+    body_contents.extend(
+        (
+            _metric_row("รวมผลิต", f"{_format_number(summary.produced_unit)} kWh", color=CARD_COLORS["dark_green"]),
+            _metric_row("ยอดเงินรวม", f"{_format_number(summary.amount)} บาท", color=CARD_COLORS["primary"]),
+        )
     )
-    return _text_with_actions(
-        text="\n".join(lines),
-        action_items=(
+    return _card_shell(
+        alt_text=title,
+        title=title,
+        subtitle=week,
+        status_badge=progress,
+        body_contents=body_contents,
+        primary_action=_postback_button(
+            "ดูรายละเอียด",
+            POSTBACK_HISTORY_BATCH_DETAIL,
+            batch_id=summary.batch_id,
+            style="primary",
+            color=CARD_COLORS["primary"],
+        ),
+        secondary_actions=(
+            _postback_button("บันทึกต่อ", POSTBACK_START_COLLECTION),
+            _postback_button("ประวัติ", POSTBACK_HISTORY),
+        ),
+        quick_actions=(
             (
                 "ดูรายละเอียด",
                 "postback",
@@ -1311,20 +1462,36 @@ def build_history_summary_message(title: str, summary) -> TextMessage:
         ),
     )
 
-def build_history_detail_message(summary) -> TextMessage:
-    lines = [f"รายละเอียดรอบ {summary.week or summary.batch_id}", ""]
+def build_history_detail_message(summary) -> FlexMessage:
+    week = summary.week or summary.batch_id
     by_meter = {str(row.get("meter_id", "")): row for row in summary.readings}
+    detail_rows = []
     for meter_id in DEFAULT_METER_IDS:
         row = by_meter.get(meter_id)
         if not row:
-            lines.append(f"{meter_id}: ยังไม่มีข้อมูล")
+            detail_rows.append(_metric_row(meter_id, "ยังไม่มีข้อมูล", color=CARD_COLORS["neutral_gray"]))
             continue
         current = _format_number(row.get("current_value", "0"))
         produced = _format_number(row.get("produced_unit", "0"))
-        lines.append(f"{meter_id}: {current} kWh (+{produced})")
-    return _text_with_actions(
-        text="\n".join(lines),
-        action_items=(
+        detail_rows.append(_metric_row(meter_id, f"{current} kWh (+{produced})", color=CARD_COLORS["dark_green"]))
+    return _card_shell(
+        alt_text=f"รายละเอียดรอบ {week}",
+        title="รายละเอียดรอบ",
+        subtitle=week,
+        status_badge=f"{summary.confirmed_meter_count}/{summary.expected_meter_count} เครื่อง",
+        body_contents=detail_rows,
+        primary_action=_postback_button(
+            "ส่งรูปรายงาน",
+            POSTBACK_LATEST_REPORT,
+            batch_id=summary.batch_id,
+            style="primary",
+            color=CARD_COLORS["primary"],
+        ),
+        secondary_actions=(
+            _postback_button("ดูตามมิเตอร์", POSTBACK_HISTORY_METER),
+            _postback_button("ประวัติ", POSTBACK_HISTORY),
+        ),
+        quick_actions=(
             ("ส่งรูปรายงาน", "postback", build_postback_data(action=POSTBACK_LATEST_REPORT, batch_id=summary.batch_id)),
             ("ดูตามมิเตอร์", "postback", build_postback_data(action=POSTBACK_HISTORY_METER)),
             ("บันทึกต่อ", "postback", build_postback_data(action=POSTBACK_START_COLLECTION)),
@@ -1332,15 +1499,31 @@ def build_history_detail_message(summary) -> TextMessage:
         ),
     )
 
-def build_history_meter_select_message() -> TextMessage:
+def build_history_meter_select_message(meter_ids: Sequence[str] | None = None) -> FlexMessage:
+    display_meter_ids = tuple(meter_ids or DEFAULT_METER_IDS)
     items = [
         (meter_id, "postback", build_postback_data(action=POSTBACK_HISTORY_METER, meter_id=meter_id))
-        for meter_id in DEFAULT_METER_IDS
+        for meter_id in display_meter_ids
     ]
     items.append(("กลับประวัติ", "postback", build_postback_data(action=POSTBACK_HISTORY)))
-    return _text_with_actions(
-        text="ต้องการดูประวัติมิเตอร์เครื่องไหนครับ",
-        action_items=items,
+
+    return _card_shell(
+        alt_text="ดูตามมิเตอร์",
+        title="ดูตามมิเตอร์",
+        subtitle="เลือกมิเตอร์ที่ต้องการดู",
+        body_contents=(
+            _body_text(
+                "แตะเครื่องด้านล่างเพื่อดูประวัติรายเครื่อง",
+                size="sm",
+                color=CARD_COLORS["text"],
+            ),
+            _meter_select_grid(display_meter_ids),
+        ),
+        secondary_actions=(
+            _postback_button("กลับประวัติ", POSTBACK_HISTORY),
+            _postback_button("รายงานล่าสุด", POSTBACK_LATEST_REPORT),
+        ),
+        quick_actions=items,
     )
 
 def build_history_meter_message(meter_id: str, readings: Sequence[dict]) -> TextMessage:
@@ -1443,11 +1626,7 @@ def build_report_summary_message(
             color=CARD_COLORS["primary"],
         ),
         secondary_actions=(
-            _postback_button(
-                "ดูรายละเอียด",
-                POSTBACK_HISTORY_BATCH_DETAIL,
-                batch_id=batch_id,
-            ),
+            _postback_button("ดูรายละเอียด", POSTBACK_HISTORY_BATCH_DETAIL, batch_id=batch_id),
             _postback_button("ประวัติ", POSTBACK_HISTORY),
         ),
     )

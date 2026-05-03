@@ -105,6 +105,7 @@ def test_gen_schedules_image_send_for_current_batch():
     assert isinstance(reply, FlexMessage)
     payload = reply.dict(by_alias=True, exclude_none=True)
     assert payload["altText"] == "รายงานสัปดาห์ 2026-W19"
+    assert "action=history_batch_detail&batch_id=2026-W19-U1" in str(payload)
     assert "action=latest_report&batch_id=2026-W19-U1" in str(payload)
 
 

@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import logging
+import time
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 from app.config import settings
 from app.line.client import push_image, push_text
@@ -39,6 +40,17 @@ def _build_report_delivery_url(image_path: str) -> str:
     return _build_report_url(Path(image_path).name)
 
 
+def _cache_bust_report_url(url: str, version: int | str | None = None) -> str:
+    parsed = urlparse(url)
+    query = [
+        (key, value)
+        for key, value in parse_qsl(parsed.query, keep_blank_values=True)
+        if key != "v"
+    ]
+    query.append(("v", str(version if version is not None else time.time_ns())))
+    return urlunparse(parsed._replace(query=urlencode(query)))
+
+
 async def send_report(batch_id: str, source_id: str, mark_reported: bool = False) -> bool:
     image_path = generate_report_image(batch_id)
     if not image_path:
@@ -57,7 +69,6 @@ async def send_report(batch_id: str, source_id: str, mark_reported: bool = False
         )
         return False
 
-    preview_url = original_url
     if not _is_https_url(original_url):
         logger.error("Cannot send LINE image with non-HTTPS report URL: %s", original_url)
         await push_text(
@@ -68,8 +79,10 @@ async def send_report(batch_id: str, source_id: str, mark_reported: bool = False
         )
         return False
 
+    delivery_url = _cache_bust_report_url(original_url)
+    preview_url = delivery_url
     repositories.update_batch_report_image_url(batch_id, original_url)
-    sent = await push_image(source_id, original_url, preview_url)
+    sent = await push_image(source_id, delivery_url, preview_url)
     if not sent:
         await push_text(
             source_id,

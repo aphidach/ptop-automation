@@ -12,7 +12,10 @@ from app.line.messages import (
     build_help_flow_response,
     build_help_menu_message,
     build_history_batch_list_message,
+    build_history_detail_message,
     build_history_menu_message,
+    build_history_meter_select_message,
+    build_history_summary_message,
     build_lower_value_warning,
     build_meter_request_message,
     build_ocr_review_message,
@@ -405,10 +408,26 @@ def test_history_menu_has_usable_actions():
     assert payload["altText"] == "ประวัติการบันทึก"
     assert "ประวัติ" in str(payload)
     assert "history_current" in str(payload)
+    assert "history_previous" in str(payload)
     assert "history_select_week" in str(payload)
     assert "history_meter" in str(payload)
     assert "latest_report" in str(payload)
+    assert "help" in str(payload["contents"]["footer"])
     assert "help" not in str(payload["quickReply"])
+
+
+def test_history_meter_select_message_is_card_with_meter_actions():
+    payload = _as_dict(build_history_meter_select_message(("M1", "M2", "M3")))
+    rendered = str(payload)
+
+    assert payload["altText"] == "ดูตามมิเตอร์"
+    assert "เลือกมิเตอร์ที่ต้องการดู" in rendered
+    assert "action=history_meter&meter_id=M1" in rendered
+    assert "action=history_meter&meter_id=M3" in rendered
+    assert "action=history_meter&meter_id=M4" not in rendered
+    assert "action=history" in rendered
+    assert "latest_report" in rendered
+
 
 def test_history_batch_list_shows_recent_weeks():
     summaries = [
@@ -433,6 +452,54 @@ def test_history_batch_list_shows_recent_weeks():
     assert "2026-W17: 7/8" in payload["text"]
     assert "history_batch" in str(payload)
     assert "batch_id=2026-W18-U1" in str(payload)
+
+
+def test_history_summary_message_is_flex_card():
+    summary = SimpleNamespace(
+        batch_id="2026-W18-U1",
+        week="2026-W18",
+        status="reported",
+        expected_meter_count=8,
+        confirmed_meter_count=8,
+        missing_meter_ids=[],
+        produced_unit=Decimal("815113.15"),
+        amount=Decimal("3423475.23"),
+    )
+
+    payload = _as_dict(build_history_summary_message("ประวัติสัปดาห์ก่อน", summary))
+    rendered = str(payload)
+
+    assert payload["altText"] == "ประวัติสัปดาห์ก่อน"
+    assert "2026-W18" in rendered
+    assert "815,113.15 kWh" in rendered
+    assert "3,423,475.23 บาท" in rendered
+    assert "action=history_batch_detail&batch_id=2026-W18-U1" in rendered
+    assert "action=history" in rendered
+
+
+def test_history_detail_message_is_compact_flex_card():
+    summary = SimpleNamespace(
+        batch_id="2026-W18-U1",
+        week="2026-W18",
+        expected_meter_count=8,
+        confirmed_meter_count=8,
+        readings=[
+            {"meter_id": "M1", "current_value": "58196", "produced_unit": "58196"},
+            {"meter_id": "M2", "current_value": "59905", "produced_unit": "59905"},
+        ],
+    )
+
+    payload = _as_dict(build_history_detail_message(summary))
+    rendered = str(payload)
+
+    assert payload["altText"] == "รายละเอียดรอบ 2026-W18"
+    assert "M1" in rendered
+    assert "58,196 kWh (+58,196)" in rendered
+    assert "M3" in rendered
+    assert "ยังไม่มีข้อมูล" in rendered
+    assert "action=latest_report&batch_id=2026-W18-U1" in rendered
+    assert "action=history_meter" in rendered
+
 
 def test_settings_operator_menu_does_not_show_edit_actions():
     payload = _as_dict(build_settings_menu_message(is_admin=False))
