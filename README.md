@@ -18,7 +18,7 @@ LINE -> Python Backend -> Google Vision OCR -> Google Sheets -> Report image -> 
 
 ## Documents
 
-- [Ordered Implementation Tasks](TASKS.md)
+- [Ordered Implementation Tasks](docs/11-ordered-implementation-tasks.md)
 - [Project Overview](docs/00-overview.md)
 - [System Architecture](docs/01-architecture.md)
 - [Google Sheets Schema](docs/02-google-sheets-schema.md)

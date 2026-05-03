@@ -28,7 +28,7 @@ def _compose(output_dir: Path) -> tuple[Path, Path]:
     repo_root = Path(__file__).resolve().parents[1]
     return compose_richmenu_image(
         output_dir=output_dir,
-        source_dir=repo_root / "Richmenu image",
+        source_dir=repo_root / "app" / "assets" / "richmenu",
     )
 
 

@@ -17,7 +17,7 @@ from app.line.parser import (
 
 RICHMENU_WIDTH = 2500
 RICHMENU_HEIGHT = 1500
-RICHMENU_DIR = Path(__file__).resolve().parents[2] / "Richmenu image"
+RICHMENU_DIR = Path(__file__).resolve().parents[1] / "assets" / "richmenu"
 RICHMENU_OUTPUT_DIR = Path(__file__).resolve().parents[2] / "tmp" / "richmenu"
 RICHMENU_IMAGE_NAME = "richmenu-v2-line.png"
 RICHMENU_SPEC_NAME = "richmenu-v2-line.json"
