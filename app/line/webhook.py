@@ -507,6 +507,12 @@ def _build_settings_edit_prompt(source_id: str, key: str, operator_id: str | Non
     clear_pending_setting_change(source_id)
     return build_settings_edit_prompt_message(key, values.get(key, ""))
 
+async def _flush_settings_change_to_sheets() -> str:
+    if settings.STORAGE_BACKEND.strip().lower() != "sqlite":
+        return ""
+    await asyncio.to_thread(storage_sync.flush_outbox)
+    return storage_sync.sync_state.last_push_error
+
 async def _reply_history_current(source_id: str, reply_token: str) -> None:
     summary = history_service.get_current_batch_summary(source_id, get_session_batch_id(source_id))
     if not summary:
@@ -982,9 +988,23 @@ async def _handle_postback(
             await _reply_to(reply_token, "หมดเวลายืนยันการแก้ไขแล้วครับ")
             return
         settings_service.apply_setting_change(source_id, change.key, change.old_value, change.new_value)
+        sync_error = await _flush_settings_change_to_sheets()
         clear_pending_setting_change(source_id)
         set_settings_input_key(source_id, None)
-        await _reply_to(reply_token, build_settings_view_message(settings_service.get_current_settings(), True))
+        settings_view = build_settings_view_message(settings_service.get_current_settings(), True)
+        if sync_error:
+            await _reply_to(
+                reply_token,
+                [
+                    build_settings_sync_failed_message(sync_error),
+                    settings_view,
+                ],
+            )
+            return
+        if settings.STORAGE_BACKEND.strip().lower() == "sqlite":
+            await _reply_to(reply_token, ["บันทึกและซิงก์ Google Sheet แล้วครับ", settings_view])
+            return
+        await _reply_to(reply_token, settings_view)
         return
 
     if action == POSTBACK_SETTINGS_CANCEL_CHANGE:

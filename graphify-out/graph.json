@@ -1858,10 +1858,19 @@
       "norm_label": "_build_settings_edit_prompt()"
     },
     {
-      "label": "_reply_history_current()",
+      "label": "_flush_settings_change_to_sheets()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
       "source_location": "L510",
+      "id": "line_webhook_flush_settings_change_to_sheets",
+      "community": 2,
+      "norm_label": "_flush_settings_change_to_sheets()"
+    },
+    {
+      "label": "_reply_history_current()",
+      "file_type": "code",
+      "source_file": "app/line/webhook.py",
+      "source_location": "L516",
       "id": "line_webhook_reply_history_current",
       "community": 3,
       "norm_label": "_reply_history_current()"
@@ -1870,7 +1879,7 @@
       "label": "_reply_history_previous()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L520",
+      "source_location": "L526",
       "id": "line_webhook_reply_history_previous",
       "community": 3,
       "norm_label": "_reply_history_previous()"
@@ -1879,7 +1888,7 @@
       "label": "_reply_history_detail()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L527",
+      "source_location": "L533",
       "id": "line_webhook_reply_history_detail",
       "community": 3,
       "norm_label": "_reply_history_detail()"
@@ -1888,7 +1897,7 @@
       "label": "_after_successful_confirmation()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L539",
+      "source_location": "L545",
       "id": "line_webhook_after_successful_confirmation",
       "community": 3,
       "norm_label": "_after_successful_confirmation()"
@@ -1897,7 +1906,7 @@
       "label": "_build_reply()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L558",
+      "source_location": "L564",
       "id": "line_webhook_build_reply",
       "community": 3,
       "norm_label": "_build_reply()"
@@ -1906,7 +1915,7 @@
       "label": "_build_text_reply()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L562",
+      "source_location": "L568",
       "id": "line_webhook_build_text_reply",
       "community": 3,
       "norm_label": "_build_text_reply()"
@@ -1915,7 +1924,7 @@
       "label": "_send_confirm_reading_result()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L629",
+      "source_location": "L635",
       "id": "line_webhook_send_confirm_reading_result",
       "community": 3,
       "norm_label": "_send_confirm_reading_result()"
@@ -1924,16 +1933,16 @@
       "label": "_handle_postback()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L707",
+      "source_location": "L713",
       "id": "line_webhook_handle_postback",
-      "community": 0,
+      "community": 2,
       "norm_label": "_handle_postback()"
     },
     {
       "label": "_process_report_import_image()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L1086",
+      "source_location": "L1106",
       "id": "line_webhook_process_report_import_image",
       "community": 3,
       "norm_label": "_process_report_import_image()"
@@ -1942,7 +1951,7 @@
       "label": "_process_ocr_and_confirm()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L1121",
+      "source_location": "L1141",
       "id": "line_webhook_process_ocr_and_confirm",
       "community": 3,
       "norm_label": "_process_ocr_and_confirm()"
@@ -1951,7 +1960,7 @@
       "label": "handle_webhook()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L1196",
+      "source_location": "L1216",
       "id": "line_webhook_handle_webhook",
       "community": 3,
       "norm_label": "handle_webhook()"
@@ -3672,7 +3681,7 @@
       "source_file": "app/services/session_service.py",
       "source_location": "L35",
       "id": "services_session_service_pendingreportimport",
-      "community": 2,
+      "community": 0,
       "norm_label": "pendingreportimport"
     },
     {
@@ -7432,7 +7441,7 @@
       "label": "_FakeSheetsResponse",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L57",
+      "source_location": "L58",
       "id": "tests_test_line_webhook_postback_fakesheetsresponse",
       "community": 2,
       "norm_label": "_fakesheetsresponse"
@@ -7441,7 +7450,7 @@
       "label": ".json()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L60",
+      "source_location": "L61",
       "id": "tests_test_line_webhook_postback_fakesheetsresponse_json",
       "community": 2,
       "norm_label": ".json()"
@@ -7450,7 +7459,7 @@
       "label": "_clean_sessions()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L71",
+      "source_location": "L72",
       "id": "tests_test_line_webhook_postback_clean_sessions",
       "community": 2,
       "norm_label": "_clean_sessions()"
@@ -7459,7 +7468,7 @@
       "label": "_pending_import()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L80",
+      "source_location": "L81",
       "id": "tests_test_line_webhook_postback_pending_import",
       "community": 2,
       "norm_label": "_pending_import()"
@@ -7468,7 +7477,7 @@
       "label": "test_start_collection_postback_starts_linear_flow()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L104",
+      "source_location": "L105",
       "id": "tests_test_line_webhook_postback_test_start_collection_postback_starts_linear_flow",
       "community": 2,
       "norm_label": "test_start_collection_postback_starts_linear_flow()"
@@ -7477,7 +7486,7 @@
       "label": "test_start_collection_card_uses_batch_expected_meter_count()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L117",
+      "source_location": "L118",
       "id": "tests_test_line_webhook_postback_test_start_collection_card_uses_batch_expected_meter_count",
       "community": 2,
       "norm_label": "test_start_collection_card_uses_batch_expected_meter_count()"
@@ -7486,7 +7495,7 @@
       "label": "test_skip_meter_moves_to_next_machine()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L139",
+      "source_location": "L140",
       "id": "tests_test_line_webhook_postback_test_skip_meter_moves_to_next_machine",
       "community": 2,
       "norm_label": "test_skip_meter_moves_to_next_machine()"
@@ -7495,7 +7504,7 @@
       "label": "test_start_collection_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L159",
+      "source_location": "L160",
       "id": "tests_test_line_webhook_postback_test_start_collection_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_start_collection_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7504,7 +7513,7 @@
       "label": "test_select_meter_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L171",
+      "source_location": "L172",
       "id": "tests_test_line_webhook_postback_test_select_meter_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_select_meter_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7513,7 +7522,7 @@
       "label": "test_skip_meter_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L181",
+      "source_location": "L182",
       "id": "tests_test_line_webhook_postback_test_skip_meter_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_skip_meter_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7522,7 +7531,7 @@
       "label": "test_retake_photo_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L203",
+      "source_location": "L204",
       "id": "tests_test_line_webhook_postback_test_retake_photo_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_retake_photo_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7531,7 +7540,7 @@
       "label": "test_select_meter_postback_updates_current_meter()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L213",
+      "source_location": "L214",
       "id": "tests_test_line_webhook_postback_test_select_meter_postback_updates_current_meter",
       "community": 2,
       "norm_label": "test_select_meter_postback_updates_current_meter()"
@@ -7540,25 +7549,25 @@
       "label": "test_confirm_postback_moves_state_without_errors()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L227",
+      "source_location": "L228",
       "id": "tests_test_line_webhook_postback_test_confirm_postback_moves_state_without_errors",
-      "community": 1,
+      "community": 2,
       "norm_label": "test_confirm_postback_moves_state_without_errors()"
     },
     {
       "label": "test_confirm_postback_sends_batch_complete_card_when_all_meters_done()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L258",
+      "source_location": "L259",
       "id": "tests_test_line_webhook_postback_test_confirm_postback_sends_batch_complete_card_when_all_meters_done",
-      "community": 1,
+      "community": 2,
       "norm_label": "test_confirm_postback_sends_batch_complete_card_when_all_meters_done()"
     },
     {
       "label": "test_show_status_postback_returns_progress_card()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L299",
+      "source_location": "L300",
       "id": "tests_test_line_webhook_postback_test_show_status_postback_returns_progress_card",
       "community": 2,
       "norm_label": "test_show_status_postback_returns_progress_card()"
@@ -7567,7 +7576,7 @@
       "label": "test_confirm_postback_uses_pending_meter_in_loading_message()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L322",
+      "source_location": "L323",
       "id": "tests_test_line_webhook_postback_test_confirm_postback_uses_pending_meter_in_loading_message",
       "community": 2,
       "norm_label": "test_confirm_postback_uses_pending_meter_in_loading_message()"
@@ -7576,7 +7585,7 @@
       "label": "test_cancel_collection_marks_pending_cancelled()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L334",
+      "source_location": "L335",
       "id": "tests_test_line_webhook_postback_test_cancel_collection_marks_pending_cancelled",
       "community": 2,
       "norm_label": "test_cancel_collection_marks_pending_cancelled()"
@@ -7585,7 +7594,7 @@
       "label": "test_help_and_history_postback_are_supported()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L352",
+      "source_location": "L353",
       "id": "tests_test_line_webhook_postback_test_help_and_history_postback_are_supported",
       "community": 2,
       "norm_label": "test_help_and_history_postback_are_supported()"
@@ -7594,7 +7603,7 @@
       "label": "test_help_flow_postback_replies_with_selected_topic()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L362",
+      "source_location": "L363",
       "id": "tests_test_line_webhook_postback_test_help_flow_postback_replies_with_selected_topic",
       "community": 2,
       "norm_label": "test_help_flow_postback_replies_with_selected_topic()"
@@ -7603,7 +7612,7 @@
       "label": "test_history_postback_returns_history_menu_card()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L377",
+      "source_location": "L378",
       "id": "tests_test_line_webhook_postback_test_history_postback_returns_history_menu_card",
       "community": 2,
       "norm_label": "test_history_postback_returns_history_menu_card()"
@@ -7612,7 +7621,7 @@
       "label": "test_history_current_postback_shows_summary_actions()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L389",
+      "source_location": "L390",
       "id": "tests_test_line_webhook_postback_test_history_current_postback_shows_summary_actions",
       "community": 2,
       "norm_label": "test_history_current_postback_shows_summary_actions()"
@@ -7621,7 +7630,7 @@
       "label": "test_history_meter_postback_without_meter_returns_select_card()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L413",
+      "source_location": "L414",
       "id": "tests_test_line_webhook_postback_test_history_meter_postback_without_meter_returns_select_card",
       "community": 2,
       "norm_label": "test_history_meter_postback_without_meter_returns_select_card()"
@@ -7630,7 +7639,7 @@
       "label": "test_history_select_week_postback_shows_recent_batches()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L425",
+      "source_location": "L426",
       "id": "tests_test_line_webhook_postback_test_history_select_week_postback_shows_recent_batches",
       "community": 2,
       "norm_label": "test_history_select_week_postback_shows_recent_batches()"
@@ -7639,7 +7648,7 @@
       "label": "test_settings_postback_branches_by_operator_role()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L445",
+      "source_location": "L446",
       "id": "tests_test_line_webhook_postback_test_settings_postback_branches_by_operator_role",
       "community": 2,
       "norm_label": "test_settings_postback_branches_by_operator_role()"
@@ -7648,7 +7657,7 @@
       "label": "test_latest_report_postback_returns_report_summary_and_schedules_send()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L486",
+      "source_location": "L487",
       "id": "tests_test_line_webhook_postback_test_latest_report_postback_returns_report_summary_and_schedules_send",
       "community": 2,
       "norm_label": "test_latest_report_postback_returns_report_summary_and_schedules_send()"
@@ -7657,7 +7666,7 @@
       "label": "test_weekly_summary_postback_returns_report_summary_and_schedules_send()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L511",
+      "source_location": "L512",
       "id": "tests_test_line_webhook_postback_test_weekly_summary_postback_returns_report_summary_and_schedules_send",
       "community": 2,
       "norm_label": "test_weekly_summary_postback_returns_report_summary_and_schedules_send()"
@@ -7666,7 +7675,7 @@
       "label": "test_weekly_summary_postback_uses_session_batch_when_no_batch_id()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L540",
+      "source_location": "L541",
       "id": "tests_test_line_webhook_postback_test_weekly_summary_postback_uses_session_batch_when_no_batch_id",
       "community": 2,
       "norm_label": "test_weekly_summary_postback_uses_session_batch_when_no_batch_id()"
@@ -7675,7 +7684,7 @@
       "label": "test_weekly_summary_postback_falls_back_to_latest_batch_when_no_session_batch()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L567",
+      "source_location": "L568",
       "id": "tests_test_line_webhook_postback_test_weekly_summary_postback_falls_back_to_latest_batch_when_no_session_batch",
       "community": 2,
       "norm_label": "test_weekly_summary_postback_falls_back_to_latest_batch_when_no_session_batch()"
@@ -7684,7 +7693,7 @@
       "label": "test_weekly_summary_postback_keeps_empty_state_when_no_batch_exists()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L593",
+      "source_location": "L594",
       "id": "tests_test_line_webhook_postback_test_weekly_summary_postback_keeps_empty_state_when_no_batch_exists",
       "community": 2,
       "norm_label": "test_weekly_summary_postback_keeps_empty_state_when_no_batch_exists()"
@@ -7693,7 +7702,7 @@
       "label": "test_admin_can_start_report_import_from_settings()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L608",
+      "source_location": "L609",
       "id": "tests_test_line_webhook_postback_test_admin_can_start_report_import_from_settings",
       "community": 2,
       "norm_label": "test_admin_can_start_report_import_from_settings()"
@@ -7702,7 +7711,7 @@
       "label": "test_non_admin_cannot_start_report_import()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L618",
+      "source_location": "L619",
       "id": "tests_test_line_webhook_postback_test_non_admin_cannot_start_report_import",
       "community": 2,
       "norm_label": "test_non_admin_cannot_start_report_import()"
@@ -7711,7 +7720,7 @@
       "label": "test_admin_can_sync_google_sheet_to_sqlite()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L627",
+      "source_location": "L628",
       "id": "tests_test_line_webhook_postback_test_admin_can_sync_google_sheet_to_sqlite",
       "community": 2,
       "norm_label": "test_admin_can_sync_google_sheet_to_sqlite()"
@@ -7720,7 +7729,7 @@
       "label": "test_non_admin_cannot_sync_google_sheet_to_sqlite()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L642",
+      "source_location": "L643",
       "id": "tests_test_line_webhook_postback_test_non_admin_cannot_sync_google_sheet_to_sqlite",
       "community": 2,
       "norm_label": "test_non_admin_cannot_sync_google_sheet_to_sqlite()"
@@ -7729,7 +7738,7 @@
       "label": "test_admin_edit_rate_creates_input_step()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L654",
+      "source_location": "L655",
       "id": "tests_test_line_webhook_postback_test_admin_edit_rate_creates_input_step",
       "community": 2,
       "norm_label": "test_admin_edit_rate_creates_input_step()"
@@ -7738,16 +7747,25 @@
       "label": "test_settings_confirm_change_applies_pending_change()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L665",
+      "source_location": "L666",
       "id": "tests_test_line_webhook_postback_test_settings_confirm_change_applies_pending_change",
       "community": 2,
       "norm_label": "test_settings_confirm_change_applies_pending_change()"
     },
     {
+      "label": "test_settings_confirm_change_reports_google_sync_failure()",
+      "file_type": "code",
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L697",
+      "id": "tests_test_line_webhook_postback_test_settings_confirm_change_reports_google_sync_failure",
+      "community": 2,
+      "norm_label": "test_settings_confirm_change_reports_google_sync_failure()"
+    },
+    {
       "label": "test_confirm_report_import_appends_batch_and_readings()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L691",
+      "source_location": "L733",
       "id": "tests_test_line_webhook_postback_test_confirm_report_import_appends_batch_and_readings",
       "community": 2,
       "norm_label": "test_confirm_report_import_appends_batch_and_readings()"
@@ -7756,7 +7774,7 @@
       "label": "test_confirm_report_import_duplicate_batch_does_not_append()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L719",
+      "source_location": "L761",
       "id": "tests_test_line_webhook_postback_test_confirm_report_import_duplicate_batch_does_not_append",
       "community": 2,
       "norm_label": "test_confirm_report_import_duplicate_batch_does_not_append()"
@@ -7765,7 +7783,7 @@
       "label": "test_cancel_report_import_clears_state()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L738",
+      "source_location": "L780",
       "id": "tests_test_line_webhook_postback_test_cancel_report_import_clears_state",
       "community": 2,
       "norm_label": "test_cancel_report_import_clears_state()"
@@ -7774,7 +7792,7 @@
       "label": "test_non_admin_cannot_cancel_report_import()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L749",
+      "source_location": "L791",
       "id": "tests_test_line_webhook_postback_test_non_admin_cannot_cancel_report_import",
       "community": 2,
       "norm_label": "test_non_admin_cannot_cancel_report_import()"
@@ -7783,7 +7801,7 @@
       "label": "test_next_meter_linear_with_skipped_meters()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L762",
+      "source_location": "L804",
       "id": "tests_test_line_webhook_postback_test_next_meter_linear_with_skipped_meters",
       "community": 2,
       "norm_label": "test_next_meter_linear_with_skipped_meters()"
@@ -7792,7 +7810,7 @@
       "label": "test_postback_safety_replies_on_sheets_api_error()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L779",
+      "source_location": "L821",
       "id": "tests_test_line_webhook_postback_test_postback_safety_replies_on_sheets_api_error",
       "community": 2,
       "norm_label": "test_postback_safety_replies_on_sheets_api_error()"
@@ -12770,9 +12788,9 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_storage_sync_py",
-      "target": "storage_sync_pull_all_from_sheets",
-      "confidence_score": 1.0
+      "target": "storage_sync_pull_all_from_sheets"
     },
     {
       "relation": "contains",
@@ -12780,9 +12798,9 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L70",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_storage_sync_py",
-      "target": "storage_sync_pull_tables_from_sheets",
-      "confidence_score": 1.0
+      "target": "storage_sync_pull_tables_from_sheets"
     },
     {
       "relation": "contains",
@@ -12841,9 +12859,9 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L78",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storage_sync_pull_tables_from_sheets",
-      "target": "storage_sync_sheets_client",
-      "confidence_score": 1.0
+      "target": "storage_sync_sheets_client"
     },
     {
       "relation": "calls",
@@ -12874,9 +12892,9 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L57",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storage_sync_pull_business_config_from_sheets",
-      "target": "storage_sync_pull_tables_from_sheets",
-      "confidence_score": 1.0
+      "target": "storage_sync_pull_tables_from_sheets"
     },
     {
       "relation": "calls",
@@ -12918,9 +12936,9 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storage_sync_pull_all_from_sheets",
-      "target": "storage_sync_pull_tables_from_sheets",
-      "confidence_score": 1.0
+      "target": "storage_sync_pull_tables_from_sheets"
     },
     {
       "relation": "calls",
@@ -12929,9 +12947,9 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L84",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storage_sync_pull_tables_from_sheets",
-      "target": "storage_sync_now",
-      "confidence_score": 1.0
+      "target": "storage_sync_now"
     },
     {
       "relation": "calls",
@@ -12940,9 +12958,9 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L86",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storage_sync_pull_tables_from_sheets",
-      "target": "storage_sync_refresh_last_error",
-      "confidence_score": 1.0
+      "target": "storage_sync_refresh_last_error"
     },
     {
       "relation": "calls",
@@ -13082,9 +13100,9 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storage_sqlite_sqliteclient",
-      "target": "storage_sqlite_sqliteclient_replace_tables",
-      "confidence_score": 1.0
+      "target": "storage_sqlite_sqliteclient_replace_tables"
     },
     {
       "relation": "method",
@@ -13287,9 +13305,9 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L110",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storage_sqlite_sqliteclient_replace_tables",
-      "target": "storage_sqlite_sqliteclient_connect",
-      "confidence_score": 1.0
+      "target": "storage_sqlite_sqliteclient_connect"
     },
     {
       "relation": "calls",
@@ -13507,9 +13525,9 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L103",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storage_sqlite_sqliteclient_replace_all",
-      "target": "storage_sqlite_sqliteclient_replace_tables",
-      "confidence_score": 1.0
+      "target": "storage_sqlite_sqliteclient_replace_tables"
     },
     {
       "relation": "calls",
@@ -13529,9 +13547,9 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L107",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storage_sqlite_sqliteclient_replace_tables",
-      "target": "storage_sqlite_sqliteclient_headers",
-      "confidence_score": 1.0
+      "target": "storage_sqlite_sqliteclient_headers"
     },
     {
       "relation": "calls",
@@ -13540,9 +13558,9 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L117",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storage_sqlite_sqliteclient_replace_tables",
-      "target": "storage_sqlite_sqliteclient_to_text",
-      "confidence_score": 1.0
+      "target": "storage_sqlite_sqliteclient_to_text"
     },
     {
       "relation": "calls",
@@ -14120,6 +14138,16 @@
       "confidence_score": 1.0,
       "source": "app_line_webhook_py",
       "target": "line_webhook_build_settings_edit_prompt"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/webhook.py",
+      "source_location": "L510",
+      "weight": 1.0,
+      "source": "app_line_webhook_py",
+      "target": "line_webhook_flush_settings_change_to_sheets",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14951,9 +14979,9 @@
       "source_file": "app/line/webhook.py",
       "source_location": "L872",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_webhook_handle_postback",
-      "target": "line_webhook_push_to",
-      "confidence_score": 1.0
+      "target": "line_webhook_push_to"
     },
     {
       "relation": "calls",
@@ -15583,6 +15611,17 @@
       "confidence_score": 1.0,
       "source": "line_webhook_py",
       "target": "line_webhook_build_settings_edit_prompt"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/webhook.py",
+      "source_location": "L991",
+      "weight": 1.0,
+      "source": "line_webhook_handle_postback",
+      "target": "line_webhook_flush_settings_change_to_sheets",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -17035,6 +17074,17 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L718",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_settings_confirm_change_reports_google_sync_failure",
+      "target": "line_webhook_handle_postback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L374",
       "weight": 1.0,
       "source": "tests_test_line_webhook_postback_test_confirm_report_import_appends_batch_and_readings",
@@ -18469,6 +18519,17 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L720",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_settings_confirm_change_reports_google_sync_failure",
+      "target": "line_parser_parsedpostback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L374",
       "weight": 1.0,
       "source": "tests_test_line_webhook_postback_test_confirm_report_import_appends_batch_and_readings",
@@ -18900,9 +18961,9 @@
       "source_file": "app/line/parser.py",
       "source_location": "L239",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_parser_rationale_239",
-      "target": "line_parser_parse_report_import_text",
-      "confidence_score": 1.0
+      "target": "line_parser_parse_report_import_text"
     },
     {
       "relation": "calls",
@@ -19651,9 +19712,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1834",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_line_messages_py",
-      "target": "line_messages_build_settings_sync_success_message",
-      "confidence_score": 1.0
+      "target": "line_messages_build_settings_sync_success_message"
     },
     {
       "relation": "contains",
@@ -19661,9 +19722,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1846",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_line_messages_py",
-      "target": "line_messages_build_settings_sync_failed_message",
-      "confidence_score": 1.0
+      "target": "line_messages_build_settings_sync_failed_message"
     },
     {
       "relation": "contains",
@@ -20065,9 +20126,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1841",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_settings_sync_success_message",
-      "target": "line_messages_build_postback_data",
-      "confidence_score": 1.0
+      "target": "line_messages_build_postback_data"
     },
     {
       "relation": "calls",
@@ -20076,9 +20137,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1856",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_settings_sync_failed_message",
-      "target": "line_messages_build_postback_data",
-      "confidence_score": 1.0
+      "target": "line_messages_build_postback_data"
     },
     {
       "relation": "calls",
@@ -21161,9 +21222,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1835",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_settings_sync_success_message",
-      "target": "line_messages_text_with_actions",
-      "confidence_score": 1.0
+      "target": "line_messages_text_with_actions"
     },
     {
       "relation": "calls",
@@ -21172,9 +21233,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1850",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_settings_sync_failed_message",
-      "target": "line_messages_text_with_actions",
-      "confidence_score": 1.0
+      "target": "line_messages_text_with_actions"
     },
     {
       "relation": "calls",
@@ -26860,6 +26921,17 @@
       "target": "services_session_service_set_pending_setting_change"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L699",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_settings_confirm_change_reports_google_sync_failure",
+      "target": "services_session_service_set_pending_setting_change"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "services/session_service.py",
@@ -29120,9 +29192,9 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_storage_sync_py",
-      "target": "tests_test_storage_sync_test_manual_pull_replaces_all_sqlite_tables_from_sheets",
-      "confidence_score": 1.0
+      "target": "tests_test_storage_sync_test_manual_pull_replaces_all_sqlite_tables_from_sheets"
     },
     {
       "relation": "contains",
@@ -29213,9 +29285,9 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_storage_sync_test_manual_pull_replaces_all_sqlite_tables_from_sheets",
-      "target": "tests_test_storage_sync_use_sqlite",
-      "confidence_score": 1.0
+      "target": "tests_test_storage_sync_use_sqlite"
     },
     {
       "relation": "calls",
@@ -33228,9 +33300,9 @@
       "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L627",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_webhook_postback_py",
-      "target": "tests_test_line_webhook_postback_test_admin_can_sync_google_sheet_to_sqlite",
-      "confidence_score": 1.0
+      "target": "tests_test_line_webhook_postback_test_admin_can_sync_google_sheet_to_sqlite"
     },
     {
       "relation": "contains",
@@ -33238,9 +33310,9 @@
       "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L642",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_webhook_postback_py",
-      "target": "tests_test_line_webhook_postback_test_non_admin_cannot_sync_google_sheet_to_sqlite",
-      "confidence_score": 1.0
+      "target": "tests_test_line_webhook_postback_test_non_admin_cannot_sync_google_sheet_to_sqlite"
     },
     {
       "relation": "contains",
@@ -33261,6 +33333,16 @@
       "confidence_score": 1.0,
       "source": "tests_test_line_webhook_postback_py",
       "target": "tests_test_line_webhook_postback_test_settings_confirm_change_applies_pending_change"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L697",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_py",
+      "target": "tests_test_line_webhook_postback_test_settings_confirm_change_reports_google_sync_failure",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",

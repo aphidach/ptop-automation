@@ -34,6 +34,7 @@ from app.config import settings
 from app.line.webhook import _handle_postback, _next_meter_to_capture
 from app.services.batch_service import BatchProgress
 from app.services.confirmation_service import PendingConfirmation
+from app.storage import sync as storage_sync
 from app.services.session_service import (
     COLLECTION_WAITING_IMAGE,
     REPORT_IMPORT_IDLE,
@@ -662,7 +663,8 @@ async def test_admin_edit_rate_creates_input_step():
     assert "4.2" in payload.text
 
 @pytest.mark.anyio
-async def test_settings_confirm_change_applies_pending_change():
+async def test_settings_confirm_change_applies_pending_change(monkeypatch):
+    monkeypatch.setattr(settings, "STORAGE_BACKEND", "sqlite")
     set_pending_setting_change(
         source_id="U1",
         change_id="chg_1",
@@ -675,6 +677,7 @@ async def test_settings_confirm_change_applies_pending_change():
 
     with patch("app.line.webhook.settings_service.is_admin", return_value=True), \
          patch("app.line.webhook.settings_service.apply_setting_change") as mock_apply, \
+         patch("app.line.webhook.storage_sync.flush_outbox", return_value=1) as mock_flush, \
          patch("app.line.webhook.settings_service.get_current_settings", return_value={"default_rate": "4.5"}), \
          patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
         await _handle_postback(
@@ -684,7 +687,46 @@ async def test_settings_confirm_change_applies_pending_change():
         )
 
     mock_apply.assert_called_once_with("U1", "default_rate", "4.2", "4.5")
-    assert "การตั้งค่าปัจจุบัน" in mock_reply.await_args.args[1].text
+    mock_flush.assert_called_once()
+    payload = mock_reply.await_args.args[1]
+    assert payload[0] == "บันทึกและซิงก์ Google Sheet แล้วครับ"
+    assert "การตั้งค่าปัจจุบัน" in payload[1].text
+
+
+@pytest.mark.anyio
+async def test_settings_confirm_change_reports_google_sync_failure(monkeypatch):
+    monkeypatch.setattr(settings, "STORAGE_BACKEND", "sqlite")
+    set_pending_setting_change(
+        source_id="U1",
+        change_id="chg_1",
+        key="report_title",
+        old_value="รายงานเดิม",
+        new_value="การผลิตไฟ",
+        label="ชื่อรายงาน",
+        impact="ใช้ครั้งถัดไป",
+    )
+
+    def fail_flush():
+        storage_sync.sync_state.last_push_error = "quota exceeded"
+        return 0
+
+    with patch("app.line.webhook.settings_service.is_admin", return_value=True), \
+         patch("app.line.webhook.settings_service.apply_setting_change") as mock_apply, \
+         patch("app.line.webhook.storage_sync.flush_outbox", side_effect=fail_flush) as mock_flush, \
+         patch("app.line.webhook.settings_service.get_current_settings", return_value={"report_title": "การผลิตไฟ"}), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback(
+            "U1",
+            ParsedPostback(type=POSTBACK_SETTINGS_CONFIRM_CHANGE, change_id="chg_1"),
+            "rt",
+        )
+
+    mock_apply.assert_called_once_with("U1", "report_title", "รายงานเดิม", "การผลิตไฟ")
+    mock_flush.assert_called_once()
+    payload = mock_reply.await_args.args[1]
+    assert "ซิงก์ Google Sheet ไม่สำเร็จ" in payload[0].text
+    assert "quota exceeded" in payload[0].text
+    assert "การตั้งค่าปัจจุบัน" in payload[1].text
 
 
 @pytest.mark.anyio

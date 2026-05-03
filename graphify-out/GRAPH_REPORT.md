@@ -1,12 +1,12 @@
 # Graph Report - repo-ptop-autometion  (2026-05-04)
 
 ## Corpus Check
-- 73 files · ~1,194,791 words
+- 73 files · ~1,194,937 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 979 nodes · 2440 edges · 32 communities detected
-- Extraction: 73% EXTRACTED · 27% INFERRED · 0% AMBIGUOUS · INFERRED: 657 edges (avg confidence: 0.77)
+- 981 nodes · 2446 edges · 32 communities detected
+- Extraction: 73% EXTRACTED · 27% INFERRED · 0% AMBIGUOUS · INFERRED: 660 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -44,9 +44,9 @@
 - [[_COMMUNITY_Community 35|Community 35]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `_handle_postback()` - 93 edges
-2. `handle_webhook()` - 40 edges
-3. `ParsedPostback` - 40 edges
+1. `_handle_postback()` - 95 edges
+2. `ParsedPostback` - 41 edges
+3. `handle_webhook()` - 40 edges
 4. `build_postback_data()` - 39 edges
 5. `_text_with_actions()` - 33 edges
 6. `parse_meter_value()` - 30 edges
@@ -86,11 +86,11 @@ Nodes (105): _body_text(), _bool_th(), build_batch_complete_card(), build_confir
 
 ### Community 1 - "Community 1"
 Cohesion: 0.04
-Nodes (59): build_confirmation_message(), cancel_pending(), clear_pending_confirmation(), confirm_pending(), create_pending_confirmation(), _decimal_or_none(), _ensure_batch_id(), _epoch_from_iso() (+51 more)
+Nodes (57): build_confirmation_message(), cancel_pending(), clear_pending_confirmation(), confirm_pending(), create_pending_confirmation(), _decimal_or_none(), _ensure_batch_id(), _epoch_from_iso() (+49 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.06
-Nodes (79): ParsedPostback, _build_settings_input_reply(), Protocol, BatchProgress, clear_collection_meter(), clear_collection_skip_meters(), clear_pending_confirmation(), clear_pending_report_import() (+71 more)
+Cohesion: 0.07
+Nodes (83): ParsedPostback, _build_settings_input_reply(), _flush_settings_change_to_sheets(), _handle_postback(), Protocol, BatchProgress, clear_collection_meter(), clear_collection_skip_meters() (+75 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.07
@@ -204,13 +204,13 @@ _Questions this graph is uniquely positioned to answer:_
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
 - **Why does `_process_ocr_and_confirm()` connect `Community 3` to `Community 0`, `Community 1`, `Community 2`, `Community 5`, `Community 14`?**
   _High betweenness centrality (0.181) - this node is a cross-community bridge._
-- **Why does `_handle_postback()` connect `Community 0` to `Community 1`, `Community 2`, `Community 3`, `Community 6`, `Community 7`, `Community 8`?**
-  _High betweenness centrality (0.133) - this node is a cross-community bridge._
+- **Why does `_handle_postback()` connect `Community 2` to `Community 0`, `Community 3`, `Community 6`, `Community 7`, `Community 8`?**
+  _High betweenness centrality (0.134) - this node is a cross-community bridge._
 - **Why does `parse_meter_value()` connect `Community 5` to `Community 3`, `Community 4`?**
   _High betweenness centrality (0.115) - this node is a cross-community bridge._
-- **Are the 78 inferred relationships involving `_handle_postback()` (e.g. with `set_collection_state()` and `clear_collection_skip_meters()`) actually correct?**
-  _`_handle_postback()` has 78 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 79 inferred relationships involving `_handle_postback()` (e.g. with `set_collection_state()` and `clear_collection_skip_meters()`) actually correct?**
+  _`_handle_postback()` has 79 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 38 inferred relationships involving `ParsedPostback` (e.g. with `_FakeSheetsResponse` and `test_start_collection_postback_starts_linear_flow()`) actually correct?**
+  _`ParsedPostback` has 38 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 24 inferred relationships involving `handle_webhook()` (e.g. with `parse_postback_action()` and `get_collection_state()`) actually correct?**
   _`handle_webhook()` has 24 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 37 inferred relationships involving `ParsedPostback` (e.g. with `_FakeSheetsResponse` and `test_start_collection_postback_starts_linear_flow()`) actually correct?**
-  _`ParsedPostback` has 37 INFERRED edges - model-reasoned connections that need verification._
