@@ -9,7 +9,7 @@ This project publishes deployable Docker images to GitHub Container Registry whe
 - Python package metadata: `pyproject.toml`
 - Runtime version constant: `app/version.py`
 - Docker image label/build arg: `APP_VERSION`
-- Default Makefile version: `VERSION ?= 0.1.1`
+- Default Makefile version: `VERSION ?= 0.1.2`
 
 Keep these values aligned when cutting a new release.
 

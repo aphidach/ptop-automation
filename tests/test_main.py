@@ -8,7 +8,7 @@ from app.version import __version__
 
 
 def test_app_version_is_current_release():
-    assert __version__ == "0.1.1"
+    assert __version__ == "0.1.2"
 
 
 def test_package_version_matches_app_version():
@@ -16,6 +16,10 @@ def test_package_version_matches_app_version():
 
     assert pyproject["project"]["version"] == __version__
     assert app.version == settings.APP_VERSION
+
+
+def test_log_level_defaults_to_info():
+    assert settings.LOG_LEVEL == "INFO"
 
 
 def test_health_includes_release_version():

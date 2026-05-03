@@ -4,6 +4,10 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
+from app.logging_config import configure_logging
+
+configure_logging()
+
 from app.line.webhook import router as line_webhook_router
 
 app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION)

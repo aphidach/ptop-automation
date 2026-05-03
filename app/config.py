@@ -12,6 +12,7 @@ class Settings:
     APP_VERSION: str = os.getenv("APP_VERSION", __version__)
     APP_ENV: str = os.getenv("APP_ENV", "development")
     APP_BASE_URL: str = os.getenv("APP_BASE_URL", "http://localhost:8000")
+    LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
     TIMEZONE: str = os.getenv("TIMEZONE", "Asia/Bangkok")
 
     LINE_CHANNEL_ACCESS_TOKEN: str = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", "")

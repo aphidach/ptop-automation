@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "solar-meter-bot"
-version = "0.1.1"
+version = "0.1.2"
 description = "LINE bot for solar meter OCR reporting"
 requires-python = ">=3.12"
 dependencies = [

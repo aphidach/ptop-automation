@@ -1,9 +1,10 @@
-VERSION ?= 0.1.1
+VERSION ?= 0.1.2
 IMAGE ?= solar-meter-bot
 PORT ?= 8000
 DOCKER_RUN_ENV ?= .env
+GITLEAKS_IMAGE ?= ghcr.io/gitleaks/gitleaks:v8.30.1
 
-.PHONY: run install test ocr-test package wheel docker-build docker-run release-tag richmenu-check richmenu-validate richmenu-upload
+.PHONY: run install test secrets-scan ocr-test package wheel docker-build docker-run release-tag richmenu-check richmenu-validate richmenu-upload
 
 run:
 	uv run uvicorn app.main:app --reload --port 8000
@@ -13,6 +14,16 @@ install:
 
 test:
 	uv run --extra dev pytest
+
+secrets-scan:
+	@if command -v gitleaks >/dev/null 2>&1; then \
+		gitleaks git --redact --verbose --log-opts="--all" .; \
+	elif command -v docker >/dev/null 2>&1; then \
+		docker run --rm -v "$$(pwd):/repo" -w /repo $(GITLEAKS_IMAGE) git --redact --verbose --log-opts="--all" /repo; \
+	else \
+		echo "Install gitleaks or Docker to run secrets-scan." >&2; \
+		exit 127; \
+	fi
 
 ocr-test:
 	uv run python scripts/evaluate_ocr.py
