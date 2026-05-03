@@ -154,6 +154,7 @@ def reset_collection_session(source_id: str) -> None:
     session.collection_state = COLLECTION_IDLE
     session.collection_current_meter_id = None
     session.collection_skipped_meters.clear()
+    session.batch_id = None
 
 
 def set_pending_confirmation(
