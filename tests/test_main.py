@@ -7,8 +7,8 @@ from app.main import app, health
 from app.version import __version__
 
 
-def test_app_version_starts_at_0_1_0():
-    assert __version__ == "0.1.0"
+def test_app_version_is_current_release():
+    assert __version__ == "0.1.1"
 
 
 def test_package_version_matches_app_version():

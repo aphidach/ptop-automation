@@ -1,4 +1,4 @@
-VERSION ?= 0.1.0
+VERSION ?= 0.1.1
 IMAGE ?= solar-meter-bot
 PORT ?= 8000
 DOCKER_RUN_ENV ?= .env
