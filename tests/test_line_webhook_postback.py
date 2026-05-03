@@ -16,6 +16,7 @@ from app.line.parser import (
     POSTBACK_HISTORY,
     POSTBACK_HISTORY_CURRENT,
     POSTBACK_HISTORY_SELECT_WEEK,
+    POSTBACK_RETAKE_PHOTO,
     POSTBACK_SELECT_METER,
     POSTBACK_SHOW_STATUS,
     POSTBACK_SKIP_METER,
@@ -25,6 +26,7 @@ from app.line.parser import (
     POSTBACK_SETTINGS_EDIT_RATE,
     POSTBACK_SETTINGS_IMPORT_REPORT,
 )
+from app.config import settings
 from app.line.webhook import _handle_postback, _next_meter_to_capture
 from app.services.batch_service import BatchProgress
 from app.services.confirmation_service import PendingConfirmation
@@ -150,13 +152,71 @@ async def test_skip_meter_moves_to_next_machine():
 
 
 @pytest.mark.anyio
+async def test_start_collection_postback_uses_configured_meter_ids_for_meter_request():
+    with patch("app.line.webhook.ensure_batch_id", return_value="2026-W19-U1"), \
+         patch("app.line.webhook.get_batch_progress", return_value=None), \
+         patch("app.line.webhook.build_meter_request_message") as mock_meter_message, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock):
+        mock_meter_message.return_value = "meter_request"
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_START_COLLECTION), "rt")
+
+    mock_meter_message.assert_called_once_with("M1", meter_ids=settings.VALID_METER_IDS)
+
+
+@pytest.mark.anyio
+async def test_select_meter_postback_uses_configured_meter_ids_for_meter_request():
+    with patch("app.line.webhook.build_meter_request_message") as mock_meter_message, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock):
+        mock_meter_message.return_value = "meter_request"
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SELECT_METER, meter_id="M3"), "rt")
+
+    mock_meter_message.assert_called_once_with("M3", meter_ids=settings.VALID_METER_IDS)
+
+
+@pytest.mark.anyio
+async def test_skip_meter_postback_uses_configured_meter_ids_for_meter_request():
+    set_batch_id("U1", "2026-W19-U1")
+    set_collection_current_meter("U1", "M1")
+    progress = BatchProgress(
+        batch_id="2026-W19-U1",
+        week="2026-W19",
+        status="collecting",
+        expected_meter_count=8,
+        confirmed_meter_count=0,
+        missing_meter_ids=["M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"],
+    )
+
+    with patch("app.line.webhook.get_batch_progress", return_value=progress), \
+         patch("app.line.webhook.build_meter_request_message") as mock_meter_message, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock):
+        mock_meter_message.return_value = "meter_request"
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SKIP_METER, meter_id="M1"), "rt")
+
+    mock_meter_message.assert_called_once_with("M2", meter_ids=settings.VALID_METER_IDS)
+
+
+@pytest.mark.anyio
+async def test_retake_photo_postback_uses_configured_meter_ids_for_meter_request():
+    with patch("app.line.webhook.build_meter_request_message") as mock_meter_message, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock):
+        mock_meter_message.return_value = "meter_request"
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_RETAKE_PHOTO, meter_id="M4"), "rt")
+
+    mock_meter_message.assert_called_once_with("M4", meter_ids=settings.VALID_METER_IDS)
+
+
+@pytest.mark.anyio
 async def test_select_meter_postback_updates_current_meter():
-    with patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+    with patch("app.line.webhook.build_meter_request_message", return_value="meter_card") as mock_request, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SELECT_METER, meter_id="M3"), "rt")
 
     assert get_collection_current_meter("U1") == "M3"
     assert get_collection_state("U1") == COLLECTION_WAITING_IMAGE
     assert mock_reply.await_count == 1
+    assert mock_request.call_count == 1
+    assert mock_request.call_args.args == ("M3",)
+    assert mock_request.call_args.kwargs == {"meter_ids": ["M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"]}
 
 
 @pytest.mark.anyio

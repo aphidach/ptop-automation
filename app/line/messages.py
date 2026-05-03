@@ -54,6 +54,7 @@ from app.line.parser import (
 )
 
 QUICK_TEXT_LIMIT = 20
+LINE_QUICK_REPLY_ITEM_LIMIT = 13
 DEFAULT_METER_IDS = ("M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8")
 
 CARD_COLORS = {
@@ -322,13 +323,31 @@ def _section_title(text: str, *, color: str = CARD_COLORS["dark_green"]) -> dict
     }
 
 
-def _status_badge(label: str, *, color: str, background_color: str) -> dict:
+def _status_badge(
+    label: str,
+    *,
+    tone: str = "success",
+    color: str | None = None,
+    background_color: str | None = None,
+) -> dict:
+    tone_styles = {
+        "success": {
+            "color": CARD_COLORS["dark_green"],
+            "background_color": CARD_COLORS["light_green"],
+        },
+        "warning": {
+            "color": CARD_COLORS["warning_text"],
+            "background_color": "#FFF8E1",
+        },
+    }
+    palette = tone_styles.get(tone, tone_styles["success"])
+
     return {
         "type": "box",
         "layout": "vertical",
         "cornerRadius": "12px",
         "paddingAll": "6px",
-        "backgroundColor": background_color,
+        "backgroundColor": background_color or palette["background_color"],
         "contents": [
             {
                 "type": "text",
@@ -336,7 +355,7 @@ def _status_badge(label: str, *, color: str, background_color: str) -> dict:
                 "size": "xs",
                 "weight": "bold",
                 "align": "center",
-                "color": color,
+                "color": color or palette["color"],
                 "wrap": True,
             }
         ],
@@ -506,6 +525,7 @@ def _card_shell(
     subtitle: str | None = None,
     step_badge: str | None = None,
     status_badge: str | None = None,
+    status_badge_tone: str = "success",
     hero_image_url: str | None = None,
     body_contents: Sequence[dict] = (),
     primary_action: dict | None = None,
@@ -535,8 +555,7 @@ def _card_shell(
         contents["body"]["contents"].append(
             _status_badge(
                 status_badge,
-                color=CARD_COLORS["dark_green"],
-                background_color=CARD_COLORS["light_green"],
+                tone=status_badge_tone,
             )
         )
     contents["body"]["contents"].extend(body_contents)
@@ -577,11 +596,15 @@ def _meter_grid(
     missing_meter_ids: Sequence[str] | None = None,
     confirmed_meter_count: int | None = None,
     total_count: int | None = None,
+    meter_ids: Sequence[str] | None = None,
 ) -> dict:
     missing = set(missing_meter_ids or ())
-    meter_ids = DEFAULT_METER_IDS[:total_count] if total_count else DEFAULT_METER_IDS
+    if meter_ids is not None:
+        display_meter_ids = list(meter_ids)
+    else:
+        display_meter_ids = DEFAULT_METER_IDS[:total_count] if total_count else DEFAULT_METER_IDS
     meter_boxes = []
-    for meter_id in meter_ids:
+    for meter_id in display_meter_ids:
         is_current = meter_id == current_meter_id
         is_missing = meter_id in missing if missing_meter_ids is not None else False
         if is_current:
@@ -621,7 +644,11 @@ def _meter_grid(
         for index in range(0, len(meter_boxes), 4)
     ]
     if confirmed_meter_count is not None:
-        denominator = total_count or len(DEFAULT_METER_IDS)
+        denominator = (
+            len(display_meter_ids)
+            if total_count is None and meter_ids is not None
+            else (total_count or len(DEFAULT_METER_IDS))
+        )
         rows.insert(
             0,
             {
@@ -774,63 +801,32 @@ def build_start_collection_card(
     )
 
 
-def build_meter_request_message(meter_id: str) -> FlexMessage:
+def build_meter_request_message(
+    meter_id: str,
+    meter_ids: Sequence[str] | None = None,
+) -> FlexMessage:
+    meter_id_list = list(meter_ids or DEFAULT_METER_IDS)
+    visible_meter_ids = meter_id_list[: LINE_QUICK_REPLY_ITEM_LIMIT - 3]
+    if meter_id in meter_id_list and meter_id not in visible_meter_ids:
+        visible_meter_ids = [*visible_meter_ids[:-1], meter_id]
     meter_actions = [
         (target, "postback", build_postback_data(action=POSTBACK_SELECT_METER, meter_id=target))
-        for target in DEFAULT_METER_IDS
+        for target in visible_meter_ids
     ]
-    action = _quick_reply_from_actions(
-        [
+    return _card_shell(
+        alt_text=f"ถ่ายรูปเครื่อง {meter_id}",
+        title="รอรูปมิเตอร์",
+        subtitle=f"ถ่ายรูป {meter_id}",
+        body_contents=[
+            _body_text("ให้เห็นตัวเลขบนหน้าจอชัดเจน หากต้องการเปลี่ยนเครื่องให้เลือกด้านล่าง"),
+            _meter_grid(current_meter_id=meter_id, meter_ids=meter_id_list),
+        ],
+        quick_actions=(
             ("ข้าม", "postback", build_postback_data(action=POSTBACK_SKIP_METER, meter_id=meter_id)),
             *meter_actions,
             ("ดูสถานะ", "postback", build_postback_data(action=POSTBACK_SHOW_STATUS)),
             ("ยกเลิก", "postback", build_postback_data(action=POSTBACK_CANCEL_COLLECTION)),
-        ]
-    )
-    contents = {
-        "type": "bubble",
-        "styles": {"footer": {"separator": True}},
-        "body": {
-            "type": "box",
-            "layout": "vertical",
-            "spacing": "md",
-            "paddingAll": CARD_PADDING,
-            "contents": [
-                _section_title("รอรูปมิเตอร์"),
-                {
-                    "type": "text",
-                    "text": f"ถ่ายรูป {meter_id}",
-                    "size": "xl",
-                    "weight": "bold",
-                    "color": CARD_COLORS["text"],
-                    "wrap": True,
-                },
-                {
-                    "type": "text",
-                    "text": "ให้เห็นตัวเลขบนหน้าจอชัดเจน หากต้องการเปลี่ยนเครื่องให้เลือก M1-M8 ด้านล่าง",
-                    "size": "sm",
-                    "color": CARD_COLORS["neutral_gray"],
-                    "wrap": True,
-                },
-                _meter_grid(current_meter_id=meter_id),
-            ],
-        },
-        "footer": {
-            "type": "box",
-            "layout": "horizontal",
-            "spacing": "sm",
-            "paddingAll": CARD_PADDING,
-            "contents": [
-                _postback_button("ข้าม", POSTBACK_SKIP_METER, meter_id=meter_id),
-                _postback_button("ดูสถานะ", POSTBACK_SHOW_STATUS),
-                _postback_button("ยกเลิก", POSTBACK_CANCEL_COLLECTION),
-            ],
-        },
-    }
-    return FlexMessage(
-        alt_text=f"ถ่ายรูปเครื่อง {meter_id}",
-        contents=FlexContainer.from_dict(contents),
-        quick_reply=action,
+        ),
     )
 
 def build_confirmation_card(
@@ -896,45 +892,25 @@ def build_confirmation_card(
         }
     )
 
-    contents = {
-        "type": "bubble",
-        "styles": {"footer": {"separator": True}},
-        "body": {
-            "type": "box",
-            "layout": "vertical",
-            "spacing": "md",
-            "contents": body_contents,
-            "paddingAll": CARD_PADDING,
-        },
-        "footer": {
-            "type": "box",
-            "layout": "vertical",
-            "spacing": "sm",
-            "contents": [
-                _postback_button(
-                    "ยืนยัน",
-                    POSTBACK_CONFIRM_READING,
-                    meter_id=meter_id,
-                    style="primary",
-                    color=CARD_COLORS["primary"],
-                ),
-                {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "spacing": "sm",
-                    "contents": [
-                        _postback_button("แก้ไข", POSTBACK_EDIT_READING, meter_id=meter_id),
-                        _postback_button("ถ่ายใหม่", POSTBACK_RETAKE_PHOTO, meter_id=meter_id),
-                    ],
-                },
-                _postback_button("ยกเลิก", POSTBACK_CANCEL_COLLECTION, style="link"),
-            ],
-            "paddingAll": CARD_PADDING,
-        },
-    }
-    return FlexMessage(
+    return _card_shell(
         alt_text=f"ยืนยันค่ามิเตอร์ {meter_id}",
-        contents=FlexContainer.from_dict(contents),
+        title="ยืนยันค่ามิเตอร์",
+        subtitle=f"มิเตอร์ {meter_id}",
+        body_contents=body_contents,
+        primary_action=_postback_button(
+            "ยืนยัน",
+            POSTBACK_CONFIRM_READING,
+            meter_id=meter_id,
+            style="primary",
+            color=CARD_COLORS["primary"],
+        ),
+        secondary_actions=(
+            _postback_button("แก้ไข", POSTBACK_EDIT_READING, meter_id=meter_id),
+            _postback_button("ถ่ายใหม่", POSTBACK_RETAKE_PHOTO, meter_id=meter_id),
+        ),
+        quick_actions=(
+            ("ยกเลิก", "postback", build_postback_data(action=POSTBACK_CANCEL_COLLECTION)),
+        ),
     )
 
 
@@ -953,15 +929,6 @@ def build_ocr_review_message(
             ("เหตุผล", warning_text),
         ),
         footer_buttons=(
-            {
-                "type": "box",
-                "layout": "horizontal",
-                "spacing": "sm",
-                "contents": [
-                    _postback_button("แก้ไข", POSTBACK_EDIT_READING, meter_id=meter_id),
-                    _postback_button("ถ่ายใหม่", POSTBACK_RETAKE_PHOTO, meter_id=meter_id),
-                ],
-            },
             _postback_button(
                 "ยืนยันว่าใช่",
                 POSTBACK_FORCE_CONFIRM_READING,
@@ -969,6 +936,8 @@ def build_ocr_review_message(
                 style="primary",
                 color=CARD_COLORS["energy_yellow"],
             ),
+            _postback_button("แก้ไข", POSTBACK_EDIT_READING, meter_id=meter_id),
+            _postback_button("ถ่ายใหม่", POSTBACK_RETAKE_PHOTO, meter_id=meter_id),
         ),
         quick_actions=(
             ("แก้เอง", "message", f"{meter_id} "),
@@ -999,13 +968,10 @@ def _warning_recovery_card(
         {
             "type": "box",
             "layout": "horizontal",
+            "spacing": "md",
             "contents": [
                 _section_title("ตรวจสอบก่อนบันทึก", color=CARD_COLORS["warning_text"]),
-                _status_badge(
-                    meter_id,
-                    color=CARD_COLORS["warning_text"],
-                    background_color="#FFF8E1",
-                ),
+                _status_badge(meter_id, tone="warning"),
             ],
         },
         {
@@ -1036,33 +1002,26 @@ def _warning_recovery_card(
     ]
     body_contents.extend(_metric_row(label, value) for label, value in rows)
 
-    footer_contents = list(footer_buttons)
-    if not footer_contents:
-        footer_contents.append(_postback_button("ดูสถานะ", POSTBACK_SHOW_STATUS))
+    primary_action = None
+    secondary_actions: list[dict] = []
+    for button in footer_buttons:
+        if button.get("style") == "primary" and primary_action is None:
+            primary_action = button
+            continue
+        secondary_actions.append(button)
+    if not secondary_actions and primary_action is None:
+        secondary_actions.append(_postback_button("ดูสถานะ", POSTBACK_SHOW_STATUS))
 
-    return FlexMessage(
+    return _card_shell(
         alt_text=f"ตรวจสอบค่ามิเตอร์ {meter_id}",
-        contents=FlexContainer.from_dict(
-            {
-                "type": "bubble",
-                "styles": {"footer": {"separator": True}},
-                "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "spacing": "md",
-                    "paddingAll": CARD_PADDING,
-                    "contents": body_contents,
-                },
-                "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "spacing": "sm",
-                    "paddingAll": CARD_PADDING,
-                    "contents": footer_contents,
-                },
-            }
-        ),
-        quick_reply=_quick_reply_from_actions(quick_actions) if quick_actions else None,
+        title="ตรวจสอบก่อนบันทึก",
+        subtitle=f"มิเตอร์ {meter_id}",
+        status_badge="คำเตือน",
+        status_badge_tone="warning",
+        body_contents=body_contents,
+        primary_action=primary_action,
+        secondary_actions=secondary_actions,
+        quick_actions=quick_actions,
     )
 
 
@@ -1134,15 +1093,8 @@ def build_lower_value_warning(meter_id: str, prev_value: Decimal, cur_value: Dec
                 style="primary",
                 color=CARD_COLORS["energy_yellow"],
             ),
-            {
-                "type": "box",
-                "layout": "horizontal",
-                "spacing": "sm",
-                "contents": [
-                    _postback_button("แก้ไข", POSTBACK_EDIT_READING, meter_id=meter_id),
-                    _postback_button("ถ่ายใหม่", POSTBACK_RETAKE_PHOTO, meter_id=meter_id),
-                ],
-            },
+            _postback_button("แก้ไข", POSTBACK_EDIT_READING, meter_id=meter_id),
+            _postback_button("ถ่ายใหม่", POSTBACK_RETAKE_PHOTO, meter_id=meter_id),
         ),
         quick_actions=(
             ("แก้เอง", "message", f"{meter_id} "),
@@ -1225,67 +1177,55 @@ def build_batch_complete_card(
     report_status: str = "กำลังสร้างรายงาน",
 ) -> FlexMessage:
     title_context = week or batch_id
-    contents = {
-        "type": "bubble",
-        "styles": {"footer": {"separator": True}},
-        "body": {
+    body_contents = [
+        _status_badge(
+            "บันทึกครบแล้ว",
+            color=CARD_COLORS["white"],
+            background_color=CARD_COLORS["primary"],
+        ),
+        {
+            "type": "text",
+            "text": "บันทึกครบแล้ว",
+            "size": "xl",
+            "weight": "bold",
+            "color": CARD_COLORS["dark_green"],
+            "wrap": True,
+        },
+        _metric_row("รอบ", title_context, color=CARD_COLORS["dark_green"]),
+        _metric_row(
+            "สถานะ",
+            f"ครบ {expected_meter_count}/{expected_meter_count} เครื่อง",
+            color=CARD_COLORS["primary"],
+        ),
+        {
             "type": "box",
             "layout": "vertical",
-            "spacing": "md",
-            "paddingAll": CARD_PADDING,
+            "cornerRadius": "8px",
+            "backgroundColor": CARD_COLORS["light_green"],
+            "paddingAll": "10px",
             "contents": [
-                _status_badge(
-                    "บันทึกครบแล้ว",
-                    color=CARD_COLORS["white"],
-                    background_color=CARD_COLORS["primary"],
-                ),
                 {
                     "type": "text",
-                    "text": "บันทึกครบแล้ว",
-                    "size": "xl",
-                    "weight": "bold",
+                    "text": report_status,
+                    "size": "sm",
                     "color": CARD_COLORS["dark_green"],
+                    "weight": "bold",
                     "wrap": True,
-                },
-                _metric_row("รอบ", title_context, color=CARD_COLORS["dark_green"]),
-                _metric_row(
-                    "สถานะ",
-                    f"ครบ {expected_meter_count}/{expected_meter_count} เครื่อง",
-                    color=CARD_COLORS["primary"],
-                ),
-                {
-                    "type": "box",
-                    "layout": "vertical",
-                    "cornerRadius": "8px",
-                    "backgroundColor": CARD_COLORS["light_green"],
-                    "paddingAll": "10px",
-                    "contents": [
-                        {
-                            "type": "text",
-                            "text": report_status,
-                            "size": "sm",
-                            "color": CARD_COLORS["dark_green"],
-                            "weight": "bold",
-                            "wrap": True,
-                        }
-                    ],
-                },
+                }
             ],
         },
-        "footer": {
-            "type": "box",
-            "layout": "horizontal",
-            "spacing": "sm",
-            "paddingAll": CARD_PADDING,
-            "contents": [
-                _postback_button("ประวัติ", POSTBACK_HISTORY_BATCH, batch_id=batch_id),
-                _postback_button("ดูสถานะ", POSTBACK_SHOW_STATUS),
-            ],
-        },
-    }
-    return FlexMessage(
+    ]
+
+    return _card_shell(
         alt_text="บันทึกครบแล้ว กำลังสร้างรายงาน",
-        contents=FlexContainer.from_dict(contents),
+        title="บันทึกครบแล้ว",
+        status_badge="เสร็จสิ้น",
+        status_badge_tone="success",
+        body_contents=body_contents,
+        secondary_actions=(
+            _postback_button("ประวัติ", POSTBACK_HISTORY_BATCH, batch_id=batch_id),
+            _postback_button("ดูสถานะ", POSTBACK_SHOW_STATUS),
+        ),
     )
 
 

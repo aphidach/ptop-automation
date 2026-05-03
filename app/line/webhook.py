@@ -649,7 +649,12 @@ async def _send_confirm_reading_result(
             next_meter = _next_meter_to_capture(source_id, confirmed_batch_id)
             messages.append(_build_status_card_message(source_id))
             if next_meter:
-                messages.append(build_meter_request_message(next_meter))
+                messages.append(
+                    build_meter_request_message(
+                        next_meter,
+                        meter_ids=settings.VALID_METER_IDS,
+                    ),
+                )
             await _push_to(source_id, messages)
             return
 
@@ -724,7 +729,10 @@ async def _handle_postback(
                         next_meter_id=next_meter,
                         confirmed_meter_count=confirmed_meter_count,
                     ),
-                    build_meter_request_message(next_meter),
+                    build_meter_request_message(
+                        next_meter,
+                        meter_ids=settings.VALID_METER_IDS,
+                    ),
                 ],
             )
             return
@@ -759,7 +767,10 @@ async def _handle_postback(
                 reply_token,
                 [
                     f"ข้าม {target} แล้วครับ\nต่อไป: {next_meter}",
-                    build_meter_request_message(next_meter),
+                    build_meter_request_message(
+                        next_meter,
+                        meter_ids=settings.VALID_METER_IDS,
+                    ),
                 ],
             )
             return
@@ -773,7 +784,13 @@ async def _handle_postback(
         set_collection_current_meter(source_id, meter_id)
         set_latest_meter(source_id, meter_id)
         set_collection_state(source_id, COLLECTION_WAITING_IMAGE)
-        await _reply_to(reply_token, build_meter_request_message(meter_id))
+        await _reply_to(
+            reply_token,
+            build_meter_request_message(
+                meter_id,
+                meter_ids=settings.VALID_METER_IDS,
+            ),
+        )
         return
 
     if action == POSTBACK_HISTORY:
@@ -997,7 +1014,13 @@ async def _handle_postback(
             return
         clear_pending_confirmation(source_id)
         set_collection_state(source_id, COLLECTION_WAITING_IMAGE)
-        await _reply_to(reply_token, build_meter_request_message(target))
+        await _reply_to(
+            reply_token,
+            build_meter_request_message(
+                target,
+                meter_ids=settings.VALID_METER_IDS,
+            ),
+        )
         return
 
     if action == POSTBACK_LATEST_REPORT:

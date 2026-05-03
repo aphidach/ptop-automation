@@ -179,6 +179,42 @@ def test_meter_request_message_has_quick_replies():
     assert len(payload["quickReply"]["items"]) == 11
 
 
+def test_meter_request_message_uses_configured_meter_ids_and_no_stale_m8():
+    payload = _as_dict(
+        build_meter_request_message(
+            "M3",
+            meter_ids=["M1", "M2", "M3", "M4", "M5", "M6"],
+        ),
+    )
+    rendered = str(payload)
+
+    assert "M7" not in rendered
+    assert "M8" not in rendered
+    assert "M1-M8" not in rendered
+    assert len(payload["quickReply"]["items"]) == 9
+    assert any(
+        item["action"]["type"] == "postback"
+        and item["action"]["data"] == "action=select_meter&meter_id=M6"
+        for item in payload["quickReply"]["items"]
+    )
+
+
+def test_meter_request_message_caps_configured_meter_quick_replies():
+    payload = _as_dict(
+        build_meter_request_message(
+            "M1",
+            meter_ids=[f"M{i}" for i in range(1, 12)],
+        ),
+    )
+    actions = [item["action"] for item in payload["quickReply"]["items"]]
+
+    assert len(payload["quickReply"]["items"]) <= 13
+    assert any(action["data"] == "action=skip_meter&meter_id=M1" for action in actions)
+    assert any(action["data"] == "action=show_status" for action in actions)
+    assert any(action["data"] == "action=cancel_collection" for action in actions)
+    assert any(action["data"] == "action=select_meter&meter_id=M1" for action in actions)
+
+
 def test_meter_request_uses_select_meter_postbacks_instead_of_m1_text_jump():
     payload = _as_dict(build_meter_request_message("M4"))
     actions = [item["action"] for item in payload["quickReply"]["items"]]
