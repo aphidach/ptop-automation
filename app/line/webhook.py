@@ -956,9 +956,10 @@ async def handle_webhook(request: Request):
         logger.info("LINE webhook client disconnected before request body was read")
         return Response(status_code=204)
     signature = request.headers.get("X-Line-Signature", "")
+    body_text = body.decode("utf-8")
 
     try:
-        events = _webhook_parser.parse(body.decode("utf-8"), signature)
+        events = _webhook_parser.parse(body_text, signature)
     except InvalidSignatureError:
         logger.warning("Invalid LINE signature")
         return Response(status_code=403)
@@ -975,10 +976,11 @@ async def handle_webhook(request: Request):
         )
         if is_redelivery:
             logger.info(
-                "Skipping redelivered LINE event: id=%s type=%s source_id=%s",
+                "Skipping redelivered LINE event: id=%s type=%s line_source_id=%s line_user_id=%s",
                 getattr(event, "webhook_event_id", None),
                 event_type,
                 source_id,
+                source_user_id,
             )
             continue
 
@@ -987,7 +989,7 @@ async def handle_webhook(request: Request):
 
         if not _is_line_event_allowed(source_id, source_user_id):
             logger.info(
-                "Skipping unauthorized LINE event: type=%s source_type=%s source_id=%s user_id=%s",
+                "Skipping unauthorized LINE event: type=%s source_type=%s line_source_id=%s line_user_id=%s",
                 event_type,
                 source_type,
                 source_id,
@@ -1002,10 +1004,11 @@ async def handle_webhook(request: Request):
 
         if event_type != "message":
             logger.info(
-                "LINE event: type=%s, source_type=%s, source_id=%s",
+                "LINE event: type=%s, source_type=%s, line_source_id=%s, line_user_id=%s",
                 event_type,
                 source_type,
                 source_id,
+                source_user_id,
             )
             continue
 
@@ -1013,11 +1016,12 @@ async def handle_webhook(request: Request):
         message_type = getattr(message, "type", None) if message else None
         message_id = getattr(message, "id", None) if message else None
         logger.info(
-            "LINE event: type=message, message_type=%s, message_id=%s, source_type=%s, source_id=%s",
+            "LINE event: type=message, message_type=%s, message_id=%s, source_type=%s, line_source_id=%s, line_user_id=%s",
             message_type,
             message_id,
             source_type,
             source_id,
+            source_user_id,
         )
 
         reply_token = getattr(event, "reply_token", None)

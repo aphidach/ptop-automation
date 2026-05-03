@@ -92,7 +92,7 @@ Webhook endpoint must validate the LINE signature.
 Set LINE allowlists before production use:
 
 ```text
-ALLOWED_LINE_SOURCE_IDS=Gxxxxxxxx,Uxxxxxxxx
+ALLOWED_LINE_SOURCE_IDS=Cxxxxxxxx,Uxxxxxxxx
 ALLOWED_LINE_USER_IDS=Uxxxxxxxx,Uyyyyyyyy
 ```
 

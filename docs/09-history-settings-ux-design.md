@@ -515,7 +515,7 @@ Example environment variables:
 ```text
 ADMIN_LINE_USER_IDS=Uxxxx,Uyyyy
 ALLOWED_LINE_USER_IDS=Uxxxx,Uyyyy
-ALLOWED_LINE_SOURCE_IDS=Gxxxx,Uxxxx
+ALLOWED_LINE_SOURCE_IDS=Cxxxx,Uxxxx
 ```
 
 ### Settings Write Rules
@@ -550,7 +550,7 @@ Recommended keys:
 | `timezone` | `Asia/Bangkok` | Used for week/date |
 | `report_title` | `Solar Weekly Report` | Report image title |
 | `auto_send_report` | `true` | Push report when complete |
-| `report_recipient_ids` | `Gxxxx,Uyyyy` | Comma-separated LINE ids for MVP |
+| `report_recipient_ids` | `Cxxxx,Uyyyy` | Comma-separated LINE ids for MVP |
 
 Optional future tab:
 
