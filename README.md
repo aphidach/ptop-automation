@@ -6,6 +6,16 @@
 LINE -> Python Backend -> Google Vision OCR -> Google Sheets -> Report image -> LINE
 ```
 
+## Current Status
+
+- Production OCR path: Google Vision `DOCUMENT_TEXT_DETECTION`
+- Credential: ใช้ service account เดียวกับ Google Sheets ผ่าน `GOOGLE_APPLICATION_CREDENTIALS`
+- Real-image fixture: `tmp/test-ocr`
+- Latest OCR target: `8/8`
+- Latest Google Vision report: `reports/ocr/ocr-evaluation-20260503-014420.md`
+
+หมายเหตุ: ค่า OCR ยังต้องผ่าน confirmation ก่อนบันทึกเสมอ โดยเฉพาะ low-confidence case เช่นทศนิยมท้ายของมิเตอร์ `ENTES MPR-45S`
+
 ## Documents
 
 - [Ordered Implementation Tasks](TASKS.md)
@@ -32,9 +42,35 @@ LINE -> Python Backend -> Google Vision OCR -> Google Sheets -> Report image -> 
 6. เมื่อยืนยันแล้ว append ลง Google Sheets
 7. เมื่อครบ 8 เครื่องใน batch เดียวกัน สร้าง report image แล้วส่งกลับ LINE
 
+## Local Verification
+
+Run the full test suite:
+
+```bash
+rtk uv run pytest
+```
+
+Run Google Vision OCR evaluation against real test images:
+
+```bash
+rtk uv run python scripts/evaluate_ocr.py --engine google
+```
+
+Optional legacy comparison:
+
+```bash
+rtk uv run python scripts/evaluate_ocr.py --engine opentyphoon,google
+```
+
+## Required Google APIs
+
+Enable these APIs in the Google Cloud project used by the service account:
+
+- Google Sheets API
+- Cloud Vision API
+
 ## Main External References
 
 - LINE Messaging API: https://developers.line.biz/en/docs/messaging-api/
 - Google Sheets API Python quickstart: https://developers.google.com/workspace/sheets/api/quickstart/python
 - Google Cloud Vision OCR docs: https://cloud.google.com/vision/docs/ocr
-# ptop-automation
