@@ -1,10 +1,10 @@
-# OCR Model: OpenTyphoon
+# Legacy OCR Model: OpenTyphoon
 
-Legacy comparison note: production OCR now uses Google Vision. Keep this page only for historical context and explicit evaluator comparisons.
+Production OCR now uses Google Vision. Keep this page only for historical context and explicit evaluator comparisons.
 
-## Selected Model
+## Legacy Model
 
-Use:
+The previous OCR path used:
 
 ```text
 typhoon-ocr
@@ -62,7 +62,7 @@ Authentication:
 Authorization: Bearer <TYPHOON_API_KEY>
 ```
 
-For this project, prefer the `typhoon-ocr` helper first because it is built for OCR images/PDFs directly.
+For historical OpenTyphoon experiments, prefer the `typhoon-ocr` helper first because it is built for OCR images/PDFs directly. Do not use this page as the production OCR setup guide.
 
 ## Rate Limit Design
 
@@ -81,9 +81,9 @@ The minute limit is the stricter one for sustained usage. For safe MVP behavior:
 - Add retry with exponential backoff on 429/rate-limit errors
 - Keep OCR jobs idempotent by storing `message_id` and `image_hash`
 
-## Queue Recommendation
+## Legacy Queue Recommendation
 
-For 8 meter images, a simple queue is enough.
+For the old OpenTyphoon path, a simple queue was enough for 8 meter images.
 
 ```mermaid
 flowchart LR
@@ -108,7 +108,7 @@ class OcrResult:
     model: str = "typhoon-ocr"
 ```
 
-## Meter Value Extraction
+## Legacy Meter Value Extraction
 
 OCR returns markdown/text, not a guaranteed single number. The backend should parse carefully.
 

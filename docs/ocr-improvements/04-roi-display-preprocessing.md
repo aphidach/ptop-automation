@@ -23,7 +23,9 @@ The full LINE photo includes:
 - safety stickers
 - multiple non-energy values on screen
 
-OpenTyphoon can read the whole image, but the parser then has to fight extra text. Cropping to the display region reduces that burden.
+Google Vision can read the whole image, but the parser still has to fight extra text. Cropping to the display region reduces that burden.
+
+Current production status: the general crop pipeline is not the default for every image. Google Vision uses full-image `DOCUMENT_TEXT_DETECTION`, with one targeted `ENTES MPR-45S` detail crop for the lower energy row when that meter model is detected.
 
 ## First Implementation
 
@@ -34,7 +36,7 @@ Start with deterministic preprocessing, not model training:
 3. Upscale crop.
 4. Improve contrast.
 5. Save debug crop next to each OCR report or in `tmp/ocr-debug/`.
-6. Send crop to OCR instead of full image.
+6. Send crop to OCR only when it improves a known meter-model failure; otherwise keep the full image.
 
 Possible file:
 

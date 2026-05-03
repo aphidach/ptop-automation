@@ -1,5 +1,18 @@
 # OCR Model: Google Vision
 
+## Current Status
+
+Google Vision is the production OCR path for the LINE flow.
+
+Latest real-image evaluation:
+
+- Dataset: `tmp/test-ocr`
+- Report: `reports/ocr/ocr-evaluation-20260503-014420.md`
+- Exact accuracy: `8/8`
+- Full test suite: `211 passed`
+
+Important caveat: `5.jpg` is correct but low confidence because the decimal tail on the `ENTES MPR-45S` display is not clear. The bot should still ask the user to review low-confidence readings before saving.
+
 ## Selected Model
 
 Use Google Cloud Vision `DOCUMENT_TEXT_DETECTION` through:
@@ -39,6 +52,19 @@ app/ocr/google_vision.py
 
 The OCR client returns the existing `OcrResult` shape so parser, confidence, confirmation, and audit behavior stay unchanged.
 
+For `ENTES MPR-45S` images, the client also runs a focused detail crop over the lower display row. This is a targeted production workaround for the current sample where full-image OCR sees `0250509 kWh` but the display actually contains `0250509.1 kWh`.
+
+The parser then applies a model-specific rule:
+
+- clear decimal text, such as `0250509. IkW h` -> high confidence parse
+- implied decimal tail from detail crop -> low confidence parse with warning
+
+Warning text:
+
+```text
+ทศนิยมท้าย MPR-45S ไม่ชัด ใช้รูปแบบจอช่วยตีความ
+```
+
 ## Confirmation Is Required
 
 Do not append the OCR value immediately.
@@ -64,9 +90,14 @@ M1 12508
 
 ## Evaluation
 
-OpenTyphoon can still be used by the developer evaluator for comparison:
+Default evaluation should use Google Vision:
 
 ```bash
 rtk uv run python scripts/evaluate_ocr.py --engine google
+```
+
+OpenTyphoon can still be used only for developer comparison:
+
+```bash
 rtk uv run python scripts/evaluate_ocr.py --engine opentyphoon,google
 ```

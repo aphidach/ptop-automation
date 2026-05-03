@@ -61,7 +61,7 @@ Possible next file:
 
 - `tests/fixtures/ocr/raw_outputs/*.txt`
 
-This would let parser tests run without calling the OpenTyphoon API every time.
+This would let parser tests run without calling Google Vision every time.
 
 ## Verification
 

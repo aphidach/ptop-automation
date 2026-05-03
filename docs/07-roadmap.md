@@ -30,6 +30,8 @@ Done when:
 
 ## Phase 3: Google Vision OCR
 
+Current status: implemented as the production OCR path.
+
 - Add `google-cloud-vision` package
 - Enable Cloud Vision API for the Google service account project
 - Implement OCR client
@@ -39,6 +41,7 @@ Done when:
 
 - Backend can OCR a local test image
 - Parsed value is returned or marked unreadable
+- Real-image evaluator reaches the current target of `8/8` on `tmp/test-ocr`
 
 ## Phase 4: Confirmation Flow
 

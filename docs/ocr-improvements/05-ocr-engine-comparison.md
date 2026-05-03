@@ -2,13 +2,35 @@
 
 ## Goal
 
-Compare OpenTyphoon against at least one OCR engine that returns text locations or line-level outputs, without replacing the production OCR path immediately.
+Document the OCR engine decision after comparing OpenTyphoon and Google Vision.
 
-## Why This Is Later
+## Current Decision
 
-The current baseline shows OpenTyphoon already reads useful text from all 8 images. The main failure is choosing the wrong value. Engine comparison should come after field-aware parsing and confidence scoring.
+Google Vision is now the production OCR engine.
+
+Latest Google Vision result:
+
+- Dataset: `tmp/test-ocr`
+- Report: `reports/ocr/ocr-evaluation-20260503-014420.md`
+- Exact accuracy: `8/8`
+
+OpenTyphoon remains available only as a legacy comparison path in the evaluator.
 
 ## Candidate Engines
+
+### Google Vision
+
+Strengths:
+
+- Production now shares the same Google service account used for Sheets
+- `DOCUMENT_TEXT_DETECTION` works well for dense meter rows
+- Response can provide text annotations and bounding boxes for future field/value pairing
+- Current real-image fixture reaches `8/8`
+
+Limitations:
+
+- Can miss tiny decimal tails on low-contrast LCD rows
+- Some cases still need model-specific crop/parser logic and low-confidence review
 
 ### OpenTyphoon
 
@@ -42,13 +64,13 @@ Reference: https://www.paddleocr.ai/main/en/version3.x/pipeline_usage/OCR.html
 
 ## First Comparison Design
 
-Do not change production behavior yet.
+Production already uses Google Vision. Keep comparison runs as developer-only checks.
 
 Add an optional evaluator mode:
 
 ```bash
-rtk uv run python scripts/evaluate_ocr.py --engine opentyphoon
-rtk uv run python scripts/evaluate_ocr.py --engine paddle
+rtk uv run python scripts/evaluate_ocr.py --engine google
+rtk uv run python scripts/evaluate_ocr.py --engine opentyphoon,google
 ```
 
 Report both:
@@ -71,9 +93,9 @@ For each image:
 
 ## Decision Rule
 
-Keep OpenTyphoon if field-aware parser reaches target accuracy.
+Keep Google Vision as production default while it maintains `8/8` on the tracked fixture and sends low-confidence readings to user review.
 
-Add PaddleOCR only if it improves one of these:
+Consider another engine only if it improves one of these:
 
 - detects/crops display lines better
 - preserves decimal points better
@@ -93,4 +115,4 @@ Then run the optional comparison command once implemented.
 Success criteria:
 
 - Comparison report clearly shows engine-by-engine accuracy
-- No production LINE behavior changes until a better engine path is proven
+- Production LINE behavior stays on Google Vision unless a better engine path is proven

@@ -13,6 +13,8 @@ LINE_CHANNEL_SECRET=your_line_channel_secret
 GOOGLE_APPLICATION_CREDENTIALS=credentials/google-service-account.json
 GOOGLE_SHEETS_SPREADSHEET_ID=your_spreadsheet_id
 
+OCR_MAX_PRODUCED_UNIT_KWH=10000
+
 REPORT_IMAGE_STORAGE=local
 
 EXPECTED_METER_COUNT=8
@@ -46,12 +48,14 @@ https://your-tunnel-url/webhook/line
 
 1. Create a Google Cloud project
 2. Enable Google Sheets API
-3. Enable Google Sheets API and Cloud Vision API
+3. Enable Cloud Vision API
 4. Create a service account
 5. Download service account JSON
 6. Place it at `credentials/google-service-account.json`
 7. Create the spreadsheet tabs from `docs/02-google-sheets-schema.md`
 8. Share the spreadsheet with the service account email as Editor
+
+The same service account is used for both Google Sheets and Google Vision. If OCR fails with a Google API permission error, check that Cloud Vision API is enabled in the same Google Cloud project as the service account.
 
 Never commit the credential JSON file.
 
