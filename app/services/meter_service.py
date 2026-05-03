@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 from typing import Optional
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -11,6 +11,8 @@ from app.config import settings
 from app.sheets import repositories
 
 logger = logging.getLogger(__name__)
+
+READING_VALUE_PRECISION = Decimal("0.1")
 
 
 @dataclass
@@ -81,6 +83,7 @@ def save_reading(
     image_message_id: str = "",
 ) -> ReadingCalculation:
     """Calculate, build reading dict, and append to Google Sheets."""
+    current_value = normalize_reading_value(current_value)
     calc = calculate_reading(meter_id, current_value)
 
     now = _now()
@@ -96,7 +99,7 @@ def save_reading(
         "line_source_id": line_source_id,
         "line_user_id": line_user_id,
         "meter_id": meter_id,
-        "current_value": str(current_value),
+        "current_value": format_reading_value(current_value),
         "last_value": str(calc.last_value),
         "produced_unit": str(calc.produced_unit),
         "rate": str(calc.rate),
@@ -115,6 +118,14 @@ def save_reading(
         meter_id, current_value, calc.last_value, calc.produced_unit, calc.amount,
     )
     return calc
+
+
+def normalize_reading_value(value: Decimal) -> Decimal:
+    return Decimal(str(value)).quantize(READING_VALUE_PRECISION, rounding=ROUND_HALF_UP)
+
+
+def format_reading_value(value: Decimal) -> str:
+    return str(normalize_reading_value(value))
 
 
 def _get_last_value(meter_id: str) -> Decimal:

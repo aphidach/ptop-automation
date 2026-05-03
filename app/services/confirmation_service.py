@@ -165,6 +165,24 @@ def create_pending_confirmation(
     if existing:
         _safe_update_pending_status(existing, PENDING_STATUS_SUPERSEDED, source_id)
 
+    return _create_pending_confirmation_record(
+        source_id=source_id,
+        meter_id=meter_id,
+        ocr_value=ocr_value,
+        ocr_raw_text=ocr_raw_text,
+        image_message_id=image_message_id,
+        batch_id=batch_id,
+    )
+
+def _create_pending_confirmation_record(
+    source_id: str,
+    meter_id: str,
+    ocr_value: Optional[Decimal] = None,
+    manual_value: Optional[Decimal] = None,
+    ocr_raw_text: str = "",
+    image_message_id: str = "",
+    batch_id: Optional[str] = None,
+) -> PendingConfirmation:
     created_at = time.time()
     expires_at = created_at + settings.CONFIRMATION_EXPIRY_SECONDS
     confirmation_id = f"cnf_{uuid.uuid4().hex[:16]}"
@@ -188,6 +206,7 @@ def create_pending_confirmation(
         meter_id=meter_id,
         confirmation_id=confirmation_id,
         ocr_value=ocr_value,
+        manual_value=manual_value,
         ocr_raw_text=ocr_raw_text,
         image_message_id=image_message_id,
         batch_id=batch_id,
@@ -195,11 +214,19 @@ def create_pending_confirmation(
         expires_at=expires_at,
     )
     pending = get_pending_confirmation(source_id)
+    assert pending is not None
     logger.info(
         "Created pending confirmation: source=%s meter=%s ocr_value=%s",
         source_id, meter_id, ocr_value,
     )
     return pending
+
+def _confirmation_method(pending: PendingConfirmation) -> str:
+    if pending.manual_value is None:
+        return "ok"
+    if pending.ocr_value is not None and pending.manual_value != pending.ocr_value:
+        return "manual_edit"
+    return "manual_entry"
 
 
 def format_meter_value(value: Decimal) -> str:
@@ -272,7 +299,7 @@ def confirm_pending(
             log_event(EVENT_DUPLICATE_READING, source_id, pending.meter_id, {"value": str(value)})
         return pending, f"⚠ ไม่สามารถบันทึกได้:\n{warning_text}", None
 
-    confirmation_method = "manual_edit" if pending.manual_value is not None else "ok"
+    confirmation_method = _confirmation_method(pending)
     try:
         save_reading(
             meter_id=pending.meter_id,
@@ -327,12 +354,12 @@ def manual_confirm(source_id: str, meter_id: str, value: Decimal) -> tuple[Optio
     else:
         if pending:
             _safe_update_pending_status(pending, PENDING_STATUS_SUPERSEDED, source_id)
-        set_session_pending_confirmation(
+        _create_pending_confirmation_record(
             source_id=source_id,
             meter_id=meter_id,
+            ocr_value=value,
             manual_value=value,
             batch_id=batch_id,
-            created_at=time.time(),
         )
     logger.info("Manual confirm: source=%s meter=%s value=%s", source_id, meter_id, value)
     return confirm_pending(source_id)

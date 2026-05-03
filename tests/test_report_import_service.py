@@ -57,6 +57,7 @@ def test_confirm_report_import_partial_retry_appends_missing_rows():
     assert mock_append_reading.call_count == 5
     appended_meter_ids = [call.args[0]["meter_id"] for call in mock_append_reading.call_args_list]
     assert appended_meter_ids == ["M4", "M5", "M6", "M7", "M8"]
+    assert mock_append_reading.call_args_list[0].args[0]["current_value"] == "1004.0"
     mock_update_count.assert_called_once_with("2026-W18-U1", 8)
     mock_update_status.assert_called_once_with("2026-W18-U1", "complete")
 

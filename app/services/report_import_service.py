@@ -7,6 +7,7 @@ from decimal import Decimal
 
 from app.line.parser import ParsedReportImport, parse_report_import_text
 from app.report.generator import generate_report_image
+from app.services.meter_service import format_reading_value
 from app.services.session_service import PendingReportImport
 from app.sheets import repositories
 
@@ -217,6 +218,7 @@ def _build_reading(
     created_at: datetime,
 ) -> dict[str, str]:
     meter_id = row["meter_id"]
+    current_value = format_reading_value(Decimal(str(row["current_value"])))
     return {
         "reading_id": f"rdg_import_{pending.date.replace('-', '')}_{meter_id}",
         "batch_id": pending.batch_id,
@@ -225,13 +227,13 @@ def _build_reading(
         "line_source_id": line_source_id,
         "line_user_id": line_user_id,
         "meter_id": meter_id,
-        "current_value": row["current_value"],
+        "current_value": current_value,
         "last_value": row["last_value"],
         "produced_unit": row["produced_unit"],
         "rate": row["rate"],
         "amount": row["amount"],
         "ocr_raw_text": pending.ocr_raw_text,
-        "ocr_value": row["current_value"],
+        "ocr_value": current_value,
         "confirmation_method": CONFIRMATION_METHOD,
         "image_message_id": pending.image_message_id,
         "image_file_id": "",

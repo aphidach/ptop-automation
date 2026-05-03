@@ -132,8 +132,8 @@
     "hash": "26cb6f5eac76fb0dedcc27c81de4a07d"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/services/report_import_service.py": {
-    "mtime": 1777815126.697804,
-    "hash": "b4816b1972994b63136316a5dc9dde35"
+    "mtime": 1777836242.444459,
+    "hash": "5eab9ab03fe44a38d51e3ed6715d8579"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/services/settings_service.py": {
     "mtime": 1777767048.9197059,
@@ -148,8 +148,8 @@
     "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/services/meter_service.py": {
-    "mtime": 1777833058.6423368,
-    "hash": "d445121590d6af8af1a65630751b9a2e"
+    "mtime": 1777836237.8971415,
+    "hash": "ee054d07e40d9791929ac0a1ff197691"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/services/session_service.py": {
     "mtime": 1777815126.698053,
@@ -164,8 +164,8 @@
     "hash": "6ed58f18d1d9356394e51c96111b59da"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/services/confirmation_service.py": {
-    "mtime": 1777814675.7729104,
-    "hash": "11c263cf8fcd2c8a7f6f29013442037e"
+    "mtime": 1777834333.9079642,
+    "hash": "d377f9ecfb700f6b49799213f7b04c6f"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_storage_sync.py": {
     "mtime": 1777833466.2893736,
@@ -192,8 +192,8 @@
     "hash": "e32102dfe2a5e9a03ec5bcbf0b9491a3"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_meter_service.py": {
-    "mtime": 1777833076.229792,
-    "hash": "14195b7afdcc555663ef4a71206aa619"
+    "mtime": 1777836256.2723908,
+    "hash": "6dfa095b7b71542684a5d2ea4ef27d78"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_ocr_preprocess.py": {
     "mtime": 1777767048.9293828,
@@ -228,8 +228,8 @@
     "hash": "a6cb0fda8ccf79bc177f549fd9259931"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_confirmation_service.py": {
-    "mtime": 1777767048.9268167,
-    "hash": "f8fb30839f30230fe822a423ab386ccf"
+    "mtime": 1777834310.1506743,
+    "hash": "1c341045e93dca58e64e0d5fe1661321"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_batch_service.py": {
     "mtime": 1777833067.9802382,
@@ -252,8 +252,8 @@
     "hash": "f9b8f785abf5d1694bf9a1ba856b39b1"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_report_import_service.py": {
-    "mtime": 1777815126.7511072,
-    "hash": "6f59e785eadd3cb80b83429e1d8c0c32"
+    "mtime": 1777836267.8888688,
+    "hash": "1453c68d2a7a3b1d4938ebe4c611d409"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_line_messages.py": {
     "mtime": 1777833443.214915,
@@ -647,6 +647,14 @@
     "mtime": 1777815126.7499323,
     "hash": "c517595c54e0487ab698251d320c4b8d"
   },
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612375687004684392.jpg": {
+    "mtime": 1777835658.6533175,
+    "hash": "4b0ad78ee0c16a99ab6f94ddd10c0626"
+  },
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612375988693369003.jpg": {
+    "mtime": 1777835838.2173114,
+    "hash": "5ada9c2a799c25e6aac6f32082659834"
+  },
   "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612367333662654610.jpg": {
     "mtime": 1777830679.7407088,
     "hash": "1aa657d85adffb2a45b04bcf76ac5c97"
@@ -654,6 +662,10 @@
   "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612367221876588681.jpg": {
     "mtime": 1777830613.084303,
     "hash": "f6d79d3a69f56a584559e1e4242d9c9c"
+  },
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612375743259476088.jpg": {
+    "mtime": 1777835692.194148,
+    "hash": "1aa657d85adffb2a45b04bcf76ac5c97"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612358996326350900.jpg": {
     "mtime": 1777825710.8614314,
@@ -667,13 +679,25 @@
     "mtime": 1777830590.7571495,
     "hash": "5ada9c2a799c25e6aac6f32082659834"
   },
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612376014161182789.jpg": {
+    "mtime": 1777835853.5275815,
+    "hash": "f6d79d3a69f56a584559e1e4242d9c9c"
+  },
   "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612367399882850390.jpg": {
     "mtime": 1777830719.0007505,
     "hash": "61008823de6fca87b81bf0b03f0f9457"
   },
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612375861085864005.jpg": {
+    "mtime": 1777835762.1713529,
+    "hash": "5fed86b00d11660b8103c4175514ad9e"
+  },
   "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612367367200833554.jpg": {
     "mtime": 1777830699.2921293,
     "hash": "88fce64943525ba1a5a19118c6355c08"
+  },
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612375956330119220.jpg": {
+    "mtime": 1777835819.3285406,
+    "hash": "10af740da98ca71c185624c7516609de"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612358679957602340.jpg": {
     "mtime": 1777825521.6034327,
@@ -698,6 +722,14 @@
   "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612358586307969076.jpg": {
     "mtime": 1777825466.1161425,
     "hash": "f6d79d3a69f56a584559e1e4242d9c9c"
+  },
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612375895630151715.jpg": {
+    "mtime": 1777835782.8520985,
+    "hash": "88fce64943525ba1a5a19118c6355c08"
+  },
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612375814310723705.jpg": {
+    "mtime": 1777835734.616825,
+    "hash": "61008823de6fca87b81bf0b03f0f9457"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tmp/test-ocr/8.jpg": {
     "mtime": 1777741366.943403,
@@ -735,9 +767,13 @@
     "mtime": 1777779344.4093468,
     "hash": "5f5b5f9a96aaf5e27e5f130e616bbff2"
   },
+  "/Users/masano/Public/code/repo-ptop-autometion/reports/2026-W19-U08585bd3f4116f311ae320cab4e9e1b6.png": {
+    "mtime": 1777836077.6517985,
+    "hash": "5d9cbcfab1569aed65b76f617146d09c"
+  },
   "/Users/masano/Public/code/repo-ptop-autometion/reports/2026-W18-U08585bd3f4116f311ae320cab4e9e1b6.png": {
-    "mtime": 1777832264.1450443,
-    "hash": "987747acdb12459ae6e1da5679ae515c"
+    "mtime": 1777835579.0696113,
+    "hash": "4d810bb30094162936abc6b4cc4812e5"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/reports/2026-W18-U7dcf996f81585d2c906dca81cd2a705f.png": {
     "mtime": 1777783664.5791922,
