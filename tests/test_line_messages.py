@@ -21,6 +21,7 @@ from app.line.messages import (
     build_ocr_review_message,
     build_report_import_preview_message,
     build_settings_menu_message,
+    build_settings_view_message,
     build_start_collection_card,
     build_status_card,
     build_report_summary_message,
@@ -293,18 +294,53 @@ def test_status_card_complete_state_omits_continue_action():
     assert "help" in rendered
 
 
-def test_help_menu_has_topic_quick_replies():
+def test_help_menu_renders_flex_dashboard_with_core_actions(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+
+    payload = _as_dict(build_help_menu_message())
+    rendered = str(payload)
+
+    assert payload["altText"] == "Help วิธีใช้งาน"
+    assert payload["contents"]["type"] == "bubble"
+    assert "text" not in payload
+    assert len(payload["quickReply"]["items"]) == 4
+    assert len(payload["quickReply"]["items"]) <= 13
+    assert "ช่วยเหลือ" in rendered
+    assert "ต้องการดูวิธีใช้งานส่วนไหนครับ?" in rendered
+    assert "เมนูด่วน" in rendered
+    assert "หมวดหมู่ช่วยเหลือ" in rendered
+    assert "แนะนำสำหรับคุณ" in rendered
+    assert "ติดต่อแอดมิน" in rendered
+    assert "วิธีใช้งานพื้นฐาน" in rendered
+    assert "การถ่ายรูปให้ OCR แม่น" in rendered
+    assert "ปัญหาที่พบบ่อย" in rendered
+    assert "ตั้งค่าระบบ" in rendered
+    assert "อ่านค่าไม่ได้" in rendered
+    assert "ตัวเลขผิด" in rendered
+    assert "ส่งรายงานไม่ได้" in rendered
+    assert "action=help_flow&topic=start_collection" in rendered
+    assert "action=help_flow&topic=confirm_reading" in rendered
+    assert "action=help_flow&topic=troubleshooting" in rendered
+    assert "action=help_flow&topic=settings" in rendered
+    assert "action=help_flow&topic=text_commands" in rendered
+    assert "action=show_status" in rendered
+    assert "action=latest_report" in rendered
+    assert "action=settings_contact_admin" in rendered
+
+
+def test_help_menu_uses_only_https_hero(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+    monkeypatch.setenv("LINE_CARD_START_COLLECTION_HERO_URL", "http://cdn.example.com/solar.png")
+
     payload = _as_dict(build_help_menu_message())
 
-    assert payload["text"] == "ต้องการดูวิธีใช้งานส่วนไหนครับ?"
-    assert len(payload["quickReply"]["items"]) <= 13
-    assert "action=help_flow&topic=start_collection" in str(payload)
-    assert "action=help_flow&topic=confirm_reading" in str(payload)
-    assert "action=help_flow&topic=latest_report" in str(payload)
-    assert "action=help_flow&topic=settings_admin" in str(payload)
-    assert "action=help_flow&topic=troubleshooting" in str(payload)
-    assert "action=help_flow&topic=text_commands" in str(payload)
-    assert "action=help_flow&topic=contact_admin" in str(payload)
+    assert "http://cdn.example.com/solar.png" not in str(payload)
+
+    monkeypatch.setenv("LINE_CARD_START_COLLECTION_HERO_URL", "https://cdn.example.com/solar.png")
+
+    payload = _as_dict(build_help_menu_message())
+
+    assert "https://cdn.example.com/solar.png" in str(payload)
 
 
 def test_help_flow_without_image_url_returns_text_fallback(monkeypatch):
@@ -542,15 +578,20 @@ def test_settings_operator_menu_does_not_show_edit_actions():
     )
     rendered = str(payload)
 
-    assert payload["altText"] == "ตั้งค่าระบบ"
+    assert payload["altText"] == "การตั้งค่าปัจจุบัน"
     assert payload["contents"]["size"] == "mega"
-    assert "Operator" in rendered
+    assert "การตั้งค่าปัจจุบัน" in rendered
+    assert "ข้อมูลการตั้งค่าระบบ" in rendered
     assert "ดูได้เฉพาะข้อมูลปัจจุบัน" in rendered
-    assert "ดูอัตราค่าไฟฟ้าต่อหน่วย" in rendered
+    assert "จำนวนมิเตอร์" in rendered
+    assert "รอบบันทึก" in rendered
+    assert "รายสัปดาห์" in rendered
+    assert "อัตราไฟฟ้าเริ่มต้น" in rendered
     assert "4.20 บาท/kWh" in rendered
     assert "8 เครื่อง" in rendered
+    assert "Asia/Bangkok" in rendered
     assert "รายงานพลังงานรายสัปดาห์" in rendered
-    assert "มิเตอร์ M1-M8" in rendered
+    assert "ดูค่าปัจจุบันฉบับเต็ม" in rendered
     assert "settings_view" in rendered
     assert "settings_meters" in rendered
     assert "settings_edit_rate" not in rendered
@@ -572,13 +613,12 @@ def test_settings_admin_menu_shows_edit_actions():
     )
     rendered = str(payload)
 
-    assert payload["altText"] == "ตั้งค่าระบบ"
+    assert payload["altText"] == "การตั้งค่าปัจจุบัน"
     assert payload["contents"]["size"] == "mega"
-    assert "Admin" in rendered
-    assert "ดูค่าปัจจุบัน" in rendered
-    assert "ตั้งค่าอัตราค่าไฟฟ้าต่อหน่วย" in rendered
-    assert "ตั้งค่าจำนวนมิเตอร์ที่ใช้งาน" in rendered
-    assert "ตั้งชื่อรายงานการผลิตไฟฟ้า" in rendered
+    assert "ดูค่าปัจจุบันฉบับเต็ม" in rendered
+    assert "จำนวนมิเตอร์" in rendered
+    assert "อัตราไฟฟ้าเริ่มต้น" in rendered
+    assert "Timezone" in rendered
     assert "เมนูสำหรับผู้ดูแลระบบเท่านั้น" in rendered
     assert "4.20 บาท/kWh" in rendered
     assert "settings_edit_rate" in rendered
@@ -588,6 +628,38 @@ def test_settings_admin_menu_shows_edit_actions():
     assert "settings_import_report" in rendered
     assert "settings_recipients" in str(payload["quickReply"])
     assert "settings_permissions" in str(payload["quickReply"])
+
+
+def test_settings_view_message_renders_full_settings_card():
+    payload = _as_dict(
+        build_settings_view_message(
+            {
+                "default_rate": "4.5",
+                "expected_meter_count": "8",
+                "timezone": "Asia/Bangkok",
+                "report_title": "รายงานการผลิตไฟฟ้า",
+                "updated_at": "2024-04-28T03:04:00+07:00",
+            },
+            is_admin=True,
+        )
+    )
+    rendered = str(payload)
+
+    assert payload["altText"] == "ค่าปัจจุบันของระบบ"
+    assert payload["contents"]["size"] == "mega"
+    assert "ค่าปัจจุบันของระบบ" in rendered
+    assert "ข้อมูลการตั้งค่าล่าสุด" in rendered
+    assert "จำนวนมิเตอร์" in rendered
+    assert "8 เครื่อง" in rendered
+    assert "รอบบันทึก" in rendered
+    assert "รายสัปดาห์" in rendered
+    assert "4.50 บาท/kWh" in rendered
+    assert "Asia/Bangkok" in rendered
+    assert "รายงานการผลิตไฟฟ้า" in rendered
+    assert "อัปเดตล่าสุด: 28 เม.ย. 2567 03:04" in rendered
+    assert "settings_edit_rate" in str(payload["quickReply"])
+    assert "settings_edit_report_title" in str(payload["quickReply"])
+    assert "settings_edit_expected_count" in str(payload["quickReply"])
 
 
 def test_report_summary_card_shows_week_totals_and_navigation():

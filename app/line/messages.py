@@ -485,50 +485,30 @@ def _settings_icon_box(
     }
 
 
-def _settings_menu_row(
-    icon: str,
-    label: str,
-    description: str,
-    value: str,
-    action: str,
-    **kwargs: str | int | bool | None,
-) -> dict:
-    return {
-        "type": "box",
-        "layout": "horizontal",
-        "spacing": "sm",
-        "alignItems": "center",
-        "paddingAll": "10px",
-        "action": {
-            "type": "postback",
-            "label": label[:QUICK_TEXT_LIMIT],
-            "data": build_postback_data(action=action, **kwargs),
-            "displayText": label,
-        },
-        "contents": [
-            _settings_icon_box(icon),
+def _settings_table_row(icon: str, label: str, value: str, *, show_icon: bool = True) -> dict:
+    contents = []
+    if show_icon:
+        contents.append(
             {
-                "type": "box",
-                "layout": "vertical",
-                "spacing": "xs",
-                "flex": 6,
-                "contents": [
-                    {
-                        "type": "text",
-                        "text": label,
-                        "size": "md",
-                        "weight": "bold",
-                        "color": CARD_COLORS["text"],
-                        "wrap": True,
-                    },
-                    {
-                        "type": "text",
-                        "text": description,
-                        "size": "xs",
-                        "color": CARD_COLORS["neutral_gray"],
-                        "wrap": True,
-                    },
-                ],
+                "type": "text",
+                "text": icon,
+                "size": "xl",
+                "weight": "bold",
+                "color": CARD_COLORS["dark_green"],
+                "align": "center",
+                "flex": 1,
+            }
+        )
+    contents.extend(
+        [
+            {
+                "type": "text",
+                "text": label,
+                "size": "sm",
+                "weight": "bold",
+                "color": CARD_COLORS["text"],
+                "wrap": True,
+                "flex": 5 if show_icon else 4,
             },
             {
                 "type": "text",
@@ -537,27 +517,27 @@ def _settings_menu_row(
                 "color": CARD_COLORS["dark_green"],
                 "align": "end",
                 "wrap": True,
-                "flex": 4,
+                "flex": 5,
                 "maxLines": 2,
             },
-            {
-                "type": "text",
-                "text": ">",
-                "size": "sm",
-                "color": CARD_COLORS["neutral_gray"],
-                "align": "end",
-                "flex": 0,
-            },
-        ],
+        ]
+    )
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "alignItems": "center",
+        "paddingAll": "10px",
+        "contents": contents,
     }
 
 
-def _settings_menu_list(rows: Sequence[dict]) -> dict:
+def _settings_table(rows: Sequence[tuple[str, str, str]], *, show_icons: bool = True) -> dict:
     contents = []
-    for index, row in enumerate(rows):
+    for index, (icon, label, value) in enumerate(rows):
         if index:
             contents.append({"type": "separator", "color": "#E0E0E0"})
-        contents.append(row)
+        contents.append(_settings_table_row(icon, label, value, show_icon=show_icons))
     return {
         "type": "box",
         "layout": "vertical",
@@ -567,6 +547,17 @@ def _settings_menu_list(rows: Sequence[dict]) -> dict:
         "backgroundColor": CARD_COLORS["white"],
         "contents": contents,
     }
+
+
+def _settings_current_rows(values: dict[str, str]) -> tuple[tuple[str, str, str], ...]:
+    expected_meter_count = values.get("expected_meter_count", "8")
+    return (
+        ("#", "จำนวนมิเตอร์", f"{expected_meter_count} เครื่อง"),
+        ("▦", "รอบบันทึก", "รายสัปดาห์"),
+        ("⚡", "อัตราไฟฟ้าเริ่มต้น", _settings_rate_display(values.get("default_rate", "4.2"))),
+        ("◎", "Timezone", values.get("timezone", "Asia/Bangkok")),
+        ("▤", "ชื่อรายงาน", values.get("report_title", "Solar Weekly Report")),
+    )
 
 
 def _settings_primary_action_row() -> dict:
@@ -580,9 +571,9 @@ def _settings_primary_action_row() -> dict:
         "backgroundColor": CARD_COLORS["primary"],
         "action": {
             "type": "postback",
-            "label": "ดูค่าปัจจุบัน",
+            "label": "ดูค่าปัจจุบันฉบับเต็ม"[:QUICK_TEXT_LIMIT],
             "data": build_postback_data(action=POSTBACK_SETTINGS_VIEW),
-            "displayText": "ดูค่าปัจจุบัน",
+            "displayText": "ดูค่าปัจจุบันฉบับเต็ม",
         },
         "contents": [
             _settings_icon_box(
@@ -598,7 +589,7 @@ def _settings_primary_action_row() -> dict:
                 "contents": [
                     {
                         "type": "text",
-                        "text": "ดูค่าปัจจุบัน",
+                        "text": "ดูค่าปัจจุบันฉบับเต็ม",
                         "size": "md",
                         "weight": "bold",
                         "color": CARD_COLORS["white"],
@@ -606,7 +597,7 @@ def _settings_primary_action_row() -> dict:
                     },
                     {
                         "type": "text",
-                        "text": "ดูการตั้งค่าปัจจุบันของระบบ",
+                        "text": "ดูรายละเอียดการตั้งค่าทั้งหมด >",
                         "size": "xs",
                         "color": CARD_COLORS["white"],
                         "wrap": True,
@@ -623,6 +614,14 @@ def _settings_primary_action_row() -> dict:
             },
         ],
     }
+
+
+def _settings_updated_display(values: dict[str, str]) -> str:
+    for key in ("updated_at", "last_updated_at", "last_push_at", "last_pull_at"):
+        parsed = _parse_line_datetime(values.get(key))
+        if parsed:
+            return _thai_datetime(parsed)
+    return ""
 
 
 def _settings_permission_note(is_admin: bool) -> dict:
@@ -1095,16 +1094,478 @@ def _text_with_actions(
     )
 
 
-def build_help_menu_message() -> TextMessage:
-    return _text_with_actions(
-        text="ต้องการดูวิธีใช้งานส่วนไหนครับ?",
-        action_items=(
+def _help_postback_data(topic: str) -> str:
+    return build_postback_data(action=POSTBACK_HELP_FLOW, topic=topic)
+
+
+def _help_section_header(title: str, action_label: str | None = None) -> dict:
+    contents = [
+        {
+            "type": "text",
+            "text": title,
+            "size": "md",
+            "weight": "bold",
+            "color": CARD_COLORS["text"],
+            "wrap": True,
+            "flex": 1,
+        }
+    ]
+    if action_label:
+        contents.append(
+            {
+                "type": "text",
+                "text": action_label,
+                "size": "xs",
+                "color": CARD_COLORS["data_blue"],
+                "align": "end",
+                "action": {
+                    "type": "postback",
+                    "label": action_label[:QUICK_TEXT_LIMIT],
+                    "data": _help_postback_data(HELP_TOPIC_TEXT_COMMANDS),
+                    "displayText": action_label,
+                },
+                "flex": 0,
+            }
+        )
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "alignItems": "center",
+        "contents": contents,
+    }
+
+
+def _help_icon_box(
+    icon: str,
+    *,
+    background_color: str = CARD_COLORS["light_green"],
+    color: str = CARD_COLORS["dark_green"],
+    size: str = "xl",
+) -> dict:
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "width": "44px",
+        "height": "44px",
+        "cornerRadius": "10px",
+        "backgroundColor": background_color,
+        "justifyContent": "center",
+        "contents": [
+            {
+                "type": "text",
+                "text": icon,
+                "size": size,
+                "weight": "bold",
+                "color": color,
+                "align": "center",
+            }
+        ],
+    }
+
+
+def _help_hero() -> dict:
+    hero_image_url = _start_collection_hero_url()
+    contents = [
+        {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "xs",
+            "contents": [
+                {
+                    "type": "text",
+                    "text": "ช่วยเหลือ",
+                    "size": "xxl",
+                    "weight": "bold",
+                    "color": CARD_COLORS["dark_green"],
+                    "wrap": True,
+                },
+                {
+                    "type": "text",
+                    "text": "ต้องการดูวิธีใช้งานส่วนไหนครับ?",
+                    "size": "sm",
+                    "color": CARD_COLORS["text"],
+                    "wrap": True,
+                },
+            ],
+            "flex": 3,
+        }
+    ]
+    if hero_image_url:
+        contents.append(
+            {
+                "type": "image",
+                "url": hero_image_url,
+                "size": "full",
+                "aspectRatio": "1:1",
+                "aspectMode": "fit",
+                "flex": 2,
+            }
+        )
+    else:
+        contents.insert(
+            0,
+            _help_icon_box(
+                "?",
+                background_color="#DFF5E4",
+                color=CARD_COLORS["dark_green"],
+                size="xxl",
+            ),
+        )
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "md",
+        "alignItems": "center",
+        "paddingAll": "14px",
+        "cornerRadius": "8px",
+        "backgroundColor": "#F1F8F3",
+        "contents": contents,
+    }
+
+
+def _help_action_tile(
+    icon: str,
+    label: str,
+    description: str,
+    action: str,
+    **kwargs: str | int | bool | None,
+) -> dict:
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "alignItems": "center",
+        "paddingAll": "10px",
+        "cornerRadius": "8px",
+        "borderWidth": "1px",
+        "borderColor": "#DDE3EA",
+        "backgroundColor": CARD_COLORS["white"],
+        "action": {
+            "type": "postback",
+            "label": label[:QUICK_TEXT_LIMIT],
+            "data": build_postback_data(action=action, **kwargs),
+            "displayText": label,
+        },
+        "contents": [
+            _help_icon_box(icon, background_color=CARD_COLORS["white"]),
+            {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "xs",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": label,
+                        "size": "sm",
+                        "weight": "bold",
+                        "color": CARD_COLORS["text"],
+                        "wrap": True,
+                    },
+                    {
+                        "type": "text",
+                        "text": description,
+                        "size": "xs",
+                        "color": CARD_COLORS["neutral_gray"],
+                        "wrap": True,
+                        "maxLines": 2,
+                    },
+                ],
+                "flex": 1,
+            },
+        ],
+    }
+
+
+def _help_quick_grid() -> dict:
+    tiles = [
+        _help_action_tile(
+            "▣",
+            "บันทึกมิเตอร์",
+            "วิธีถ่ายรูปและบันทึกค่า",
+            POSTBACK_HELP_FLOW,
+            topic=HELP_TOPIC_START_COLLECTION,
+        ),
+        _help_action_tile(
+            "○",
+            "ยืนยัน/แก้ OCR",
+            "ตรวจสอบและแก้ไขตัวเลข",
+            POSTBACK_HELP_FLOW,
+            topic=HELP_TOPIC_CONFIRM_READING,
+        ),
+        _help_action_tile(
+            "▥",
+            "ดูสถานะ",
+            "ดูความคืบหน้าและสถานะ",
+            POSTBACK_SHOW_STATUS,
+        ),
+        _help_action_tile(
+            "□",
+            "รายงาน",
+            "ดูรายงานและสรุปผล",
+            POSTBACK_LATEST_REPORT,
+        ),
+    ]
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "spacing": "sm",
+        "contents": [
+            {
+                "type": "box",
+                "layout": "horizontal",
+                "spacing": "sm",
+                "contents": tiles[:2],
+            },
+            {
+                "type": "box",
+                "layout": "horizontal",
+                "spacing": "sm",
+                "contents": tiles[2:],
+            },
+        ],
+    }
+
+
+def _help_menu_row(
+    icon: str,
+    label: str,
+    description: str,
+    topic: str,
+    *,
+    icon_background: str = CARD_COLORS["light_green"],
+    icon_color: str = CARD_COLORS["dark_green"],
+) -> dict:
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "alignItems": "center",
+        "paddingAll": "10px",
+        "cornerRadius": "8px",
+        "borderWidth": "1px",
+        "borderColor": "#E0E0E0",
+        "backgroundColor": CARD_COLORS["white"],
+        "action": {
+            "type": "postback",
+            "label": label[:QUICK_TEXT_LIMIT],
+            "data": _help_postback_data(topic),
+            "displayText": label,
+        },
+        "contents": [
+            _help_icon_box(
+                icon,
+                background_color=icon_background,
+                color=icon_color,
+            ),
+            {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "xs",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": label,
+                        "size": "sm",
+                        "weight": "bold",
+                        "color": CARD_COLORS["text"],
+                        "wrap": True,
+                    },
+                    {
+                        "type": "text",
+                        "text": description,
+                        "size": "xs",
+                        "color": CARD_COLORS["neutral_gray"],
+                        "wrap": True,
+                        "maxLines": 2,
+                    },
+                ],
+                "flex": 1,
+            },
+            {
+                "type": "text",
+                "text": ">",
+                "size": "lg",
+                "color": CARD_COLORS["neutral_gray"],
+                "align": "end",
+                "flex": 0,
+            },
+        ],
+    }
+
+
+def _help_category_list() -> dict:
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "spacing": "sm",
+        "contents": [
+            _help_menu_row(
+                "▤",
+                "วิธีใช้งานพื้นฐาน",
+                "เรียนรู้การใช้งานระบบตั้งแต่เริ่มต้น",
+                HELP_TOPIC_START_COLLECTION,
+                icon_background="#E3F2FD",
+                icon_color="#1976D2",
+            ),
+            _help_menu_row(
+                "●",
+                "การถ่ายรูปให้ OCR แม่น",
+                "เทคนิคการถ่ายรูปให้ได้ผลลัพธ์ที่แม่นยำ",
+                HELP_TOPIC_CONFIRM_READING,
+            ),
+            _help_menu_row(
+                "!",
+                "ปัญหาที่พบบ่อย",
+                "รวมปัญหาที่พบบ่อยและวิธีแก้ไข",
+                HELP_TOPIC_TROUBLESHOOTING,
+                icon_background="#FFF3E0",
+                icon_color="#F57C00",
+            ),
+            _help_menu_row(
+                "⚙",
+                "ตั้งค่าระบบ",
+                "ตั้งค่าระบบและการแจ้งเตือน",
+                HELP_TOPIC_SETTINGS,
+                icon_background="#EEF1F5",
+                icon_color="#5F6773",
+            ),
+        ],
+    }
+
+
+def _help_recommendation_panel() -> dict:
+    rows = [
+        _help_menu_row("•", "อ่านค่าไม่ได้", "ตัวเลขไม่ชัดเจน", HELP_TOPIC_TROUBLESHOOTING),
+        _help_menu_row("•", "ตัวเลขผิด", "ค่าที่อ่านไม่ถูกต้อง", HELP_TOPIC_CONFIRM_READING),
+        _help_menu_row("•", "ส่งรายงานไม่ได้", "รายงานไม่สำเร็จ", HELP_TOPIC_LATEST_REPORT),
+    ]
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "spacing": "sm",
+        "paddingAll": "12px",
+        "cornerRadius": "8px",
+        "borderWidth": "1px",
+        "borderColor": "#C9E6D0",
+        "backgroundColor": "#F6FBF7",
+        "contents": [
+            {
+                "type": "text",
+                "text": "แนะนำสำหรับคุณ",
+                "size": "sm",
+                "weight": "bold",
+                "color": CARD_COLORS["text"],
+                "wrap": True,
+            },
+            *rows,
+        ],
+    }
+
+
+def _help_contact_cta() -> dict:
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "md",
+        "alignItems": "center",
+        "paddingAll": "12px",
+        "cornerRadius": "8px",
+        "backgroundColor": CARD_COLORS["dark_green"],
+        "action": {
+            "type": "postback",
+            "label": "ติดต่อแอดมิน",
+            "data": build_postback_data(action=POSTBACK_SETTINGS_CONTACT_ADMIN),
+            "displayText": "ติดต่อแอดมิน",
+        },
+        "contents": [
+            _help_icon_box(
+                "...",
+                background_color=CARD_COLORS["white"],
+                color=CARD_COLORS["dark_green"],
+                size="md",
+            ),
+            {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "xs",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "ติดต่อแอดมิน",
+                        "size": "md",
+                        "weight": "bold",
+                        "color": CARD_COLORS["white"],
+                        "wrap": True,
+                    },
+                    {
+                        "type": "text",
+                        "text": "สอบถามปัญหาการใช้งานหรือขอความช่วยเหลือ",
+                        "size": "xs",
+                        "color": CARD_COLORS["white"],
+                        "wrap": True,
+                    },
+                ],
+                "flex": 1,
+            },
+            {
+                "type": "text",
+                "text": ">",
+                "size": "xl",
+                "color": CARD_COLORS["white"],
+                "align": "end",
+                "flex": 0,
+            },
+        ],
+    }
+
+
+def build_help_menu_message() -> FlexMessage:
+    contents = {
+        "type": "bubble",
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "md",
+            "paddingAll": CARD_PADDING,
+            "backgroundColor": CARD_COLORS["white"],
+            "contents": [
+                _help_hero(),
+                _help_section_header("เมนูด่วน"),
+                _help_quick_grid(),
+                {"type": "separator", "color": "#E0E0E0"},
+                _help_section_header("หมวดหมู่ช่วยเหลือ", "ดูทั้งหมด >"),
+                _help_category_list(),
+                _help_recommendation_panel(),
+                _help_contact_cta(),
+            ],
+        },
+    }
+    return FlexMessage(
+        alt_text="Help วิธีใช้งาน",
+        contents=FlexContainer.from_dict(contents),
+        quick_reply=_quick_reply_from_actions(
             (
-                HELP_FLOW_TOPICS[topic]["label"],
-                "postback",
-                build_postback_data(action=POSTBACK_HELP_FLOW, topic=topic),
+                (
+                    "บันทึกมิเตอร์",
+                    "postback",
+                    _help_postback_data(HELP_TOPIC_START_COLLECTION),
+                ),
+                (
+                    "ยืนยัน/แก้ OCR",
+                    "postback",
+                    _help_postback_data(HELP_TOPIC_CONFIRM_READING),
+                ),
+                (
+                    "ดูสถานะ",
+                    "postback",
+                    build_postback_data(action=POSTBACK_SHOW_STATUS),
+                ),
+                (
+                    "รายงานล่าสุด",
+                    "postback",
+                    build_postback_data(action=POSTBACK_LATEST_REPORT),
+                ),
             )
-            for topic in HELP_MENU_TOPICS
         ),
     )
 
@@ -2429,9 +2890,6 @@ def build_settings_menu_message(
     values: dict[str, str] | None = None,
 ) -> FlexMessage:
     settings_values = values or {}
-    expected_meter_count = settings_values.get("expected_meter_count", "8")
-    default_rate = settings_values.get("default_rate", "4.2")
-    report_title = settings_values.get("report_title", "Solar Weekly Report")
 
     quick_actions = (
         ("ดูค่าปัจจุบัน", "postback", build_postback_data(action=POSTBACK_SETTINGS_VIEW)),
@@ -2441,64 +2899,14 @@ def build_settings_menu_message(
     )
     if is_admin:
         quick_actions = (
+            ("แก้อัตราไฟฟ้า", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_RATE)),
+            ("แก้ชื่อรายงาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_REPORT_TITLE)),
+            ("แก้จำนวนมิเตอร์", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT)),
             ("ดูรายชื่อมิเตอร์", "postback", build_postback_data(action=POSTBACK_SETTINGS_METERS)),
-            ("อัตราค่าไฟ", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_RATE)),
-            ("จำนวนเครื่อง", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT)),
-            ("ชื่อรายงาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_REPORT_TITLE)),
             ("ผู้รับรายงาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_RECIPIENTS)),
             ("สิทธิ์ผู้ใช้งาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_PERMISSIONS)),
             ("Sync Google Sheet", "postback", build_postback_data(action=POSTBACK_SETTINGS_SYNC_SHEETS)),
             ("นำเข้ารายงานเก่า", "postback", build_postback_data(action=POSTBACK_SETTINGS_IMPORT_REPORT)),
-        )
-
-    rate_action = POSTBACK_SETTINGS_EDIT_RATE if is_admin else POSTBACK_SETTINGS_VIEW
-    count_action = POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT if is_admin else POSTBACK_SETTINGS_VIEW
-    title_action = POSTBACK_SETTINGS_EDIT_REPORT_TITLE if is_admin else POSTBACK_SETTINGS_VIEW
-    role_badge = _status_badge(
-        "Admin" if is_admin else "Operator",
-        color=CARD_COLORS["white"] if is_admin else CARD_COLORS["dark_green"],
-        background_color=CARD_COLORS["dark_green"] if is_admin else CARD_COLORS["light_green"],
-    )
-    role_badge["flex"] = 0
-    menu_rows = [
-        _settings_menu_row(
-            "⚡",
-            "อัตราค่าไฟ",
-            "ตั้งค่าอัตราค่าไฟฟ้าต่อหน่วย" if is_admin else "ดูอัตราค่าไฟฟ้าต่อหน่วย",
-            _settings_rate_display(default_rate),
-            rate_action,
-        ),
-        _settings_menu_row(
-            "#",
-            "จำนวนเครื่อง",
-            "ตั้งค่าจำนวนมิเตอร์ที่ใช้งาน" if is_admin else "ดูจำนวนมิเตอร์ที่ใช้งาน",
-            f"{expected_meter_count} เครื่อง",
-            count_action,
-        ),
-        _settings_menu_row(
-            "R",
-            "ชื่อรายงาน",
-            "ตั้งชื่อรายงานการผลิตไฟฟ้า" if is_admin else "ดูชื่อรายงานการผลิตไฟฟ้า",
-            report_title,
-            title_action,
-        ),
-        _settings_menu_row(
-            "M",
-            f"มิเตอร์ M1-M{expected_meter_count}",
-            "จัดการข้อมูลมิเตอร์แต่ละตัว" if is_admin else "ดูรายชื่อมิเตอร์แต่ละตัว",
-            "จัดการข้อมูลมิเตอร์" if is_admin else "ดูรายชื่อมิเตอร์",
-            POSTBACK_SETTINGS_METERS,
-        ),
-    ]
-    if is_admin:
-        menu_rows.append(
-            _settings_menu_row(
-                "G",
-                "Sync Google Sheet",
-                "ตั้งค่าการเชื่อมต่อและการซิงก์",
-                "แทนที่ SQLite",
-                POSTBACK_SETTINGS_SYNC_SHEETS,
-            )
         )
 
     contents = {
@@ -2523,7 +2931,7 @@ def build_settings_menu_message(
                             "contents": [
                                 {
                                     "type": "text",
-                                    "text": "ตั้งค่าระบบ",
+                                    "text": "การตั้งค่าปัจจุบัน",
                                     "weight": "bold",
                                     "size": "xl",
                                     "color": CARD_COLORS["dark_green"],
@@ -2531,7 +2939,7 @@ def build_settings_menu_message(
                                 },
                                 {
                                     "type": "text",
-                                    "text": "เลือกเมนูที่ต้องการ",
+                                    "text": "ข้อมูลการตั้งค่าระบบ",
                                     "size": "sm",
                                     "color": CARD_COLORS["neutral_gray"],
                                     "wrap": True,
@@ -2540,10 +2948,10 @@ def build_settings_menu_message(
                             ],
                             "flex": 1,
                         },
-                        role_badge,
+                        _settings_icon_box("▤"),
                     ],
                 },
-                _settings_menu_list(menu_rows),
+                _settings_table(_settings_current_rows(settings_values)),
                 _settings_primary_action_row(),
                 _settings_permission_note(is_admin),
             ],
@@ -2551,7 +2959,7 @@ def build_settings_menu_message(
     }
 
     return FlexMessage(
-        alt_text="ตั้งค่าระบบ",
+        alt_text="การตั้งค่าปัจจุบัน",
         contents=FlexContainer.from_dict(contents),
         quick_reply=_quick_reply_from_actions(quick_actions),
     )
@@ -2772,21 +3180,13 @@ def _can_confirm_report_import(pending) -> bool:
         and not pending.duplicate
     )
 
-def build_settings_view_message(values: dict[str, str], is_admin: bool) -> TextMessage:
-    lines = [
-        "การตั้งค่าปัจจุบัน",
-        "",
-        f"จำนวนมิเตอร์: {values.get('expected_meter_count', '8')} เครื่อง",
-        "รอบบันทึก: รายสัปดาห์",
-        f"อัตราเริ่มต้น: {values.get('default_rate', '4.2')} บาท/kWh",
-        f"Timezone: {values.get('timezone', 'Asia/Bangkok')}",
-        f"ชื่อรายงาน: {values.get('report_title', 'Solar Weekly Report')}",
-    ]
+def build_settings_view_message(values: dict[str, str], is_admin: bool) -> FlexMessage:
+    settings_values = values or {}
     actions = (
         (
-            ("แก้อัตราค่าไฟ", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_RATE)),
+            ("แก้อัตราไฟฟ้า", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_RATE)),
             ("แก้ชื่อรายงาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_REPORT_TITLE)),
-            ("แก้จำนวนเครื่อง", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT)),
+            ("แก้จำนวนมิเตอร์", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT)),
             ("กลับตั้งค่า", "postback", build_postback_data(action=POSTBACK_SETTINGS)),
         )
         if is_admin
@@ -2796,7 +3196,85 @@ def build_settings_view_message(values: dict[str, str], is_admin: bool) -> TextM
             ("กลับเมนูหลัก", "postback", build_postback_data(action=POSTBACK_HELP)),
         )
     )
-    return _text_with_actions(text="\n".join(lines), action_items=actions)
+    body_contents = [
+        {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "md",
+            "alignItems": "flex-start",
+            "contents": [
+                _settings_icon_box("▤"),
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "spacing": "none",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "ค่าปัจจุบันของระบบ",
+                            "weight": "bold",
+                            "size": "xl",
+                            "color": CARD_COLORS["dark_green"],
+                            "wrap": True,
+                        },
+                        {
+                            "type": "text",
+                            "text": "ข้อมูลการตั้งค่าล่าสุด",
+                            "size": "sm",
+                            "color": CARD_COLORS["neutral_gray"],
+                            "wrap": True,
+                            "margin": "xs",
+                        },
+                    ],
+                    "flex": 1,
+                },
+            ],
+        },
+        _settings_table(_settings_current_rows(settings_values), show_icons=False),
+    ]
+    updated_display = _settings_updated_display(settings_values)
+    if updated_display:
+        body_contents.append(
+            {
+                "type": "box",
+                "layout": "horizontal",
+                "spacing": "xs",
+                "alignItems": "center",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "◷",
+                        "size": "sm",
+                        "color": CARD_COLORS["data_blue"],
+                        "flex": 0,
+                    },
+                    {
+                        "type": "text",
+                        "text": f"อัปเดตล่าสุด: {updated_display}",
+                        "size": "xs",
+                        "color": CARD_COLORS["neutral_gray"],
+                        "wrap": True,
+                    },
+                ],
+            }
+        )
+
+    contents = {
+        "type": "bubble",
+        "size": "mega",
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "md",
+            "paddingAll": CARD_PADDING,
+            "contents": body_contents,
+        },
+    }
+    return FlexMessage(
+        alt_text="ค่าปัจจุบันของระบบ",
+        contents=FlexContainer.from_dict(contents),
+        quick_reply=_quick_reply_from_actions(actions),
+    )
 
 def build_settings_meters_message(meters: Sequence[dict], is_admin: bool) -> TextMessage:
     action_text = "ดูหรือแก้ไข" if is_admin else "ดู"

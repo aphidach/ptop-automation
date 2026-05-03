@@ -356,7 +356,10 @@ async def test_help_and_history_postback_are_supported():
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_HISTORY), "rt")
 
     assert mock_reply.await_count == 2
-    assert "ต้องการดูวิธีใช้งานส่วนไหน" in mock_reply.await_args_list[0].args[1].text
+    help_payload = mock_reply.await_args_list[0].args[1].dict(by_alias=True, exclude_none=True)
+    assert help_payload["altText"] == "Help วิธีใช้งาน"
+    assert "ต้องการดูวิธีใช้งานส่วนไหน" in str(help_payload)
+    assert "action=help_flow&topic=start_collection" in str(help_payload)
 
 
 @pytest.mark.anyio
@@ -461,7 +464,8 @@ async def test_settings_postback_branches_by_operator_role():
 
     payload = mock_reply.await_args.args[1]
     payload_dict = payload.dict(by_alias=True, exclude_none=True)
-    assert payload_dict["altText"] == "ตั้งค่าระบบ"
+    assert payload_dict["altText"] == "การตั้งค่าปัจจุบัน"
+    assert "การตั้งค่าปัจจุบัน" in str(payload)
     assert "settings_view" in str(payload)
     assert "4.20 บาท/kWh" in str(payload)
     assert "settings_edit_rate" not in str(payload)
@@ -701,7 +705,7 @@ async def test_settings_confirm_change_applies_pending_change(monkeypatch):
     mock_flush.assert_called_once()
     payload = mock_reply.await_args.args[1]
     assert payload[0] == "บันทึกและซิงก์ Google Sheet แล้วครับ"
-    assert "การตั้งค่าปัจจุบัน" in payload[1].text
+    assert "ค่าปัจจุบันของระบบ" in str(payload[1])
 
 
 @pytest.mark.anyio
@@ -737,7 +741,7 @@ async def test_settings_confirm_change_reports_google_sync_failure(monkeypatch):
     payload = mock_reply.await_args.args[1]
     assert "ซิงก์ Google Sheet ไม่สำเร็จ" in payload[0].text
     assert "quota exceeded" in payload[0].text
-    assert "การตั้งค่าปัจจุบัน" in payload[1].text
+    assert "ค่าปัจจุบันของระบบ" in str(payload[1])
 
 
 @pytest.mark.anyio
