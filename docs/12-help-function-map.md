@@ -159,15 +159,17 @@ Quick replies:
 
 | Asset | Covers | Priority |
 | --- | --- | --- |
-| `docs/help-flows/start-collection-board-ai.png` | เริ่มบันทึก, ถ่าย M1-M8, ครบแล้วส่งรายงาน | P0 |
-| `docs/help-flows/confirm-reading-board-ai.png` | ตรวจ OCR, ยืนยัน, แก้ไข, ถ่ายใหม่ | P0 |
-| `docs/help-flows/latest-report-board-ai.png` | ดูรายงานล่าสุดและสรุปสัปดาห์ | P0 |
-| `docs/help-flows/history-board-ai.png` | ดูรอบปัจจุบัน, สัปดาห์ก่อน, ย้อนหลัง, ตามมิเตอร์ | P1 |
-| `docs/help-flows/settings-board-ai.png` | ดู settings, รายชื่อมิเตอร์, ติดต่อ admin | P1 |
-| `docs/help-flows/settings-admin-board-ai.png` | แก้ rate, จำนวนเครื่อง, ชื่อรายงาน พร้อม confirmation | P2 |
-| `docs/help-flows/import-report-board-ai.png` | นำเข้ารายงานเก่าจากรูป | P2 |
-| `docs/help-flows/troubleshooting-board-ai.png` | OCR ไม่ชัด, ค่าต่ำกว่าเดิม, duplicate, ส่งรูปผิดจังหวะ | P2 |
-| `docs/help-flows/text-commands-board-ai.png` | คำสั่ง fallback ทั้งหมด | P2 |
+| `docs/help-flows/original/start-collection-board-ai.png` | เริ่มบันทึก, ถ่าย M1-M8, ครบแล้วส่งรายงาน | P0 |
+| `docs/help-flows/original/confirm-reading-board-ai.png` | ตรวจ OCR, ยืนยัน, แก้ไข, ถ่ายใหม่ | P0 |
+| `docs/help-flows/original/latest-report-board-ai.png` | ดูรายงานล่าสุดและสรุปสัปดาห์ | P0 |
+| `docs/help-flows/original/history-board-ai.png` | ดูรอบปัจจุบัน, สัปดาห์ก่อน, ย้อนหลัง, ตามมิเตอร์ | P1 |
+| `docs/help-flows/original/settings-board-ai.png` | ดู settings, รายชื่อมิเตอร์, ติดต่อ admin | P1 |
+| `docs/help-flows/original/settings-admin-board-ai.png` | แก้ rate, จำนวนเครื่อง, ชื่อรายงาน พร้อม confirmation | P2 |
+| `docs/help-flows/original/import-report-board-ai.png` | นำเข้ารายงานเก่าจากรูป | P2 |
+| `docs/help-flows/original/troubleshooting-board-ai.png` | OCR ไม่ชัด, ค่าต่ำกว่าเดิม, duplicate, ส่งรูปผิดจังหวะ | P2 |
+| `docs/help-flows/original/text-commands-board-ai.png` | คำสั่ง fallback ทั้งหมด | P2 |
+
+Preview files อยู่ใน `docs/help-flows/preview/` และใช้ชื่อเดียวกับ original แต่เติม `-preview.jpg` เช่น `docs/help-flows/preview/start-collection-board-ai-preview.jpg`
 
 ## First Image Scripts
 
@@ -238,12 +240,14 @@ Quick replies:
 - mapping รูป Help อยู่ใน `app/line/messages.py` แยกจาก business logic หลัก
 - URL รูปต้องเป็น HTTPS ที่ LINE เข้าถึงได้
 - ถ้าใช้ GitHub public raw URL ให้ใช้เฉพาะเริ่มต้นหรือไฟล์ที่ไม่เปลี่ยนบ่อย
-- มี preview image แยกจาก original image แล้วในรูปแบบ `*-board-ai-preview.jpg`
+- มี preview image แยกจาก original image แล้วในโฟลเดอร์ `docs/help-flows/preview/`
+- ตั้ง `HELP_FLOW_IMAGE_BASE_URL` ให้ชี้ไปที่โฟลเดอร์ original เช่น `https://raw.githubusercontent.com/USER/REPO/main/docs/help-flows/original`
+- ตั้ง `HELP_FLOW_IMAGE_PREVIEW_BASE_URL` ให้ชี้ไปที่โฟลเดอร์ preview เช่น `https://raw.githubusercontent.com/USER/REPO/main/docs/help-flows/preview`
 - ฟังก์ชันที่ยังเป็น partial/placeholder ไม่ควรทำภาพ Help แบบสัญญาเกินจริง
 
 ## Suggested Next Step
 
-1. Host `docs/help-flows/*-board-ai.png` และ `docs/help-flows/*-board-ai-preview.jpg` บน HTTPS
-2. ตั้งค่า `HELP_FLOW_IMAGE_BASE_URL`
-3. ตั้งค่า `HELP_FLOW_IMAGE_PREVIEW_BASE_URL`
+1. Host `docs/help-flows/original/*-board-ai.png` และ `docs/help-flows/preview/*-board-ai-preview.jpg` บน HTTPS
+2. ตั้งค่า `HELP_FLOW_IMAGE_BASE_URL` เป็น URL ของโฟลเดอร์ original
+3. ตั้งค่า `HELP_FLOW_IMAGE_PREVIEW_BASE_URL` เป็น URL ของโฟลเดอร์ preview
 4. ทดสอบกด `Help` ใน LINE แล้วเลือกแต่ละหัวข้อ

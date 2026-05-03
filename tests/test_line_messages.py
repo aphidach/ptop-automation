@@ -116,18 +116,18 @@ def test_help_flow_with_per_topic_https_image_urls_returns_image_and_text(monkey
 
 def test_help_flow_with_base_https_image_urls_uses_ai_board_assets(monkeypatch):
     _clear_help_image_env(monkeypatch)
-    monkeypatch.setenv("HELP_FLOW_IMAGE_BASE_URL", "https://cdn.example.com/help")
-    monkeypatch.setenv("HELP_FLOW_IMAGE_PREVIEW_BASE_URL", "https://img.example.com/help/previews")
+    monkeypatch.setenv("HELP_FLOW_IMAGE_BASE_URL", "https://cdn.example.com/help/original")
+    monkeypatch.setenv("HELP_FLOW_IMAGE_PREVIEW_BASE_URL", "https://img.example.com/help/preview")
 
     payload = build_help_flow_response("settings_admin")
 
     assert len(payload) == 2
     image_payload = _as_dict(payload[0])
     assert image_payload["originalContentUrl"] == (
-        "https://cdn.example.com/help/settings-admin-board-ai.png"
+        "https://cdn.example.com/help/original/settings-admin-board-ai.png"
     )
     assert image_payload["previewImageUrl"] == (
-        "https://img.example.com/help/previews/settings-admin-board-ai-preview.jpg"
+        "https://img.example.com/help/preview/settings-admin-board-ai-preview.jpg"
     )
     assert payload[1].text.startswith("วิธีจัดการการตั้งค่า")
 
