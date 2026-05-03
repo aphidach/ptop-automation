@@ -26,6 +26,7 @@ LINE -> Python Backend -> Google Vision OCR -> Google Sheets -> Report image -> 
 - [OCR Model: Google Vision](docs/04-ocr-google-vision.md)
 - [LINE Bot Conversation Flow](docs/05-line-bot-flow.md)
 - [Environment and Deployment](docs/06-env-and-deployment.md)
+- [Release and Packaging](docs/10-release-and-packaging.md)
 - [MVP Roadmap](docs/07-roadmap.md)
 - [Version 2.0 LINE UX Design](docs/08-v2-line-ux-design.md)
 - [History and Settings LINE UX Design](docs/09-history-settings-ux-design.md)
@@ -47,7 +48,7 @@ LINE -> Python Backend -> Google Vision OCR -> Google Sheets -> Report image -> 
 Run the full test suite:
 
 ```bash
-rtk uv run pytest
+rtk make test
 ```
 
 Run Google Vision OCR evaluation against real test images:

@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from app.config import settings
 from app.line.webhook import router as line_webhook_router
 
-app = FastAPI(title=settings.APP_NAME)
+app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION)
 app.include_router(line_webhook_router)
 
 # Serve report images via static endpoint (MVP approach)
@@ -17,7 +17,7 @@ app.mount("/reports", StaticFiles(directory=str(report_dir)), name="reports")
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "service": "solar-meter-bot"}
+    return {"status": "ok", "service": settings.APP_NAME, "version": settings.APP_VERSION}
 
 
 @app.get("/api/sheets/health")

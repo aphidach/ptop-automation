@@ -2,11 +2,14 @@ import os
 
 from dotenv import load_dotenv
 
+from app.version import __version__
+
 load_dotenv()
 
 
 class Settings:
     APP_NAME: str = "solar-meter-bot"
+    APP_VERSION: str = os.getenv("APP_VERSION", __version__)
     APP_ENV: str = os.getenv("APP_ENV", "development")
     APP_BASE_URL: str = os.getenv("APP_BASE_URL", "http://localhost:8000")
     TIMEZONE: str = os.getenv("TIMEZONE", "Asia/Bangkok")

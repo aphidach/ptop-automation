@@ -4,6 +4,7 @@
 
 ```bash
 APP_ENV=development
+APP_VERSION=0.1.0
 APP_BASE_URL=https://your-domain.example.com
 TIMEZONE=Asia/Bangkok
 
@@ -21,15 +22,23 @@ EXPECTED_METER_COUNT=8
 DEFAULT_RATE=4.2
 ```
 
+## Release Image
+
+Release and package steps are maintained in [Release and Packaging](10-release-and-packaging.md).
+
+Tagged releases publish Docker images to GitHub Container Registry:
+
+```text
+ghcr.io/<owner>/<repo>:0.1.0
+```
+
 ## Local Development
 
 Recommended tools:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+rtk make install
+rtk make run
 ```
 
 Expose local webhook with a tunnel such as ngrok or Cloudflare Tunnel:

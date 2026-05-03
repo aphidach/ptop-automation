@@ -13,6 +13,12 @@ RUN pip install --no-cache-dir --no-compile --prefix=/install -r requirements-pr
 
 FROM python-base AS runtime
 
+ARG APP_VERSION=0.1.0
+ENV APP_VERSION=${APP_VERSION}
+LABEL org.opencontainers.image.title="solar-meter-bot" \
+    org.opencontainers.image.description="LINE bot for solar meter OCR reporting" \
+    org.opencontainers.image.version="${APP_VERSION}"
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends fonts-tlwg-garuda \
     && rm -rf /var/lib/apt/lists/* \
