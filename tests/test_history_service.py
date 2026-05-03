@@ -11,6 +11,9 @@ def test_batch_summary_uses_saved_reading_totals(mock_repo):
         "week": "2026-W19",
         "status": "collecting",
         "expected_meter_count": "8",
+        "date": "2026-05-03",
+        "created_at": "2026-05-03T01:00:00+00:00",
+        "updated_at": "2026-05-03T02:00:00+00:00",
     }
     mock_repo.get_readings_by_batch.return_value = [
         {"meter_id": "M1", "produced_unit": "508", "amount": "2133.6"},
@@ -23,6 +26,33 @@ def test_batch_summary_uses_saved_reading_totals(mock_repo):
     assert summary.produced_unit == 918
     assert str(summary.amount) == "3855.6"
     assert "M3" in summary.missing_meter_ids
+    assert summary.date == "2026-05-03"
+    assert summary.created_at == "2026-05-03T01:00:00+00:00"
+    assert summary.updated_at == "2026-05-03T02:00:00+00:00"
+
+
+@patch("app.services.history_service.generate_batch_id", return_value="2026-W19-U1")
+@patch("app.services.history_service.repositories")
+def test_previous_batch_summary_skips_current_generated_batch(mock_repo, mock_generate_batch):
+    mock_repo.get_batches_by_source.return_value = [
+        {"batch_id": "2026-W19-U1", "week": "2026-W19"},
+        {"batch_id": "2026-W18-U1", "week": "2026-W18", "status": "complete", "expected_meter_count": "8"},
+    ]
+    mock_repo.get_batch_by_id.return_value = {
+        "batch_id": "2026-W18-U1",
+        "week": "2026-W18",
+        "status": "complete",
+        "expected_meter_count": "8",
+    }
+    mock_repo.get_readings_by_batch.return_value = [
+        {"meter_id": "M1", "produced_unit": "508", "amount": "2133.6"},
+    ]
+
+    summary = history_service.get_previous_batch_summary("U1")
+
+    assert summary.batch_id == "2026-W18-U1"
+    assert summary.week == "2026-W18"
+    mock_generate_batch.assert_called_once_with("U1")
 
 
 @patch("app.services.history_service.repositories")
@@ -33,6 +63,51 @@ def test_latest_report_prefers_batch_with_report_url(mock_repo):
     ]
 
     assert history_service.get_latest_report_batch_id("U1") == "2026-W18-U1"
+
+
+@patch("app.services.history_service.repositories")
+def test_latest_report_skips_empty_current_batch_for_latest_complete(mock_repo):
+    mock_repo.get_batches_by_source.return_value = [
+        {
+            "batch_id": "2026-W19-U1",
+            "week": "2026-W19",
+            "status": "collecting",
+            "expected_meter_count": "8",
+            "report_image_url": "",
+        },
+        {
+            "batch_id": "2026-W18-U1",
+            "week": "2026-W18",
+            "status": "complete",
+            "expected_meter_count": "8",
+            "report_image_url": "",
+        },
+    ]
+
+    def get_readings(batch_id):
+        if batch_id == "2026-W19-U1":
+            return []
+        return [{"meter_id": f"M{i}"} for i in range(1, 9)]
+
+    mock_repo.get_readings_by_batch.side_effect = get_readings
+
+    assert history_service.get_latest_report_batch_id("U1") == "2026-W18-U1"
+
+
+@patch("app.services.history_service.repositories")
+def test_latest_report_returns_none_when_only_current_batch_is_empty(mock_repo):
+    mock_repo.get_batches_by_source.return_value = [
+        {
+            "batch_id": "2026-W19-U1",
+            "week": "2026-W19",
+            "status": "collecting",
+            "expected_meter_count": "8",
+            "report_image_url": "",
+        },
+    ]
+    mock_repo.get_readings_by_batch.return_value = []
+
+    assert history_service.get_latest_report_batch_id("U1") is None
 
 
 @patch("app.services.history_service.repositories")

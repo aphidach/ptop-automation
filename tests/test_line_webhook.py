@@ -109,6 +109,22 @@ def test_gen_schedules_image_send_for_current_batch():
     assert "action=latest_report&batch_id=2026-W19-U1" in str(payload)
 
 
+def test_gen_does_not_schedule_image_send_when_report_is_unavailable():
+    set_batch_id("U1", "2026-W19-U1")
+
+    with patch("app.line.webhook.send_report") as mock_send_report, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.messages.build_report_data", return_value=None):
+        reply = _build_reply(ParsedCommand(type=GEN), "U1")
+
+    mock_send_report.assert_not_called()
+    mock_create_task.assert_not_called()
+    assert isinstance(reply, FlexMessage)
+    payload = reply.dict(by_alias=True, exclude_none=True)
+    assert payload["altText"] == "รายงานยังไม่พร้อม"
+    assert "2026-W19" in str(payload)
+
+
 def test_gen_with_week_ref_schedules_image_send_for_source_week():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \

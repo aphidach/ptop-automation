@@ -20,6 +20,9 @@ class BatchSummary:
     produced_unit: Decimal
     amount: Decimal
     readings: list[dict]
+    date: str = ""
+    created_at: str = ""
+    updated_at: str = ""
     report_image_url: str = ""
 
 
@@ -29,10 +32,11 @@ def get_current_batch_summary(source_id: str, session_batch_id: str | None = Non
 
 
 def get_previous_batch_summary(source_id: str, current_batch_id: str | None = None) -> BatchSummary | None:
+    current_batch_id = current_batch_id or generate_batch_id(source_id)
     batches = repositories.get_batches_by_source(source_id)
     for batch in batches:
         batch_id = str(batch.get("batch_id", ""))
-        if current_batch_id and batch_id == current_batch_id:
+        if batch_id == current_batch_id:
             continue
         return get_batch_summary(batch_id)
     return None
@@ -77,13 +81,27 @@ def get_recent_batch_summaries(
 
 
 def get_latest_report_batch_id(source_id: str) -> str | None:
-    for batch in repositories.get_batches_by_source(source_id):
+    batches = repositories.get_batches_by_source(source_id)
+    for batch in batches:
         if str(batch.get("report_image_url", "")).strip():
-            return str(batch.get("batch_id", ""))
-    latest = repositories.get_batches_by_source(source_id)
-    if latest:
-        return str(latest[0].get("batch_id", "")) or None
+            return str(batch.get("batch_id", "")) or None
+    for batch in batches:
+        if _has_report_data(batch):
+            return str(batch.get("batch_id", "")) or None
     return None
+
+
+def _has_report_data(batch: dict) -> bool:
+    batch_id = str(batch.get("batch_id", "")).strip()
+    if not batch_id:
+        return False
+    readings = repositories.get_readings_by_batch(batch_id)
+    if not readings:
+        return False
+    confirmed_ids = {str(r.get("meter_id", "")) for r in readings if r.get("meter_id")}
+    expected = _to_int(batch.get("expected_meter_count"), settings.EXPECTED_METER_COUNT)
+    status = str(batch.get("status", "")).strip().lower()
+    return status in {"complete", "reported"} or len(confirmed_ids) >= expected
 
 
 def get_batch_summary(batch_id: str) -> BatchSummary | None:
@@ -110,6 +128,9 @@ def get_batch_summary(batch_id: str) -> BatchSummary | None:
         produced_unit=sum((_to_decimal(r.get("produced_unit")) for r in readings), Decimal("0")),
         amount=sum((_to_decimal(r.get("amount")) for r in readings), Decimal("0")),
         readings=sorted(readings, key=lambda r: str(r.get("meter_id", ""))),
+        date=str(batch.get("date", "") if batch else first_reading.get("date", "")),
+        created_at=str(batch.get("created_at", "") if batch else first_reading.get("created_at", "")),
+        updated_at=str(batch.get("updated_at", "") if batch else ""),
         report_image_url=str(batch.get("report_image_url", "") if batch else ""),
     )
 

@@ -438,9 +438,12 @@ async def test_history_select_week_postback_shows_recent_batches():
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_HISTORY_SELECT_WEEK), "rt")
 
     payload = mock_reply.await_args.args[1]
-    assert "ประวัติย้อนหลัง 1 เดือน" in payload.text
-    assert "2026-W18" in payload.text
-    assert "history_batch" in str(payload)
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    rendered = str(payload_dict)
+    assert payload_dict["altText"] == "ประวัติย้อนหลัง 1 เดือน"
+    assert "ประวัติย้อนหลัง 1 เดือน" in rendered
+    assert "2026-W18" in rendered
+    assert "history_batch" in rendered
 
 @pytest.mark.anyio
 async def test_settings_postback_branches_by_operator_role():
@@ -565,12 +568,13 @@ async def test_weekly_summary_postback_uses_session_batch_when_no_batch_id():
 
 
 @pytest.mark.anyio
-async def test_weekly_summary_postback_falls_back_to_latest_batch_when_no_session_batch():
-    with patch("app.line.webhook.history_service.get_latest_report_batch_id", return_value="2026-W17-U1"), \
+async def test_weekly_summary_postback_uses_current_week_when_no_session_batch():
+    with patch("app.line.webhook.generate_batch_id", return_value="2026-W19-U1"), \
+         patch("app.line.webhook.history_service.get_latest_report_batch_id") as mock_latest_batch, \
          patch(
             "app.line.messages.build_report_data",
             return_value=SimpleNamespace(
-                week="2026-W17",
+                week="2026-W19",
                 readings=[1, 2],
                 total_produced_unit=Decimal("888.0"),
                 total_amount=Decimal("1110.0"),
@@ -583,24 +587,31 @@ async def test_weekly_summary_postback_falls_back_to_latest_batch_when_no_sessio
 
     payload = mock_reply.await_args.args[1]
     payload_dict = payload.dict(by_alias=True, exclude_none=True)
-    assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W17"
-    assert "action=history_batch_detail&batch_id=2026-W17-U1" in str(payload)
-    assert "action=latest_report&batch_id=2026-W17-U1" in str(payload)
-    mock_send_report.assert_called_once_with("2026-W17-U1", "U1")
+    assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W19"
+    assert "action=history_batch_detail&batch_id=2026-W19-U1" in str(payload)
+    assert "action=latest_report&batch_id=2026-W19-U1" in str(payload)
+    mock_latest_batch.assert_not_called()
+    mock_send_report.assert_called_once_with("2026-W19-U1", "U1")
     mock_create_task.assert_called_once_with("send-report-task")
 
 
 @pytest.mark.anyio
 async def test_weekly_summary_postback_keeps_empty_state_when_no_batch_exists():
-    with patch("app.line.webhook.history_service.get_latest_report_batch_id", return_value=None), \
-         patch("app.line.messages.build_report_data") as mock_build_report_data, \
+    with patch("app.line.webhook.generate_batch_id", return_value="2026-W19-U1"), \
+         patch("app.line.webhook.history_service.get_latest_report_batch_id") as mock_latest_batch, \
+         patch("app.line.messages.build_report_data", return_value=None) as mock_build_report_data, \
          patch("app.line.webhook.send_report") as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
          patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_WEEKLY_SUMMARY), "rt")
 
-    mock_reply.assert_awaited_once_with("rt", "ยังไม่มีข้อมูลรอบนี้ครับ")
-    mock_build_report_data.assert_not_called()
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "รายงานยังไม่พร้อม"
+    assert "2026-W19" in str(payload)
+    assert "ยังไม่มีข้อมูลรายงานของรอบนี้" in str(payload)
+    mock_latest_batch.assert_not_called()
+    mock_build_report_data.assert_called_once_with("2026-W19-U1")
     mock_send_report.assert_not_called()
     mock_create_task.assert_not_called()
 

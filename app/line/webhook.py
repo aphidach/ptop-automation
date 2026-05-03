@@ -42,6 +42,7 @@ from app.line.messages import (
     build_report_import_preview_message,
     build_report_import_prompt_message,
     build_report_import_success_message,
+    build_report_unavailable_message,
     build_settings_confirm_change_message,
     build_settings_edit_prompt_message,
     build_settings_menu_message,
@@ -385,6 +386,9 @@ def _normalize_message_payload(messages) -> list:
         for item in items
     ]
 
+def _is_report_unavailable_message(message) -> bool:
+    return getattr(message, "alt_text", "") == "รายงานยังไม่พร้อม"
+
 
 def _set_next_collection_meter(source_id: str, batch_id: str | None) -> str | None:
     next_meter = _next_meter_to_capture(source_id, batch_id)
@@ -610,7 +614,8 @@ def _build_text_reply(cmd: ParsedCommand, source_id: str) -> str | TextMessage |
         if not batch_id:
             return "ยังไม่มีข้อมูลรอบนี้ครับ"
         report_message = build_report_summary_message(batch_id)
-        asyncio.create_task(send_report(batch_id, source_id))
+        if not _is_report_unavailable_message(report_message):
+            asyncio.create_task(send_report(batch_id, source_id))
         return report_message
 
     if cmd.type == HELP:
@@ -1084,20 +1089,30 @@ async def _handle_postback(
         if not batch_id:
             batch_id = history_service.get_latest_report_batch_id(source_id)
         if not batch_id:
-            await _reply_to(reply_token, build_history_empty_message("ยังไม่มีรูปรายงานสำหรับรอบนี้ครับ"))
+            await _reply_to(
+                reply_token,
+                build_report_unavailable_message(reason="ยังไม่มีรูปรายงานสำหรับรอบนี้"),
+            )
             return
-        await _reply_to(reply_token, build_report_summary_message(batch_id))
-        asyncio.create_task(send_report(batch_id, source_id))
+        report_message = build_report_summary_message(batch_id)
+        await _reply_to(reply_token, report_message)
+        if not _is_report_unavailable_message(report_message):
+            asyncio.create_task(send_report(batch_id, source_id))
         return
 
     if action == POSTBACK_WEEKLY_SUMMARY:
         if not batch_id:
-            batch_id = history_service.get_latest_report_batch_id(source_id)
+            batch_id = generate_batch_id(source_id)
         if not batch_id:
-            await _reply_to(reply_token, "ยังไม่มีข้อมูลรอบนี้ครับ")
+            await _reply_to(
+                reply_token,
+                build_report_unavailable_message(reason="ยังไม่มีข้อมูลรอบนี้"),
+            )
             return
-        await _reply_to(reply_token, build_report_summary_message(batch_id))
-        asyncio.create_task(send_report(batch_id, source_id))
+        report_message = build_report_summary_message(batch_id)
+        await _reply_to(reply_token, report_message)
+        if not _is_report_unavailable_message(report_message):
+            asyncio.create_task(send_report(batch_id, source_id))
         return
 
     await _reply_to(reply_token, "ไม่รู้จัก postback action นี้")

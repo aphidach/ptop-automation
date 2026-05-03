@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal, InvalidOperation
 from typing import Iterable, Sequence
 from urllib.parse import urlencode, urlparse
@@ -73,6 +74,21 @@ CARD_COLORS = {
 }
 CARD_PADDING = "16px"
 LINE_CARD_START_COLLECTION_HERO_ASSET = "solar-meter-mascot-hero-v0.2.0.png"
+THAI_TZ = timezone(timedelta(hours=7))
+THAI_MONTHS_SHORT = (
+    "ม.ค.",
+    "ก.พ.",
+    "มี.ค.",
+    "เม.ย.",
+    "พ.ค.",
+    "มิ.ย.",
+    "ก.ค.",
+    "ส.ค.",
+    "ก.ย.",
+    "ต.ค.",
+    "พ.ย.",
+    "ธ.ค.",
+)
 
 HELP_TOPIC_START_COLLECTION = "start_collection"
 HELP_TOPIC_CONFIRM_READING = "confirm_reading"
@@ -359,9 +375,120 @@ def _postback_menu_row(
     }
 
 
+def _history_icon_box(icon: str) -> dict:
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "width": "48px",
+        "height": "48px",
+        "cornerRadius": "12px",
+        "backgroundColor": CARD_COLORS["light_green"],
+        "justifyContent": "center",
+        "contents": [
+            {
+                "type": "text",
+                "text": icon,
+                "size": "xl",
+                "weight": "bold",
+                "align": "center",
+                "color": CARD_COLORS["dark_green"],
+            }
+        ],
+    }
+
+
+def _history_menu_row(
+    icon: str,
+    label: str,
+    action: str,
+    *,
+    description: str,
+    **kwargs: str | int | bool | None,
+) -> dict:
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "md",
+        "alignItems": "center",
+        "paddingAll": "10px",
+        "cornerRadius": "8px",
+        "borderWidth": "1px",
+        "borderColor": "#E0E0E0",
+        "action": {
+            "type": "postback",
+            "label": label[:QUICK_TEXT_LIMIT],
+            "data": build_postback_data(action=action, **kwargs),
+            "displayText": label,
+        },
+        "contents": [
+            _history_icon_box(icon),
+            {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "none",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": label,
+                        "size": "md",
+                        "weight": "bold",
+                        "color": CARD_COLORS["text"],
+                        "wrap": True,
+                    },
+                    {
+                        "type": "text",
+                        "text": description,
+                        "size": "sm",
+                        "color": CARD_COLORS["neutral_gray"],
+                        "wrap": True,
+                        "margin": "xs",
+                    },
+                ],
+                "flex": 1,
+            },
+            {
+                "type": "text",
+                "text": ">",
+                "size": "xxl",
+                "color": CARD_COLORS["dark_green"],
+                "align": "end",
+                "flex": 0,
+            },
+        ],
+    }
+
+
+def _settings_icon_box(
+    icon: str,
+    *,
+    background_color: str = CARD_COLORS["light_green"],
+    color: str = CARD_COLORS["dark_green"],
+) -> dict:
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "width": "44px",
+        "height": "44px",
+        "cornerRadius": "10px",
+        "backgroundColor": background_color,
+        "justifyContent": "center",
+        "contents": [
+            {
+                "type": "text",
+                "text": icon,
+                "size": "xl",
+                "weight": "bold",
+                "color": color,
+                "align": "center",
+            }
+        ],
+    }
+
+
 def _settings_menu_row(
     icon: str,
     label: str,
+    description: str,
     value: str,
     action: str,
     **kwargs: str | int | bool | None,
@@ -379,32 +506,39 @@ def _settings_menu_row(
             "displayText": label,
         },
         "contents": [
+            _settings_icon_box(icon),
             {
-                "type": "text",
-                "text": icon,
-                "size": "sm",
-                "weight": "bold",
-                "color": CARD_COLORS["dark_green"],
-                "align": "center",
-                "flex": 1,
-            },
-            {
-                "type": "text",
-                "text": label,
-                "size": "sm",
-                "weight": "bold",
-                "color": CARD_COLORS["text"],
-                "wrap": True,
-                "flex": 5,
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "xs",
+                "flex": 6,
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": label,
+                        "size": "md",
+                        "weight": "bold",
+                        "color": CARD_COLORS["text"],
+                        "wrap": True,
+                    },
+                    {
+                        "type": "text",
+                        "text": description,
+                        "size": "xs",
+                        "color": CARD_COLORS["neutral_gray"],
+                        "wrap": True,
+                    },
+                ],
             },
             {
                 "type": "text",
                 "text": value,
-                "size": "xs",
-                "color": CARD_COLORS["text"],
+                "size": "sm",
+                "color": CARD_COLORS["dark_green"],
                 "align": "end",
                 "wrap": True,
-                "flex": 5,
+                "flex": 4,
+                "maxLines": 2,
             },
             {
                 "type": "text",
@@ -430,7 +564,112 @@ def _settings_menu_list(rows: Sequence[dict]) -> dict:
         "cornerRadius": "8px",
         "borderWidth": "1px",
         "borderColor": "#E0E0E0",
+        "backgroundColor": CARD_COLORS["white"],
         "contents": contents,
+    }
+
+
+def _settings_primary_action_row() -> dict:
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "md",
+        "alignItems": "center",
+        "paddingAll": "12px",
+        "cornerRadius": "8px",
+        "backgroundColor": CARD_COLORS["primary"],
+        "action": {
+            "type": "postback",
+            "label": "ดูค่าปัจจุบัน",
+            "data": build_postback_data(action=POSTBACK_SETTINGS_VIEW),
+            "displayText": "ดูค่าปัจจุบัน",
+        },
+        "contents": [
+            _settings_icon_box(
+                "⚙",
+                background_color=CARD_COLORS["white"],
+                color=CARD_COLORS["dark_green"],
+            ),
+            {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "xs",
+                "flex": 1,
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "ดูค่าปัจจุบัน",
+                        "size": "md",
+                        "weight": "bold",
+                        "color": CARD_COLORS["white"],
+                        "wrap": True,
+                    },
+                    {
+                        "type": "text",
+                        "text": "ดูการตั้งค่าปัจจุบันของระบบ",
+                        "size": "xs",
+                        "color": CARD_COLORS["white"],
+                        "wrap": True,
+                    },
+                ],
+            },
+            {
+                "type": "text",
+                "text": ">",
+                "size": "xxl",
+                "color": CARD_COLORS["white"],
+                "align": "end",
+                "flex": 0,
+            },
+        ],
+    }
+
+
+def _settings_permission_note(is_admin: bool) -> dict:
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "md",
+        "alignItems": "center",
+        "paddingAll": "12px",
+        "cornerRadius": "8px",
+        "borderWidth": "1px",
+        "borderColor": "#DCEFE2",
+        "backgroundColor": "#F1F8F3",
+        "contents": [
+            _settings_icon_box(
+                "🔒",
+                background_color=CARD_COLORS["light_green"],
+                color=CARD_COLORS["dark_green"],
+            ),
+            {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "xs",
+                "flex": 1,
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "เมนูสำหรับผู้ดูแลระบบเท่านั้น"
+                        if is_admin
+                        else "ดูได้เฉพาะข้อมูลปัจจุบัน",
+                        "size": "sm",
+                        "weight": "bold",
+                        "color": CARD_COLORS["text"],
+                        "wrap": True,
+                    },
+                    {
+                        "type": "text",
+                        "text": "จัดการและตั้งค่าระบบให้เหมาะสมกับการใช้งาน"
+                        if is_admin
+                        else "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ",
+                        "size": "xs",
+                        "color": CARD_COLORS["neutral_gray"],
+                        "wrap": True,
+                    },
+                ],
+            },
+        ],
     }
 
 
@@ -1416,37 +1655,41 @@ def build_batch_complete_card(
 def build_history_menu_message() -> FlexMessage:
     return _card_shell(
         alt_text="ประวัติการบันทึก",
-        title="ประวัติ",
-        subtitle="เลือกข้อมูลที่ต้องการดู",
+        title="เลือกข้อมูลที่ต้องการดู",
+        subtitle="เลือกเส้นทางด้านล่างเพื่อดูข้อมูลย้อนหลัง",
         body_contents=(
-            _body_text(
-                "เลือกเส้นทางด้านล่างเพื่อดูข้อมูลย้อนหลัง",
-                size="sm",
-                color=CARD_COLORS["text"],
-            ),
-            _postback_menu_row(
+            _history_menu_row(
+                "▦",
                 "รอบปัจจุบัน",
                 POSTBACK_HISTORY_CURRENT,
                 description="ดูข้อมูลรอบที่กำลังบันทึก",
             ),
-            _postback_menu_row(
+            _history_menu_row(
+                "◷",
                 "สัปดาห์ก่อน",
                 POSTBACK_HISTORY_PREVIOUS,
                 description="ดูรอบก่อนหน้าล่าสุด",
             ),
-            _postback_menu_row(
+            _history_menu_row(
+                "↺",
                 "เลือกรอบย้อนหลัง",
                 POSTBACK_HISTORY_SELECT_WEEK,
                 description="เลือกรายการย้อนหลัง 1 เดือน",
             ),
-            _postback_menu_row(
+            _history_menu_row(
+                "▥",
                 "ดูตามมิเตอร์",
                 POSTBACK_HISTORY_METER,
                 description="ดูประวัติรายเครื่อง",
             ),
         ),
         secondary_actions=(
-            _postback_button("รายงานล่าสุด", POSTBACK_LATEST_REPORT),
+            _postback_button(
+                "รายงานล่าสุด",
+                POSTBACK_LATEST_REPORT,
+                style="primary",
+                color=CARD_COLORS["primary"],
+            ),
             _postback_button("Help", POSTBACK_HELP),
         ),
         quick_actions=(
@@ -1467,14 +1710,78 @@ def build_history_empty_message(text: str) -> TextMessage:
         ),
     )
 
-def build_history_batch_list_message(summaries: Sequence) -> TextMessage:
+def _history_batch_list_row(summary) -> dict:
+    label = summary.week or summary.batch_id
+    confirmed = summary.confirmed_meter_count
+    expected = summary.expected_meter_count
+    try:
+        is_complete = int(confirmed) >= int(expected) and int(expected) > 0
+    except (TypeError, ValueError):
+        is_complete = str(confirmed) == str(expected)
+    count_color = CARD_COLORS["dark_green"] if is_complete else "#E53935"
+
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "md",
+        "alignItems": "center",
+        "paddingAll": "10px",
+        "action": {
+            "type": "postback",
+            "label": label[:QUICK_TEXT_LIMIT],
+            "data": build_postback_data(action=POSTBACK_HISTORY_BATCH, batch_id=summary.batch_id),
+            "displayText": label,
+        },
+        "contents": [
+            _history_icon_box("▦"),
+            {
+                "type": "text",
+                "text": label,
+                "size": "xl",
+                "color": CARD_COLORS["text"],
+                "wrap": True,
+                "flex": 3,
+            },
+            {
+                "type": "text",
+                "text": f"{confirmed}/{expected} เครื่อง",
+                "size": "lg",
+                "weight": "bold",
+                "color": count_color,
+                "align": "end",
+                "wrap": True,
+                "flex": 3,
+            },
+            {
+                "type": "text",
+                "text": ">",
+                "size": "xxl",
+                "color": CARD_COLORS["dark_green"],
+                "align": "end",
+                "flex": 0,
+            },
+        ],
+    }
+
+
+def _history_batch_list_box(summaries: Sequence) -> dict:
+    contents = []
+    for index, summary in enumerate(summaries):
+        if index:
+            contents.append({"type": "separator", "color": "#DDE7DD"})
+        contents.append(_history_batch_list_row(summary))
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "cornerRadius": "16px",
+        "backgroundColor": CARD_COLORS["light_green"],
+        "contents": contents,
+    }
+
+
+def build_history_batch_list_message(summaries: Sequence) -> FlexMessage | TextMessage:
     if not summaries:
         return build_history_empty_message("ยังไม่มีประวัติย้อนหลังใน 1 เดือนนี้ครับ")
-
-    lines = ["ประวัติย้อนหลัง 1 เดือน", "", "เลือกรอบที่ต้องการดูครับ"]
-    for summary in summaries:
-        label = summary.week or summary.batch_id
-        lines.append(f"{label}: {summary.confirmed_meter_count}/{summary.expected_meter_count} เครื่อง")
 
     items = [
         (
@@ -1485,7 +1792,50 @@ def build_history_batch_list_message(summaries: Sequence) -> TextMessage:
         for summary in summaries
     ]
     items.append(("กลับประวัติ", "postback", build_postback_data(action=POSTBACK_HISTORY)))
-    return _text_with_actions(text="\n".join(lines), action_items=items)
+    contents = {
+        "type": "bubble",
+        "size": "mega",
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "md",
+            "paddingAll": CARD_PADDING,
+            "contents": [
+                {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "spacing": "sm",
+                    "alignItems": "center",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "↺",
+                            "size": "xxl",
+                            "weight": "bold",
+                            "color": CARD_COLORS["dark_green"],
+                            "flex": 0,
+                        },
+                        {
+                            "type": "text",
+                            "text": "ประวัติย้อนหลัง 1 เดือน",
+                            "size": "xl",
+                            "weight": "bold",
+                            "color": CARD_COLORS["dark_green"],
+                            "wrap": True,
+                        },
+                    ],
+                },
+                {"type": "separator", "color": "#D1D5DB"},
+                _body_text("เลือกรอบที่ต้องการดูครับ", size="md", color=CARD_COLORS["text"]),
+                _history_batch_list_box(summaries),
+            ],
+        },
+    }
+    return FlexMessage(
+        alt_text="ประวัติย้อนหลัง 1 เดือน",
+        contents=FlexContainer.from_dict(contents),
+        quick_reply=_quick_reply_from_actions(items),
+    )
 
 def build_history_summary_message(title: str, summary) -> FlexMessage:
     week = summary.week or summary.batch_id
@@ -1541,39 +1891,477 @@ def build_history_summary_message(title: str, summary) -> FlexMessage:
 def build_history_detail_message(summary) -> FlexMessage:
     week = summary.week or summary.batch_id
     by_meter = {str(row.get("meter_id", "")): row for row in summary.readings}
-    detail_rows = []
-    for meter_id in DEFAULT_METER_IDS:
-        row = by_meter.get(meter_id)
-        if not row:
-            detail_rows.append(_metric_row(meter_id, "ยังไม่มีข้อมูล", color=CARD_COLORS["neutral_gray"]))
-            continue
-        current = _format_number(row.get("current_value", "0"))
-        produced = _format_number(row.get("produced_unit", "0"))
-        detail_rows.append(_metric_row(meter_id, f"{current} kWh (+{produced})", color=CARD_COLORS["dark_green"]))
-    return _card_shell(
+    detail_rows = [
+        _history_detail_meter_row(meter_id, by_meter.get(meter_id))
+        for meter_id in _history_detail_meter_ids(summary)
+    ]
+
+    contents = {
+        "type": "bubble",
+        "size": "giga",
+        "styles": {"footer": {"separator": False}},
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "md",
+            "paddingAll": "20px",
+            "contents": [
+                _history_detail_header(
+                    week,
+                    _history_detail_date_range(getattr(summary, "date", "")),
+                ),
+                _history_detail_progress_panel(summary),
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "spacing": "sm",
+                    "contents": detail_rows,
+                },
+                _history_detail_totals_panel(summary),
+            ],
+        },
+        "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "sm",
+            "paddingAll": "20px",
+            "contents": [
+                _postback_button(
+                    "ส่งรูปรายงาน",
+                    POSTBACK_LATEST_REPORT,
+                    batch_id=summary.batch_id,
+                    style="primary",
+                    color=CARD_COLORS["primary"],
+                ),
+                {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "spacing": "sm",
+                    "contents": [
+                        _postback_button("ดูตามมิเตอร์", POSTBACK_HISTORY_METER),
+                        _postback_button("ประวัติ", POSTBACK_HISTORY),
+                    ],
+                },
+                {
+                    "type": "separator",
+                    "margin": "sm",
+                    "color": "#E5E7EB",
+                },
+                _history_detail_footer_meta(summary),
+            ],
+        },
+    }
+
+    return FlexMessage(
         alt_text=f"รายละเอียดรอบ {week}",
-        title="รายละเอียดรอบ",
-        subtitle=week,
-        status_badge=f"{summary.confirmed_meter_count}/{summary.expected_meter_count} เครื่อง",
-        body_contents=detail_rows,
-        primary_action=_postback_button(
-            "ส่งรูปรายงาน",
-            POSTBACK_LATEST_REPORT,
-            batch_id=summary.batch_id,
-            style="primary",
-            color=CARD_COLORS["primary"],
-        ),
-        secondary_actions=(
-            _postback_button("ดูตามมิเตอร์", POSTBACK_HISTORY_METER),
-            _postback_button("ประวัติ", POSTBACK_HISTORY),
-        ),
-        quick_actions=(
-            ("ส่งรูปรายงาน", "postback", build_postback_data(action=POSTBACK_LATEST_REPORT, batch_id=summary.batch_id)),
-            ("ดูตามมิเตอร์", "postback", build_postback_data(action=POSTBACK_HISTORY_METER)),
-            ("บันทึกต่อ", "postback", build_postback_data(action=POSTBACK_START_COLLECTION)),
-            ("กลับประวัติ", "postback", build_postback_data(action=POSTBACK_HISTORY)),
+        contents=FlexContainer.from_dict(contents),
+        quick_reply=_quick_reply_from_actions(
+            (
+                ("ส่งรูปรายงาน", "postback", build_postback_data(action=POSTBACK_LATEST_REPORT, batch_id=summary.batch_id)),
+                ("ดูตามมิเตอร์", "postback", build_postback_data(action=POSTBACK_HISTORY_METER)),
+                ("บันทึกต่อ", "postback", build_postback_data(action=POSTBACK_START_COLLECTION)),
+                ("กลับประวัติ", "postback", build_postback_data(action=POSTBACK_HISTORY)),
+            )
         ),
     )
+
+
+def _history_detail_header(week: str, date_range: str) -> dict:
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "md",
+        "alignItems": "flex-start",
+        "contents": [
+            {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "none",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "รายละเอียดรอบ",
+                        "weight": "bold",
+                        "size": "xl",
+                        "color": CARD_COLORS["dark_green"],
+                        "wrap": True,
+                    },
+                    {
+                        "type": "text",
+                        "text": week,
+                        "size": "sm",
+                        "color": CARD_COLORS["neutral_gray"],
+                        "margin": "xs",
+                    },
+                ],
+                "flex": 5,
+            },
+            {
+                "type": "box",
+                "layout": "horizontal",
+                "spacing": "sm",
+                "alignItems": "center",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "width": "28px",
+                        "height": "28px",
+                        "cornerRadius": "6px",
+                        "backgroundColor": CARD_COLORS["light_green"],
+                        "justifyContent": "center",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "□",
+                                "size": "lg",
+                                "weight": "bold",
+                                "align": "center",
+                                "color": CARD_COLORS["dark_green"],
+                            }
+                        ],
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "spacing": "none",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "รอบนี้",
+                                "size": "sm",
+                                "color": CARD_COLORS["text"],
+                                "wrap": True,
+                            },
+                            {
+                                "type": "text",
+                                "text": date_range,
+                                "size": "xs",
+                                "color": CARD_COLORS["neutral_gray"],
+                                "wrap": True,
+                                "margin": "xs",
+                            },
+                        ],
+                    },
+                ],
+                "flex": 4,
+            },
+        ],
+    }
+
+
+def _history_detail_progress_panel(summary) -> dict:
+    expected = _safe_int(getattr(summary, "expected_meter_count", 0))
+    confirmed = _safe_int(getattr(summary, "confirmed_meter_count", 0))
+    missing_ids = getattr(summary, "missing_meter_ids", ()) or ()
+    missing_count = len(missing_ids) if missing_ids else max(expected - confirmed, 0)
+    is_complete = expected > 0 and missing_count <= 0 and confirmed >= expected
+    tone_color = CARD_COLORS["dark_green"] if is_complete else CARD_COLORS["warning_text"]
+    background = "#F1FAF2" if is_complete else "#FFF8E1"
+    border = "#B7DDBA" if is_complete else "#FFE082"
+    title = f"{confirmed}/{expected} เครื่อง" if expected else f"{confirmed} เครื่อง"
+    subtitle = "บันทึกครบถ้วน" if is_complete else f"ยังขาด {missing_count} เครื่อง"
+
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "md",
+        "alignItems": "center",
+        "justifyContent": "center",
+        "paddingAll": "12px",
+        "cornerRadius": "10px",
+        "backgroundColor": background,
+        "borderColor": border,
+        "borderWidth": "1px",
+        "contents": [
+            {
+                "type": "box",
+                "layout": "vertical",
+                "width": "36px",
+                "height": "36px",
+                "cornerRadius": "18px",
+                "backgroundColor": tone_color,
+                "justifyContent": "center",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "✓" if is_complete else "!",
+                        "size": "xl",
+                        "weight": "bold",
+                        "align": "center",
+                        "color": CARD_COLORS["white"],
+                    }
+                ],
+            },
+            {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "none",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": title,
+                        "size": "lg",
+                        "weight": "bold",
+                        "color": tone_color,
+                        "wrap": True,
+                    },
+                    {
+                        "type": "text",
+                        "text": subtitle,
+                        "size": "sm",
+                        "color": tone_color,
+                        "margin": "xs",
+                        "wrap": True,
+                    },
+                ],
+            },
+        ],
+    }
+
+
+def _history_detail_meter_ids(summary) -> tuple[str, ...]:
+    expected = _safe_int(getattr(summary, "expected_meter_count", len(DEFAULT_METER_IDS)))
+    if expected <= 0:
+        return DEFAULT_METER_IDS
+    return DEFAULT_METER_IDS[: min(expected, len(DEFAULT_METER_IDS))]
+
+
+def _history_detail_meter_row(meter_id: str, row: dict | None) -> dict:
+    has_data = bool(row)
+    current = f"{_format_number(row.get('current_value', '0'))} kWh" if row else "ยังไม่มีข้อมูล"
+    produced = _signed_kwh(row.get("produced_unit", "0")) if row else "-"
+    value_color = CARD_COLORS["text"] if has_data else CARD_COLORS["neutral_gray"]
+    produced_color = CARD_COLORS["dark_green"] if has_data else CARD_COLORS["neutral_gray"]
+
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "md",
+        "alignItems": "center",
+        "paddingAll": "8px",
+        "cornerRadius": "8px",
+        "borderColor": "#E5E7EB",
+        "borderWidth": "1px",
+        "contents": [
+            {
+                "type": "text",
+                "text": meter_id,
+                "size": "md",
+                "weight": "bold",
+                "color": CARD_COLORS["dark_green"],
+                "flex": 1,
+            },
+            {
+                "type": "text",
+                "text": current,
+                "size": "sm",
+                "weight": "bold",
+                "color": value_color,
+                "align": "center",
+                "wrap": True,
+                "flex": 4,
+            },
+            {
+                "type": "box",
+                "layout": "horizontal",
+                "spacing": "xs",
+                "alignItems": "center",
+                "justifyContent": "flex-end",
+                "flex": 3,
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "width": "18px",
+                        "height": "18px",
+                        "cornerRadius": "9px",
+                        "backgroundColor": produced_color,
+                        "justifyContent": "center",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "↑",
+                                "size": "xs",
+                                "weight": "bold",
+                                "align": "center",
+                                "color": CARD_COLORS["white"],
+                            }
+                        ],
+                    },
+                    {
+                        "type": "text",
+                        "text": produced,
+                        "size": "sm",
+                        "weight": "bold",
+                        "color": produced_color,
+                        "align": "end",
+                        "wrap": True,
+                    },
+                ],
+            },
+        ],
+    }
+
+
+def _history_detail_totals_panel(summary) -> dict:
+    readings = getattr(summary, "readings", ()) or ()
+    expected = _safe_int(getattr(summary, "expected_meter_count", 0))
+    total_current = sum((_message_decimal(row.get("current_value")) for row in readings), Decimal("0"))
+    total_produced = sum((_message_decimal(row.get("produced_unit")) for row in readings), Decimal("0"))
+    average_current = (total_current / Decimal(expected)).quantize(Decimal("0.1")) if expected else Decimal("0")
+
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "paddingAll": "10px",
+        "cornerRadius": "10px",
+        "borderColor": "#D6DEE6",
+        "borderWidth": "1px",
+        "contents": [
+            _history_detail_total_tile("▮", "รวมทั้งสิ้น", f"{_format_number(total_current)} kWh", "#2D7DCB"),
+            {"type": "separator", "color": "#D6DEE6"},
+            _history_detail_total_tile("↗", "เพิ่มขึ้นรวม", _signed_kwh(total_produced), CARD_COLORS["dark_green"]),
+            {"type": "separator", "color": "#D6DEE6"},
+            _history_detail_total_tile("↗", "เฉลี่ยต่อเครื่อง", f"{_format_number(average_current)} kWh", "#D98A00"),
+        ],
+    }
+
+
+def _history_detail_total_tile(icon: str, label: str, value: str, color: str) -> dict:
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "spacing": "xs",
+        "alignItems": "center",
+        "contents": [
+            {
+                "type": "text",
+                "text": icon,
+                "size": "md",
+                "weight": "bold",
+                "color": color,
+                "align": "center",
+            },
+            {
+                "type": "text",
+                "text": label,
+                "size": "xs",
+                "color": CARD_COLORS["text"],
+                "align": "center",
+                "wrap": True,
+            },
+            {
+                "type": "text",
+                "text": value,
+                "size": "sm",
+                "weight": "bold",
+                "color": color,
+                "align": "center",
+                "wrap": True,
+            },
+        ],
+        "flex": 1,
+    }
+
+
+def _history_detail_footer_meta(summary) -> dict:
+    updated = _history_detail_updated_display(summary)
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "contents": [
+            {
+                "type": "text",
+                "text": f"ข้อมูลอัปเดตล่าสุด: {updated}",
+                "size": "xs",
+                "color": CARD_COLORS["neutral_gray"],
+                "wrap": True,
+                "flex": 5,
+            },
+            {
+                "type": "text",
+                "text": "P'top Automation",
+                "size": "xs",
+                "color": CARD_COLORS["neutral_gray"],
+                "align": "end",
+                "wrap": True,
+                "flex": 3,
+            },
+        ],
+    }
+
+
+def _history_detail_date_range(date_text: str) -> str:
+    end = _parse_line_datetime(date_text)
+    if not end:
+        return "-"
+    start = end - timedelta(days=6)
+    buddhist_year = end.year + 543
+    if start.year != end.year:
+        return f"{_thai_date(start)} - {_thai_date(end)}"
+    if start.month == end.month:
+        return f"{start.day} - {end.day} {THAI_MONTHS_SHORT[end.month - 1]} {buddhist_year}"
+    return (
+        f"{start.day} {THAI_MONTHS_SHORT[start.month - 1]} - "
+        f"{end.day} {THAI_MONTHS_SHORT[end.month - 1]} {buddhist_year}"
+    )
+
+
+def _history_detail_updated_display(summary) -> str:
+    for value in (getattr(summary, "updated_at", ""), getattr(summary, "created_at", "")):
+        parsed = _parse_line_datetime(value)
+        if parsed:
+            return _thai_datetime(parsed)
+
+    reading_dates = [
+        parsed
+        for parsed in (_parse_line_datetime(row.get("created_at")) for row in getattr(summary, "readings", ()) or ())
+        if parsed
+    ]
+    if reading_dates:
+        return _thai_datetime(max(reading_dates))
+    return "-"
+
+
+def _parse_line_datetime(value) -> datetime | None:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        try:
+            parsed = datetime.strptime(text, "%Y-%m-%d")
+        except ValueError:
+            return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=THAI_TZ)
+    return parsed.astimezone(THAI_TZ)
+
+
+def _thai_date(value: datetime) -> str:
+    return f"{value.day} {THAI_MONTHS_SHORT[value.month - 1]} {value.year + 543}"
+
+
+def _thai_datetime(value: datetime) -> str:
+    return f"{_thai_date(value)} {value:%H:%M}"
+
+
+def _signed_kwh(value) -> str:
+    number = _message_decimal(value)
+    sign = "+" if number >= 0 else ""
+    return f"{sign}{_format_number(number)} kWh"
+
+
+def _safe_int(value) -> int:
+    try:
+        return int(str(value or "0").strip())
+    except ValueError:
+        return 0
+
 
 def build_history_meter_select_message(meter_ids: Sequence[str] | None = None) -> FlexMessage:
     display_meter_ids = tuple(meter_ids or DEFAULT_METER_IDS)
@@ -1668,32 +2456,36 @@ def build_settings_menu_message(
     title_action = POSTBACK_SETTINGS_EDIT_REPORT_TITLE if is_admin else POSTBACK_SETTINGS_VIEW
     role_badge = _status_badge(
         "Admin" if is_admin else "Operator",
-        color=CARD_COLORS["white"] if is_admin else CARD_COLORS["text"],
-        background_color=CARD_COLORS["neutral_gray"] if is_admin else CARD_COLORS["page_background"],
+        color=CARD_COLORS["white"] if is_admin else CARD_COLORS["dark_green"],
+        background_color=CARD_COLORS["dark_green"] if is_admin else CARD_COLORS["light_green"],
     )
     role_badge["flex"] = 0
     menu_rows = [
         _settings_menu_row(
-            "kW",
+            "⚡",
             "อัตราค่าไฟ",
+            "ตั้งค่าอัตราค่าไฟฟ้าต่อหน่วย" if is_admin else "ดูอัตราค่าไฟฟ้าต่อหน่วย",
             _settings_rate_display(default_rate),
             rate_action,
         ),
         _settings_menu_row(
             "#",
             "จำนวนเครื่อง",
+            "ตั้งค่าจำนวนมิเตอร์ที่ใช้งาน" if is_admin else "ดูจำนวนมิเตอร์ที่ใช้งาน",
             f"{expected_meter_count} เครื่อง",
             count_action,
         ),
         _settings_menu_row(
             "R",
             "ชื่อรายงาน",
+            "ตั้งชื่อรายงานการผลิตไฟฟ้า" if is_admin else "ดูชื่อรายงานการผลิตไฟฟ้า",
             report_title,
             title_action,
         ),
         _settings_menu_row(
             "M",
             f"มิเตอร์ M1-M{expected_meter_count}",
+            "จัดการข้อมูลมิเตอร์แต่ละตัว" if is_admin else "ดูรายชื่อมิเตอร์แต่ละตัว",
             "จัดการข้อมูลมิเตอร์" if is_admin else "ดูรายชื่อมิเตอร์",
             POSTBACK_SETTINGS_METERS,
         ),
@@ -1703,6 +2495,7 @@ def build_settings_menu_message(
             _settings_menu_row(
                 "G",
                 "Sync Google Sheet",
+                "ตั้งค่าการเชื่อมต่อและการซิงก์",
                 "แทนที่ SQLite",
                 POSTBACK_SETTINGS_SYNC_SHEETS,
             )
@@ -1710,7 +2503,7 @@ def build_settings_menu_message(
 
     contents = {
         "type": "bubble",
-        "styles": {"footer": {"separator": False}},
+        "size": "mega",
         "body": {
             "type": "box",
             "layout": "vertical",
@@ -1751,20 +2544,8 @@ def build_settings_menu_message(
                     ],
                 },
                 _settings_menu_list(menu_rows),
-            ],
-        },
-        "footer": {
-            "type": "box",
-            "layout": "vertical",
-            "spacing": "sm",
-            "paddingAll": CARD_PADDING,
-            "contents": [
-                _postback_button(
-                    "ดูค่าปัจจุบัน",
-                    POSTBACK_SETTINGS_VIEW,
-                    style="primary",
-                    color=CARD_COLORS["primary"],
-                )
+                _settings_primary_action_row(),
+                _settings_permission_note(is_admin),
             ],
         },
     }
@@ -1783,11 +2564,9 @@ def build_report_summary_message(
 ) -> FlexMessage | TextMessage:
     report = build_report_data(batch_id)
     if not report:
-        return _text_with_actions(
-            text=f"ยังไม่มีข้อมูลรายงานของ {batch_id} ครับ",
-            action_items=(
-                ("รายงานล่าสุด", "postback", build_postback_data(action=POSTBACK_LATEST_REPORT)),
-            ),
+        return build_report_unavailable_message(
+            batch_id=batch_id,
+            reason="ยังไม่มีข้อมูลรายงานของรอบนี้",
         )
 
     week = report.week or batch_id
@@ -1817,6 +2596,72 @@ def build_report_summary_message(
             _postback_button("ประวัติ", POSTBACK_HISTORY),
         ),
     )
+
+
+def build_report_unavailable_message(
+    *,
+    batch_id: str | None = None,
+    reason: str = "ยังสร้างรูปรายงานไม่ได้",
+) -> FlexMessage:
+    title = "รายงานยังไม่พร้อม"
+    subtitle = _week_from_batch_id(batch_id) or batch_id or "ยังไม่มีรอบรายงาน"
+    body_contents = [
+        {
+            "type": "text",
+            "text": reason,
+            "size": "sm",
+            "color": CARD_COLORS["text"],
+            "wrap": True,
+        },
+        {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "sm",
+            "paddingAll": "10px",
+            "cornerRadius": "8px",
+            "backgroundColor": CARD_COLORS["page_background"],
+            "contents": [
+                {
+                    "type": "text",
+                    "text": "ตรวจว่ารอบนี้มี readings ครบ แล้วลองสร้างรายงานอีกครั้ง",
+                    "size": "xs",
+                    "color": CARD_COLORS["neutral_gray"],
+                    "wrap": True,
+                }
+            ],
+        },
+    ]
+
+    return _card_shell(
+        alt_text="รายงานยังไม่พร้อม",
+        title=title,
+        subtitle=subtitle,
+        status_badge="ต้องตรวจข้อมูล",
+        status_badge_tone="warning",
+        body_contents=body_contents,
+        primary_action=_postback_button(
+            "เริ่มบันทึกมิเตอร์",
+            POSTBACK_START_COLLECTION,
+            style="primary",
+            color=CARD_COLORS["primary"],
+        ),
+        secondary_actions=(
+            _message_button("ลอง GEN", f"GEN {batch_id}" if batch_id else "GEN"),
+            _postback_button("ประวัติ", POSTBACK_HISTORY),
+        ),
+        quick_actions=(
+            ("รายงานล่าสุด", "postback", build_postback_data(action=POSTBACK_LATEST_REPORT)),
+            ("Help", "postback", build_postback_data(action=POSTBACK_HELP)),
+        ),
+    )
+
+
+def _week_from_batch_id(batch_id: str | None) -> str:
+    parts = str(batch_id or "").split("-")
+    if len(parts) >= 2 and parts[0].isdigit() and parts[1].upper().startswith("W"):
+        return f"{parts[0]}-{parts[1].upper()}"
+    return ""
+
 
 def build_report_import_prompt_message() -> TextMessage:
     return _text_with_actions(
@@ -2087,6 +2932,13 @@ def build_settings_not_admin_message() -> TextMessage:
             ("Help", "postback", build_postback_data(action=POSTBACK_HELP)),
         ),
     )
+
+def _message_decimal(value) -> Decimal:
+    try:
+        return Decimal(str(value or "0").replace(",", ""))
+    except Exception:
+        return Decimal("0")
+
 
 def _format_number(value) -> str:
     try:

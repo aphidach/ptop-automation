@@ -6,7 +6,8 @@ from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 from app.config import settings
-from app.line.client import push_image, push_text
+from app.line.client import push_image, push_message, push_text
+from app.line.messages import build_report_unavailable_message
 from app.report.generator import generate_report_image
 from app.sheets import repositories
 from app.storage.r2 import R2ConfigError, R2UploadError, upload_report_image
@@ -55,7 +56,13 @@ async def send_report(batch_id: str, source_id: str, mark_reported: bool = False
     image_path = generate_report_image(batch_id)
     if not image_path:
         logger.error("Failed to generate report image for batch %s", batch_id)
-        await push_text(source_id, "สร้างรูปรายงานไม่สำเร็จครับ พิมพ์ GEN เพื่อลองใหม่")
+        await push_message(
+            source_id,
+            build_report_unavailable_message(
+                batch_id=batch_id,
+                reason="สร้างรูปรายงานไม่สำเร็จ",
+            ),
+        )
         return False
 
     try:

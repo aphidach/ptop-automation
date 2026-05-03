@@ -446,12 +446,19 @@ def test_history_batch_list_shows_recent_weeks():
     ]
 
     payload = _as_dict(build_history_batch_list_message(summaries))
+    rendered = str(payload)
 
-    assert "ประวัติย้อนหลัง 1 เดือน" in payload["text"]
-    assert "2026-W18: 8/8" in payload["text"]
-    assert "2026-W17: 7/8" in payload["text"]
-    assert "history_batch" in str(payload)
-    assert "batch_id=2026-W18-U1" in str(payload)
+    assert payload["altText"] == "ประวัติย้อนหลัง 1 เดือน"
+    assert payload["contents"]["type"] == "bubble"
+    assert payload["contents"]["size"] == "mega"
+    assert "ประวัติย้อนหลัง 1 เดือน" in rendered
+    assert "2026-W18" in rendered
+    assert "8/8 เครื่อง" in rendered
+    assert "2026-W17" in rendered
+    assert "7/8 เครื่อง" in rendered
+    assert "history_batch" in rendered
+    assert "batch_id=2026-W18-U1" in rendered
+    assert "กลับประวัติ" in rendered
 
 
 def test_history_summary_message_is_flex_card():
@@ -477,15 +484,25 @@ def test_history_summary_message_is_flex_card():
     assert "action=history" in rendered
 
 
-def test_history_detail_message_is_compact_flex_card():
+def test_history_detail_message_uses_rich_detail_card():
     summary = SimpleNamespace(
         batch_id="2026-W18-U1",
         week="2026-W18",
         expected_meter_count=8,
         confirmed_meter_count=8,
+        missing_meter_ids=[],
+        date="2026-04-28",
+        created_at="2026-04-28T02:00:00+07:00",
+        updated_at="2026-04-28T02:29:00+07:00",
         readings=[
-            {"meter_id": "M1", "current_value": "58196", "produced_unit": "58196"},
-            {"meter_id": "M2", "current_value": "59905", "produced_unit": "59905"},
+            {"meter_id": "M1", "current_value": "135420", "produced_unit": "375.8"},
+            {"meter_id": "M2", "current_value": "250509.1", "produced_unit": "657.8"},
+            {"meter_id": "M3", "current_value": "104860", "produced_unit": "880"},
+            {"meter_id": "M4", "current_value": "84352", "produced_unit": "761"},
+            {"meter_id": "M5", "current_value": "60601", "produced_unit": "1387"},
+            {"meter_id": "M6", "current_value": "61270", "produced_unit": "1528"},
+            {"meter_id": "M7", "current_value": "58196", "produced_unit": "1322"},
+            {"meter_id": "M8", "current_value": "59905", "produced_unit": "1369"},
         ],
     )
 
@@ -493,12 +510,23 @@ def test_history_detail_message_is_compact_flex_card():
     rendered = str(payload)
 
     assert payload["altText"] == "รายละเอียดรอบ 2026-W18"
+    assert payload["contents"]["size"] == "giga"
+    assert "22 - 28 เม.ย. 2569" in rendered
+    assert "บันทึกครบถ้วน" in rendered
     assert "M1" in rendered
-    assert "58,196 kWh (+58,196)" in rendered
-    assert "M3" in rendered
-    assert "ยังไม่มีข้อมูล" in rendered
+    assert "135,420 kWh" in rendered
+    assert "+375.8 kWh" in rendered
+    assert "รวมทั้งสิ้น" in rendered
+    assert "815,113.1 kWh" in rendered
+    assert "เพิ่มขึ้นรวม" in rendered
+    assert "+8,280.6 kWh" in rendered
+    assert "เฉลี่ยต่อเครื่อง" in rendered
+    assert "101,889.1 kWh" in rendered
+    assert "ข้อมูลอัปเดตล่าสุด: 28 เม.ย. 2569 02:29" in rendered
     assert "action=latest_report&batch_id=2026-W18-U1" in rendered
     assert "action=history_meter" in rendered
+    assert "action=start_collection" in rendered
+    assert "action=history" in rendered
 
 
 def test_settings_operator_menu_does_not_show_edit_actions():
@@ -515,6 +543,10 @@ def test_settings_operator_menu_does_not_show_edit_actions():
     rendered = str(payload)
 
     assert payload["altText"] == "ตั้งค่าระบบ"
+    assert payload["contents"]["size"] == "mega"
+    assert "Operator" in rendered
+    assert "ดูได้เฉพาะข้อมูลปัจจุบัน" in rendered
+    assert "ดูอัตราค่าไฟฟ้าต่อหน่วย" in rendered
     assert "4.20 บาท/kWh" in rendered
     assert "8 เครื่อง" in rendered
     assert "รายงานพลังงานรายสัปดาห์" in rendered
@@ -525,6 +557,7 @@ def test_settings_operator_menu_does_not_show_edit_actions():
     assert "settings_import_report" not in rendered
     assert "settings_sync_sheets" not in rendered
     assert "help" in str(payload["quickReply"])
+
 
 def test_settings_admin_menu_shows_edit_actions():
     payload = _as_dict(
@@ -540,14 +573,21 @@ def test_settings_admin_menu_shows_edit_actions():
     rendered = str(payload)
 
     assert payload["altText"] == "ตั้งค่าระบบ"
+    assert payload["contents"]["size"] == "mega"
     assert "Admin" in rendered
     assert "ดูค่าปัจจุบัน" in rendered
+    assert "ตั้งค่าอัตราค่าไฟฟ้าต่อหน่วย" in rendered
+    assert "ตั้งค่าจำนวนมิเตอร์ที่ใช้งาน" in rendered
+    assert "ตั้งชื่อรายงานการผลิตไฟฟ้า" in rendered
+    assert "เมนูสำหรับผู้ดูแลระบบเท่านั้น" in rendered
     assert "4.20 บาท/kWh" in rendered
     assert "settings_edit_rate" in rendered
     assert "settings_edit_expected_count" in rendered
     assert "settings_edit_report_title" in rendered
     assert "settings_sync_sheets" in rendered
     assert "settings_import_report" in rendered
+    assert "settings_recipients" in str(payload["quickReply"])
+    assert "settings_permissions" in str(payload["quickReply"])
 
 
 def test_report_summary_card_shows_week_totals_and_navigation():
@@ -578,6 +618,20 @@ def test_report_summary_card_shows_week_totals_and_navigation():
     assert "action=history_batch_detail&batch_id=2026-W19-U1" in rendered
     assert "action=history" in rendered
     assert "share_report" not in rendered
+
+
+def test_report_summary_missing_data_returns_card():
+    with patch("app.line.messages.build_report_data", return_value=None):
+        payload = _as_dict(build_report_summary_message("2026-W19-U1"))
+
+    rendered = str(payload)
+    assert payload["altText"] == "รายงานยังไม่พร้อม"
+    assert "รายงานยังไม่พร้อม" in rendered
+    assert "ยังไม่มีข้อมูลรายงานของรอบนี้" in rendered
+    assert "2026-W19" in rendered
+    assert "start_collection" in rendered
+    assert "GEN 2026-W19-U1" in rendered
+
 
 def test_report_import_preview_has_confirm_and_cancel_when_valid():
     pending = PendingReportImport(

@@ -44,6 +44,22 @@ def test_build_report_delivery_url_uploads_to_r2():
 
 
 @pytest.mark.anyio
+async def test_send_report_pushes_card_when_generation_fails():
+    with patch("app.report.sender.generate_report_image", return_value=None), \
+         patch("app.report.sender.push_message", new_callable=AsyncMock) as mock_push_message, \
+         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text:
+        sent = await send_report("2026-W19-U1", "U1")
+
+    assert sent is False
+    mock_push_text.assert_not_called()
+    mock_push_message.assert_awaited_once()
+    payload = mock_push_message.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "รายงานยังไม่พร้อม"
+    assert "สร้างรูปรายงานไม่สำเร็จ" in str(payload)
+
+
+@pytest.mark.anyio
 async def test_send_report_skips_image_push_when_base_url_is_not_https():
     with patch("app.report.sender.settings") as mock_settings, \
          patch("app.report.sender.repositories") as mock_repositories, \
