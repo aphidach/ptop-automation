@@ -14,8 +14,8 @@ services:
 
     volumes:
       - ./credentials:/app/credentials:ro
-      - ./reports:/app/reports
-      - ./tmp/images:/app/tmp/images
+      - reports:/app/reports
+      - tmp-images:/app/tmp/images
 
     cpus: "0.25"
     mem_limit: 256m
@@ -30,3 +30,7 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+volumes:
+  reports:
+  tmp-images:

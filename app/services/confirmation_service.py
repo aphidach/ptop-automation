@@ -231,8 +231,9 @@ def is_expired(pending: PendingConfirmation) -> bool:
 def _ensure_batch_id(source_id: str) -> str:
     """Get or generate batch_id for this source, persist in session."""
     batch_id = get_batch_id(source_id)
-    if not batch_id:
-        batch_id = generate_batch_id(source_id)
+    current_batch_id = generate_batch_id(source_id)
+    if batch_id != current_batch_id:
+        batch_id = current_batch_id
         set_batch_id(source_id, batch_id)
     get_or_create_batch(batch_id, source_id)
     return batch_id

@@ -24,6 +24,7 @@ from app.services.batch_service import BatchProgress
 from app.services.confirmation_service import PendingConfirmation
 from app.services.session_service import (
     COLLECTION_WAITING_IMAGE,
+    get_batch_id,
     get_collection_current_meter,
     get_collection_state,
     set_collection_meter_skipped,
@@ -143,6 +144,7 @@ async def test_confirm_postback_uses_pending_meter_in_loading_message():
 
 @pytest.mark.anyio
 async def test_cancel_collection_marks_pending_cancelled():
+    set_batch_id("U1", "2026-W19-U1")
     set_pending_confirmation(
         source_id="U1",
         meter_id="M2",
@@ -155,6 +157,7 @@ async def test_cancel_collection_marks_pending_cancelled():
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_CANCEL_COLLECTION), "rt")
 
     mock_update.assert_called_once_with("cnf_1", "cancelled")
+    assert get_batch_id("U1") is None
 
 
 @pytest.mark.anyio
