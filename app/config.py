@@ -50,6 +50,9 @@ class Settings:
     OWNER_LINE_USER_IDS: list[str] = [
         item.strip() for item in os.getenv("OWNER_LINE_USER_IDS", "").split(",") if item.strip()
     ]
+    ALLOWED_LINE_USER_IDS: list[str] = [
+        item.strip() for item in os.getenv("ALLOWED_LINE_USER_IDS", "").split(",") if item.strip()
+    ]
     ALLOWED_LINE_SOURCE_IDS: list[str] = [
         item.strip() for item in os.getenv("ALLOWED_LINE_SOURCE_IDS", "").split(",") if item.strip()
     ]

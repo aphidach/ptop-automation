@@ -514,6 +514,7 @@ Example environment variables:
 
 ```text
 ADMIN_LINE_USER_IDS=Uxxxx,Uyyyy
+ALLOWED_LINE_USER_IDS=Uxxxx,Uyyyy
 ALLOWED_LINE_SOURCE_IDS=Gxxxx,Uxxxx
 ```
 
