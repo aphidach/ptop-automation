@@ -112,8 +112,8 @@
     "hash": "ebf34fe65785cc6356891013b88400c3"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/line/messages.py": {
-    "mtime": 1777842328.9966722,
-    "hash": "5504e1f21b23cdde2235122e308d09de"
+    "mtime": 1777842657.6773112,
+    "hash": "d619579cf106c699491a22d69ab0eb82"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/line/richmenu.py": {
     "mtime": 1777779315.428852,
@@ -256,8 +256,8 @@
     "hash": "1453c68d2a7a3b1d4938ebe4c611d409"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_line_messages.py": {
-    "mtime": 1777842346.1215575,
-    "hash": "3e69c53a63bbfe0a9daf00e54c041dde"
+    "mtime": 1777842663.4907699,
+    "hash": "0638ee15a710b8c06da70e2d6e2cfa6d"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_richmenu_composer.py": {
     "mtime": 1777779315.4290936,
@@ -694,6 +694,10 @@
   "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612375861085864005.jpg": {
     "mtime": 1777835762.1713529,
     "hash": "5fed86b00d11660b8103c4175514ad9e"
+  },
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612387268988764195.jpg": {
+    "mtime": 1777842561.944486,
+    "hash": "a385f9c935983fe92b07439ecf98c2e0"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612367367200833554.jpg": {
     "mtime": 1777830699.2921293,

@@ -144,7 +144,7 @@
       "source_file": "app/config.py",
       "source_location": "L1",
       "id": "app_config_py",
-      "community": 34,
+      "community": 30,
       "norm_label": "config.py"
     },
     {
@@ -153,7 +153,7 @@
       "source_file": "app/config.py",
       "source_location": "L10",
       "id": "app_config_env_bool",
-      "community": 34,
+      "community": 30,
       "norm_label": "_env_bool()"
     },
     {
@@ -162,7 +162,7 @@
       "source_file": "app/config.py",
       "source_location": "L17",
       "id": "app_config_settings",
-      "community": 34,
+      "community": 30,
       "norm_label": "settings"
     },
     {
@@ -171,7 +171,7 @@
       "source_file": "app/logging_config.py",
       "source_location": "L1",
       "id": "app_logging_config_py",
-      "community": 35,
+      "community": 34,
       "norm_label": "logging_config.py"
     },
     {
@@ -180,7 +180,7 @@
       "source_file": "app/logging_config.py",
       "source_location": "L6",
       "id": "app_logging_config_configure_logging",
-      "community": 35,
+      "community": 34,
       "norm_label": "configure_logging()"
     },
     {
@@ -189,7 +189,7 @@
       "source_file": "app/version.py",
       "source_location": "L1",
       "id": "app_version_py",
-      "community": 39,
+      "community": 38,
       "norm_label": "version.py"
     },
     {
@@ -198,7 +198,7 @@
       "source_file": "app/__init__.py",
       "source_location": "L1",
       "id": "app_init_py",
-      "community": 40,
+      "community": 39,
       "norm_label": "__init__.py"
     },
     {
@@ -207,7 +207,7 @@
       "source_file": "app/main.py",
       "source_location": "L1",
       "id": "app_main_py",
-      "community": 18,
+      "community": 17,
       "norm_label": "main.py"
     },
     {
@@ -216,7 +216,7 @@
       "source_file": "app/main.py",
       "source_location": "L19",
       "id": "app_main_lifespan",
-      "community": 18,
+      "community": 17,
       "norm_label": "lifespan()"
     },
     {
@@ -225,7 +225,7 @@
       "source_file": "app/main.py",
       "source_location": "L37",
       "id": "app_main_create_app",
-      "community": 18,
+      "community": 17,
       "norm_label": "create_app()"
     },
     {
@@ -234,7 +234,7 @@
       "source_file": "app/main.py",
       "source_location": "L54",
       "id": "app_main_health",
-      "community": 18,
+      "community": 17,
       "norm_label": "health()"
     },
     {
@@ -243,7 +243,7 @@
       "source_file": "app/main.py",
       "source_location": "L58",
       "id": "app_main_sheets_health",
-      "community": 18,
+      "community": 17,
       "norm_label": "sheets_health()"
     },
     {
@@ -252,7 +252,7 @@
       "source_file": "app/main.py",
       "source_location": "L72",
       "id": "app_main_storage_sync_health",
-      "community": 18,
+      "community": 17,
       "norm_label": "storage_sync_health()"
     },
     {
@@ -261,7 +261,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L1",
       "id": "app_sheets_client_py",
-      "community": 14,
+      "community": 13,
       "norm_label": "client.py"
     },
     {
@@ -270,7 +270,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L19",
       "id": "sheets_client_sheetsclient",
-      "community": 14,
+      "community": 13,
       "norm_label": "sheetsclient"
     },
     {
@@ -279,7 +279,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L20",
       "id": "sheets_client_sheetsclient_init",
-      "community": 14,
+      "community": 13,
       "norm_label": ".__init__()"
     },
     {
@@ -288,7 +288,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L25",
       "id": "sheets_client_sheetsclient_get_gc",
-      "community": 14,
+      "community": 13,
       "norm_label": "._get_gc()"
     },
     {
@@ -297,7 +297,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L33",
       "id": "sheets_client_sheetsclient_get_spreadsheet",
-      "community": 14,
+      "community": 13,
       "norm_label": "._get_spreadsheet()"
     },
     {
@@ -306,7 +306,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L39",
       "id": "sheets_client_sheetsclient_get_worksheet",
-      "community": 14,
+      "community": 13,
       "norm_label": ".get_worksheet()"
     },
     {
@@ -315,7 +315,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L51",
       "id": "sheets_client_sheetsclient_read_all",
-      "community": 14,
+      "community": 13,
       "norm_label": ".read_all()"
     },
     {
@@ -324,7 +324,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L57",
       "id": "sheets_client_sheetsclient_get_active_meters",
-      "community": 14,
+      "community": 13,
       "norm_label": ".get_active_meters()"
     },
     {
@@ -333,7 +333,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L61",
       "id": "sheets_client_sheetsclient_get_meter_by_id",
-      "community": 14,
+      "community": 13,
       "norm_label": ".get_meter_by_id()"
     },
     {
@@ -342,7 +342,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L67",
       "id": "sheets_client_sheetsclient_append_row",
-      "community": 14,
+      "community": 13,
       "norm_label": ".append_row()"
     },
     {
@@ -351,7 +351,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L76",
       "id": "sheets_client_sheetsclient_upsert_row",
-      "community": 14,
+      "community": 13,
       "norm_label": ".upsert_row()"
     },
     {
@@ -360,7 +360,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L99",
       "id": "sheets_client_sheetsclient_find_rows",
-      "community": 14,
+      "community": 13,
       "norm_label": ".find_rows()"
     },
     {
@@ -369,7 +369,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L103",
       "id": "sheets_client_sheetsclient_update_cell",
-      "community": 14,
+      "community": 13,
       "norm_label": ".update_cell()"
     },
     {
@@ -378,7 +378,7 @@
       "source_file": "app/sheets/client.py",
       "source_location": "L108",
       "id": "sheets_client_sheetsclient_setup_tabs",
-      "community": 14,
+      "community": 13,
       "norm_label": ".setup_tabs()"
     },
     {
@@ -387,7 +387,7 @@
       "source_file": "app/sheets/__init__.py",
       "source_location": "L1",
       "id": "app_sheets_init_py",
-      "community": 41,
+      "community": 40,
       "norm_label": "__init__.py"
     },
     {
@@ -396,7 +396,7 @@
       "source_file": "app/sheets/setup.py",
       "source_location": "L1",
       "id": "app_sheets_setup_py",
-      "community": 31,
+      "community": 33,
       "norm_label": "setup.py"
     },
     {
@@ -405,7 +405,7 @@
       "source_file": "app/sheets/setup.py",
       "source_location": "L14",
       "id": "sheets_setup_main",
-      "community": 31,
+      "community": 33,
       "norm_label": "main()"
     },
     {
@@ -414,7 +414,7 @@
       "source_file": "app/sheets/setup.py",
       "source_location": "L1",
       "id": "sheets_setup_rationale_1",
-      "community": 31,
+      "community": 33,
       "norm_label": "initialize google sheets tabs with headers.  usage:     python -m app.sheets.set"
     },
     {
@@ -423,7 +423,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L1",
       "id": "app_sheets_repositories_py",
-      "community": 11,
+      "community": 10,
       "norm_label": "repositories.py"
     },
     {
@@ -432,7 +432,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L12",
       "id": "sheets_repositories_use_sqlite",
-      "community": 11,
+      "community": 10,
       "norm_label": "_use_sqlite()"
     },
     {
@@ -441,7 +441,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L16",
       "id": "sheets_repositories_row_client",
-      "community": 11,
+      "community": 10,
       "norm_label": "_row_client()"
     },
     {
@@ -450,7 +450,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L20",
       "id": "sheets_repositories_enqueue_if_sqlite",
-      "community": 11,
+      "community": 10,
       "norm_label": "_enqueue_if_sqlite()"
     },
     {
@@ -459,7 +459,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L29",
       "id": "sheets_repositories_sqlite_first_row",
-      "community": 11,
+      "community": 10,
       "norm_label": "_sqlite_first_row()"
     },
     {
@@ -468,7 +468,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L34",
       "id": "sheets_repositories_get_active_meters",
-      "community": 11,
+      "community": 10,
       "norm_label": "get_active_meters()"
     },
     {
@@ -477,7 +477,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L38",
       "id": "sheets_repositories_get_meter_by_id",
-      "community": 11,
+      "community": 10,
       "norm_label": "get_meter_by_id()"
     },
     {
@@ -486,7 +486,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L42",
       "id": "sheets_repositories_get_latest_reading",
-      "community": 11,
+      "community": 10,
       "norm_label": "get_latest_reading()"
     },
     {
@@ -495,7 +495,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L50",
       "id": "sheets_repositories_append_reading",
-      "community": 11,
+      "community": 10,
       "norm_label": "append_reading()"
     },
     {
@@ -504,7 +504,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L56",
       "id": "sheets_repositories_get_readings_by_batch",
-      "community": 11,
+      "community": 10,
       "norm_label": "get_readings_by_batch()"
     },
     {
@@ -513,7 +513,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L60",
       "id": "sheets_repositories_get_readings_by_source",
-      "community": 11,
+      "community": 10,
       "norm_label": "get_readings_by_source()"
     },
     {
@@ -522,7 +522,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L66",
       "id": "sheets_repositories_get_readings_by_meter",
-      "community": 11,
+      "community": 10,
       "norm_label": "get_readings_by_meter()"
     },
     {
@@ -531,7 +531,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L74",
       "id": "sheets_repositories_get_batch_by_id",
-      "community": 11,
+      "community": 10,
       "norm_label": "get_batch_by_id()"
     },
     {
@@ -540,7 +540,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L81",
       "id": "sheets_repositories_append_pending_confirmation",
-      "community": 11,
+      "community": 10,
       "norm_label": "append_pending_confirmation()"
     },
     {
@@ -549,7 +549,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L87",
       "id": "sheets_repositories_get_latest_pending_confirmation",
-      "community": 11,
+      "community": 10,
       "norm_label": "get_latest_pending_confirmation()"
     },
     {
@@ -558,7 +558,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L106",
       "id": "sheets_repositories_update_pending_confirmation_status",
-      "community": 11,
+      "community": 10,
       "norm_label": "update_pending_confirmation_status()"
     },
     {
@@ -567,7 +567,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L140",
       "id": "sheets_repositories_get_batches_by_source",
-      "community": 11,
+      "community": 10,
       "norm_label": "get_batches_by_source()"
     },
     {
@@ -576,7 +576,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L153",
       "id": "sheets_repositories_append_batch",
-      "community": 11,
+      "community": 10,
       "norm_label": "append_batch()"
     },
     {
@@ -585,7 +585,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L159",
       "id": "sheets_repositories_update_batch_status",
-      "community": 11,
+      "community": 10,
       "norm_label": "update_batch_status()"
     },
     {
@@ -594,7 +594,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L192",
       "id": "sheets_repositories_update_batch_report_image_url",
-      "community": 11,
+      "community": 10,
       "norm_label": "update_batch_report_image_url()"
     },
     {
@@ -603,7 +603,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L225",
       "id": "sheets_repositories_update_batch_confirmed_count",
-      "community": 11,
+      "community": 10,
       "norm_label": "update_batch_confirmed_count()"
     },
     {
@@ -612,7 +612,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L258",
       "id": "sheets_repositories_append_audit_log",
-      "community": 11,
+      "community": 10,
       "norm_label": "append_audit_log()"
     },
     {
@@ -621,7 +621,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L264",
       "id": "sheets_repositories_get_settings",
-      "community": 11,
+      "community": 10,
       "norm_label": "get_settings()"
     },
     {
@@ -630,7 +630,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L273",
       "id": "sheets_repositories_update_setting",
-      "community": 11,
+      "community": 10,
       "norm_label": "update_setting()"
     },
     {
@@ -639,7 +639,7 @@
       "source_file": "app/ocr/confidence.py",
       "source_location": "L1",
       "id": "app_ocr_confidence_py",
-      "community": 15,
+      "community": 14,
       "norm_label": "confidence.py"
     },
     {
@@ -648,7 +648,7 @@
       "source_file": "app/ocr/confidence.py",
       "source_location": "L18",
       "id": "ocr_confidence_confidenceresult",
-      "community": 15,
+      "community": 14,
       "norm_label": "confidenceresult"
     },
     {
@@ -657,7 +657,7 @@
       "source_file": "app/ocr/confidence.py",
       "source_location": "L26",
       "id": "ocr_confidence_is_low",
-      "community": 15,
+      "community": 14,
       "norm_label": "is_low()"
     },
     {
@@ -666,7 +666,7 @@
       "source_file": "app/ocr/confidence.py",
       "source_location": "L30",
       "id": "ocr_confidence_score_ocr_reading",
-      "community": 15,
+      "community": 14,
       "norm_label": "score_ocr_reading()"
     },
     {
@@ -675,7 +675,7 @@
       "source_file": "app/ocr/confidence.py",
       "source_location": "L122",
       "id": "ocr_confidence_get_last_value",
-      "community": 15,
+      "community": 14,
       "norm_label": "_get_last_value()"
     },
     {
@@ -684,7 +684,7 @@
       "source_file": "app/ocr/confidence.py",
       "source_location": "L135",
       "id": "ocr_confidence_get_max_produced_unit",
-      "community": 15,
+      "community": 14,
       "norm_label": "_get_max_produced_unit()"
     },
     {
@@ -693,7 +693,7 @@
       "source_file": "app/ocr/confidence.py",
       "source_location": "L145",
       "id": "ocr_confidence_has_conflicting_candidates",
-      "community": 15,
+      "community": 14,
       "norm_label": "_has_conflicting_candidates()"
     },
     {
@@ -873,7 +873,7 @@
       "source_file": "app/ocr/__init__.py",
       "source_location": "L1",
       "id": "app_ocr_init_py",
-      "community": 42,
+      "community": 41,
       "norm_label": "__init__.py"
     },
     {
@@ -1179,7 +1179,7 @@
       "source_file": "app/models/__init__.py",
       "source_location": "L1",
       "id": "app_models_init_py",
-      "community": 43,
+      "community": 42,
       "norm_label": "__init__.py"
     },
     {
@@ -1188,7 +1188,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L1",
       "id": "app_storage_sync_py",
-      "community": 19,
+      "community": 18,
       "norm_label": "sync.py"
     },
     {
@@ -1197,7 +1197,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L27",
       "id": "storage_sync_syncstate",
-      "community": 19,
+      "community": 18,
       "norm_label": "syncstate"
     },
     {
@@ -1206,7 +1206,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L39",
       "id": "storage_sync_sheets_client",
-      "community": 19,
+      "community": 18,
       "norm_label": "_sheets_client()"
     },
     {
@@ -1215,7 +1215,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L48",
       "id": "storage_sync_enqueue_outbox",
-      "community": 19,
+      "community": 18,
       "norm_label": "enqueue_outbox()"
     },
     {
@@ -1224,7 +1224,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L56",
       "id": "storage_sync_pull_business_config_from_sheets",
-      "community": 19,
+      "community": 18,
       "norm_label": "pull_business_config_from_sheets()"
     },
     {
@@ -1233,7 +1233,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L63",
       "id": "storage_sync_pull_all_from_sheets",
-      "community": 19,
+      "community": 18,
       "norm_label": "pull_all_from_sheets()"
     },
     {
@@ -1242,7 +1242,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L70",
       "id": "storage_sync_pull_tables_from_sheets",
-      "community": 19,
+      "community": 18,
       "norm_label": "_pull_tables_from_sheets()"
     },
     {
@@ -1251,7 +1251,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L96",
       "id": "storage_sync_flush_outbox",
-      "community": 19,
+      "community": 18,
       "norm_label": "flush_outbox()"
     },
     {
@@ -1260,7 +1260,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L126",
       "id": "storage_sync_health",
-      "community": 19,
+      "community": 18,
       "norm_label": "health()"
     },
     {
@@ -1269,7 +1269,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L138",
       "id": "storage_sync_periodic_sync_loop",
-      "community": 19,
+      "community": 18,
       "norm_label": "periodic_sync_loop()"
     },
     {
@@ -1278,7 +1278,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L144",
       "id": "storage_sync_now",
-      "community": 19,
+      "community": 18,
       "norm_label": "_now()"
     },
     {
@@ -1287,7 +1287,7 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L148",
       "id": "storage_sync_refresh_last_error",
-      "community": 19,
+      "community": 18,
       "norm_label": "_refresh_last_error()"
     },
     {
@@ -1296,7 +1296,7 @@
       "source_file": "app/storage/__init__.py",
       "source_location": "L1",
       "id": "app_storage_init_py",
-      "community": 36,
+      "community": 35,
       "norm_label": "__init__.py"
     },
     {
@@ -1305,7 +1305,7 @@
       "source_file": "app/storage/__init__.py",
       "source_location": "L1",
       "id": "storage_init_rationale_1",
-      "community": 36,
+      "community": 35,
       "norm_label": "storage helpers for generated media assets."
     },
     {
@@ -1314,7 +1314,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L1",
       "id": "app_storage_sqlite_py",
-      "community": 10,
+      "community": 9,
       "norm_label": "sqlite.py"
     },
     {
@@ -1323,7 +1323,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L16",
       "id": "storage_sqlite_sqliteclient",
-      "community": 10,
+      "community": 9,
       "norm_label": "sqliteclient"
     },
     {
@@ -1332,7 +1332,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L17",
       "id": "storage_sqlite_sqliteclient_init",
-      "community": 10,
+      "community": 9,
       "norm_label": ".__init__()"
     },
     {
@@ -1341,7 +1341,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L22",
       "id": "storage_sqlite_db_path",
-      "community": 10,
+      "community": 9,
       "norm_label": "db_path()"
     },
     {
@@ -1350,7 +1350,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L25",
       "id": "storage_sqlite_sqliteclient_connect",
-      "community": 10,
+      "community": 9,
       "norm_label": ".connect()"
     },
     {
@@ -1359,7 +1359,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L37",
       "id": "storage_sqlite_sqliteclient_setup",
-      "community": 10,
+      "community": 9,
       "norm_label": ".setup()"
     },
     {
@@ -1368,7 +1368,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L60",
       "id": "storage_sqlite_sqliteclient_read_all",
-      "community": 10,
+      "community": 9,
       "norm_label": ".read_all()"
     },
     {
@@ -1377,7 +1377,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L71",
       "id": "storage_sqlite_sqliteclient_find_rows",
-      "community": 10,
+      "community": 9,
       "norm_label": ".find_rows()"
     },
     {
@@ -1386,7 +1386,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L86",
       "id": "storage_sqlite_sqliteclient_append_row",
-      "community": 10,
+      "community": 9,
       "norm_label": ".append_row()"
     },
     {
@@ -1395,7 +1395,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L102",
       "id": "storage_sqlite_sqliteclient_replace_all",
-      "community": 10,
+      "community": 9,
       "norm_label": ".replace_all()"
     },
     {
@@ -1404,7 +1404,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L105",
       "id": "storage_sqlite_sqliteclient_replace_tables",
-      "community": 10,
+      "community": 9,
       "norm_label": ".replace_tables()"
     },
     {
@@ -1413,7 +1413,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L135",
       "id": "storage_sqlite_sqliteclient_update_rows",
-      "community": 10,
+      "community": 9,
       "norm_label": ".update_rows()"
     },
     {
@@ -1422,7 +1422,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L156",
       "id": "storage_sqlite_sqliteclient_enqueue_outbox",
-      "community": 10,
+      "community": 9,
       "norm_label": ".enqueue_outbox()"
     },
     {
@@ -1431,7 +1431,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L192",
       "id": "storage_sqlite_sqliteclient_fetch_outbox",
-      "community": 10,
+      "community": 9,
       "norm_label": ".fetch_outbox()"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L210",
       "id": "storage_sqlite_sqliteclient_mark_outbox_synced",
-      "community": 10,
+      "community": 9,
       "norm_label": ".mark_outbox_synced()"
     },
     {
@@ -1449,7 +1449,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L226",
       "id": "storage_sqlite_sqliteclient_mark_outbox_failed",
-      "community": 10,
+      "community": 9,
       "norm_label": ".mark_outbox_failed()"
     },
     {
@@ -1458,7 +1458,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L245",
       "id": "storage_sqlite_sqliteclient_outbox_counts",
-      "community": 10,
+      "community": 9,
       "norm_label": ".outbox_counts()"
     },
     {
@@ -1467,7 +1467,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L255",
       "id": "storage_sqlite_sqliteclient_delete_outbox_for_table",
-      "community": 10,
+      "community": 9,
       "norm_label": ".delete_outbox_for_table()"
     },
     {
@@ -1476,7 +1476,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L263",
       "id": "storage_sqlite_sqliteclient_get_active_meters",
-      "community": 10,
+      "community": 9,
       "norm_label": ".get_active_meters()"
     },
     {
@@ -1485,7 +1485,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L267",
       "id": "storage_sqlite_sqliteclient_get_meter_by_id",
-      "community": 10,
+      "community": 9,
       "norm_label": ".get_meter_by_id()"
     },
     {
@@ -1494,7 +1494,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L274",
       "id": "storage_sqlite_sqliteclient_create_indexes",
-      "community": 10,
+      "community": 9,
       "norm_label": "._create_indexes()"
     },
     {
@@ -1503,7 +1503,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L298",
       "id": "storage_sqlite_sqliteclient_create_sync_outbox",
-      "community": 10,
+      "community": 9,
       "norm_label": "._create_sync_outbox()"
     },
     {
@@ -1512,7 +1512,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L317",
       "id": "storage_sqlite_sqliteclient_headers",
-      "community": 10,
+      "community": 9,
       "norm_label": "._headers()"
     },
     {
@@ -1521,7 +1521,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L323",
       "id": "storage_sqlite_sqliteclient_row_to_dict",
-      "community": 10,
+      "community": 9,
       "norm_label": "._row_to_dict()"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L326",
       "id": "storage_sqlite_sqliteclient_to_text",
-      "community": 10,
+      "community": 9,
       "norm_label": "._to_text()"
     },
     {
@@ -1539,7 +1539,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L329",
       "id": "storage_sqlite_sqliteclient_now",
-      "community": 10,
+      "community": 9,
       "norm_label": "._now()"
     },
     {
@@ -1548,7 +1548,7 @@
       "source_file": "app/storage/migrate_sheets_to_sqlite.py",
       "source_location": "L1",
       "id": "app_storage_migrate_sheets_to_sqlite_py",
-      "community": 19,
+      "community": 18,
       "norm_label": "migrate_sheets_to_sqlite.py"
     },
     {
@@ -1557,7 +1557,7 @@
       "source_file": "app/storage/migrate_sheets_to_sqlite.py",
       "source_location": "L11",
       "id": "storage_migrate_sheets_to_sqlite_main",
-      "community": 19,
+      "community": 18,
       "norm_label": "main()"
     },
     {
@@ -1638,7 +1638,7 @@
       "source_file": "app/storage/schema.py",
       "source_location": "L1",
       "id": "app_storage_schema_py",
-      "community": 44,
+      "community": 43,
       "norm_label": "schema.py"
     },
     {
@@ -1872,7 +1872,7 @@
       "source_file": "app/line/webhook.py",
       "source_location": "L514",
       "id": "line_webhook_flush_settings_change_to_sheets",
-      "community": 2,
+      "community": 3,
       "norm_label": "_flush_settings_change_to_sheets()"
     },
     {
@@ -2088,7 +2088,7 @@
       "source_file": "app/line/__init__.py",
       "source_location": "L1",
       "id": "app_line_init_py",
-      "community": 45,
+      "community": 44,
       "norm_label": "__init__.py"
     },
     {
@@ -2425,10 +2425,28 @@
       "norm_label": "_settings_primary_action_row()"
     },
     {
-      "label": "_settings_updated_display()",
+      "label": "_settings_admin_action_row()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
       "source_location": "L665",
+      "id": "line_messages_settings_admin_action_row",
+      "community": 0,
+      "norm_label": "_settings_admin_action_row()"
+    },
+    {
+      "label": "_settings_admin_actions_table()",
+      "file_type": "code",
+      "source_file": "app/line/messages.py",
+      "source_location": "L727",
+      "id": "line_messages_settings_admin_actions_table",
+      "community": 0,
+      "norm_label": "_settings_admin_actions_table()"
+    },
+    {
+      "label": "_settings_updated_display()",
+      "file_type": "code",
+      "source_file": "app/line/messages.py",
+      "source_location": "L755",
       "id": "line_messages_settings_updated_display",
       "community": 0,
       "norm_label": "_settings_updated_display()"
@@ -2437,7 +2455,7 @@
       "label": "_settings_permission_note()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L673",
+      "source_location": "L763",
       "id": "line_messages_settings_permission_note",
       "community": 0,
       "norm_label": "_settings_permission_note()"
@@ -2446,7 +2464,7 @@
       "label": "_message_button()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L721",
+      "source_location": "L811",
       "id": "line_messages_message_button",
       "community": 0,
       "norm_label": "_message_button()"
@@ -2455,7 +2473,7 @@
       "label": "_section_title()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L740",
+      "source_location": "L830",
       "id": "line_messages_section_title",
       "community": 0,
       "norm_label": "_section_title()"
@@ -2464,7 +2482,7 @@
       "label": "_status_badge()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L751",
+      "source_location": "L841",
       "id": "line_messages_status_badge",
       "community": 0,
       "norm_label": "_status_badge()"
@@ -2473,7 +2491,7 @@
       "label": "_metric_row()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L790",
+      "source_location": "L880",
       "id": "line_messages_metric_row",
       "community": 0,
       "norm_label": "_metric_row()"
@@ -2482,7 +2500,7 @@
       "label": "_has_display_value()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L818",
+      "source_location": "L908",
       "id": "line_messages_has_display_value",
       "community": 0,
       "norm_label": "_has_display_value()"
@@ -2491,7 +2509,7 @@
       "label": "_optional_metric_rows()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L822",
+      "source_location": "L912",
       "id": "line_messages_optional_metric_rows",
       "community": 0,
       "norm_label": "_optional_metric_rows()"
@@ -2500,7 +2518,7 @@
       "label": "_step_badge()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L830",
+      "source_location": "L920",
       "id": "line_messages_step_badge",
       "community": 0,
       "norm_label": "_step_badge()"
@@ -2509,7 +2527,7 @@
       "label": "_body_text()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L852",
+      "source_location": "L942",
       "id": "line_messages_body_text",
       "community": 0,
       "norm_label": "_body_text()"
@@ -2518,7 +2536,7 @@
       "label": "_kwh_display_value()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L862",
+      "source_location": "L952",
       "id": "line_messages_kwh_display_value",
       "community": 0,
       "norm_label": "_kwh_display_value()"
@@ -2527,7 +2545,7 @@
       "label": "_card_header()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L873",
+      "source_location": "L963",
       "id": "line_messages_card_header",
       "community": 0,
       "norm_label": "_card_header()"
@@ -2536,7 +2554,7 @@
       "label": "_card_shell()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L946",
+      "source_location": "L1036",
       "id": "line_messages_card_shell",
       "community": 0,
       "norm_label": "_card_shell()"
@@ -2545,7 +2563,7 @@
       "label": "_meter_grid()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1018",
+      "source_location": "L1108",
       "id": "line_messages_meter_grid",
       "community": 0,
       "norm_label": "_meter_grid()"
@@ -2554,7 +2572,7 @@
       "label": "_meter_select_grid()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1093",
+      "source_location": "L1183",
       "id": "line_messages_meter_select_grid",
       "community": 0,
       "norm_label": "_meter_select_grid()"
@@ -2563,7 +2581,7 @@
       "label": "_text_with_actions()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1153",
+      "source_location": "L1243",
       "id": "line_messages_text_with_actions",
       "community": 0,
       "norm_label": "_text_with_actions()"
@@ -2572,7 +2590,7 @@
       "label": "_help_postback_data()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1163",
+      "source_location": "L1253",
       "id": "line_messages_help_postback_data",
       "community": 0,
       "norm_label": "_help_postback_data()"
@@ -2581,7 +2599,7 @@
       "label": "_help_section_header()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1167",
+      "source_location": "L1257",
       "id": "line_messages_help_section_header",
       "community": 0,
       "norm_label": "_help_section_header()"
@@ -2590,7 +2608,7 @@
       "label": "_help_icon_box()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1204",
+      "source_location": "L1294",
       "id": "line_messages_help_icon_box",
       "community": 0,
       "norm_label": "_help_icon_box()"
@@ -2599,7 +2617,7 @@
       "label": "_help_hero()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1232",
+      "source_location": "L1322",
       "id": "line_messages_help_hero",
       "community": 0,
       "norm_label": "_help_hero()"
@@ -2608,7 +2626,7 @@
       "label": "_help_action_tile()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1292",
+      "source_location": "L1382",
       "id": "line_messages_help_action_tile",
       "community": 0,
       "norm_label": "_help_action_tile()"
@@ -2617,7 +2635,7 @@
       "label": "_help_quick_grid()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1345",
+      "source_location": "L1435",
       "id": "line_messages_help_quick_grid",
       "community": 0,
       "norm_label": "_help_quick_grid()"
@@ -2626,7 +2644,7 @@
       "label": "_help_menu_row()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1395",
+      "source_location": "L1485",
       "id": "line_messages_help_menu_row",
       "community": 0,
       "norm_label": "_help_menu_row()"
@@ -2635,7 +2653,7 @@
       "label": "_help_category_list()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1462",
+      "source_location": "L1552",
       "id": "line_messages_help_category_list",
       "community": 0,
       "norm_label": "_help_category_list()"
@@ -2644,7 +2662,7 @@
       "label": "_help_recommendation_panel()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1502",
+      "source_location": "L1592",
       "id": "line_messages_help_recommendation_panel",
       "community": 0,
       "norm_label": "_help_recommendation_panel()"
@@ -2653,7 +2671,7 @@
       "label": "_help_contact_cta()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1531",
+      "source_location": "L1621",
       "id": "line_messages_help_contact_cta",
       "community": 0,
       "norm_label": "_help_contact_cta()"
@@ -2662,7 +2680,7 @@
       "label": "build_help_menu_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1588",
+      "source_location": "L1678",
       "id": "line_messages_build_help_menu_message",
       "community": 0,
       "norm_label": "build_help_menu_message()"
@@ -2671,16 +2689,16 @@
       "label": "build_help_flow_response()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1639",
+      "source_location": "L1729",
       "id": "line_messages_build_help_flow_response",
-      "community": 8,
+      "community": 0,
       "norm_label": "build_help_flow_response()"
     },
     {
       "label": "_help_flow_image_urls()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1667",
+      "source_location": "L1757",
       "id": "line_messages_help_flow_image_urls",
       "community": 0,
       "norm_label": "_help_flow_image_urls()"
@@ -2689,7 +2707,7 @@
       "label": "_help_flow_image_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1675",
+      "source_location": "L1765",
       "id": "line_messages_help_flow_image_url",
       "community": 0,
       "norm_label": "_help_flow_image_url()"
@@ -2698,7 +2716,7 @@
       "label": "_is_https_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1691",
+      "source_location": "L1781",
       "id": "line_messages_is_https_url",
       "community": 0,
       "norm_label": "_is_https_url()"
@@ -2707,7 +2725,7 @@
       "label": "_line_card_asset_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1696",
+      "source_location": "L1786",
       "id": "line_messages_line_card_asset_url",
       "community": 0,
       "norm_label": "_line_card_asset_url()"
@@ -2716,7 +2734,7 @@
       "label": "_start_collection_hero_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1708",
+      "source_location": "L1798",
       "id": "line_messages_start_collection_hero_url",
       "community": 0,
       "norm_label": "_start_collection_hero_url()"
@@ -2725,7 +2743,7 @@
       "label": "build_start_collection_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1715",
+      "source_location": "L1805",
       "id": "line_messages_build_start_collection_card",
       "community": 0,
       "norm_label": "build_start_collection_card()"
@@ -2734,7 +2752,7 @@
       "label": "build_meter_request_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1754",
+      "source_location": "L1844",
       "id": "line_messages_build_meter_request_message",
       "community": 0,
       "norm_label": "build_meter_request_message()"
@@ -2743,7 +2761,7 @@
       "label": "build_confirmation_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1782",
+      "source_location": "L1872",
       "id": "line_messages_build_confirmation_card",
       "community": 0,
       "norm_label": "build_confirmation_card()"
@@ -2752,7 +2770,7 @@
       "label": "build_ocr_review_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1867",
+      "source_location": "L1957",
       "id": "line_messages_build_ocr_review_message",
       "community": 0,
       "norm_label": "build_ocr_review_message()"
@@ -2761,7 +2779,7 @@
       "label": "_confidence_text()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1900",
+      "source_location": "L1990",
       "id": "line_messages_confidence_text",
       "community": 0,
       "norm_label": "_confidence_text()"
@@ -2770,7 +2788,7 @@
       "label": "_warning_recovery_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1908",
+      "source_location": "L1998",
       "id": "line_messages_warning_recovery_card",
       "community": 0,
       "norm_label": "_warning_recovery_card()"
@@ -2779,7 +2797,7 @@
       "label": "build_duplicate_warning_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1978",
+      "source_location": "L2068",
       "id": "line_messages_build_duplicate_warning_card",
       "community": 0,
       "norm_label": "build_duplicate_warning_card()"
@@ -2788,7 +2806,7 @@
       "label": "build_progress_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2001",
+      "source_location": "L2091",
       "id": "line_messages_build_progress_message",
       "community": 0,
       "norm_label": "build_progress_message()"
@@ -2797,7 +2815,7 @@
       "label": "build_unreadable_prompt()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2013",
+      "source_location": "L2103",
       "id": "line_messages_build_unreadable_prompt",
       "community": 0,
       "norm_label": "build_unreadable_prompt()"
@@ -2806,7 +2824,7 @@
       "label": "build_lower_value_warning()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2029",
+      "source_location": "L2119",
       "id": "line_messages_build_lower_value_warning",
       "community": 0,
       "norm_label": "build_lower_value_warning()"
@@ -2815,7 +2833,7 @@
       "label": "build_status_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2057",
+      "source_location": "L2147",
       "id": "line_messages_build_status_card",
       "community": 0,
       "norm_label": "build_status_card()"
@@ -2824,7 +2842,7 @@
       "label": "build_batch_complete_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2122",
+      "source_location": "L2212",
       "id": "line_messages_build_batch_complete_card",
       "community": 0,
       "norm_label": "build_batch_complete_card()"
@@ -2833,7 +2851,7 @@
       "label": "build_history_menu_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2182",
+      "source_location": "L2272",
       "id": "line_messages_build_history_menu_message",
       "community": 0,
       "norm_label": "build_history_menu_message()"
@@ -2842,7 +2860,7 @@
       "label": "build_history_empty_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2258",
+      "source_location": "L2348",
       "id": "line_messages_build_history_empty_message",
       "community": 0,
       "norm_label": "build_history_empty_message()"
@@ -2851,7 +2869,7 @@
       "label": "_history_batch_list_row()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2268",
+      "source_location": "L2358",
       "id": "line_messages_history_batch_list_row",
       "community": 0,
       "norm_label": "_history_batch_list_row()"
@@ -2860,7 +2878,7 @@
       "label": "_history_batch_list_box()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2322",
+      "source_location": "L2412",
       "id": "line_messages_history_batch_list_box",
       "community": 0,
       "norm_label": "_history_batch_list_box()"
@@ -2869,7 +2887,7 @@
       "label": "build_history_batch_list_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2337",
+      "source_location": "L2427",
       "id": "line_messages_build_history_batch_list_message",
       "community": 0,
       "norm_label": "build_history_batch_list_message()"
@@ -2878,7 +2896,7 @@
       "label": "build_history_summary_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2395",
+      "source_location": "L2485",
       "id": "line_messages_build_history_summary_message",
       "community": 0,
       "norm_label": "build_history_summary_message()"
@@ -2887,7 +2905,7 @@
       "label": "build_history_detail_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2446",
+      "source_location": "L2536",
       "id": "line_messages_build_history_detail_message",
       "community": 0,
       "norm_label": "build_history_detail_message()"
@@ -2896,7 +2914,7 @@
       "label": "_history_detail_header()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2524",
+      "source_location": "L2614",
       "id": "line_messages_history_detail_header",
       "community": 0,
       "norm_label": "_history_detail_header()"
@@ -2905,7 +2923,7 @@
       "label": "_history_detail_progress_panel()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2608",
+      "source_location": "L2698",
       "id": "line_messages_history_detail_progress_panel",
       "community": 0,
       "norm_label": "_history_detail_progress_panel()"
@@ -2914,7 +2932,7 @@
       "label": "_history_detail_meter_ids()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2678",
+      "source_location": "L2768",
       "id": "line_messages_history_detail_meter_ids",
       "community": 0,
       "norm_label": "_history_detail_meter_ids()"
@@ -2923,7 +2941,7 @@
       "label": "_history_detail_meter_row()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2685",
+      "source_location": "L2775",
       "id": "line_messages_history_detail_meter_row",
       "community": 0,
       "norm_label": "_history_detail_meter_row()"
@@ -2932,7 +2950,7 @@
       "label": "_history_detail_totals_panel()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2762",
+      "source_location": "L2852",
       "id": "line_messages_history_detail_totals_panel",
       "community": 0,
       "norm_label": "_history_detail_totals_panel()"
@@ -2941,7 +2959,7 @@
       "label": "_history_detail_total_tile()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2787",
+      "source_location": "L2877",
       "id": "line_messages_history_detail_total_tile",
       "community": 0,
       "norm_label": "_history_detail_total_tile()"
@@ -2950,7 +2968,7 @@
       "label": "_history_detail_footer_meta()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2824",
+      "source_location": "L2914",
       "id": "line_messages_history_detail_footer_meta",
       "community": 0,
       "norm_label": "_history_detail_footer_meta()"
@@ -2959,7 +2977,7 @@
       "label": "_history_detail_date_range()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2852",
+      "source_location": "L2942",
       "id": "line_messages_history_detail_date_range",
       "community": 0,
       "norm_label": "_history_detail_date_range()"
@@ -2968,7 +2986,7 @@
       "label": "_history_detail_updated_display()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2868",
+      "source_location": "L2958",
       "id": "line_messages_history_detail_updated_display",
       "community": 0,
       "norm_label": "_history_detail_updated_display()"
@@ -2977,7 +2995,7 @@
       "label": "_parse_line_datetime()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2884",
+      "source_location": "L2974",
       "id": "line_messages_parse_line_datetime",
       "community": 0,
       "norm_label": "_parse_line_datetime()"
@@ -2986,7 +3004,7 @@
       "label": "_thai_date()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2900",
+      "source_location": "L2990",
       "id": "line_messages_thai_date",
       "community": 0,
       "norm_label": "_thai_date()"
@@ -2995,7 +3013,7 @@
       "label": "_thai_datetime()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2904",
+      "source_location": "L2994",
       "id": "line_messages_thai_datetime",
       "community": 0,
       "norm_label": "_thai_datetime()"
@@ -3004,7 +3022,7 @@
       "label": "_signed_kwh()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2908",
+      "source_location": "L2998",
       "id": "line_messages_signed_kwh",
       "community": 0,
       "norm_label": "_signed_kwh()"
@@ -3013,7 +3031,7 @@
       "label": "_safe_int()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2914",
+      "source_location": "L3004",
       "id": "line_messages_safe_int",
       "community": 0,
       "norm_label": "_safe_int()"
@@ -3022,7 +3040,7 @@
       "label": "_history_meter_period()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2921",
+      "source_location": "L3011",
       "id": "line_messages_history_meter_period",
       "community": 0,
       "norm_label": "_history_meter_period()"
@@ -3031,7 +3049,7 @@
       "label": "_history_meter_label()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2925",
+      "source_location": "L3015",
       "id": "line_messages_history_meter_label",
       "community": 0,
       "norm_label": "_history_meter_label()"
@@ -3040,7 +3058,7 @@
       "label": "_history_meter_week()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2932",
+      "source_location": "L3022",
       "id": "line_messages_history_meter_week",
       "community": 0,
       "norm_label": "_history_meter_week()"
@@ -3049,7 +3067,7 @@
       "label": "_history_meter_short_week()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2938",
+      "source_location": "L3028",
       "id": "line_messages_history_meter_short_week",
       "community": 0,
       "norm_label": "_history_meter_short_week()"
@@ -3058,7 +3076,7 @@
       "label": "_history_meter_updated()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2950",
+      "source_location": "L3040",
       "id": "line_messages_history_meter_updated",
       "community": 0,
       "norm_label": "_history_meter_updated()"
@@ -3067,7 +3085,7 @@
       "label": "_history_meter_delta_percent()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2957",
+      "source_location": "L3047",
       "id": "line_messages_history_meter_delta_percent",
       "community": 0,
       "norm_label": "_history_meter_delta_percent()"
@@ -3076,7 +3094,7 @@
       "label": "_history_meter_kwh_parts()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2969",
+      "source_location": "L3059",
       "id": "line_messages_history_meter_kwh_parts",
       "community": 0,
       "norm_label": "_history_meter_kwh_parts()"
@@ -3085,7 +3103,7 @@
       "label": "_history_meter_signed_kwh_parts()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2973",
+      "source_location": "L3063",
       "id": "line_messages_history_meter_signed_kwh_parts",
       "community": 0,
       "norm_label": "_history_meter_signed_kwh_parts()"
@@ -3094,7 +3112,7 @@
       "label": "_history_meter_updated_compact()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2979",
+      "source_location": "L3069",
       "id": "line_messages_history_meter_updated_compact",
       "community": 0,
       "norm_label": "_history_meter_updated_compact()"
@@ -3103,7 +3121,7 @@
       "label": "_history_meter_header()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L2987",
+      "source_location": "L3077",
       "id": "line_messages_history_meter_header",
       "community": 0,
       "norm_label": "_history_meter_header()"
@@ -3112,7 +3130,7 @@
       "label": "_history_meter_metric_tile()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3069",
+      "source_location": "L3159",
       "id": "line_messages_history_meter_metric_tile",
       "community": 0,
       "norm_label": "_history_meter_metric_tile()"
@@ -3121,7 +3139,7 @@
       "label": "_history_meter_metric_panel()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3149",
+      "source_location": "L3239",
       "id": "line_messages_history_meter_metric_panel",
       "community": 0,
       "norm_label": "_history_meter_metric_panel()"
@@ -3130,7 +3148,7 @@
       "label": "_history_meter_small_stat()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3201",
+      "source_location": "L3291",
       "id": "line_messages_history_meter_small_stat",
       "community": 0,
       "norm_label": "_history_meter_small_stat()"
@@ -3139,7 +3157,7 @@
       "label": "_history_meter_period_chip()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3227",
+      "source_location": "L3317",
       "id": "line_messages_history_meter_period_chip",
       "community": 0,
       "norm_label": "_history_meter_period_chip()"
@@ -3148,7 +3166,7 @@
       "label": "_history_meter_period_chips()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3261",
+      "source_location": "L3351",
       "id": "line_messages_history_meter_period_chips",
       "community": 0,
       "norm_label": "_history_meter_period_chips()"
@@ -3157,7 +3175,7 @@
       "label": "_history_meter_chart_labels()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3273",
+      "source_location": "L3363",
       "id": "line_messages_history_meter_chart_labels",
       "community": 0,
       "norm_label": "_history_meter_chart_labels()"
@@ -3166,7 +3184,7 @@
       "label": "_history_meter_latest_point_chart()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3300",
+      "source_location": "L3390",
       "id": "line_messages_history_meter_latest_point_chart",
       "community": 0,
       "norm_label": "_history_meter_latest_point_chart()"
@@ -3175,7 +3193,7 @@
       "label": "_history_meter_sparkline_chart()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3375",
+      "source_location": "L3465",
       "id": "line_messages_history_meter_sparkline_chart",
       "community": 0,
       "norm_label": "_history_meter_sparkline_chart()"
@@ -3184,7 +3202,7 @@
       "label": "_history_meter_chart_panel()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3409",
+      "source_location": "L3499",
       "id": "line_messages_history_meter_chart_panel",
       "community": 0,
       "norm_label": "_history_meter_chart_panel()"
@@ -3193,7 +3211,7 @@
       "label": "_history_meter_footer_actions()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3478",
+      "source_location": "L3568",
       "id": "line_messages_history_meter_footer_actions",
       "community": 0,
       "norm_label": "_history_meter_footer_actions()"
@@ -3202,7 +3220,7 @@
       "label": "_history_meter_quick_actions()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3503",
+      "source_location": "L3593",
       "id": "line_messages_history_meter_quick_actions",
       "community": 0,
       "norm_label": "_history_meter_quick_actions()"
@@ -3211,7 +3229,7 @@
       "label": "build_history_meter_select_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3511",
+      "source_location": "L3601",
       "id": "line_messages_build_history_meter_select_message",
       "community": 0,
       "norm_label": "build_history_meter_select_message()"
@@ -3220,7 +3238,7 @@
       "label": "build_history_meter_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3582",
+      "source_location": "L3672",
       "id": "line_messages_build_history_meter_message",
       "community": 0,
       "norm_label": "build_history_meter_message()"
@@ -3229,7 +3247,7 @@
       "label": "_settings_rate_display()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3645",
+      "source_location": "L3735",
       "id": "line_messages_settings_rate_display",
       "community": 0,
       "norm_label": "_settings_rate_display()"
@@ -3238,7 +3256,7 @@
       "label": "build_settings_menu_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3653",
+      "source_location": "L3743",
       "id": "line_messages_build_settings_menu_message",
       "community": 0,
       "norm_label": "build_settings_menu_message()"
@@ -3247,7 +3265,7 @@
       "label": "build_report_summary_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3733",
+      "source_location": "L3827",
       "id": "line_messages_build_report_summary_message",
       "community": 0,
       "norm_label": "build_report_summary_message()"
@@ -3256,7 +3274,7 @@
       "label": "build_report_unavailable_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3774",
+      "source_location": "L3868",
       "id": "line_messages_build_report_unavailable_message",
       "community": 0,
       "norm_label": "build_report_unavailable_message()"
@@ -3265,7 +3283,7 @@
       "label": "_week_from_batch_id()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3832",
+      "source_location": "L3926",
       "id": "line_messages_week_from_batch_id",
       "community": 0,
       "norm_label": "_week_from_batch_id()"
@@ -3274,7 +3292,7 @@
       "label": "_report_import_visual_panel()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3839",
+      "source_location": "L3933",
       "id": "line_messages_report_import_visual_panel",
       "community": 0,
       "norm_label": "_report_import_visual_panel()"
@@ -3283,7 +3301,7 @@
       "label": "_report_table_cell()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3941",
+      "source_location": "L4035",
       "id": "line_messages_report_table_cell",
       "community": 0,
       "norm_label": "_report_table_cell()"
@@ -3292,7 +3310,7 @@
       "label": "_report_table_line()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3953",
+      "source_location": "L4047",
       "id": "line_messages_report_table_line",
       "community": 0,
       "norm_label": "_report_table_line()"
@@ -3301,7 +3319,7 @@
       "label": "_report_import_metric()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L3969",
+      "source_location": "L4063",
       "id": "line_messages_report_import_metric",
       "community": 0,
       "norm_label": "_report_import_metric()"
@@ -3310,7 +3328,7 @@
       "label": "_report_import_metrics()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4031",
+      "source_location": "L4125",
       "id": "line_messages_report_import_metrics",
       "community": 0,
       "norm_label": "_report_import_metrics()"
@@ -3319,7 +3337,7 @@
       "label": "_report_import_status_strip()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4067",
+      "source_location": "L4161",
       "id": "line_messages_report_import_status_strip",
       "community": 0,
       "norm_label": "_report_import_status_strip()"
@@ -3328,7 +3346,7 @@
       "label": "_report_import_footer_note()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4105",
+      "source_location": "L4199",
       "id": "line_messages_report_import_footer_note",
       "community": 0,
       "norm_label": "_report_import_footer_note()"
@@ -3337,7 +3355,7 @@
       "label": "_report_import_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4133",
+      "source_location": "L4227",
       "id": "line_messages_report_import_card",
       "community": 0,
       "norm_label": "_report_import_card()"
@@ -3346,7 +3364,7 @@
       "label": "build_report_import_prompt_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4251",
+      "source_location": "L4345",
       "id": "line_messages_build_report_import_prompt_message",
       "community": 0,
       "norm_label": "build_report_import_prompt_message()"
@@ -3355,7 +3373,7 @@
       "label": "build_settings_sync_success_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4270",
+      "source_location": "L4364",
       "id": "line_messages_build_settings_sync_success_message",
       "community": 0,
       "norm_label": "build_settings_sync_success_message()"
@@ -3364,7 +3382,7 @@
       "label": "build_settings_sync_failed_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4282",
+      "source_location": "L4376",
       "id": "line_messages_build_settings_sync_failed_message",
       "community": 0,
       "norm_label": "build_settings_sync_failed_message()"
@@ -3373,7 +3391,7 @@
       "label": "build_report_import_preview_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4297",
+      "source_location": "L4391",
       "id": "line_messages_build_report_import_preview_message",
       "community": 0,
       "norm_label": "build_report_import_preview_message()"
@@ -3382,7 +3400,7 @@
       "label": "build_report_import_success_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4352",
+      "source_location": "L4446",
       "id": "line_messages_build_report_import_success_message",
       "community": 0,
       "norm_label": "build_report_import_success_message()"
@@ -3391,7 +3409,7 @@
       "label": "build_report_import_duplicate_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4370",
+      "source_location": "L4464",
       "id": "line_messages_build_report_import_duplicate_message",
       "community": 0,
       "norm_label": "build_report_import_duplicate_message()"
@@ -3400,7 +3418,7 @@
       "label": "_can_confirm_report_import()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4384",
+      "source_location": "L4478",
       "id": "line_messages_can_confirm_report_import",
       "community": 0,
       "norm_label": "_can_confirm_report_import()"
@@ -3409,7 +3427,7 @@
       "label": "build_settings_view_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4393",
+      "source_location": "L4487",
       "id": "line_messages_build_settings_view_message",
       "community": 0,
       "norm_label": "build_settings_view_message()"
@@ -3418,7 +3436,7 @@
       "label": "build_settings_meters_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4489",
+      "source_location": "L4583",
       "id": "line_messages_build_settings_meters_message",
       "community": 0,
       "norm_label": "build_settings_meters_message()"
@@ -3427,7 +3445,7 @@
       "label": "build_settings_meter_detail_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4510",
+      "source_location": "L4604",
       "id": "line_messages_build_settings_meter_detail_message",
       "community": 0,
       "norm_label": "build_settings_meter_detail_message()"
@@ -3436,7 +3454,7 @@
       "label": "build_settings_edit_prompt_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4536",
+      "source_location": "L4630",
       "id": "line_messages_build_settings_edit_prompt_message",
       "community": 0,
       "norm_label": "build_settings_edit_prompt_message()"
@@ -3445,7 +3463,7 @@
       "label": "build_settings_confirm_change_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4563",
+      "source_location": "L4657",
       "id": "line_messages_build_settings_confirm_change_message",
       "community": 0,
       "norm_label": "build_settings_confirm_change_message()"
@@ -3454,7 +3472,7 @@
       "label": "build_settings_recipients_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4585",
+      "source_location": "L4679",
       "id": "line_messages_build_settings_recipients_message",
       "community": 0,
       "norm_label": "build_settings_recipients_message()"
@@ -3463,7 +3481,7 @@
       "label": "build_settings_permissions_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4601",
+      "source_location": "L4695",
       "id": "line_messages_build_settings_permissions_message",
       "community": 0,
       "norm_label": "build_settings_permissions_message()"
@@ -3472,7 +3490,7 @@
       "label": "build_settings_not_admin_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4614",
+      "source_location": "L4708",
       "id": "line_messages_build_settings_not_admin_message",
       "community": 0,
       "norm_label": "build_settings_not_admin_message()"
@@ -3481,7 +3499,7 @@
       "label": "_message_decimal()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4624",
+      "source_location": "L4718",
       "id": "line_messages_message_decimal",
       "community": 0,
       "norm_label": "_message_decimal()"
@@ -3490,7 +3508,7 @@
       "label": "_format_number()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4631",
+      "source_location": "L4725",
       "id": "line_messages_format_number",
       "community": 0,
       "norm_label": "_format_number()"
@@ -3499,7 +3517,7 @@
       "label": "_bool_th()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L4640",
+      "source_location": "L4734",
       "id": "line_messages_bool_th",
       "community": 0,
       "norm_label": "_bool_th()"
@@ -3510,7 +3528,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L1",
       "id": "app_line_richmenu_py",
-      "community": 13,
+      "community": 12,
       "norm_label": "richmenu.py"
     },
     {
@@ -3519,7 +3537,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L37",
       "id": "line_richmenu_richmenubuttonspec",
-      "community": 13,
+      "community": 12,
       "norm_label": "richmenubuttonspec"
     },
     {
@@ -3528,7 +3546,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L44",
       "id": "line_richmenu_default_buttons",
-      "community": 13,
+      "community": 12,
       "norm_label": "_default_buttons()"
     },
     {
@@ -3537,7 +3555,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L85",
       "id": "line_richmenu_load_image",
-      "community": 13,
+      "community": 12,
       "norm_label": "_load_image()"
     },
     {
@@ -3546,7 +3564,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L90",
       "id": "line_richmenu_build_spec",
-      "community": 13,
+      "community": 12,
       "norm_label": "_build_spec()"
     },
     {
@@ -3555,7 +3573,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L115",
       "id": "line_richmenu_save_line_compatible_image",
-      "community": 13,
+      "community": 12,
       "norm_label": "_save_line_compatible_image()"
     },
     {
@@ -3564,7 +3582,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L138",
       "id": "line_richmenu_compose_richmenu_image",
-      "community": 13,
+      "community": 12,
       "norm_label": "compose_richmenu_image()"
     },
     {
@@ -3672,7 +3690,7 @@
       "source_file": "app/report/__init__.py",
       "source_location": "L1",
       "id": "app_report_init_py",
-      "community": 46,
+      "community": 45,
       "norm_label": "__init__.py"
     },
     {
@@ -3681,7 +3699,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L1",
       "id": "app_report_generator_py",
-      "community": 12,
+      "community": 11,
       "norm_label": "generator.py"
     },
     {
@@ -3690,7 +3708,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L56",
       "id": "report_generator_reportreading",
-      "community": 12,
+      "community": 11,
       "norm_label": "reportreading"
     },
     {
@@ -3699,7 +3717,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L68",
       "id": "report_generator_reportdata",
-      "community": 12,
+      "community": 11,
       "norm_label": "reportdata"
     },
     {
@@ -3708,7 +3726,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L77",
       "id": "report_generator_load_font",
-      "community": 12,
+      "community": 11,
       "norm_label": "_load_font()"
     },
     {
@@ -3717,7 +3735,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L89",
       "id": "report_generator_fmt",
-      "community": 12,
+      "community": 11,
       "norm_label": "_fmt()"
     },
     {
@@ -3726,7 +3744,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L96",
       "id": "report_generator_fmt_baht",
-      "community": 12,
+      "community": 11,
       "norm_label": "_fmt_baht()"
     },
     {
@@ -3735,7 +3753,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L101",
       "id": "report_generator_format_thai_date",
-      "community": 12,
+      "community": 11,
       "norm_label": "_format_thai_date()"
     },
     {
@@ -3744,7 +3762,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L113",
       "id": "report_generator_to_sort_order",
-      "community": 12,
+      "community": 11,
       "norm_label": "_to_sort_order()"
     },
     {
@@ -3753,7 +3771,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L119",
       "id": "report_generator_draw_centered_lines",
-      "community": 12,
+      "community": 11,
       "norm_label": "_draw_centered_lines()"
     },
     {
@@ -3762,7 +3780,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L139",
       "id": "report_generator_draw_grid",
-      "community": 12,
+      "community": 11,
       "norm_label": "_draw_grid()"
     },
     {
@@ -3771,7 +3789,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L152",
       "id": "report_generator_build_report_data",
-      "community": 12,
+      "community": 11,
       "norm_label": "build_report_data()"
     },
     {
@@ -3780,7 +3798,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L195",
       "id": "report_generator_generate_report_image",
-      "community": 12,
+      "community": 11,
       "norm_label": "generate_report_image()"
     },
     {
@@ -3789,7 +3807,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L90",
       "id": "report_generator_rationale_90",
-      "community": 12,
+      "community": 11,
       "norm_label": "format decimal without thousands separators, 1 decimal when fractional."
     },
     {
@@ -3798,7 +3816,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L97",
       "id": "report_generator_rationale_97",
-      "community": 12,
+      "community": 11,
       "norm_label": "format baht without thousands separators, matching the report image."
     },
     {
@@ -3807,7 +3825,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L102",
       "id": "report_generator_rationale_102",
-      "community": 12,
+      "community": 11,
       "norm_label": "convert iso date (yyyy-mm-dd) to thai buddhist date format."
     },
     {
@@ -3816,7 +3834,7 @@
       "source_file": "app/services/report_import_service.py",
       "source_location": "L1",
       "id": "app_services_report_import_service_py",
-      "community": 16,
+      "community": 15,
       "norm_label": "report_import_service.py"
     },
     {
@@ -3825,7 +3843,7 @@
       "source_file": "app/services/report_import_service.py",
       "source_location": "L22",
       "id": "services_report_import_service_reportimportresult",
-      "community": 16,
+      "community": 15,
       "norm_label": "reportimportresult"
     },
     {
@@ -3834,7 +3852,7 @@
       "source_file": "app/services/report_import_service.py",
       "source_location": "L31",
       "id": "services_report_import_service_build_report_import_preview",
-      "community": 16,
+      "community": 15,
       "norm_label": "build_report_import_preview()"
     },
     {
@@ -3843,7 +3861,7 @@
       "source_file": "app/services/report_import_service.py",
       "source_location": "L60",
       "id": "services_report_import_service_can_confirm_import",
-      "community": 16,
+      "community": 15,
       "norm_label": "can_confirm_import()"
     },
     {
@@ -3852,7 +3870,7 @@
       "source_file": "app/services/report_import_service.py",
       "source_location": "L71",
       "id": "services_report_import_service_confirm_report_import",
-      "community": 16,
+      "community": 15,
       "norm_label": "confirm_report_import()"
     },
     {
@@ -3861,7 +3879,7 @@
       "source_file": "app/services/report_import_service.py",
       "source_location": "L137",
       "id": "services_report_import_service_classify_existing_readings",
-      "community": 16,
+      "community": 15,
       "norm_label": "_classify_existing_readings()"
     },
     {
@@ -3870,7 +3888,7 @@
       "source_file": "app/services/report_import_service.py",
       "source_location": "L159",
       "id": "services_report_import_service_matches_pending_import_row",
-      "community": 16,
+      "community": 15,
       "norm_label": "_matches_pending_import_row()"
     },
     {
@@ -3879,7 +3897,7 @@
       "source_file": "app/services/report_import_service.py",
       "source_location": "L173",
       "id": "services_report_import_service_decimal_equal",
-      "community": 16,
+      "community": 15,
       "norm_label": "_decimal_equal()"
     },
     {
@@ -3888,7 +3906,7 @@
       "source_file": "app/services/report_import_service.py",
       "source_location": "L180",
       "id": "services_report_import_service_rows_to_dicts",
-      "community": 16,
+      "community": 15,
       "norm_label": "_rows_to_dicts()"
     },
     {
@@ -3897,7 +3915,7 @@
       "source_file": "app/services/report_import_service.py",
       "source_location": "L194",
       "id": "services_report_import_service_build_batch",
-      "community": 16,
+      "community": 15,
       "norm_label": "_build_batch()"
     },
     {
@@ -3906,7 +3924,7 @@
       "source_file": "app/services/report_import_service.py",
       "source_location": "L213",
       "id": "services_report_import_service_build_reading",
-      "community": 16,
+      "community": 15,
       "norm_label": "_build_reading()"
     },
     {
@@ -3915,7 +3933,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L1",
       "id": "app_services_settings_service_py",
-      "community": 21,
+      "community": 20,
       "norm_label": "settings_service.py"
     },
     {
@@ -3924,7 +3942,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L19",
       "id": "services_settings_service_is_admin",
-      "community": 21,
+      "community": 20,
       "norm_label": "is_admin()"
     },
     {
@@ -3933,7 +3951,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L23",
       "id": "services_settings_service_get_current_settings",
-      "community": 21,
+      "community": 20,
       "norm_label": "get_current_settings()"
     },
     {
@@ -3942,7 +3960,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L37",
       "id": "services_settings_service_get_meter_settings",
-      "community": 21,
+      "community": 20,
       "norm_label": "get_meter_settings()"
     },
     {
@@ -3951,7 +3969,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L41",
       "id": "services_settings_service_get_meter_detail",
-      "community": 21,
+      "community": 20,
       "norm_label": "get_meter_detail()"
     },
     {
@@ -3960,7 +3978,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L45",
       "id": "services_settings_service_validate_setting_input",
-      "community": 21,
+      "community": 20,
       "norm_label": "validate_setting_input()"
     },
     {
@@ -3969,7 +3987,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L61",
       "id": "services_settings_service_setting_label",
-      "community": 21,
+      "community": 20,
       "norm_label": "setting_label()"
     },
     {
@@ -3978,7 +3996,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L70",
       "id": "services_settings_service_setting_impact",
-      "community": 21,
+      "community": 20,
       "norm_label": "setting_impact()"
     },
     {
@@ -3987,7 +4005,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L79",
       "id": "services_settings_service_apply_setting_change",
-      "community": 21,
+      "community": 20,
       "norm_label": "apply_setting_change()"
     },
     {
@@ -3996,7 +4014,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L1",
       "id": "app_services_history_service_py",
-      "community": 17,
+      "community": 16,
       "norm_label": "history_service.py"
     },
     {
@@ -4005,7 +4023,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L16",
       "id": "services_history_service_batchsummary",
-      "community": 17,
+      "community": 16,
       "norm_label": "batchsummary"
     },
     {
@@ -4014,7 +4032,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L32",
       "id": "services_history_service_get_current_batch_summary",
-      "community": 17,
+      "community": 16,
       "norm_label": "get_current_batch_summary()"
     },
     {
@@ -4023,7 +4041,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L37",
       "id": "services_history_service_get_previous_batch_summary",
-      "community": 17,
+      "community": 16,
       "norm_label": "get_previous_batch_summary()"
     },
     {
@@ -4032,7 +4050,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L48",
       "id": "services_history_service_get_recent_batch_summaries",
-      "community": 17,
+      "community": 16,
       "norm_label": "get_recent_batch_summaries()"
     },
     {
@@ -4041,7 +4059,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L86",
       "id": "services_history_service_get_latest_report_batch_id",
-      "community": 17,
+      "community": 16,
       "norm_label": "get_latest_report_batch_id()"
     },
     {
@@ -4050,7 +4068,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L97",
       "id": "services_history_service_has_report_data",
-      "community": 17,
+      "community": 16,
       "norm_label": "_has_report_data()"
     },
     {
@@ -4059,7 +4077,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L110",
       "id": "services_history_service_get_batch_summary",
-      "community": 17,
+      "community": 16,
       "norm_label": "get_batch_summary()"
     },
     {
@@ -4068,7 +4086,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L141",
       "id": "services_history_service_get_meter_history",
-      "community": 17,
+      "community": 16,
       "norm_label": "get_meter_history()"
     },
     {
@@ -4077,7 +4095,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L165",
       "id": "services_history_service_to_decimal",
-      "community": 17,
+      "community": 16,
       "norm_label": "_to_decimal()"
     },
     {
@@ -4086,7 +4104,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L172",
       "id": "services_history_service_to_int",
-      "community": 17,
+      "community": 16,
       "norm_label": "_to_int()"
     },
     {
@@ -4095,7 +4113,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L179",
       "id": "services_history_service_row_datetime",
-      "community": 17,
+      "community": 16,
       "norm_label": "_row_datetime()"
     },
     {
@@ -4104,7 +4122,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L187",
       "id": "services_history_service_reading_datetime",
-      "community": 17,
+      "community": 16,
       "norm_label": "_reading_datetime()"
     },
     {
@@ -4113,7 +4131,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L195",
       "id": "services_history_service_parse_datetime",
-      "community": 17,
+      "community": 16,
       "norm_label": "_parse_datetime()"
     },
     {
@@ -4122,7 +4140,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L211",
       "id": "services_history_service_week_from_batch_id",
-      "community": 17,
+      "community": 16,
       "norm_label": "_week_from_batch_id()"
     },
     {
@@ -4131,7 +4149,7 @@
       "source_file": "app/services/__init__.py",
       "source_location": "L1",
       "id": "app_services_init_py",
-      "community": 47,
+      "community": 46,
       "norm_label": "__init__.py"
     },
     {
@@ -4356,7 +4374,7 @@
       "source_file": "app/services/session_service.py",
       "source_location": "L35",
       "id": "services_session_service_pendingreportimport",
-      "community": 16,
+      "community": 15,
       "norm_label": "pendingreportimport"
     },
     {
@@ -4788,7 +4806,7 @@
       "source_file": "app/services/batch_service.py",
       "source_location": "L1",
       "id": "app_services_batch_service_py",
-      "community": 9,
+      "community": 8,
       "norm_label": "batch_service.py"
     },
     {
@@ -4806,7 +4824,7 @@
       "source_file": "app/services/batch_service.py",
       "source_location": "L25",
       "id": "services_batch_service_generate_batch_id",
-      "community": 9,
+      "community": 8,
       "norm_label": "generate_batch_id()"
     },
     {
@@ -4815,7 +4833,7 @@
       "source_file": "app/services/batch_service.py",
       "source_location": "L30",
       "id": "services_batch_service_get_or_create_batch",
-      "community": 9,
+      "community": 8,
       "norm_label": "get_or_create_batch()"
     },
     {
@@ -4824,7 +4842,7 @@
       "source_file": "app/services/batch_service.py",
       "source_location": "L55",
       "id": "services_batch_service_get_batch_progress",
-      "community": 9,
+      "community": 8,
       "norm_label": "get_batch_progress()"
     },
     {
@@ -4833,7 +4851,7 @@
       "source_file": "app/services/batch_service.py",
       "source_location": "L76",
       "id": "services_batch_service_update_batch_after_reading",
-      "community": 9,
+      "community": 8,
       "norm_label": "update_batch_after_reading()"
     },
     {
@@ -4842,7 +4860,7 @@
       "source_file": "app/services/batch_service.py",
       "source_location": "L98",
       "id": "services_batch_service_format_progress_message",
-      "community": 9,
+      "community": 8,
       "norm_label": "format_progress_message()"
     },
     {
@@ -4851,7 +4869,7 @@
       "source_file": "app/services/batch_service.py",
       "source_location": "L109",
       "id": "services_batch_service_build_progress_message",
-      "community": 9,
+      "community": 8,
       "norm_label": "build_progress_message()"
     },
     {
@@ -4860,7 +4878,7 @@
       "source_file": "app/services/batch_service.py",
       "source_location": "L113",
       "id": "services_batch_service_expected_meter_count",
-      "community": 9,
+      "community": 8,
       "norm_label": "_expected_meter_count()"
     },
     {
@@ -4869,7 +4887,7 @@
       "source_file": "app/services/batch_service.py",
       "source_location": "L125",
       "id": "services_batch_service_now",
-      "community": 9,
+      "community": 8,
       "norm_label": "_now()"
     },
     {
@@ -4878,7 +4896,7 @@
       "source_file": "app/services/batch_service.py",
       "source_location": "L133",
       "id": "services_batch_service_iso_week",
-      "community": 9,
+      "community": 8,
       "norm_label": "_iso_week()"
     },
     {
@@ -5094,7 +5112,7 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L1",
       "id": "tests_test_storage_sync_py",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_storage_sync.py"
     },
     {
@@ -5103,7 +5121,7 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L9",
       "id": "tests_test_storage_sync_use_sqlite",
-      "community": 20,
+      "community": 19,
       "norm_label": "_use_sqlite()"
     },
     {
@@ -5112,7 +5130,7 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L15",
       "id": "tests_test_storage_sync_test_startup_pull_replaces_business_config_from_sheets",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_startup_pull_replaces_business_config_from_sheets()"
     },
     {
@@ -5121,7 +5139,7 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L43",
       "id": "tests_test_storage_sync_test_startup_pull_clears_pending_settings_outbox",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_startup_pull_clears_pending_settings_outbox()"
     },
     {
@@ -5130,7 +5148,7 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L61",
       "id": "tests_test_storage_sync_test_manual_pull_replaces_all_sqlite_tables_from_sheets",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_manual_pull_replaces_all_sqlite_tables_from_sheets()"
     },
     {
@@ -5139,7 +5157,7 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L111",
       "id": "tests_test_storage_sync_test_repository_writes_enqueue_sync_outbox",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_repository_writes_enqueue_sync_outbox()"
     },
     {
@@ -5148,7 +5166,7 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L132",
       "id": "tests_test_storage_sync_test_sheets_backend_does_not_enqueue_sync_outbox",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_sheets_backend_does_not_enqueue_sync_outbox()"
     },
     {
@@ -5157,7 +5175,7 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L143",
       "id": "tests_test_storage_sync_test_repeated_batch_updates_coalesce_to_latest_payload",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_repeated_batch_updates_coalesce_to_latest_payload()"
     },
     {
@@ -5166,7 +5184,7 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L169",
       "id": "tests_test_storage_sync_test_flush_outbox_syncs_to_sheets_and_marks_synced",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_flush_outbox_syncs_to_sheets_and_marks_synced()"
     },
     {
@@ -5175,7 +5193,7 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L186",
       "id": "tests_test_storage_sync_test_flush_outbox_failure_marks_failed_and_successful_retry_marks_synced",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_flush_outbox_failure_marks_failed_and_successful_retry_marks_synced()"
     },
     {
@@ -5184,7 +5202,7 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L207",
       "id": "tests_test_storage_sync_test_empty_flush_keeps_startup_pull_error_visible",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_empty_flush_keeps_startup_pull_error_visible()"
     },
     {
@@ -5193,7 +5211,7 @@
       "source_file": "tests/conftest.py",
       "source_location": "L1",
       "id": "tests_conftest_py",
-      "community": 38,
+      "community": 37,
       "norm_label": "conftest.py"
     },
     {
@@ -5202,7 +5220,7 @@
       "source_file": "tests/conftest.py",
       "source_location": "L9",
       "id": "tests_conftest_isolate_sqlite_db",
-      "community": 38,
+      "community": 37,
       "norm_label": "_isolate_sqlite_db()"
     },
     {
@@ -5517,7 +5535,7 @@
       "source_file": "tests/test_ocr_confidence.py",
       "source_location": "L1",
       "id": "tests_test_ocr_confidence_py",
-      "community": 15,
+      "community": 14,
       "norm_label": "test_ocr_confidence.py"
     },
     {
@@ -5526,7 +5544,7 @@
       "source_file": "tests/test_ocr_confidence.py",
       "source_location": "L7",
       "id": "tests_test_ocr_confidence_test_value_lower_than_last_reading_is_low_confidence",
-      "community": 15,
+      "community": 14,
       "norm_label": "test_value_lower_than_last_reading_is_low_confidence()"
     },
     {
@@ -5535,7 +5553,7 @@
       "source_file": "tests/test_ocr_confidence.py",
       "source_location": "L25",
       "id": "tests_test_ocr_confidence_test_huge_jump_from_last_reading_is_low_confidence",
-      "community": 15,
+      "community": 14,
       "norm_label": "test_huge_jump_from_last_reading_is_low_confidence()"
     },
     {
@@ -5544,7 +5562,7 @@
       "source_file": "tests/test_ocr_confidence.py",
       "source_location": "L41",
       "id": "tests_test_ocr_confidence_test_field_aware_parse_with_unit_is_high_confidence_when_plausible",
-      "community": 15,
+      "community": 14,
       "norm_label": "test_field_aware_parse_with_unit_is_high_confidence_when_plausible()"
     },
     {
@@ -5553,7 +5571,7 @@
       "source_file": "tests/test_ocr_confidence.py",
       "source_location": "L55",
       "id": "tests_test_ocr_confidence_test_model_specific_parse_with_unit_is_high_confidence_when_plausible",
-      "community": 15,
+      "community": 14,
       "norm_label": "test_model_specific_parse_with_unit_is_high_confidence_when_plausible()"
     },
     {
@@ -5562,7 +5580,7 @@
       "source_file": "tests/test_ocr_confidence.py",
       "source_location": "L69",
       "id": "tests_test_ocr_confidence_test_implied_mpr45s_decimal_tail_is_low_confidence",
-      "community": 15,
+      "community": 14,
       "norm_label": "test_implied_mpr45s_decimal_tail_is_low_confidence()"
     },
     {
@@ -5571,7 +5589,7 @@
       "source_file": "tests/test_ocr_confidence.py",
       "source_location": "L83",
       "id": "tests_test_ocr_confidence_test_fallback_generic_parse_is_low_confidence",
-      "community": 15,
+      "community": 14,
       "norm_label": "test_fallback_generic_parse_is_low_confidence()"
     },
     {
@@ -5580,7 +5598,7 @@
       "source_file": "tests/test_ocr_confidence.py",
       "source_location": "L96",
       "id": "tests_test_ocr_confidence_test_impossible_converted_value_is_low_confidence",
-      "community": 15,
+      "community": 14,
       "norm_label": "test_impossible_converted_value_is_low_confidence()"
     },
     {
@@ -5589,7 +5607,7 @@
       "source_file": "tests/test_ocr_confidence.py",
       "source_location": "L110",
       "id": "tests_test_ocr_confidence_test_conflicting_large_candidates_are_low_confidence",
-      "community": 15,
+      "community": 14,
       "norm_label": "test_conflicting_large_candidates_are_low_confidence()"
     },
     {
@@ -5598,7 +5616,7 @@
       "source_file": "tests/test_ocr_confidence.py",
       "source_location": "L124",
       "id": "tests_test_ocr_confidence_test_large_mwh_conversion_is_low_confidence",
-      "community": 15,
+      "community": 14,
       "norm_label": "test_large_mwh_conversion_is_low_confidence()"
     },
     {
@@ -6282,7 +6300,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L1",
       "id": "tests_test_report_generator_py",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_report_generator.py"
     },
     {
@@ -6291,7 +6309,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L19",
       "id": "tests_test_report_generator_test_fmt",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_fmt()"
     },
     {
@@ -6300,7 +6318,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L24",
       "id": "tests_test_report_generator_test_fmt_baht",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_fmt_baht()"
     },
     {
@@ -6309,7 +6327,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L30",
       "id": "tests_test_report_generator_test_build_report_data_uses_thai_title",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_build_report_data_uses_thai_title()"
     },
     {
@@ -6318,7 +6336,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L53",
       "id": "tests_test_report_generator_mock_report_data",
-      "community": 12,
+      "community": 11,
       "norm_label": "_mock_report_data()"
     },
     {
@@ -6327,7 +6345,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L69",
       "id": "tests_test_report_generator_test_generate_report_image",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_generate_report_image()"
     },
     {
@@ -6336,7 +6354,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L95",
       "id": "tests_test_report_generator_test_generate_report_returns_none_when_no_data",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_generate_report_returns_none_when_no_data()"
     },
     {
@@ -6345,7 +6363,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L1",
       "id": "tests_test_report_generator_rationale_1",
-      "community": 12,
+      "community": 11,
       "norm_label": "tests for app.report.generator using mock data (no google sheets required)."
     },
     {
@@ -6354,7 +6372,7 @@
       "source_file": "tests/__init__.py",
       "source_location": "L1",
       "id": "tests_init_py",
-      "community": 48,
+      "community": 47,
       "norm_label": "__init__.py"
     },
     {
@@ -6363,7 +6381,7 @@
       "source_file": "tests/test_sqlite_repositories.py",
       "source_location": "L1",
       "id": "tests_test_sqlite_repositories_py",
-      "community": 28,
+      "community": 27,
       "norm_label": "test_sqlite_repositories.py"
     },
     {
@@ -6372,7 +6390,7 @@
       "source_file": "tests/test_sqlite_repositories.py",
       "source_location": "L4",
       "id": "tests_test_sqlite_repositories_use_sqlite",
-      "community": 28,
+      "community": 27,
       "norm_label": "_use_sqlite()"
     },
     {
@@ -6381,7 +6399,7 @@
       "source_file": "tests/test_sqlite_repositories.py",
       "source_location": "L10",
       "id": "tests_test_sqlite_repositories_test_sqlite_reads_and_updates_settings",
-      "community": 28,
+      "community": 27,
       "norm_label": "test_sqlite_reads_and_updates_settings()"
     },
     {
@@ -6390,7 +6408,7 @@
       "source_file": "tests/test_sqlite_repositories.py",
       "source_location": "L26",
       "id": "tests_test_sqlite_repositories_test_sqlite_latest_reading_uses_newest_created_at",
-      "community": 28,
+      "community": 27,
       "norm_label": "test_sqlite_latest_reading_uses_newest_created_at()"
     },
     {
@@ -6399,7 +6417,7 @@
       "source_file": "tests/test_sqlite_repositories.py",
       "source_location": "L56",
       "id": "tests_test_sqlite_repositories_test_sqlite_batch_updates_preserve_hot_path_data",
-      "community": 28,
+      "community": 27,
       "norm_label": "test_sqlite_batch_updates_preserve_hot_path_data()"
     },
     {
@@ -6408,7 +6426,7 @@
       "source_file": "tests/test_sqlite_repositories.py",
       "source_location": "L85",
       "id": "tests_test_sqlite_repositories_test_sqlite_pending_confirmation_status_transition",
-      "community": 28,
+      "community": 27,
       "norm_label": "test_sqlite_pending_confirmation_status_transition()"
     },
     {
@@ -7173,7 +7191,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L1",
       "id": "tests_test_batch_service_py",
-      "community": 9,
+      "community": 8,
       "norm_label": "test_batch_service.py"
     },
     {
@@ -7182,7 +7200,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L18",
       "id": "tests_test_batch_service_testgeneratebatchid",
-      "community": 9,
+      "community": 8,
       "norm_label": "testgeneratebatchid"
     },
     {
@@ -7191,7 +7209,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L19",
       "id": "tests_test_batch_service_testgeneratebatchid_test_format_contains_week_and_source",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_format_contains_week_and_source()"
     },
     {
@@ -7200,7 +7218,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L26",
       "id": "tests_test_batch_service_testgeneratebatchid_test_different_sources_different_ids",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_different_sources_different_ids()"
     },
     {
@@ -7209,7 +7227,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L31",
       "id": "tests_test_batch_service_testgeneratebatchid_test_uses_configured_timezone_for_monday_after_midnight",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_uses_configured_timezone_for_monday_after_midnight()"
     },
     {
@@ -7218,7 +7236,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L41",
       "id": "tests_test_batch_service_testgetorcreatebatch",
-      "community": 9,
+      "community": 8,
       "norm_label": "testgetorcreatebatch"
     },
     {
@@ -7227,7 +7245,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L42",
       "id": "tests_test_batch_service_testgetorcreatebatch_test_creates_new_batch",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_creates_new_batch()"
     },
     {
@@ -7236,7 +7254,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L50",
       "id": "tests_test_batch_service_testgetorcreatebatch_test_creates_new_batch_with_expected_count_from_settings_sheet",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_creates_new_batch_with_expected_count_from_settings_sheet()"
     },
     {
@@ -7245,7 +7263,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L58",
       "id": "tests_test_batch_service_testgetorcreatebatch_test_created_batch_uses_configured_timezone_week_and_date",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_created_batch_uses_configured_timezone_week_and_date()"
     },
     {
@@ -7254,7 +7272,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L68",
       "id": "tests_test_batch_service_testgetorcreatebatch_test_returns_existing_batch",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_returns_existing_batch()"
     },
     {
@@ -7263,7 +7281,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L77",
       "id": "tests_test_batch_service_testgetbatchprogress",
-      "community": 9,
+      "community": 8,
       "norm_label": "testgetbatchprogress"
     },
     {
@@ -7272,7 +7290,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L78",
       "id": "tests_test_batch_service_testgetbatchprogress_test_progress_with_no_readings",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_progress_with_no_readings()"
     },
     {
@@ -7281,7 +7299,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L90",
       "id": "tests_test_batch_service_testgetbatchprogress_test_progress_uses_expected_count_from_settings_sheet",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_progress_uses_expected_count_from_settings_sheet()"
     },
     {
@@ -7290,7 +7308,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L103",
       "id": "tests_test_batch_service_testgetbatchprogress_test_progress_with_some_readings",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_progress_with_some_readings()"
     },
     {
@@ -7299,7 +7317,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L119",
       "id": "tests_test_batch_service_testgetbatchprogress_test_progress_with_all_readings",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_progress_with_all_readings()"
     },
     {
@@ -7308,7 +7326,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L132",
       "id": "tests_test_batch_service_testgetbatchprogress_test_progress_batch_not_found",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_progress_batch_not_found()"
     },
     {
@@ -7317,7 +7335,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L137",
       "id": "tests_test_batch_service_testgetbatchprogress_test_duplicate_meter_counted_once",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_duplicate_meter_counted_once()"
     },
     {
@@ -7326,7 +7344,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L153",
       "id": "tests_test_batch_service_testupdatebatchafterreading",
-      "community": 9,
+      "community": 8,
       "norm_label": "testupdatebatchafterreading"
     },
     {
@@ -7335,7 +7353,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L154",
       "id": "tests_test_batch_service_testupdatebatchafterreading_test_updates_confirmed_count",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_updates_confirmed_count()"
     },
     {
@@ -7344,7 +7362,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L168",
       "id": "tests_test_batch_service_testupdatebatchafterreading_test_marks_complete_when_all_confirmed",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_marks_complete_when_all_confirmed()"
     },
     {
@@ -7353,7 +7371,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L181",
       "id": "tests_test_batch_service_testupdatebatchafterreading_test_batch_not_found_returns_fallback",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_batch_not_found_returns_fallback()"
     },
     {
@@ -7362,7 +7380,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L189",
       "id": "tests_test_batch_service_testbuildprogressmessage",
-      "community": 9,
+      "community": 8,
       "norm_label": "testbuildprogressmessage"
     },
     {
@@ -7371,7 +7389,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L190",
       "id": "tests_test_batch_service_testbuildprogressmessage_test_missing_meters_message",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_missing_meters_message()"
     },
     {
@@ -7380,7 +7398,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L205",
       "id": "tests_test_batch_service_testbuildprogressmessage_test_complete_message",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_complete_message()"
     },
     {
@@ -7389,7 +7407,7 @@
       "source_file": "tests/test_batch_service.py",
       "source_location": "L218",
       "id": "tests_test_batch_service_testbuildprogressmessage_test_batch_not_found",
-      "community": 9,
+      "community": 8,
       "norm_label": ".test_batch_not_found()"
     },
     {
@@ -7398,7 +7416,7 @@
       "source_file": "tests/test_settings_service.py",
       "source_location": "L1",
       "id": "tests_test_settings_service_py",
-      "community": 32,
+      "community": 31,
       "norm_label": "test_settings_service.py"
     },
     {
@@ -7407,7 +7425,7 @@
       "source_file": "tests/test_settings_service.py",
       "source_location": "L7",
       "id": "tests_test_settings_service_test_current_settings_falls_back_to_env_defaults",
-      "community": 32,
+      "community": 31,
       "norm_label": "test_current_settings_falls_back_to_env_defaults()"
     },
     {
@@ -7416,7 +7434,7 @@
       "source_file": "tests/test_settings_service.py",
       "source_location": "L17",
       "id": "tests_test_settings_service_test_validate_default_rate_requires_positive_number",
-      "community": 32,
+      "community": 31,
       "norm_label": "test_validate_default_rate_requires_positive_number()"
     },
     {
@@ -7425,7 +7443,7 @@
       "source_file": "tests/test_settings_service.py",
       "source_location": "L25",
       "id": "tests_test_settings_service_test_apply_setting_change_updates_sheet_and_logs",
-      "community": 32,
+      "community": 31,
       "norm_label": "test_apply_setting_change_updates_sheet_and_logs()"
     },
     {
@@ -7452,7 +7470,7 @@
       "source_file": "tests/test_sheets_client.py",
       "source_location": "L1",
       "id": "tests_test_sheets_client_py",
-      "community": 14,
+      "community": 13,
       "norm_label": "test_sheets_client.py"
     },
     {
@@ -7461,7 +7479,7 @@
       "source_file": "tests/test_sheets_client.py",
       "source_location": "L6",
       "id": "tests_test_sheets_client_test_get_worksheet_caches_by_tab_name",
-      "community": 14,
+      "community": 13,
       "norm_label": "test_get_worksheet_caches_by_tab_name()"
     },
     {
@@ -7470,7 +7488,7 @@
       "source_file": "tests/test_sheets_client.py",
       "source_location": "L21",
       "id": "tests_test_sheets_client_test_get_worksheet_caches_each_tab_separately",
-      "community": 14,
+      "community": 13,
       "norm_label": "test_get_worksheet_caches_each_tab_separately()"
     },
     {
@@ -7479,7 +7497,7 @@
       "source_file": "tests/test_sheets_client.py",
       "source_location": "L35",
       "id": "tests_test_sheets_client_test_upsert_row_appends_when_key_is_missing",
-      "community": 14,
+      "community": 13,
       "norm_label": "test_upsert_row_appends_when_key_is_missing()"
     },
     {
@@ -7488,7 +7506,7 @@
       "source_file": "tests/test_sheets_client.py",
       "source_location": "L53",
       "id": "tests_test_sheets_client_test_upsert_row_updates_existing_key_row",
-      "community": 14,
+      "community": 13,
       "norm_label": "test_upsert_row_updates_existing_key_row()"
     },
     {
@@ -7497,7 +7515,7 @@
       "source_file": "tests/test_evaluate_ocr.py",
       "source_location": "L1",
       "id": "tests_test_evaluate_ocr_py",
-      "community": 37,
+      "community": 36,
       "norm_label": "test_evaluate_ocr.py"
     },
     {
@@ -7506,7 +7524,7 @@
       "source_file": "tests/test_evaluate_ocr.py",
       "source_location": "L8",
       "id": "tests_test_evaluate_ocr_test_parse_engines_accepts_google_and_comparison_list",
-      "community": 37,
+      "community": 36,
       "norm_label": "test_parse_engines_accepts_google_and_comparison_list()"
     },
     {
@@ -7515,7 +7533,7 @@
       "source_file": "tests/test_evaluate_ocr.py",
       "source_location": "L18",
       "id": "tests_test_evaluate_ocr_test_evaluate_images_runs_google_through_shared_parser",
-      "community": 37,
+      "community": 36,
       "norm_label": "test_evaluate_images_runs_google_through_shared_parser()"
     },
     {
@@ -7524,7 +7542,7 @@
       "source_file": "tests/test_report_import_service.py",
       "source_location": "L1",
       "id": "tests_test_report_import_service_py",
-      "community": 16,
+      "community": 15,
       "norm_label": "test_report_import_service.py"
     },
     {
@@ -7533,7 +7551,7 @@
       "source_file": "tests/test_report_import_service.py",
       "source_location": "L8",
       "id": "tests_test_report_import_service_pending_import",
-      "community": 16,
+      "community": 15,
       "norm_label": "_pending_import()"
     },
     {
@@ -7542,7 +7560,7 @@
       "source_file": "tests/test_report_import_service.py",
       "source_location": "L31",
       "id": "tests_test_report_import_service_existing_row",
-      "community": 16,
+      "community": 15,
       "norm_label": "_existing_row()"
     },
     {
@@ -7551,7 +7569,7 @@
       "source_file": "tests/test_report_import_service.py",
       "source_location": "L42",
       "id": "tests_test_report_import_service_test_confirm_report_import_partial_retry_appends_missing_rows",
-      "community": 16,
+      "community": 15,
       "norm_label": "test_confirm_report_import_partial_retry_appends_missing_rows()"
     },
     {
@@ -7560,7 +7578,7 @@
       "source_file": "tests/test_report_import_service.py",
       "source_location": "L65",
       "id": "tests_test_report_import_service_test_confirm_report_import_conflict_does_not_append",
-      "community": 16,
+      "community": 15,
       "norm_label": "test_confirm_report_import_conflict_does_not_append()"
     },
     {
@@ -7569,7 +7587,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L1",
       "id": "tests_test_line_messages_py",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_line_messages.py"
     },
     {
@@ -7578,7 +7596,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L35",
       "id": "tests_test_line_messages_as_dict",
-      "community": 8,
+      "community": 0,
       "norm_label": "_as_dict()"
     },
     {
@@ -7587,7 +7605,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L39",
       "id": "tests_test_line_messages_clear_help_image_env",
-      "community": 8,
+      "community": 0,
       "norm_label": "_clear_help_image_env()"
     },
     {
@@ -7596,7 +7614,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L47",
       "id": "tests_test_line_messages_clear_line_card_image_env",
-      "community": 8,
+      "community": 0,
       "norm_label": "_clear_line_card_image_env()"
     },
     {
@@ -7605,7 +7623,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L52",
       "id": "tests_test_line_messages_test_start_collection_flex_keeps_body_contents",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_start_collection_flex_keeps_body_contents()"
     },
     {
@@ -7614,7 +7632,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L63",
       "id": "tests_test_line_messages_test_start_collection_card_uses_shell_and_https_hero",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_start_collection_card_uses_shell_and_https_hero()"
     },
     {
@@ -7623,7 +7641,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L85",
       "id": "tests_test_line_messages_test_start_collection_card_uses_base_https_hero_asset",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_start_collection_card_uses_base_https_hero_asset()"
     },
     {
@@ -7632,7 +7650,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L97",
       "id": "tests_test_line_messages_test_start_collection_card_hides_empty_next_meter_and_visible_cancel",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_start_collection_card_hides_empty_next_meter_and_visible_cancel()"
     },
     {
@@ -7641,7 +7659,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L107",
       "id": "tests_test_line_messages_test_start_collection_card_omits_non_https_hero",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_start_collection_card_omits_non_https_hero()"
     },
     {
@@ -7650,7 +7668,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L118",
       "id": "tests_test_line_messages_test_confirmation_flex_keeps_footer_actions",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_confirmation_flex_keeps_footer_actions()"
     },
     {
@@ -7668,7 +7686,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L153",
       "id": "tests_test_line_messages_test_duplicate_warning_card_does_not_add_kwh_to_placeholder_old_value",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_duplicate_warning_card_does_not_add_kwh_to_placeholder_old_value()"
     },
     {
@@ -7677,7 +7695,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L164",
       "id": "tests_test_line_messages_test_batch_complete_card_has_safe_followup_actions",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_batch_complete_card_has_safe_followup_actions()"
     },
     {
@@ -7686,7 +7704,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L181",
       "id": "tests_test_line_messages_test_meter_request_message_has_quick_replies",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_meter_request_message_has_quick_replies()"
     },
     {
@@ -7695,7 +7713,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L190",
       "id": "tests_test_line_messages_test_meter_request_message_uses_configured_meter_ids_and_no_stale_m8",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_meter_request_message_uses_configured_meter_ids_and_no_stale_m8()"
     },
     {
@@ -7704,7 +7722,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L210",
       "id": "tests_test_line_messages_test_meter_request_message_caps_configured_meter_quick_replies",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_meter_request_message_caps_configured_meter_quick_replies()"
     },
     {
@@ -7713,7 +7731,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L226",
       "id": "tests_test_line_messages_test_meter_request_uses_select_meter_postbacks_instead_of_m1_text_jump",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_meter_request_uses_select_meter_postbacks_instead_of_m1_text_jump()"
     },
     {
@@ -7722,7 +7740,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L237",
       "id": "tests_test_line_messages_test_status_card_renders_progress_actions",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_status_card_renders_progress_actions()"
     },
     {
@@ -7731,7 +7749,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L259",
       "id": "tests_test_line_messages_test_status_card_uses_configured_total_count_in_meter_grid",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_status_card_uses_configured_total_count_in_meter_grid()"
     },
     {
@@ -7740,7 +7758,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L277",
       "id": "tests_test_line_messages_test_status_card_complete_state_omits_continue_action",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_status_card_complete_state_omits_continue_action()"
     },
     {
@@ -7749,7 +7767,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L298",
       "id": "tests_test_line_messages_test_help_menu_renders_flex_dashboard_with_core_actions",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_help_menu_renders_flex_dashboard_with_core_actions()"
     },
     {
@@ -7758,7 +7776,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L332",
       "id": "tests_test_line_messages_test_help_menu_uses_only_https_hero",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_help_menu_uses_only_https_hero()"
     },
     {
@@ -7767,7 +7785,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L347",
       "id": "tests_test_line_messages_test_help_flow_without_image_url_returns_text_fallback",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_help_flow_without_image_url_returns_text_fallback()"
     },
     {
@@ -7776,7 +7794,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L355",
       "id": "tests_test_line_messages_test_help_flow_with_per_topic_https_image_urls_returns_image_and_text",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_help_flow_with_per_topic_https_image_urls_returns_image_and_text()"
     },
     {
@@ -7785,7 +7803,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L372",
       "id": "tests_test_line_messages_test_help_flow_with_base_https_image_urls_uses_ai_board_assets",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_help_flow_with_base_https_image_urls_uses_ai_board_assets()"
     },
     {
@@ -7794,7 +7812,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L390",
       "id": "tests_test_line_messages_test_help_flow_requires_explicit_https_preview_url",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_help_flow_requires_explicit_https_preview_url()"
     },
     {
@@ -7803,7 +7821,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L399",
       "id": "tests_test_line_messages_test_help_flow_rejects_non_https_preview_url",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_help_flow_rejects_non_https_preview_url()"
     },
     {
@@ -7812,7 +7830,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L409",
       "id": "tests_test_line_messages_test_help_flow_image_assets_use_ai_board_filenames",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_help_flow_image_assets_use_ai_board_filenames()"
     },
     {
@@ -7821,7 +7839,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L426",
       "id": "tests_test_line_messages_test_normalize_line_message_payload_wraps_single_message",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_normalize_line_message_payload_wraps_single_message()"
     },
     {
@@ -7830,7 +7848,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L434",
       "id": "tests_test_line_messages_test_normalize_line_message_payload_accepts_mixed_list",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_normalize_line_message_payload_accepts_mixed_list()"
     },
     {
@@ -7839,7 +7857,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L442",
       "id": "tests_test_line_messages_test_history_menu_has_usable_actions",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_history_menu_has_usable_actions()"
     },
     {
@@ -7848,7 +7866,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L461",
       "id": "tests_test_line_messages_test_history_meter_select_message_is_card_with_meter_actions",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_history_meter_select_message_is_card_with_meter_actions()"
     },
     {
@@ -7857,7 +7875,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L476",
       "id": "tests_test_line_messages_test_history_meter_message_renders_rich_card_with_period_actions",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_history_meter_message_renders_rich_card_with_period_actions()"
     },
     {
@@ -7866,7 +7884,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L538",
       "id": "tests_test_line_messages_test_history_meter_single_reading_uses_latest_point_chart",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_history_meter_single_reading_uses_latest_point_chart()"
     },
     {
@@ -7875,7 +7893,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L562",
       "id": "tests_test_line_messages_test_history_meter_empty_state_stays_actionable",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_history_meter_empty_state_stays_actionable()"
     },
     {
@@ -7884,7 +7902,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L574",
       "id": "tests_test_line_messages_test_history_batch_list_shows_recent_weeks",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_history_batch_list_shows_recent_weeks()"
     },
     {
@@ -7893,7 +7911,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L613",
       "id": "tests_test_line_messages_test_history_batch_list_empty_uses_text_fallback",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_history_batch_list_empty_uses_text_fallback()"
     },
     {
@@ -7902,7 +7920,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L622",
       "id": "tests_test_line_messages_test_history_summary_message_is_flex_card",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_history_summary_message_is_flex_card()"
     },
     {
@@ -7911,7 +7929,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L645",
       "id": "tests_test_line_messages_test_history_detail_message_uses_rich_detail_card",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_history_detail_message_uses_rich_detail_card()"
     },
     {
@@ -7920,7 +7938,7 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L690",
       "id": "tests_test_line_messages_test_settings_operator_menu_does_not_show_edit_actions",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_settings_operator_menu_does_not_show_edit_actions()"
     },
     {
@@ -7929,52 +7947,52 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L725",
       "id": "tests_test_line_messages_test_settings_admin_menu_shows_edit_actions",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_settings_admin_menu_shows_edit_actions()"
     },
     {
       "label": "test_settings_view_message_renders_full_settings_card()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L755",
+      "source_location": "L758",
       "id": "tests_test_line_messages_test_settings_view_message_renders_full_settings_card",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_settings_view_message_renders_full_settings_card()"
     },
     {
       "label": "test_report_summary_card_shows_week_totals_and_navigation()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L787",
+      "source_location": "L790",
       "id": "tests_test_line_messages_test_report_summary_card_shows_week_totals_and_navigation",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_report_summary_card_shows_week_totals_and_navigation()"
     },
     {
       "label": "test_report_summary_missing_data_returns_card()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L817",
+      "source_location": "L820",
       "id": "tests_test_line_messages_test_report_summary_missing_data_returns_card",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_report_summary_missing_data_returns_card()"
     },
     {
       "label": "test_report_import_preview_has_confirm_and_cancel_when_valid()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L830",
+      "source_location": "L833",
       "id": "tests_test_line_messages_test_report_import_preview_has_confirm_and_cancel_when_valid",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_report_import_preview_has_confirm_and_cancel_when_valid()"
     },
     {
       "label": "test_report_import_preview_hides_confirm_when_invalid()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L854",
+      "source_location": "L857",
       "id": "tests_test_line_messages_test_report_import_preview_hides_confirm_when_invalid",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_report_import_preview_hides_confirm_when_invalid()"
     },
     {
@@ -7983,7 +8001,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L1",
       "id": "tests_test_richmenu_composer_py",
-      "community": 13,
+      "community": 12,
       "norm_label": "test_richmenu_composer.py"
     },
     {
@@ -7992,7 +8010,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L23",
       "id": "tests_test_richmenu_composer_md5_bytes",
-      "community": 13,
+      "community": 12,
       "norm_label": "_md5_bytes()"
     },
     {
@@ -8001,7 +8019,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L27",
       "id": "tests_test_richmenu_composer_compose",
-      "community": 13,
+      "community": 12,
       "norm_label": "_compose()"
     },
     {
@@ -8010,7 +8028,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L35",
       "id": "tests_test_richmenu_composer_test_richmenu_composition_is_deterministic_and_schema_complete",
-      "community": 13,
+      "community": 12,
       "norm_label": "test_richmenu_composition_is_deterministic_and_schema_complete()"
     },
     {
@@ -8019,7 +8037,7 @@
       "source_file": "tests/test_sheets_repositories.py",
       "source_location": "L1",
       "id": "tests_test_sheets_repositories_py",
-      "community": 24,
+      "community": 23,
       "norm_label": "test_sheets_repositories.py"
     },
     {
@@ -8028,7 +8046,7 @@
       "source_file": "tests/test_sheets_repositories.py",
       "source_location": "L9",
       "id": "tests_test_sheets_repositories_use_sheets_backend",
-      "community": 24,
+      "community": 23,
       "norm_label": "_use_sheets_backend()"
     },
     {
@@ -8037,7 +8055,7 @@
       "source_file": "tests/test_sheets_repositories.py",
       "source_location": "L13",
       "id": "tests_test_sheets_repositories_test_append_pending_confirmation_uses_pending_tab",
-      "community": 24,
+      "community": 23,
       "norm_label": "test_append_pending_confirmation_uses_pending_tab()"
     },
     {
@@ -8046,7 +8064,7 @@
       "source_file": "tests/test_sheets_repositories.py",
       "source_location": "L27",
       "id": "tests_test_sheets_repositories_test_get_latest_pending_confirmation_filters_status_and_sorts_by_created_at",
-      "community": 24,
+      "community": 23,
       "norm_label": "test_get_latest_pending_confirmation_filters_status_and_sorts_by_created_at()"
     },
     {
@@ -8055,7 +8073,7 @@
       "source_file": "tests/test_sheets_repositories.py",
       "source_location": "L41",
       "id": "tests_test_sheets_repositories_test_update_pending_confirmation_status_updates_status_column",
-      "community": 24,
+      "community": 23,
       "norm_label": "test_update_pending_confirmation_status_updates_status_column()"
     },
     {
@@ -8064,7 +8082,7 @@
       "source_file": "tests/test_sheets_repositories.py",
       "source_location": "L70",
       "id": "tests_test_sheets_repositories_test_update_batch_report_image_url_updates_url_and_timestamp",
-      "community": 24,
+      "community": 23,
       "norm_label": "test_update_batch_report_image_url_updates_url_and_timestamp()"
     },
     {
@@ -8073,7 +8091,7 @@
       "source_file": "tests/test_sheets_repositories.py",
       "source_location": "L102",
       "id": "tests_test_sheets_repositories_test_update_setting_updates_existing_key",
-      "community": 24,
+      "community": 23,
       "norm_label": "test_update_setting_updates_existing_key()"
     },
     {
@@ -8082,7 +8100,7 @@
       "source_file": "tests/test_sheets_repositories.py",
       "source_location": "L117",
       "id": "tests_test_sheets_repositories_test_update_setting_appends_missing_key",
-      "community": 24,
+      "community": 23,
       "norm_label": "test_update_setting_appends_missing_key()"
     },
     {
@@ -8091,7 +8109,7 @@
       "source_file": "tests/test_main.py",
       "source_location": "L1",
       "id": "tests_test_main_py",
-      "community": 18,
+      "community": 17,
       "norm_label": "test_main.py"
     },
     {
@@ -8100,7 +8118,7 @@
       "source_file": "tests/test_main.py",
       "source_location": "L13",
       "id": "tests_test_main_test_app_version_is_current_release",
-      "community": 18,
+      "community": 17,
       "norm_label": "test_app_version_is_current_release()"
     },
     {
@@ -8109,7 +8127,7 @@
       "source_file": "tests/test_main.py",
       "source_location": "L17",
       "id": "tests_test_main_test_package_version_matches_app_version",
-      "community": 18,
+      "community": 17,
       "norm_label": "test_package_version_matches_app_version()"
     },
     {
@@ -8118,7 +8136,7 @@
       "source_file": "tests/test_main.py",
       "source_location": "L24",
       "id": "tests_test_main_test_log_level_defaults_to_info",
-      "community": 18,
+      "community": 17,
       "norm_label": "test_log_level_defaults_to_info()"
     },
     {
@@ -8127,7 +8145,7 @@
       "source_file": "tests/test_main.py",
       "source_location": "L28",
       "id": "tests_test_main_test_health_includes_release_version",
-      "community": 18,
+      "community": 17,
       "norm_label": "test_health_includes_release_version()"
     },
     {
@@ -8136,7 +8154,7 @@
       "source_file": "tests/test_main.py",
       "source_location": "L36",
       "id": "tests_test_main_test_storage_sync_health_endpoint_reports_counts",
-      "community": 18,
+      "community": 17,
       "norm_label": "test_storage_sync_health_endpoint_reports_counts()"
     },
     {
@@ -8145,7 +8163,7 @@
       "source_file": "tests/test_main.py",
       "source_location": "L47",
       "id": "tests_test_main_test_lifespan_does_not_run_sheets_sync_when_disabled",
-      "community": 18,
+      "community": 17,
       "norm_label": "test_lifespan_does_not_run_sheets_sync_when_disabled()"
     },
     {
@@ -8154,7 +8172,7 @@
       "source_file": "tests/test_main.py",
       "source_location": "L67",
       "id": "tests_test_main_test_lifespan_runs_sheets_sync_when_enabled",
-      "community": 18,
+      "community": 17,
       "norm_label": "test_lifespan_runs_sheets_sync_when_enabled()"
     },
     {
@@ -8163,7 +8181,7 @@
       "source_file": "tests/test_line_client.py",
       "source_location": "L1",
       "id": "tests_test_line_client_py",
-      "community": 33,
+      "community": 32,
       "norm_label": "test_line_client.py"
     },
     {
@@ -8172,7 +8190,7 @@
       "source_file": "tests/test_line_client.py",
       "source_location": "L4",
       "id": "tests_test_line_client_test_is_https_url_accepts_https_url",
-      "community": 33,
+      "community": 32,
       "norm_label": "test_is_https_url_accepts_https_url()"
     },
     {
@@ -8181,7 +8199,7 @@
       "source_file": "tests/test_line_client.py",
       "source_location": "L8",
       "id": "tests_test_line_client_test_is_https_url_rejects_http_url",
-      "community": 33,
+      "community": 32,
       "norm_label": "test_is_https_url_rejects_http_url()"
     },
     {
@@ -8190,7 +8208,7 @@
       "source_file": "tests/test_line_client.py",
       "source_location": "L12",
       "id": "tests_test_line_client_test_is_https_url_rejects_local_path",
-      "community": 33,
+      "community": 32,
       "norm_label": "test_is_https_url_rejects_local_path()"
     },
     {
@@ -8199,7 +8217,7 @@
       "source_file": "tests/test_history_service.py",
       "source_location": "L1",
       "id": "tests_test_history_service_py",
-      "community": 22,
+      "community": 21,
       "norm_label": "test_history_service.py"
     },
     {
@@ -8208,7 +8226,7 @@
       "source_file": "tests/test_history_service.py",
       "source_location": "L8",
       "id": "tests_test_history_service_test_batch_summary_uses_saved_reading_totals",
-      "community": 22,
+      "community": 21,
       "norm_label": "test_batch_summary_uses_saved_reading_totals()"
     },
     {
@@ -8217,7 +8235,7 @@
       "source_file": "tests/test_history_service.py",
       "source_location": "L36",
       "id": "tests_test_history_service_test_previous_batch_summary_skips_current_generated_batch",
-      "community": 22,
+      "community": 21,
       "norm_label": "test_previous_batch_summary_skips_current_generated_batch()"
     },
     {
@@ -8226,7 +8244,7 @@
       "source_file": "tests/test_history_service.py",
       "source_location": "L59",
       "id": "tests_test_history_service_test_latest_report_prefers_batch_with_report_url",
-      "community": 22,
+      "community": 21,
       "norm_label": "test_latest_report_prefers_batch_with_report_url()"
     },
     {
@@ -8235,7 +8253,7 @@
       "source_file": "tests/test_history_service.py",
       "source_location": "L69",
       "id": "tests_test_history_service_test_latest_report_skips_empty_current_batch_for_latest_complete",
-      "community": 22,
+      "community": 21,
       "norm_label": "test_latest_report_skips_empty_current_batch_for_latest_complete()"
     },
     {
@@ -8244,7 +8262,7 @@
       "source_file": "tests/test_history_service.py",
       "source_location": "L98",
       "id": "tests_test_history_service_test_latest_report_returns_none_when_only_current_batch_is_empty",
-      "community": 22,
+      "community": 21,
       "norm_label": "test_latest_report_returns_none_when_only_current_batch_is_empty()"
     },
     {
@@ -8253,7 +8271,7 @@
       "source_file": "tests/test_history_service.py",
       "source_location": "L114",
       "id": "tests_test_history_service_test_batch_summary_falls_back_to_readings_when_batch_row_is_missing",
-      "community": 22,
+      "community": 21,
       "norm_label": "test_batch_summary_falls_back_to_readings_when_batch_row_is_missing()"
     },
     {
@@ -8262,7 +8280,7 @@
       "source_file": "tests/test_history_service.py",
       "source_location": "L130",
       "id": "tests_test_history_service_test_recent_batch_summaries_include_reading_only_batches_from_last_month",
-      "community": 22,
+      "community": 21,
       "norm_label": "test_recent_batch_summaries_include_reading_only_batches_from_last_month()"
     },
     {
@@ -8271,7 +8289,7 @@
       "source_file": "tests/test_history_service.py",
       "source_location": "L174",
       "id": "tests_test_history_service_test_meter_history_filters_by_selected_period",
-      "community": 22,
+      "community": 21,
       "norm_label": "test_meter_history_filters_by_selected_period()"
     },
     {
@@ -8280,7 +8298,7 @@
       "source_file": "tests/test_history_service.py",
       "source_location": "L204",
       "id": "tests_test_history_service_test_meter_history_caps_dense_history_and_keeps_order",
-      "community": 22,
+      "community": 21,
       "norm_label": "test_meter_history_caps_dense_history_and_keeps_order()"
     },
     {
@@ -8901,7 +8919,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L1",
       "id": "scripts_upload_richmenu_py",
-      "community": 13,
+      "community": 12,
       "norm_label": "upload_richmenu.py"
     },
     {
@@ -8910,7 +8928,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L24",
       "id": "scripts_upload_richmenu_main",
-      "community": 13,
+      "community": 12,
       "norm_label": "main()"
     },
     {
@@ -8919,7 +8937,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L67",
       "id": "scripts_upload_richmenu_parse_args",
-      "community": 13,
+      "community": 12,
       "norm_label": "_parse_args()"
     },
     {
@@ -8928,7 +8946,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L79",
       "id": "scripts_upload_richmenu_resolve_assets",
-      "community": 13,
+      "community": 12,
       "norm_label": "_resolve_assets()"
     },
     {
@@ -8937,7 +8955,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L91",
       "id": "scripts_upload_richmenu_load_json",
-      "community": 13,
+      "community": 12,
       "norm_label": "_load_json()"
     },
     {
@@ -8946,7 +8964,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L99",
       "id": "scripts_upload_richmenu_validate_local_assets",
-      "community": 13,
+      "community": 12,
       "norm_label": "_validate_local_assets()"
     },
     {
@@ -8955,7 +8973,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L140",
       "id": "scripts_upload_richmenu_headers",
-      "community": 13,
+      "community": 12,
       "norm_label": "_headers()"
     },
     {
@@ -8964,7 +8982,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L144",
       "id": "scripts_upload_richmenu_validate_with_line",
-      "community": 13,
+      "community": 12,
       "norm_label": "_validate_with_line()"
     },
     {
@@ -8973,7 +8991,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L154",
       "id": "scripts_upload_richmenu_create_richmenu",
-      "community": 13,
+      "community": 12,
       "norm_label": "_create_richmenu()"
     },
     {
@@ -8982,7 +9000,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L168",
       "id": "scripts_upload_richmenu_upload_richmenu_image",
-      "community": 13,
+      "community": 12,
       "norm_label": "_upload_richmenu_image()"
     },
     {
@@ -8991,7 +9009,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L182",
       "id": "scripts_upload_richmenu_set_default_richmenu",
-      "community": 13,
+      "community": 12,
       "norm_label": "_set_default_richmenu()"
     },
     {
@@ -9000,7 +9018,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L190",
       "id": "scripts_upload_richmenu_raise_for_line",
-      "community": 13,
+      "community": 12,
       "norm_label": "_raise_for_line()"
     },
     {
@@ -9044,7 +9062,7 @@
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
       "source_location": "L296",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_help_menu_has_topic_quick_replies()",
       "id": "tests_test_line_messages_test_help_menu_has_topic_quick_replies"
     },
@@ -9053,7 +9071,7 @@
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
       "source_location": "L480",
-      "community": 8,
+      "community": 0,
       "norm_label": "test_history_detail_message_is_compact_flex_card()",
       "id": "tests_test_line_messages_test_history_detail_message_is_compact_flex_card"
     },
@@ -9278,7 +9296,7 @@
       "file_type": "code",
       "source_file": "config.py",
       "source_location": "L1",
-      "community": 34,
+      "community": 30,
       "norm_label": "config.py",
       "id": "config_py"
     },
@@ -9287,7 +9305,7 @@
       "file_type": "code",
       "source_file": "logging_config.py",
       "source_location": "L1",
-      "community": 35,
+      "community": 34,
       "norm_label": "logging_config.py",
       "id": "logging_config_py"
     },
@@ -9296,7 +9314,7 @@
       "file_type": "code",
       "source_file": "version.py",
       "source_location": "L1",
-      "community": 49,
+      "community": 48,
       "norm_label": "version.py",
       "id": "version_py"
     },
@@ -9305,7 +9323,7 @@
       "file_type": "code",
       "source_file": "__init__.py",
       "source_location": "L1",
-      "community": 50,
+      "community": 49,
       "norm_label": "__init__.py",
       "id": "init_py"
     },
@@ -9314,7 +9332,7 @@
       "file_type": "code",
       "source_file": "main.py",
       "source_location": "L1",
-      "community": 18,
+      "community": 17,
       "norm_label": "main.py",
       "id": "main_py"
     },
@@ -9323,7 +9341,7 @@
       "file_type": "code",
       "source_file": "sheets/client.py",
       "source_location": "L1",
-      "community": 14,
+      "community": 13,
       "norm_label": "client.py",
       "id": "sheets_client_py"
     },
@@ -9332,7 +9350,7 @@
       "file_type": "code",
       "source_file": "sheets/__init__.py",
       "source_location": "L1",
-      "community": 51,
+      "community": 50,
       "norm_label": "__init__.py",
       "id": "sheets_init_py"
     },
@@ -9341,7 +9359,7 @@
       "file_type": "code",
       "source_file": "sheets/setup.py",
       "source_location": "L1",
-      "community": 31,
+      "community": 33,
       "norm_label": "setup.py",
       "id": "sheets_setup_py"
     },
@@ -9350,7 +9368,7 @@
       "file_type": "code",
       "source_file": "sheets/repositories.py",
       "source_location": "L1",
-      "community": 11,
+      "community": 10,
       "norm_label": "repositories.py",
       "id": "sheets_repositories_py"
     },
@@ -9359,7 +9377,7 @@
       "file_type": "code",
       "source_file": "ocr/confidence.py",
       "source_location": "L1",
-      "community": 15,
+      "community": 14,
       "norm_label": "confidence.py",
       "id": "ocr_confidence_py"
     },
@@ -9395,7 +9413,7 @@
       "file_type": "code",
       "source_file": "ocr/__init__.py",
       "source_location": "L1",
-      "community": 52,
+      "community": 51,
       "norm_label": "__init__.py",
       "id": "ocr_init_py"
     },
@@ -9431,7 +9449,7 @@
       "file_type": "code",
       "source_file": "models/__init__.py",
       "source_location": "L1",
-      "community": 53,
+      "community": 52,
       "norm_label": "__init__.py",
       "id": "models_init_py"
     },
@@ -9440,7 +9458,7 @@
       "file_type": "code",
       "source_file": "storage/__init__.py",
       "source_location": "L1",
-      "community": 36,
+      "community": 35,
       "norm_label": "__init__.py",
       "id": "storage_init_py"
     },
@@ -9476,7 +9494,7 @@
       "file_type": "code",
       "source_file": "line/__init__.py",
       "source_location": "L1",
-      "community": 54,
+      "community": 53,
       "norm_label": "__init__.py",
       "id": "line_init_py"
     },
@@ -9503,7 +9521,7 @@
       "file_type": "code",
       "source_file": "line/richmenu.py",
       "source_location": "L1",
-      "community": 13,
+      "community": 12,
       "norm_label": "richmenu.py",
       "id": "line_richmenu_py"
     },
@@ -9521,7 +9539,7 @@
       "file_type": "code",
       "source_file": "report/__init__.py",
       "source_location": "L1",
-      "community": 55,
+      "community": 54,
       "norm_label": "__init__.py",
       "id": "report_init_py"
     },
@@ -9530,7 +9548,7 @@
       "file_type": "code",
       "source_file": "report/generator.py",
       "source_location": "L1",
-      "community": 12,
+      "community": 11,
       "norm_label": "generator.py",
       "id": "report_generator_py"
     },
@@ -9539,7 +9557,7 @@
       "file_type": "code",
       "source_file": "services/report_import_service.py",
       "source_location": "L1",
-      "community": 16,
+      "community": 15,
       "norm_label": "report_import_service.py",
       "id": "services_report_import_service_py"
     },
@@ -9548,7 +9566,7 @@
       "file_type": "code",
       "source_file": "services/settings_service.py",
       "source_location": "L1",
-      "community": 21,
+      "community": 20,
       "norm_label": "settings_service.py",
       "id": "services_settings_service_py"
     },
@@ -9557,7 +9575,7 @@
       "file_type": "code",
       "source_file": "services/history_service.py",
       "source_location": "L1",
-      "community": 17,
+      "community": 16,
       "norm_label": "history_service.py",
       "id": "services_history_service_py"
     },
@@ -9566,7 +9584,7 @@
       "file_type": "code",
       "source_file": "services/__init__.py",
       "source_location": "L1",
-      "community": 56,
+      "community": 55,
       "norm_label": "__init__.py",
       "id": "services_init_py"
     },
@@ -9602,7 +9620,7 @@
       "file_type": "code",
       "source_file": "services/batch_service.py",
       "source_location": "L1",
-      "community": 9,
+      "community": 8,
       "norm_label": "batch_service.py",
       "id": "services_batch_service_py"
     },
@@ -9624,7 +9642,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 28,
       "norm_label": "weekly summary rich menu image",
       "id": "richmenu_weekly_summary_image"
     },
@@ -9637,7 +9655,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 28,
       "norm_label": "weekly summary rich menu tile",
       "id": "richmenu_weekly_summary_rich_menu_tile"
     },
@@ -9650,7 +9668,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 28,
       "norm_label": "bar chart icon",
       "id": "richmenu_bar_chart_icon"
     },
@@ -9663,7 +9681,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 28,
       "norm_label": "\u0e2a\u0e23\u0e1b\u0e2a\u0e31\u0e1b\u0e14\u0e32\u0e2b\u0e4c",
       "id": "richmenu_weekly_summary_label"
     },
@@ -9676,7 +9694,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 28,
       "norm_label": "weekly production and income summary",
       "id": "richmenu_weekly_production_income_summary"
     },
@@ -9689,7 +9707,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 28,
       "norm_label": "green status visual language",
       "id": "richmenu_green_status_visual_language"
     },
@@ -9702,7 +9720,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 30,
+      "community": 29,
       "norm_label": "rich menu settings image",
       "id": "richmenu-settings_image"
     },
@@ -9715,7 +9733,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 30,
+      "community": 29,
       "norm_label": "settings gear icon",
       "id": "richmenu-settings_settings_icon"
     },
@@ -9728,7 +9746,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 30,
+      "community": 29,
       "norm_label": "settings action",
       "id": "richmenu-settings_settings_action"
     },
@@ -9741,7 +9759,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 30,
+      "community": 29,
       "norm_label": "meter configuration",
       "id": "richmenu-settings_meter_configuration"
     },
@@ -9754,7 +9772,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 30,
+      "community": 29,
       "norm_label": "notification configuration",
       "id": "richmenu-settings_notification_configuration"
     },
@@ -9767,7 +9785,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 30,
+      "community": 29,
       "norm_label": "rich menu tile",
       "id": "richmenu-settings_rich_menu_tile"
     },
@@ -9780,7 +9798,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 26,
+      "community": 25,
       "norm_label": "richmenu history asset",
       "id": "richmenu_history_asset"
     },
@@ -9793,7 +9811,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 26,
+      "community": 25,
       "norm_label": "green folder history icon",
       "id": "richmenu_history_green_folder_icon"
     },
@@ -9806,7 +9824,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 26,
+      "community": 25,
       "norm_label": "clock arrow history symbol",
       "id": "richmenu_history_clock_arrow_symbol"
     },
@@ -9819,7 +9837,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 26,
+      "community": 25,
       "norm_label": "thai primary label \u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34",
       "id": "richmenu_history_primary_label"
     },
@@ -9832,7 +9850,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 26,
+      "community": 25,
       "norm_label": "thai secondary label \u0e14\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34\u0e01\u0e32\u0e23\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e04\u0e32\u0e22\u0e2d\u0e19\u0e2b\u0e25\u0e31\u0e07",
       "id": "richmenu_history_secondary_label"
     },
@@ -9845,7 +9863,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 26,
+      "community": 25,
       "norm_label": "view historical recorded values action",
       "id": "richmenu_history_view_records_action"
     },
@@ -9858,7 +9876,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 26,
+      "community": 25,
       "norm_label": "rounded pale green rich menu tile layout",
       "id": "richmenu_history_rounded_tile_layout"
     },
@@ -9871,7 +9889,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 27,
+      "community": 26,
       "norm_label": "rich menu latest report asset",
       "id": "richmenu_latest_report_asset"
     },
@@ -9884,7 +9902,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 27,
+      "community": 26,
       "norm_label": "document report icon",
       "id": "richmenu_latest_report_document_icon"
     },
@@ -9897,7 +9915,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 27,
+      "community": 26,
       "norm_label": "green and yellow donut chart graphic",
       "id": "richmenu_latest_report_chart_graphic"
     },
@@ -9910,7 +9928,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 27,
+      "community": 26,
       "norm_label": "\u0e23\u0e32\u0e22\u0e07\u0e32\u0e19\u0e25\u0e32\u0e2a\u0e14 title text",
       "id": "richmenu_latest_report_title_text"
     },
@@ -9923,7 +9941,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 27,
+      "community": 26,
       "norm_label": "\u0e14\u0e23\u0e32\u0e22\u0e07\u0e32\u0e19\u0e41\u0e25\u0e30\u0e14\u0e32\u0e27\u0e19\u0e4c\u0e42\u0e2b\u0e25\u0e14\u0e23\u0e32\u0e22\u0e07\u0e32\u0e19\u0e25\u0e32\u0e2a\u0e14 description text",
       "id": "richmenu_latest_report_description_text"
     },
@@ -9936,7 +9954,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 27,
+      "community": 26,
       "norm_label": "view and download latest report action",
       "id": "richmenu_latest_report_action"
     },
@@ -9949,7 +9967,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 27,
+      "community": 26,
       "norm_label": "rounded rich menu card layout",
       "id": "richmenu_latest_report_card_layout"
     },
@@ -9962,7 +9980,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "richmenu start collection image",
       "id": "richmenu_start_collection_image"
     },
@@ -9975,7 +9993,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "weekly meter recording prompt",
       "id": "richmenu_start_collection_weekly_meter_recording"
     },
@@ -9988,7 +10006,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "capture 8 meters in order instruction",
       "id": "richmenu_start_collection_capture_8_meters_instruction"
     },
@@ -10001,7 +10019,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "start recording button",
       "id": "richmenu_start_collection_start_record_button"
     },
@@ -10014,7 +10032,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "camera icon",
       "id": "richmenu_start_collection_camera_icon"
     },
@@ -10027,7 +10045,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "solar meter robot mascot",
       "id": "richmenu_start_collection_solar_meter_robot"
     },
@@ -10040,7 +10058,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "solar panel",
       "id": "richmenu_start_collection_solar_panel"
     },
@@ -10053,7 +10071,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "chat bubble indicator",
       "id": "richmenu_start_collection_chat_bubble_indicator"
     },
@@ -10066,7 +10084,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "green energy theme",
       "id": "richmenu_start_collection_green_energy_theme"
     },
@@ -10079,7 +10097,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 22,
       "norm_label": "line rich menu call to action",
       "id": "richmenu_start_collection_line_rich_menu_cta"
     },
@@ -10092,7 +10110,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 24,
       "norm_label": "rich menu help image",
       "id": "richmenu_help_image"
     },
@@ -10105,7 +10123,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 24,
       "norm_label": "help action",
       "id": "richmenu_help_help_action"
     },
@@ -10118,7 +10136,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 24,
       "norm_label": "usage problem questions",
       "id": "richmenu_help_usage_questions"
     },
@@ -10131,7 +10149,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 24,
       "norm_label": "admin contact",
       "id": "richmenu_help_admin_contact"
     },
@@ -10144,7 +10162,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 24,
       "norm_label": "support mascot",
       "id": "richmenu_help_support_mascot"
     },
@@ -10157,7 +10175,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 24,
       "norm_label": "chat contact icon",
       "id": "richmenu_help_chat_contact_icon"
     },
@@ -10170,7 +10188,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 24,
       "norm_label": "solar energy context",
       "id": "richmenu_help_solar_energy_context"
     },
@@ -10183,7 +10201,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 24,
       "norm_label": "green renewable energy visual theme",
       "id": "richmenu_help_green_visual_theme"
     }
@@ -20652,6 +20670,26 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/line/messages.py",
+      "source_location": "L665",
+      "weight": 1.0,
+      "source": "app_line_messages_py",
+      "target": "line_messages_settings_admin_action_row",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L727",
+      "weight": 1.0,
+      "source": "app_line_messages_py",
+      "target": "line_messages_settings_admin_actions_table",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
       "source_location": "L619",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -21594,9 +21632,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L3839",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_line_messages_py",
-      "target": "line_messages_report_import_visual_panel",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_visual_panel"
     },
     {
       "relation": "contains",
@@ -21604,9 +21642,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L3941",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_line_messages_py",
-      "target": "line_messages_report_table_cell",
-      "confidence_score": 1.0
+      "target": "line_messages_report_table_cell"
     },
     {
       "relation": "contains",
@@ -21614,9 +21652,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L3953",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_line_messages_py",
-      "target": "line_messages_report_table_line",
-      "confidence_score": 1.0
+      "target": "line_messages_report_table_line"
     },
     {
       "relation": "contains",
@@ -21624,9 +21662,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L3969",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_line_messages_py",
-      "target": "line_messages_report_import_metric",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_metric"
     },
     {
       "relation": "contains",
@@ -21634,9 +21672,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4031",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_line_messages_py",
-      "target": "line_messages_report_import_metrics",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_metrics"
     },
     {
       "relation": "contains",
@@ -21644,9 +21682,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4067",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_line_messages_py",
-      "target": "line_messages_report_import_status_strip",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_status_strip"
     },
     {
       "relation": "contains",
@@ -21654,9 +21692,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_line_messages_py",
-      "target": "line_messages_report_import_footer_note",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_footer_note"
     },
     {
       "relation": "contains",
@@ -21664,9 +21702,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4133",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_line_messages_py",
-      "target": "line_messages_report_import_card",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_card"
     },
     {
       "relation": "contains",
@@ -21922,6 +21960,17 @@
       "confidence_score": 1.0,
       "source": "line_messages_settings_primary_action_row",
       "target": "line_messages_build_postback_data"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L683",
+      "weight": 1.0,
+      "source": "line_messages_settings_admin_action_row",
+      "target": "line_messages_build_postback_data",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -22543,9 +22592,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4247",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_report_import_card",
-      "target": "line_messages_quick_reply_from_actions",
-      "confidence_score": 1.0
+      "target": "line_messages_quick_reply_from_actions"
     },
     {
       "relation": "calls",
@@ -22784,9 +22833,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4261",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_report_import_prompt_message",
-      "target": "line_messages_postback_button",
-      "confidence_score": 1.0
+      "target": "line_messages_postback_button"
     },
     {
       "relation": "calls",
@@ -22795,9 +22844,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4317",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_report_import_preview_message",
-      "target": "line_messages_postback_button",
-      "confidence_score": 1.0
+      "target": "line_messages_postback_button"
     },
     {
       "relation": "calls",
@@ -23040,6 +23089,28 @@
       "confidence_score": 1.0,
       "source": "line_messages_build_settings_menu_message",
       "target": "line_messages_settings_primary_action_row"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L736",
+      "weight": 1.0,
+      "source": "line_messages_settings_admin_actions_table",
+      "target": "line_messages_settings_admin_action_row",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L3805",
+      "weight": 1.0,
+      "source": "line_messages_build_settings_menu_message",
+      "target": "line_messages_settings_admin_actions_table",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -25906,9 +25977,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L3903",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_report_import_visual_panel",
-      "target": "line_messages_report_table_cell",
-      "confidence_score": 1.0
+      "target": "line_messages_report_table_cell"
     },
     {
       "relation": "calls",
@@ -25917,9 +25988,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L3909",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_report_import_visual_panel",
-      "target": "line_messages_report_table_line",
-      "confidence_score": 1.0
+      "target": "line_messages_report_table_line"
     },
     {
       "relation": "calls",
@@ -25928,9 +25999,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4198",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_report_import_card",
-      "target": "line_messages_report_import_visual_panel",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_visual_panel"
     },
     {
       "relation": "calls",
@@ -25939,9 +26010,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L3961",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_report_table_line",
-      "target": "line_messages_report_table_cell",
-      "confidence_score": 1.0
+      "target": "line_messages_report_table_cell"
     },
     {
       "relation": "calls",
@@ -25950,9 +26021,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4042",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_report_import_metrics",
-      "target": "line_messages_report_import_metric",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_metric"
     },
     {
       "relation": "calls",
@@ -25961,9 +26032,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4051",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_report_import_metrics",
-      "target": "line_messages_format_number",
-      "confidence_score": 1.0
+      "target": "line_messages_format_number"
     },
     {
       "relation": "calls",
@@ -25972,9 +26043,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4199",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_report_import_card",
-      "target": "line_messages_report_import_metrics",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_metrics"
     },
     {
       "relation": "calls",
@@ -25983,9 +26054,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4204",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_report_import_card",
-      "target": "line_messages_report_import_status_strip",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_status_strip"
     },
     {
       "relation": "calls",
@@ -25994,9 +26065,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4205",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_report_import_card",
-      "target": "line_messages_report_import_footer_note",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_footer_note"
     },
     {
       "relation": "calls",
@@ -26005,9 +26076,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4252",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_report_import_prompt_message",
-      "target": "line_messages_report_import_card",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_card"
     },
     {
       "relation": "calls",
@@ -26016,9 +26087,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L4337",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_report_import_preview_message",
-      "target": "line_messages_report_import_card",
-      "confidence_score": 1.0
+      "target": "line_messages_report_import_card"
     },
     {
       "relation": "contains",

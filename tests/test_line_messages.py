@@ -743,6 +743,9 @@ def test_settings_admin_menu_shows_edit_actions():
     assert "Timezone" in rendered
     assert "เมนูสำหรับผู้ดูแลระบบเท่านั้น" in rendered
     assert "4.20 บาท/kWh" in rendered
+    assert "Sync Google Sheet" in str(payload["contents"]["body"])
+    assert "แทนที่ SQLite" in str(payload["contents"]["body"])
+    assert "OCR จากรูปรายงาน" in str(payload["contents"]["body"])
     assert "settings_edit_rate" in rendered
     assert "settings_edit_expected_count" in rendered
     assert "settings_edit_report_title" in rendered

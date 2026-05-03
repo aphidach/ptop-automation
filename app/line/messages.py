@@ -662,6 +662,96 @@ def _settings_primary_action_row() -> dict:
     }
 
 
+def _settings_admin_action_row(
+    icon: str,
+    label: str,
+    value: str,
+    action: str,
+    *,
+    icon_color: str = CARD_COLORS["dark_green"],
+    display_text: str | None = None,
+) -> dict:
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "alignItems": "center",
+        "paddingAll": "10px",
+        "action": {
+            "type": "postback",
+            "label": label[:QUICK_TEXT_LIMIT],
+            "data": build_postback_data(action=action),
+            "displayText": display_text or label,
+        },
+        "contents": [
+            {
+                "type": "text",
+                "text": icon,
+                "size": "xl",
+                "weight": "bold",
+                "color": icon_color,
+                "align": "center",
+                "flex": 1,
+            },
+            {
+                "type": "text",
+                "text": label,
+                "size": "sm",
+                "weight": "bold",
+                "color": CARD_COLORS["text"],
+                "wrap": True,
+                "flex": 5,
+            },
+            {
+                "type": "text",
+                "text": value,
+                "size": "sm",
+                "color": "#607D9B",
+                "align": "end",
+                "wrap": True,
+                "flex": 5,
+                "maxLines": 2,
+            },
+            {
+                "type": "text",
+                "text": ">",
+                "size": "lg",
+                "color": "#90A4AE",
+                "align": "end",
+                "flex": 0,
+            },
+        ],
+    }
+
+
+def _settings_admin_actions_table() -> dict:
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "cornerRadius": "8px",
+        "borderWidth": "1px",
+        "borderColor": "#E0E0E0",
+        "backgroundColor": CARD_COLORS["white"],
+        "contents": [
+            _settings_admin_action_row(
+                "G",
+                "Sync Google Sheet",
+                "แทนที่ SQLite",
+                POSTBACK_SETTINGS_SYNC_SHEETS,
+                icon_color=CARD_COLORS["primary"],
+            ),
+            {"type": "separator", "color": "#E0E0E0"},
+            _settings_admin_action_row(
+                "▧",
+                "นำเข้ารายงานเก่า",
+                "OCR จากรูปรายงาน",
+                POSTBACK_SETTINGS_IMPORT_REPORT,
+                icon_color="#2B7DE9",
+            ),
+        ],
+    }
+
+
 def _settings_updated_display(values: dict[str, str]) -> str:
     for key in ("updated_at", "last_updated_at", "last_push_at", "last_pull_at"):
         parsed = _parse_line_datetime(values.get(key))
@@ -3674,6 +3764,47 @@ def build_settings_menu_message(
             ("นำเข้ารายงานเก่า", "postback", build_postback_data(action=POSTBACK_SETTINGS_IMPORT_REPORT)),
         )
 
+    body_contents = [
+        {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "md",
+            "alignItems": "flex-start",
+            "contents": [
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "spacing": "none",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "การตั้งค่าปัจจุบัน",
+                            "weight": "bold",
+                            "size": "xl",
+                            "color": CARD_COLORS["dark_green"],
+                            "wrap": True,
+                        },
+                        {
+                            "type": "text",
+                            "text": "ข้อมูลการตั้งค่าระบบ",
+                            "size": "sm",
+                            "color": CARD_COLORS["neutral_gray"],
+                            "wrap": True,
+                            "margin": "xs",
+                        },
+                    ],
+                    "flex": 1,
+                },
+                _settings_icon_box("▤"),
+            ],
+        },
+        _settings_table(_settings_current_rows(settings_values)),
+        _settings_primary_action_row(),
+    ]
+    if is_admin:
+        body_contents.append(_settings_admin_actions_table())
+    body_contents.append(_settings_permission_note(is_admin))
+
     contents = {
         "type": "bubble",
         "size": "mega",
@@ -3682,44 +3813,7 @@ def build_settings_menu_message(
             "layout": "vertical",
             "spacing": "md",
             "paddingAll": CARD_PADDING,
-            "contents": [
-                {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "spacing": "md",
-                    "alignItems": "flex-start",
-                    "contents": [
-                        {
-                            "type": "box",
-                            "layout": "vertical",
-                            "spacing": "none",
-                            "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "การตั้งค่าปัจจุบัน",
-                                    "weight": "bold",
-                                    "size": "xl",
-                                    "color": CARD_COLORS["dark_green"],
-                                    "wrap": True,
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "ข้อมูลการตั้งค่าระบบ",
-                                    "size": "sm",
-                                    "color": CARD_COLORS["neutral_gray"],
-                                    "wrap": True,
-                                    "margin": "xs",
-                                },
-                            ],
-                            "flex": 1,
-                        },
-                        _settings_icon_box("▤"),
-                    ],
-                },
-                _settings_table(_settings_current_rows(settings_values)),
-                _settings_primary_action_row(),
-                _settings_permission_note(is_admin),
-            ],
+            "contents": body_contents,
         },
     }
 
