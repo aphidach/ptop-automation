@@ -1,4 +1,6 @@
 from unittest.mock import patch
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -26,6 +28,14 @@ class TestGenerateBatchId:
         id2 = generate_batch_id("U2")
         assert id1 != id2
 
+    def test_uses_configured_timezone_for_monday_after_midnight(self, mock_repo):
+        bangkok_now = datetime(2026, 5, 4, 1, 27, tzinfo=ZoneInfo("Asia/Bangkok"))
+
+        with patch("app.services.batch_service._now", return_value=bangkok_now):
+            batch_id = generate_batch_id("U1")
+
+        assert batch_id == "2026-W19-U1"
+
 
 @patch("app.services.batch_service.repositories")
 class TestGetOrCreateBatch:
@@ -44,6 +54,16 @@ class TestGetOrCreateBatch:
         result = get_or_create_batch("2026-W19-U1", "U1")
 
         assert result["expected_meter_count"] == "6"
+
+    def test_created_batch_uses_configured_timezone_week_and_date(self, mock_repo):
+        mock_repo.get_batch_by_id.return_value = None
+        bangkok_now = datetime(2026, 5, 4, 1, 27, tzinfo=ZoneInfo("Asia/Bangkok"))
+
+        with patch("app.services.batch_service._now", return_value=bangkok_now):
+            result = get_or_create_batch("2026-W19-U1", "U1")
+
+        assert result["week"] == "2026-W19"
+        assert result["date"] == "2026-05-04"
 
     def test_returns_existing_batch(self, mock_repo):
         existing = {"batch_id": "2026-W19-U1", "status": "collecting"}

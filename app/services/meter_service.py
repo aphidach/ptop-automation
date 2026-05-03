@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Optional
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from app.config import settings
 from app.sheets import repositories
@@ -82,7 +83,7 @@ def save_reading(
     """Calculate, build reading dict, and append to Google Sheets."""
     calc = calculate_reading(meter_id, current_value)
 
-    now = datetime.now(timezone.utc)
+    now = _now()
     date_str = now.strftime("%Y-%m-%d")
     week_str = _iso_week(now)
     reading_id = f"rdg_{now.strftime('%Y%m%d')}_{meter_id}"
@@ -155,3 +156,11 @@ def _get_default_rate_setting() -> Decimal:
         if raw:
             return Decimal(str(raw))
     return Decimal(str(settings.DEFAULT_RATE))
+
+
+def _now() -> datetime:
+    try:
+        tz = ZoneInfo(settings.TIMEZONE)
+    except ZoneInfoNotFoundError:
+        tz = timezone.utc
+    return datetime.now(tz)

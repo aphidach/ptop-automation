@@ -4,6 +4,7 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Optional
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from app.config import settings
 from app.sheets import repositories
@@ -22,9 +23,7 @@ class BatchProgress:
 
 
 def generate_batch_id(line_source_id: str) -> str:
-    now = datetime.now(timezone.utc)
-    iso = now.isocalendar()
-    week_str = f"{iso[0]}-W{iso[1]:02d}"
+    week_str = _iso_week(_now())
     return f"{week_str}-{line_source_id}"
 
 
@@ -33,9 +32,8 @@ def get_or_create_batch(batch_id: str, line_source_id: str) -> dict:
     if existing:
         return existing
 
-    now = datetime.now(timezone.utc)
-    iso = now.isocalendar()
-    week_str = f"{iso[0]}-W{iso[1]:02d}"
+    now = _now()
+    week_str = _iso_week(now)
 
     batch = {
         "batch_id": batch_id,
@@ -122,3 +120,16 @@ def _expected_meter_count() -> int:
             except ValueError:
                 pass
     return settings.EXPECTED_METER_COUNT
+
+
+def _now() -> datetime:
+    try:
+        tz = ZoneInfo(settings.TIMEZONE)
+    except ZoneInfoNotFoundError:
+        tz = timezone.utc
+    return datetime.now(tz)
+
+
+def _iso_week(dt: datetime) -> str:
+    iso = dt.isocalendar()
+    return f"{iso[0]}-W{iso[1]:02d}"

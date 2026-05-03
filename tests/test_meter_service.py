@@ -1,5 +1,7 @@
 from decimal import Decimal
 from unittest.mock import patch, MagicMock
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -166,6 +168,23 @@ class TestSaveReading:
         assert call_args["ocr_value"] == "12500"
         assert call_args["confirmation_method"] == "ok"
         assert call_args["image_message_id"] == "msg1"
+
+    def test_save_reading_uses_configured_timezone_week_and_date(self, _mock_repos):
+        _mock_repos.get_latest_reading.return_value = {"current_value": 12000}
+        _mock_repos.get_meter_by_id.return_value = {"default_rate": 4.2}
+        bangkok_now = datetime(2026, 5, 4, 1, 27, tzinfo=ZoneInfo("Asia/Bangkok"))
+
+        with patch("app.services.meter_service._now", return_value=bangkok_now):
+            save_reading(
+                meter_id="M1",
+                current_value=Decimal(12500),
+                batch_id="2026-W19-U1",
+                line_source_id="U1",
+            )
+
+        call_args = _mock_repos.append_reading.call_args[0][0]
+        assert call_args["date"] == "2026-05-04"
+        assert call_args["week"] == "2026-W19"
 
     def test_save_with_manual_edit(self, _mock_repos):
         _mock_repos.get_latest_reading.return_value = {"current_value": 12000}

@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock
 
 from app.sheets import repositories
+from app.storage.schema import TAB_HEADERS
 from app.storage import sync as storage_sync
 from app.storage.sqlite import sqlite_client
 
@@ -55,6 +56,56 @@ def test_startup_pull_clears_pending_settings_outbox(tmp_path, monkeypatch):
 
     assert repositories.get_settings()["default_rate"] == "4.5"
     assert sqlite_client.outbox_counts().get("pending", 0) == 0
+
+
+def test_manual_pull_replaces_all_sqlite_tables_from_sheets(tmp_path, monkeypatch):
+    _use_sqlite(tmp_path, monkeypatch)
+    repositories.append_reading(
+        {
+            "reading_id": "local-reading",
+            "batch_id": "2026-W19-U1",
+            "line_source_id": "U1",
+            "meter_id": "M1",
+            "current_value": "100",
+            "created_at": "2026-05-01T00:00:00+00:00",
+        }
+    )
+    assert sqlite_client.outbox_counts()["pending"] == 1
+
+    sheet_rows = {tab_name: [] for tab_name in TAB_HEADERS}
+    sheet_rows["meters"] = [
+        {
+            "meter_id": "M1",
+            "name": "Solar from Sheet",
+            "location": "",
+            "sort_order": "1",
+            "active": "TRUE",
+            "default_rate": "4.6",
+        }
+    ]
+    sheet_rows["settings"] = [{"key": "default_rate", "value": "4.6", "notes": ""}]
+    sheet_rows["readings"] = [
+        {
+            "reading_id": "sheet-reading",
+            "batch_id": "2026-W18-U1",
+            "line_source_id": "U1",
+            "meter_id": "M1",
+            "current_value": "120",
+            "created_at": "2026-04-27T00:00:00+00:00",
+        }
+    ]
+
+    fake_sheets = MagicMock()
+    fake_sheets.read_all.side_effect = lambda tab_name: sheet_rows[tab_name]
+    monkeypatch.setattr(storage_sync, "sheets_client", fake_sheets)
+
+    assert storage_sync.pull_all_from_sheets() is True
+
+    assert repositories.get_meter_by_id("M1")["name"] == "Solar from Sheet"
+    assert repositories.get_settings()["default_rate"] == "4.6"
+    assert sqlite_client.read_all("readings")[0]["reading_id"] == "sheet-reading"
+    assert sqlite_client.outbox_counts().get("pending", 0) == 0
+    assert fake_sheets.read_all.call_count == len(TAB_HEADERS)
 
 
 def test_repository_writes_enqueue_sync_outbox(tmp_path, monkeypatch):

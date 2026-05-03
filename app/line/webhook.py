@@ -51,6 +51,8 @@ from app.line.messages import (
     build_settings_not_admin_message,
     build_settings_permissions_message,
     build_settings_recipients_message,
+    build_settings_sync_failed_message,
+    build_settings_sync_success_message,
     build_settings_view_message,
     build_start_collection_card,
     build_status_card,
@@ -98,6 +100,7 @@ from app.line.parser import (
     POSTBACK_SETTINGS_METERS,
     POSTBACK_SETTINGS_PERMISSIONS,
     POSTBACK_SETTINGS_RECIPIENTS,
+    POSTBACK_SETTINGS_SYNC_SHEETS,
     POSTBACK_SETTINGS_VIEW,
     POSTBACK_WEEKLY_SUMMARY,
     POSTBACK_SKIP_METER,
@@ -171,6 +174,7 @@ from app.services.session_service import (
     set_latest_meter,
 )
 from app.services import history_service, report_import_service, settings_service
+from app.storage import sync as storage_sync
 from app.line.client import ImageDownloadError, download_image
 from app.report.sender import send_report, send_report_if_complete
 from app.ocr.confidence import score_ocr_reading
@@ -837,7 +841,13 @@ async def _handle_postback(
         return
 
     if action == POSTBACK_SETTINGS:
-        await _reply_to(reply_token, build_settings_menu_message(is_admin))
+        await _reply_to(
+            reply_token,
+            build_settings_menu_message(
+                is_admin,
+                settings_service.get_current_settings(),
+            ),
+        )
         return
 
     if action == POSTBACK_SETTINGS_IMPORT_REPORT:
@@ -847,6 +857,24 @@ async def _handle_postback(
         clear_pending_report_import(source_id)
         set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
         await _reply_to(reply_token, build_report_import_prompt_message())
+        return
+
+    if action == POSTBACK_SETTINGS_SYNC_SHEETS:
+        if not is_admin:
+            await _reply_to(reply_token, build_settings_not_admin_message())
+            return
+        if settings.STORAGE_BACKEND.strip().lower() != "sqlite":
+            await _reply_to(reply_token, "เมนูนี้ใช้ได้เมื่อ STORAGE_BACKEND=sqlite เท่านั้นครับ")
+            return
+        await _reply_to(reply_token, "กำลังดึงข้อมูลจาก Google Sheet มาแทนที่ SQLite ครับ...")
+        success = await asyncio.to_thread(storage_sync.pull_all_from_sheets)
+        if success:
+            await _push_to(source_id, build_settings_sync_success_message())
+            return
+        await _push_to(
+            source_id,
+            build_settings_sync_failed_message(storage_sync.sync_state.last_pull_error),
+        )
         return
 
     if action == POSTBACK_CONFIRM_IMPORT_REPORT:
@@ -962,7 +990,13 @@ async def _handle_postback(
     if action == POSTBACK_SETTINGS_CANCEL_CHANGE:
         clear_pending_setting_change(source_id)
         set_settings_input_key(source_id, None)
-        await _reply_to(reply_token, build_settings_menu_message(is_admin))
+        await _reply_to(
+            reply_token,
+            build_settings_menu_message(
+                is_admin,
+                settings_service.get_current_settings(),
+            ),
+        )
         return
 
     if action == POSTBACK_SETTINGS_CONTACT_ADMIN:

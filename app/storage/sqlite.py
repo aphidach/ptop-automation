@@ -100,16 +100,37 @@ class SQLiteClient:
         logger.info("Appended row to SQLite table '%s'", tab_name)
 
     def replace_all(self, tab_name: str, rows: list[dict]) -> None:
-        self._headers(tab_name)
+        self.replace_tables({tab_name: rows})
+
+    def replace_tables(self, table_rows: dict[str, list[dict]]) -> None:
+        headers_by_table = {
+            tab_name: self._headers(tab_name)
+            for tab_name in table_rows
+        }
         conn = self.connect()
         try:
-            conn.execute(f"DELETE FROM {tab_name}")
+            for tab_name, rows in table_rows.items():
+                headers = headers_by_table[tab_name]
+                columns = ", ".join(headers)
+                placeholders = ", ".join("?" for _ in headers)
+                values = [
+                    [self._to_text(row.get(header, "")) for header in headers]
+                    for row in rows
+                ]
+                conn.execute(f"DELETE FROM {tab_name}")
+                if values:
+                    conn.executemany(
+                        f"INSERT INTO {tab_name} ({columns}) VALUES ({placeholders})",
+                        values,
+                    )
             conn.commit()
+        except Exception:
+            conn.rollback()
+            raise
         finally:
             conn.close()
-        for row in rows:
-            self.append_row(tab_name, row)
-        logger.info("Replaced SQLite table '%s' with %d row(s)", tab_name, len(rows))
+        for tab_name, rows in table_rows.items():
+            logger.info("Replaced SQLite table '%s' with %d row(s)", tab_name, len(rows))
 
     def update_rows(self, tab_name: str, match_column: str, match_value: str, values: dict) -> int:
         headers = self._headers(tab_name)

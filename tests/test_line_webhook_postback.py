@@ -28,6 +28,7 @@ from app.line.parser import (
     POSTBACK_SETTINGS_CONFIRM_CHANGE,
     POSTBACK_SETTINGS_EDIT_RATE,
     POSTBACK_SETTINGS_IMPORT_REPORT,
+    POSTBACK_SETTINGS_SYNC_SHEETS,
 )
 from app.config import settings
 from app.line.webhook import _handle_postback, _next_meter_to_capture
@@ -443,6 +444,14 @@ async def test_history_select_week_postback_shows_recent_batches():
 @pytest.mark.anyio
 async def test_settings_postback_branches_by_operator_role():
     with patch("app.line.webhook.settings_service.is_admin", return_value=False), \
+         patch(
+             "app.line.webhook.settings_service.get_current_settings",
+             return_value={
+                 "default_rate": "4.2",
+                 "expected_meter_count": "8",
+                 "report_title": "รายงานพลังงานรายสัปดาห์",
+             },
+         ), \
          patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS), "rt")
 
@@ -450,15 +459,27 @@ async def test_settings_postback_branches_by_operator_role():
     payload_dict = payload.dict(by_alias=True, exclude_none=True)
     assert payload_dict["altText"] == "ตั้งค่าระบบ"
     assert "settings_view" in str(payload)
+    assert "4.20 บาท/kWh" in str(payload)
     assert "settings_edit_rate" not in str(payload)
     assert "settings_import_report" not in str(payload)
+    assert "settings_sync_sheets" not in str(payload)
     assert "help" in str(payload)
 
     with patch("app.line.webhook.settings_service.is_admin", return_value=True), \
+         patch(
+             "app.line.webhook.settings_service.get_current_settings",
+             return_value={
+                 "default_rate": "4.2",
+                 "expected_meter_count": "8",
+                 "report_title": "รายงานพลังงานรายสัปดาห์",
+             },
+         ), \
          patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS), "rt")
 
-    assert "settings_import_report" in str(mock_reply.await_args.args[1])
+    rendered = str(mock_reply.await_args.args[1])
+    assert "settings_sync_sheets" in rendered
+    assert "settings_import_report" in rendered
 
 
 @pytest.mark.anyio
@@ -600,6 +621,33 @@ async def test_non_admin_cannot_start_report_import():
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS_IMPORT_REPORT), "rt")
 
     assert get_report_import_state("U1") == REPORT_IMPORT_IDLE
+    assert "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ" in mock_reply.await_args.args[1].text
+
+@pytest.mark.anyio
+async def test_admin_can_sync_google_sheet_to_sqlite(monkeypatch):
+    monkeypatch.setattr(settings, "STORAGE_BACKEND", "sqlite")
+
+    with patch("app.line.webhook.settings_service.is_admin", return_value=True), \
+         patch("app.line.webhook.storage_sync.pull_all_from_sheets", return_value=True) as mock_sync, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply, \
+         patch("app.line.webhook._push_to", new_callable=AsyncMock) as mock_push:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS_SYNC_SHEETS), "rt")
+
+    mock_sync.assert_called_once()
+    assert "กำลังดึงข้อมูลจาก Google Sheet" in mock_reply.await_args.args[1]
+    assert "ซิงก์ Google Sheet สำเร็จ" in mock_push.await_args.args[1].text
+
+
+@pytest.mark.anyio
+async def test_non_admin_cannot_sync_google_sheet_to_sqlite():
+    with patch("app.line.webhook.settings_service.is_admin", return_value=False), \
+         patch("app.line.webhook.storage_sync.pull_all_from_sheets") as mock_sync, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply, \
+         patch("app.line.webhook._push_to", new_callable=AsyncMock) as mock_push:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS_SYNC_SHEETS), "rt")
+
+    mock_sync.assert_not_called()
+    mock_push.assert_not_called()
     assert "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ" in mock_reply.await_args.args[1].text
 
 @pytest.mark.anyio

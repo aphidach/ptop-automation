@@ -502,21 +502,52 @@ def test_history_detail_message_is_compact_flex_card():
 
 
 def test_settings_operator_menu_does_not_show_edit_actions():
-    payload = _as_dict(build_settings_menu_message(is_admin=False))
+    payload = _as_dict(
+        build_settings_menu_message(
+            is_admin=False,
+            values={
+                "default_rate": "4.2",
+                "expected_meter_count": "8",
+                "report_title": "รายงานพลังงานรายสัปดาห์",
+            },
+        )
+    )
+    rendered = str(payload)
 
     assert payload["altText"] == "ตั้งค่าระบบ"
-    assert "settings_view" in str(payload)
-    assert "settings_edit_rate" not in str(payload)
-    assert "settings_import_report" not in str(payload)
+    assert "4.20 บาท/kWh" in rendered
+    assert "8 เครื่อง" in rendered
+    assert "รายงานพลังงานรายสัปดาห์" in rendered
+    assert "มิเตอร์ M1-M8" in rendered
+    assert "settings_view" in rendered
+    assert "settings_meters" in rendered
+    assert "settings_edit_rate" not in rendered
+    assert "settings_import_report" not in rendered
+    assert "settings_sync_sheets" not in rendered
     assert "help" in str(payload["quickReply"])
 
 def test_settings_admin_menu_shows_edit_actions():
-    payload = _as_dict(build_settings_menu_message(is_admin=True))
+    payload = _as_dict(
+        build_settings_menu_message(
+            is_admin=True,
+            values={
+                "default_rate": "4.2",
+                "expected_meter_count": "8",
+                "report_title": "รายงานพลังงานรายสัปดาห์",
+            },
+        )
+    )
+    rendered = str(payload)
 
     assert payload["altText"] == "ตั้งค่าระบบ"
-    assert "settings_edit_rate" in str(payload)
-    assert "settings_edit_report_title" in str(payload)
-    assert "settings_import_report" in str(payload)
+    assert "Admin" in rendered
+    assert "ดูค่าปัจจุบัน" in rendered
+    assert "4.20 บาท/kWh" in rendered
+    assert "settings_edit_rate" in rendered
+    assert "settings_edit_expected_count" in rendered
+    assert "settings_edit_report_title" in rendered
+    assert "settings_sync_sheets" in rendered
+    assert "settings_import_report" in rendered
 
 
 def test_report_summary_card_shows_week_totals_and_navigation():

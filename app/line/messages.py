@@ -46,6 +46,7 @@ from app.line.parser import (
     POSTBACK_SETTINGS_METERS,
     POSTBACK_SETTINGS_PERMISSIONS,
     POSTBACK_SETTINGS_RECIPIENTS,
+    POSTBACK_SETTINGS_SYNC_SHEETS,
     POSTBACK_SETTINGS_VIEW,
     POSTBACK_SELECT_METER,
     POSTBACK_SKIP_METER,
@@ -355,6 +356,81 @@ def _postback_menu_row(
                 "flex": 0,
             },
         ],
+    }
+
+
+def _settings_menu_row(
+    icon: str,
+    label: str,
+    value: str,
+    action: str,
+    **kwargs: str | int | bool | None,
+) -> dict:
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "alignItems": "center",
+        "paddingAll": "10px",
+        "action": {
+            "type": "postback",
+            "label": label[:QUICK_TEXT_LIMIT],
+            "data": build_postback_data(action=action, **kwargs),
+            "displayText": label,
+        },
+        "contents": [
+            {
+                "type": "text",
+                "text": icon,
+                "size": "sm",
+                "weight": "bold",
+                "color": CARD_COLORS["dark_green"],
+                "align": "center",
+                "flex": 1,
+            },
+            {
+                "type": "text",
+                "text": label,
+                "size": "sm",
+                "weight": "bold",
+                "color": CARD_COLORS["text"],
+                "wrap": True,
+                "flex": 5,
+            },
+            {
+                "type": "text",
+                "text": value,
+                "size": "xs",
+                "color": CARD_COLORS["text"],
+                "align": "end",
+                "wrap": True,
+                "flex": 5,
+            },
+            {
+                "type": "text",
+                "text": ">",
+                "size": "sm",
+                "color": CARD_COLORS["neutral_gray"],
+                "align": "end",
+                "flex": 0,
+            },
+        ],
+    }
+
+
+def _settings_menu_list(rows: Sequence[dict]) -> dict:
+    contents = []
+    for index, row in enumerate(rows):
+        if index:
+            contents.append({"type": "separator", "color": "#E0E0E0"})
+        contents.append(row)
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "cornerRadius": "8px",
+        "borderWidth": "1px",
+        "borderColor": "#E0E0E0",
+        "contents": contents,
     }
 
 
@@ -1552,7 +1628,23 @@ def build_history_meter_message(meter_id: str, readings: Sequence[dict]) -> Text
         ),
     )
 
-def build_settings_menu_message(is_admin: bool) -> FlexMessage:
+def _settings_rate_display(value: str) -> str:
+    try:
+        rate = Decimal(str(value).replace(",", ""))
+    except (InvalidOperation, ValueError):
+        return f"{value} บาท/kWh"
+    return f"{rate:,.2f} บาท/kWh"
+
+
+def build_settings_menu_message(
+    is_admin: bool,
+    values: dict[str, str] | None = None,
+) -> FlexMessage:
+    settings_values = values or {}
+    expected_meter_count = settings_values.get("expected_meter_count", "8")
+    default_rate = settings_values.get("default_rate", "4.2")
+    report_title = settings_values.get("report_title", "Solar Weekly Report")
+
     quick_actions = (
         ("ดูค่าปัจจุบัน", "postback", build_postback_data(action=POSTBACK_SETTINGS_VIEW)),
         ("ดูรายชื่อมิเตอร์", "postback", build_postback_data(action=POSTBACK_SETTINGS_METERS)),
@@ -1567,25 +1659,120 @@ def build_settings_menu_message(is_admin: bool) -> FlexMessage:
             ("ชื่อรายงาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_REPORT_TITLE)),
             ("ผู้รับรายงาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_RECIPIENTS)),
             ("สิทธิ์ผู้ใช้งาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_PERMISSIONS)),
+            ("Sync Google Sheet", "postback", build_postback_data(action=POSTBACK_SETTINGS_SYNC_SHEETS)),
             ("นำเข้ารายงานเก่า", "postback", build_postback_data(action=POSTBACK_SETTINGS_IMPORT_REPORT)),
         )
 
-    return _card_shell(
-        alt_text="ตั้งค่าระบบ",
-        title="ตั้งค่าระบบ",
-        subtitle="เลือกเมนูที่ต้องการ",
-        body_contents=(
-            _body_text(
-                (
-                    "คุณสามารถดูการตั้งค่าได้ตามสิทธิ์ผู้ใช้"
-                    if is_admin
-                    else "ตั้งค่าสำหรับ operator: ดูค่าได้ แต่แก้ไขได้เฉพาะ Admin"
-                ),
-                size="sm",
-                color=CARD_COLORS["text"],
-            ),
+    rate_action = POSTBACK_SETTINGS_EDIT_RATE if is_admin else POSTBACK_SETTINGS_VIEW
+    count_action = POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT if is_admin else POSTBACK_SETTINGS_VIEW
+    title_action = POSTBACK_SETTINGS_EDIT_REPORT_TITLE if is_admin else POSTBACK_SETTINGS_VIEW
+    role_badge = _status_badge(
+        "Admin" if is_admin else "Operator",
+        color=CARD_COLORS["white"] if is_admin else CARD_COLORS["text"],
+        background_color=CARD_COLORS["neutral_gray"] if is_admin else CARD_COLORS["page_background"],
+    )
+    role_badge["flex"] = 0
+    menu_rows = [
+        _settings_menu_row(
+            "kW",
+            "อัตราค่าไฟ",
+            _settings_rate_display(default_rate),
+            rate_action,
         ),
-        quick_actions=quick_actions,
+        _settings_menu_row(
+            "#",
+            "จำนวนเครื่อง",
+            f"{expected_meter_count} เครื่อง",
+            count_action,
+        ),
+        _settings_menu_row(
+            "R",
+            "ชื่อรายงาน",
+            report_title,
+            title_action,
+        ),
+        _settings_menu_row(
+            "M",
+            f"มิเตอร์ M1-M{expected_meter_count}",
+            "จัดการข้อมูลมิเตอร์" if is_admin else "ดูรายชื่อมิเตอร์",
+            POSTBACK_SETTINGS_METERS,
+        ),
+    ]
+    if is_admin:
+        menu_rows.append(
+            _settings_menu_row(
+                "G",
+                "Sync Google Sheet",
+                "แทนที่ SQLite",
+                POSTBACK_SETTINGS_SYNC_SHEETS,
+            )
+        )
+
+    contents = {
+        "type": "bubble",
+        "styles": {"footer": {"separator": False}},
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "md",
+            "paddingAll": CARD_PADDING,
+            "contents": [
+                {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "spacing": "md",
+                    "alignItems": "flex-start",
+                    "contents": [
+                        {
+                            "type": "box",
+                            "layout": "vertical",
+                            "spacing": "none",
+                            "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "ตั้งค่าระบบ",
+                                    "weight": "bold",
+                                    "size": "xl",
+                                    "color": CARD_COLORS["dark_green"],
+                                    "wrap": True,
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "เลือกเมนูที่ต้องการ",
+                                    "size": "sm",
+                                    "color": CARD_COLORS["neutral_gray"],
+                                    "wrap": True,
+                                    "margin": "xs",
+                                },
+                            ],
+                            "flex": 1,
+                        },
+                        role_badge,
+                    ],
+                },
+                _settings_menu_list(menu_rows),
+            ],
+        },
+        "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "sm",
+            "paddingAll": CARD_PADDING,
+            "contents": [
+                _postback_button(
+                    "ดูค่าปัจจุบัน",
+                    POSTBACK_SETTINGS_VIEW,
+                    style="primary",
+                    color=CARD_COLORS["primary"],
+                )
+            ],
+        },
+    }
+
+    return FlexMessage(
+        alt_text="ตั้งค่าระบบ",
+        contents=FlexContainer.from_dict(contents),
+        quick_reply=_quick_reply_from_actions(quick_actions),
     )
 
 
@@ -1640,6 +1827,33 @@ def build_report_import_prompt_message() -> TextMessage:
         ),
         action_items=(
             ("ยกเลิก", "postback", build_postback_data(action=POSTBACK_CANCEL_IMPORT_REPORT)),
+            ("กลับตั้งค่า", "postback", build_postback_data(action=POSTBACK_SETTINGS)),
+        ),
+    )
+
+def build_settings_sync_success_message() -> TextMessage:
+    return _text_with_actions(
+        text=(
+            "ซิงก์ Google Sheet สำเร็จ\n\n"
+            "ดึงข้อมูลจาก Google Sheet มาแทนที่ SQLite เรียบร้อยครับ"
+        ),
+        action_items=(
+            ("ดูค่าปัจจุบัน", "postback", build_postback_data(action=POSTBACK_SETTINGS_VIEW)),
+            ("กลับตั้งค่า", "postback", build_postback_data(action=POSTBACK_SETTINGS)),
+        ),
+    )
+
+def build_settings_sync_failed_message(error: str) -> TextMessage:
+    detail = (error or "").strip() or "ไม่ทราบสาเหตุ"
+    if len(detail) > 200:
+        detail = f"{detail[:197]}..."
+    return _text_with_actions(
+        text=(
+            "ซิงก์ Google Sheet ไม่สำเร็จครับ\n\n"
+            f"สาเหตุ: {detail}"
+        ),
+        action_items=(
+            ("ลองอีกครั้ง", "postback", build_postback_data(action=POSTBACK_SETTINGS_SYNC_SHEETS)),
             ("กลับตั้งค่า", "postback", build_postback_data(action=POSTBACK_SETTINGS)),
         ),
     )

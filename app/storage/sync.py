@@ -7,11 +7,13 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 
 from app.config import settings
+from app.storage.schema import TAB_HEADERS
 from app.storage.sqlite import sqlite_client
 
 logger = logging.getLogger(__name__)
 
 BUSINESS_PULL_TABLES = ("meters", "settings")
+SQLITE_PULL_TABLES = tuple(TAB_HEADERS)
 PUSH_ROW_KEYS = {
     "readings": "reading_id",
     "batches": "batch_id",
@@ -52,19 +54,42 @@ def enqueue_outbox(table_name: str, row: dict) -> None:
 
 
 def pull_business_config_from_sheets() -> bool:
+    return _pull_tables_from_sheets(
+        BUSINESS_PULL_TABLES,
+        outbox_tables=("settings",),
+        log_label="business config",
+    )
+
+def pull_all_from_sheets() -> bool:
+    return _pull_tables_from_sheets(
+        SQLITE_PULL_TABLES,
+        outbox_tables=tuple(PUSH_ROW_KEYS),
+        log_label="all SQLite tables",
+    )
+
+def _pull_tables_from_sheets(
+    table_names: tuple[str, ...],
+    *,
+    outbox_tables: tuple[str, ...],
+    log_label: str,
+) -> bool:
     try:
-        for table_name in BUSINESS_PULL_TABLES:
-            sqlite_client.replace_all(table_name, _sheets_client().read_all(table_name))
-        sqlite_client.delete_outbox_for_table("settings")
+        table_rows = {
+            table_name: _sheets_client().read_all(table_name)
+            for table_name in table_names
+        }
+        sqlite_client.replace_tables(table_rows)
+        for table_name in outbox_tables:
+            sqlite_client.delete_outbox_for_table(table_name)
         sync_state.last_pull_at = _now()
         sync_state.last_pull_error = ""
         _refresh_last_error()
-        logger.info("Pulled business config from Google Sheets")
+        logger.info("Pulled %s from Google Sheets", log_label)
         return True
     except Exception as exc:
         sync_state.last_pull_error = str(exc)
         _refresh_last_error()
-        logger.exception("Failed to pull business config from Google Sheets")
+        logger.exception("Failed to pull %s from Google Sheets", log_label)
         return False
 
 

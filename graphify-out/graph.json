@@ -423,7 +423,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L1",
       "id": "app_sheets_repositories_py",
-      "community": 9,
+      "community": 10,
       "norm_label": "repositories.py"
     },
     {
@@ -432,7 +432,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L12",
       "id": "sheets_repositories_use_sqlite",
-      "community": 9,
+      "community": 10,
       "norm_label": "_use_sqlite()"
     },
     {
@@ -441,7 +441,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L16",
       "id": "sheets_repositories_row_client",
-      "community": 9,
+      "community": 10,
       "norm_label": "_row_client()"
     },
     {
@@ -450,7 +450,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L20",
       "id": "sheets_repositories_enqueue_if_sqlite",
-      "community": 9,
+      "community": 10,
       "norm_label": "_enqueue_if_sqlite()"
     },
     {
@@ -459,7 +459,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L29",
       "id": "sheets_repositories_sqlite_first_row",
-      "community": 9,
+      "community": 10,
       "norm_label": "_sqlite_first_row()"
     },
     {
@@ -468,7 +468,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L34",
       "id": "sheets_repositories_get_active_meters",
-      "community": 9,
+      "community": 10,
       "norm_label": "get_active_meters()"
     },
     {
@@ -477,7 +477,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L38",
       "id": "sheets_repositories_get_meter_by_id",
-      "community": 9,
+      "community": 10,
       "norm_label": "get_meter_by_id()"
     },
     {
@@ -486,7 +486,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L42",
       "id": "sheets_repositories_get_latest_reading",
-      "community": 9,
+      "community": 10,
       "norm_label": "get_latest_reading()"
     },
     {
@@ -495,7 +495,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L50",
       "id": "sheets_repositories_append_reading",
-      "community": 9,
+      "community": 10,
       "norm_label": "append_reading()"
     },
     {
@@ -504,7 +504,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L56",
       "id": "sheets_repositories_get_readings_by_batch",
-      "community": 9,
+      "community": 10,
       "norm_label": "get_readings_by_batch()"
     },
     {
@@ -513,7 +513,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L60",
       "id": "sheets_repositories_get_readings_by_source",
-      "community": 9,
+      "community": 10,
       "norm_label": "get_readings_by_source()"
     },
     {
@@ -522,7 +522,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L66",
       "id": "sheets_repositories_get_readings_by_meter",
-      "community": 9,
+      "community": 10,
       "norm_label": "get_readings_by_meter()"
     },
     {
@@ -531,7 +531,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L74",
       "id": "sheets_repositories_get_batch_by_id",
-      "community": 9,
+      "community": 10,
       "norm_label": "get_batch_by_id()"
     },
     {
@@ -540,7 +540,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L81",
       "id": "sheets_repositories_append_pending_confirmation",
-      "community": 9,
+      "community": 10,
       "norm_label": "append_pending_confirmation()"
     },
     {
@@ -549,7 +549,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L87",
       "id": "sheets_repositories_get_latest_pending_confirmation",
-      "community": 9,
+      "community": 10,
       "norm_label": "get_latest_pending_confirmation()"
     },
     {
@@ -558,7 +558,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L106",
       "id": "sheets_repositories_update_pending_confirmation_status",
-      "community": 9,
+      "community": 10,
       "norm_label": "update_pending_confirmation_status()"
     },
     {
@@ -567,7 +567,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L140",
       "id": "sheets_repositories_get_batches_by_source",
-      "community": 9,
+      "community": 10,
       "norm_label": "get_batches_by_source()"
     },
     {
@@ -576,7 +576,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L153",
       "id": "sheets_repositories_append_batch",
-      "community": 9,
+      "community": 10,
       "norm_label": "append_batch()"
     },
     {
@@ -585,7 +585,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L159",
       "id": "sheets_repositories_update_batch_status",
-      "community": 9,
+      "community": 10,
       "norm_label": "update_batch_status()"
     },
     {
@@ -594,7 +594,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L192",
       "id": "sheets_repositories_update_batch_report_image_url",
-      "community": 9,
+      "community": 10,
       "norm_label": "update_batch_report_image_url()"
     },
     {
@@ -603,7 +603,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L225",
       "id": "sheets_repositories_update_batch_confirmed_count",
-      "community": 9,
+      "community": 10,
       "norm_label": "update_batch_confirmed_count()"
     },
     {
@@ -612,7 +612,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L258",
       "id": "sheets_repositories_append_audit_log",
-      "community": 9,
+      "community": 10,
       "norm_label": "append_audit_log()"
     },
     {
@@ -621,7 +621,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L264",
       "id": "sheets_repositories_get_settings",
-      "community": 9,
+      "community": 10,
       "norm_label": "get_settings()"
     },
     {
@@ -630,7 +630,7 @@
       "source_file": "app/sheets/repositories.py",
       "source_location": "L273",
       "id": "sheets_repositories_update_setting",
-      "community": 9,
+      "community": 10,
       "norm_label": "update_setting()"
     },
     {
@@ -1188,88 +1188,106 @@
       "source_file": "app/storage/sync.py",
       "source_location": "L1",
       "id": "app_storage_sync_py",
-      "community": 18,
+      "community": 17,
       "norm_label": "sync.py"
     },
     {
       "label": "SyncState",
       "file_type": "code",
       "source_file": "app/storage/sync.py",
-      "source_location": "L25",
+      "source_location": "L27",
       "id": "storage_sync_syncstate",
-      "community": 18,
+      "community": 17,
       "norm_label": "syncstate"
     },
     {
       "label": "_sheets_client()",
       "file_type": "code",
       "source_file": "app/storage/sync.py",
-      "source_location": "L37",
+      "source_location": "L39",
       "id": "storage_sync_sheets_client",
-      "community": 18,
+      "community": 17,
       "norm_label": "_sheets_client()"
     },
     {
       "label": "enqueue_outbox()",
       "file_type": "code",
       "source_file": "app/storage/sync.py",
-      "source_location": "L46",
+      "source_location": "L48",
       "id": "storage_sync_enqueue_outbox",
-      "community": 18,
+      "community": 17,
       "norm_label": "enqueue_outbox()"
     },
     {
       "label": "pull_business_config_from_sheets()",
       "file_type": "code",
       "source_file": "app/storage/sync.py",
-      "source_location": "L54",
+      "source_location": "L56",
       "id": "storage_sync_pull_business_config_from_sheets",
-      "community": 18,
+      "community": 17,
       "norm_label": "pull_business_config_from_sheets()"
+    },
+    {
+      "label": "pull_all_from_sheets()",
+      "file_type": "code",
+      "source_file": "app/storage/sync.py",
+      "source_location": "L63",
+      "id": "storage_sync_pull_all_from_sheets",
+      "community": 17,
+      "norm_label": "pull_all_from_sheets()"
+    },
+    {
+      "label": "_pull_tables_from_sheets()",
+      "file_type": "code",
+      "source_file": "app/storage/sync.py",
+      "source_location": "L70",
+      "id": "storage_sync_pull_tables_from_sheets",
+      "community": 17,
+      "norm_label": "_pull_tables_from_sheets()"
     },
     {
       "label": "flush_outbox()",
       "file_type": "code",
       "source_file": "app/storage/sync.py",
-      "source_location": "L71",
+      "source_location": "L96",
       "id": "storage_sync_flush_outbox",
-      "community": 18,
+      "community": 17,
       "norm_label": "flush_outbox()"
     },
     {
       "label": "health()",
       "file_type": "code",
       "source_file": "app/storage/sync.py",
-      "source_location": "L101",
+      "source_location": "L126",
       "id": "storage_sync_health",
-      "community": 18,
+      "community": 17,
       "norm_label": "health()"
     },
     {
       "label": "periodic_sync_loop()",
       "file_type": "code",
       "source_file": "app/storage/sync.py",
-      "source_location": "L113",
+      "source_location": "L138",
       "id": "storage_sync_periodic_sync_loop",
-      "community": 18,
+      "community": 17,
       "norm_label": "periodic_sync_loop()"
     },
     {
       "label": "_now()",
       "file_type": "code",
       "source_file": "app/storage/sync.py",
-      "source_location": "L119",
+      "source_location": "L144",
       "id": "storage_sync_now",
-      "community": 18,
+      "community": 17,
       "norm_label": "_now()"
     },
     {
       "label": "_refresh_last_error()",
       "file_type": "code",
       "source_file": "app/storage/sync.py",
-      "source_location": "L123",
+      "source_location": "L148",
       "id": "storage_sync_refresh_last_error",
-      "community": 18,
+      "community": 17,
       "norm_label": "_refresh_last_error()"
     },
     {
@@ -1296,7 +1314,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L1",
       "id": "app_storage_sqlite_py",
-      "community": 10,
+      "community": 9,
       "norm_label": "sqlite.py"
     },
     {
@@ -1305,7 +1323,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L16",
       "id": "storage_sqlite_sqliteclient",
-      "community": 10,
+      "community": 9,
       "norm_label": "sqliteclient"
     },
     {
@@ -1314,7 +1332,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L17",
       "id": "storage_sqlite_sqliteclient_init",
-      "community": 10,
+      "community": 9,
       "norm_label": ".__init__()"
     },
     {
@@ -1323,7 +1341,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L22",
       "id": "storage_sqlite_db_path",
-      "community": 10,
+      "community": 9,
       "norm_label": "db_path()"
     },
     {
@@ -1332,7 +1350,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L25",
       "id": "storage_sqlite_sqliteclient_connect",
-      "community": 10,
+      "community": 9,
       "norm_label": ".connect()"
     },
     {
@@ -1341,7 +1359,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L37",
       "id": "storage_sqlite_sqliteclient_setup",
-      "community": 10,
+      "community": 9,
       "norm_label": ".setup()"
     },
     {
@@ -1350,7 +1368,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L60",
       "id": "storage_sqlite_sqliteclient_read_all",
-      "community": 10,
+      "community": 9,
       "norm_label": ".read_all()"
     },
     {
@@ -1359,7 +1377,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L71",
       "id": "storage_sqlite_sqliteclient_find_rows",
-      "community": 10,
+      "community": 9,
       "norm_label": ".find_rows()"
     },
     {
@@ -1368,7 +1386,7 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L86",
       "id": "storage_sqlite_sqliteclient_append_row",
-      "community": 10,
+      "community": 9,
       "norm_label": ".append_row()"
     },
     {
@@ -1377,142 +1395,151 @@
       "source_file": "app/storage/sqlite.py",
       "source_location": "L102",
       "id": "storage_sqlite_sqliteclient_replace_all",
-      "community": 10,
+      "community": 9,
       "norm_label": ".replace_all()"
+    },
+    {
+      "label": ".replace_tables()",
+      "file_type": "code",
+      "source_file": "app/storage/sqlite.py",
+      "source_location": "L105",
+      "id": "storage_sqlite_sqliteclient_replace_tables",
+      "community": 9,
+      "norm_label": ".replace_tables()"
     },
     {
       "label": ".update_rows()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L114",
+      "source_location": "L135",
       "id": "storage_sqlite_sqliteclient_update_rows",
-      "community": 10,
+      "community": 9,
       "norm_label": ".update_rows()"
     },
     {
       "label": ".enqueue_outbox()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L135",
+      "source_location": "L156",
       "id": "storage_sqlite_sqliteclient_enqueue_outbox",
-      "community": 10,
+      "community": 9,
       "norm_label": ".enqueue_outbox()"
     },
     {
       "label": ".fetch_outbox()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L171",
+      "source_location": "L192",
       "id": "storage_sqlite_sqliteclient_fetch_outbox",
-      "community": 10,
+      "community": 9,
       "norm_label": ".fetch_outbox()"
     },
     {
       "label": ".mark_outbox_synced()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L189",
+      "source_location": "L210",
       "id": "storage_sqlite_sqliteclient_mark_outbox_synced",
-      "community": 10,
+      "community": 9,
       "norm_label": ".mark_outbox_synced()"
     },
     {
       "label": ".mark_outbox_failed()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L205",
+      "source_location": "L226",
       "id": "storage_sqlite_sqliteclient_mark_outbox_failed",
-      "community": 10,
+      "community": 9,
       "norm_label": ".mark_outbox_failed()"
     },
     {
       "label": ".outbox_counts()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L224",
+      "source_location": "L245",
       "id": "storage_sqlite_sqliteclient_outbox_counts",
-      "community": 10,
+      "community": 9,
       "norm_label": ".outbox_counts()"
     },
     {
       "label": ".delete_outbox_for_table()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L234",
+      "source_location": "L255",
       "id": "storage_sqlite_sqliteclient_delete_outbox_for_table",
-      "community": 10,
+      "community": 9,
       "norm_label": ".delete_outbox_for_table()"
     },
     {
       "label": ".get_active_meters()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L242",
+      "source_location": "L263",
       "id": "storage_sqlite_sqliteclient_get_active_meters",
-      "community": 10,
+      "community": 9,
       "norm_label": ".get_active_meters()"
     },
     {
       "label": ".get_meter_by_id()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L246",
+      "source_location": "L267",
       "id": "storage_sqlite_sqliteclient_get_meter_by_id",
-      "community": 10,
+      "community": 9,
       "norm_label": ".get_meter_by_id()"
     },
     {
       "label": "._create_indexes()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L253",
+      "source_location": "L274",
       "id": "storage_sqlite_sqliteclient_create_indexes",
-      "community": 10,
+      "community": 9,
       "norm_label": "._create_indexes()"
     },
     {
       "label": "._create_sync_outbox()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L277",
+      "source_location": "L298",
       "id": "storage_sqlite_sqliteclient_create_sync_outbox",
-      "community": 10,
+      "community": 9,
       "norm_label": "._create_sync_outbox()"
     },
     {
       "label": "._headers()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L296",
+      "source_location": "L317",
       "id": "storage_sqlite_sqliteclient_headers",
-      "community": 10,
+      "community": 9,
       "norm_label": "._headers()"
     },
     {
       "label": "._row_to_dict()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L302",
+      "source_location": "L323",
       "id": "storage_sqlite_sqliteclient_row_to_dict",
-      "community": 10,
+      "community": 9,
       "norm_label": "._row_to_dict()"
     },
     {
       "label": "._to_text()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L305",
+      "source_location": "L326",
       "id": "storage_sqlite_sqliteclient_to_text",
-      "community": 10,
+      "community": 9,
       "norm_label": "._to_text()"
     },
     {
       "label": "._now()",
       "file_type": "code",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L308",
+      "source_location": "L329",
       "id": "storage_sqlite_sqliteclient_now",
-      "community": 10,
+      "community": 9,
       "norm_label": "._now()"
     },
     {
@@ -1521,7 +1548,7 @@
       "source_file": "app/storage/migrate_sheets_to_sqlite.py",
       "source_location": "L1",
       "id": "app_storage_migrate_sheets_to_sqlite_py",
-      "community": 18,
+      "community": 17,
       "norm_label": "migrate_sheets_to_sqlite.py"
     },
     {
@@ -1530,7 +1557,7 @@
       "source_file": "app/storage/migrate_sheets_to_sqlite.py",
       "source_location": "L11",
       "id": "storage_migrate_sheets_to_sqlite_main",
-      "community": 18,
+      "community": 17,
       "norm_label": "main()"
     },
     {
@@ -1627,7 +1654,7 @@
       "label": "_line_source_attr()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L196",
+      "source_location": "L200",
       "id": "line_webhook_line_source_attr",
       "community": 3,
       "norm_label": "_line_source_attr()"
@@ -1636,7 +1663,7 @@
       "label": "_line_user_id()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L200",
+      "source_location": "L204",
       "id": "line_webhook_line_user_id",
       "community": 3,
       "norm_label": "_line_user_id()"
@@ -1645,7 +1672,7 @@
       "label": "_line_chat_id()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L206",
+      "source_location": "L210",
       "id": "line_webhook_line_chat_id",
       "community": 3,
       "norm_label": "_line_chat_id()"
@@ -1654,7 +1681,7 @@
       "label": "_is_line_event_allowed()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L225",
+      "source_location": "L229",
       "id": "line_webhook_is_line_event_allowed",
       "community": 3,
       "norm_label": "_is_line_event_allowed()"
@@ -1663,7 +1690,7 @@
       "label": "_is_admin_operator()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L239",
+      "source_location": "L243",
       "id": "line_webhook_is_admin_operator",
       "community": 3,
       "norm_label": "_is_admin_operator()"
@@ -1672,7 +1699,7 @@
       "label": "_is_sheets_quota_error()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L245",
+      "source_location": "L249",
       "id": "line_webhook_is_sheets_quota_error",
       "community": 3,
       "norm_label": "_is_sheets_quota_error()"
@@ -1681,7 +1708,7 @@
       "label": "_is_invalid_reply_token_error()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L249",
+      "source_location": "L253",
       "id": "line_webhook_is_invalid_reply_token_error",
       "community": 3,
       "norm_label": "_is_invalid_reply_token_error()"
@@ -1690,7 +1717,7 @@
       "label": "_resolve_batch_id()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L254",
+      "source_location": "L258",
       "id": "line_webhook_resolve_batch_id",
       "community": 3,
       "norm_label": "_resolve_batch_id()"
@@ -1699,7 +1726,7 @@
       "label": "_parse_bare_meter_value()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L262",
+      "source_location": "L266",
       "id": "line_webhook_parse_bare_meter_value",
       "community": 3,
       "norm_label": "_parse_bare_meter_value()"
@@ -1708,7 +1735,7 @@
       "label": "_coerce_manual_value_command()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L272",
+      "source_location": "L276",
       "id": "line_webhook_coerce_manual_value_command",
       "community": 3,
       "norm_label": "_coerce_manual_value_command()"
@@ -1717,7 +1744,7 @@
       "label": "_next_meter_to_capture()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L290",
+      "source_location": "L294",
       "id": "line_webhook_next_meter_to_capture",
       "community": 3,
       "norm_label": "_next_meter_to_capture()"
@@ -1726,7 +1753,7 @@
       "label": "_restore_collection_from_current_batch()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L305",
+      "source_location": "L309",
       "id": "line_webhook_restore_collection_from_current_batch",
       "community": 3,
       "norm_label": "_restore_collection_from_current_batch()"
@@ -1735,7 +1762,7 @@
       "label": "_reply_to()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L315",
+      "source_location": "L319",
       "id": "line_webhook_reply_to",
       "community": 3,
       "norm_label": "_reply_to()"
@@ -1744,7 +1771,7 @@
       "label": "_push_to()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L334",
+      "source_location": "L338",
       "id": "line_webhook_push_to",
       "community": 3,
       "norm_label": "_push_to()"
@@ -1753,7 +1780,7 @@
       "label": "_maybe_await()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L345",
+      "source_location": "L349",
       "id": "line_webhook_maybe_await",
       "community": 3,
       "norm_label": "_maybe_await()"
@@ -1762,7 +1789,7 @@
       "label": "_read_ocr_image()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L350",
+      "source_location": "L354",
       "id": "line_webhook_read_ocr_image",
       "community": 3,
       "norm_label": "_read_ocr_image()"
@@ -1771,7 +1798,7 @@
       "label": "_handle_postback_safely()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L354",
+      "source_location": "L358",
       "id": "line_webhook_handle_postback_safely",
       "community": 3,
       "norm_label": "_handle_postback_safely()"
@@ -1780,7 +1807,7 @@
       "label": "_normalize_message_payload()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L371",
+      "source_location": "L375",
       "id": "line_webhook_normalize_message_payload",
       "community": 3,
       "norm_label": "_normalize_message_payload()"
@@ -1789,7 +1816,7 @@
       "label": "_set_next_collection_meter()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L385",
+      "source_location": "L389",
       "id": "line_webhook_set_next_collection_meter",
       "community": 3,
       "norm_label": "_set_next_collection_meter()"
@@ -1798,7 +1825,7 @@
       "label": "_build_status_message()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L396",
+      "source_location": "L400",
       "id": "line_webhook_build_status_message",
       "community": 3,
       "norm_label": "_build_status_message()"
@@ -1807,7 +1834,7 @@
       "label": "_build_status_card_message()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L435",
+      "source_location": "L439",
       "id": "line_webhook_build_status_card_message",
       "community": 3,
       "norm_label": "_build_status_card_message()"
@@ -1816,7 +1843,7 @@
       "label": "_build_settings_input_reply()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L470",
+      "source_location": "L474",
       "id": "line_webhook_build_settings_input_reply",
       "community": 2,
       "norm_label": "_build_settings_input_reply()"
@@ -1825,7 +1852,7 @@
       "label": "_build_settings_edit_prompt()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L498",
+      "source_location": "L502",
       "id": "line_webhook_build_settings_edit_prompt",
       "community": 3,
       "norm_label": "_build_settings_edit_prompt()"
@@ -1834,7 +1861,7 @@
       "label": "_reply_history_current()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L506",
+      "source_location": "L510",
       "id": "line_webhook_reply_history_current",
       "community": 3,
       "norm_label": "_reply_history_current()"
@@ -1843,7 +1870,7 @@
       "label": "_reply_history_previous()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L516",
+      "source_location": "L520",
       "id": "line_webhook_reply_history_previous",
       "community": 3,
       "norm_label": "_reply_history_previous()"
@@ -1852,7 +1879,7 @@
       "label": "_reply_history_detail()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L523",
+      "source_location": "L527",
       "id": "line_webhook_reply_history_detail",
       "community": 3,
       "norm_label": "_reply_history_detail()"
@@ -1861,7 +1888,7 @@
       "label": "_after_successful_confirmation()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L535",
+      "source_location": "L539",
       "id": "line_webhook_after_successful_confirmation",
       "community": 3,
       "norm_label": "_after_successful_confirmation()"
@@ -1870,7 +1897,7 @@
       "label": "_build_reply()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L554",
+      "source_location": "L558",
       "id": "line_webhook_build_reply",
       "community": 3,
       "norm_label": "_build_reply()"
@@ -1879,7 +1906,7 @@
       "label": "_build_text_reply()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L558",
+      "source_location": "L562",
       "id": "line_webhook_build_text_reply",
       "community": 3,
       "norm_label": "_build_text_reply()"
@@ -1888,7 +1915,7 @@
       "label": "_send_confirm_reading_result()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L625",
+      "source_location": "L629",
       "id": "line_webhook_send_confirm_reading_result",
       "community": 3,
       "norm_label": "_send_confirm_reading_result()"
@@ -1897,16 +1924,16 @@
       "label": "_handle_postback()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L703",
+      "source_location": "L707",
       "id": "line_webhook_handle_postback",
-      "community": 2,
+      "community": 0,
       "norm_label": "_handle_postback()"
     },
     {
       "label": "_process_report_import_image()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L1052",
+      "source_location": "L1086",
       "id": "line_webhook_process_report_import_image",
       "community": 3,
       "norm_label": "_process_report_import_image()"
@@ -1915,7 +1942,7 @@
       "label": "_process_ocr_and_confirm()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L1087",
+      "source_location": "L1121",
       "id": "line_webhook_process_ocr_and_confirm",
       "community": 3,
       "norm_label": "_process_ocr_and_confirm()"
@@ -1924,7 +1951,7 @@
       "label": "handle_webhook()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L1162",
+      "source_location": "L1196",
       "id": "line_webhook_handle_webhook",
       "community": 3,
       "norm_label": "handle_webhook()"
@@ -2041,7 +2068,7 @@
       "label": "ParsedCommand",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L77",
+      "source_location": "L78",
       "id": "line_parser_parsedcommand",
       "community": 3,
       "norm_label": "parsedcommand"
@@ -2050,7 +2077,7 @@
       "label": "ParsedPostback",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L86",
+      "source_location": "L87",
       "id": "line_parser_parsedpostback",
       "community": 2,
       "norm_label": "parsedpostback"
@@ -2059,7 +2086,7 @@
       "label": "ParsedReportImportRow",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L97",
+      "source_location": "L98",
       "id": "line_parser_parsedreportimportrow",
       "community": 7,
       "norm_label": "parsedreportimportrow"
@@ -2068,7 +2095,7 @@
       "label": "ParsedReportImport",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L107",
+      "source_location": "L108",
       "id": "line_parser_parsedreportimport",
       "community": 7,
       "norm_label": "parsedreportimport"
@@ -2077,7 +2104,7 @@
       "label": "parse_command()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L129",
+      "source_location": "L130",
       "id": "line_parser_parse_command",
       "community": 7,
       "norm_label": "parse_command()"
@@ -2086,7 +2113,7 @@
       "label": "parse_postback_action()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L170",
+      "source_location": "L171",
       "id": "line_parser_parse_postback_action",
       "community": 7,
       "norm_label": "parse_postback_action()"
@@ -2095,7 +2122,7 @@
       "label": "_normalize_meter_id()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L216",
+      "source_location": "L217",
       "id": "line_parser_normalize_meter_id",
       "community": 7,
       "norm_label": "_normalize_meter_id()"
@@ -2104,7 +2131,7 @@
       "label": "_normalize_bool()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L225",
+      "source_location": "L226",
       "id": "line_parser_normalize_bool",
       "community": 7,
       "norm_label": "_normalize_bool()"
@@ -2113,7 +2140,7 @@
       "label": "is_valid_meter()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L231",
+      "source_location": "L232",
       "id": "line_parser_is_valid_meter",
       "community": 7,
       "norm_label": "is_valid_meter()"
@@ -2122,7 +2149,7 @@
       "label": "parse_report_import_text()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L234",
+      "source_location": "L235",
       "id": "line_parser_parse_report_import_text",
       "community": 7,
       "norm_label": "parse_report_import_text()"
@@ -2131,7 +2158,7 @@
       "label": "_parse_report_rows()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L302",
+      "source_location": "L303",
       "id": "line_parser_parse_report_rows",
       "community": 7,
       "norm_label": "_parse_report_rows()"
@@ -2140,7 +2167,7 @@
       "label": "_parse_reported_total()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L332",
+      "source_location": "L333",
       "id": "line_parser_parse_reported_total",
       "community": 7,
       "norm_label": "_parse_reported_total()"
@@ -2149,7 +2176,7 @@
       "label": "_parse_report_date()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L342",
+      "source_location": "L343",
       "id": "line_parser_parse_report_date",
       "community": 7,
       "norm_label": "_parse_report_date()"
@@ -2158,7 +2185,7 @@
       "label": "_safe_date()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L373",
+      "source_location": "L374",
       "id": "line_parser_safe_date",
       "community": 7,
       "norm_label": "_safe_date()"
@@ -2167,7 +2194,7 @@
       "label": "_normalize_year()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L379",
+      "source_location": "L380",
       "id": "line_parser_normalize_year",
       "community": 7,
       "norm_label": "_normalize_year()"
@@ -2176,7 +2203,7 @@
       "label": "_iso_week()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L384",
+      "source_location": "L385",
       "id": "line_parser_iso_week",
       "community": 7,
       "norm_label": "_iso_week()"
@@ -2185,7 +2212,7 @@
       "label": "_to_decimal()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L388",
+      "source_location": "L389",
       "id": "line_parser_to_decimal",
       "community": 7,
       "norm_label": "_to_decimal()"
@@ -2194,7 +2221,7 @@
       "label": "_decimal_diff()",
       "file_type": "code",
       "source_file": "app/line/parser.py",
-      "source_location": "L391",
+      "source_location": "L392",
       "id": "line_parser_decimal_diff",
       "community": 7,
       "norm_label": "_decimal_diff()"
@@ -2203,8 +2230,8 @@
       "label": "Parse OCR text from the generated weekly report format.",
       "file_type": "rationale",
       "source_file": "app/line/parser.py",
-      "source_location": "L238",
-      "id": "line_parser_rationale_238",
+      "source_location": "L239",
+      "id": "line_parser_rationale_239",
       "community": 7,
       "norm_label": "parse ocr text from the generated weekly report format."
     },
@@ -2221,7 +2248,7 @@
       "label": "build_postback_data()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L238",
+      "source_location": "L239",
       "id": "line_messages_build_postback_data",
       "community": 0,
       "norm_label": "build_postback_data()"
@@ -2230,7 +2257,7 @@
       "label": "_message_action()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L247",
+      "source_location": "L248",
       "id": "line_messages_message_action",
       "community": 0,
       "norm_label": "_message_action()"
@@ -2239,7 +2266,7 @@
       "label": "_postback_action()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L251",
+      "source_location": "L252",
       "id": "line_messages_postback_action",
       "community": 0,
       "norm_label": "_postback_action()"
@@ -2248,7 +2275,7 @@
       "label": "_quick_reply_from_actions()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L259",
+      "source_location": "L260",
       "id": "line_messages_quick_reply_from_actions",
       "community": 0,
       "norm_label": "_quick_reply_from_actions()"
@@ -2257,7 +2284,7 @@
       "label": "_postback_button()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L271",
+      "source_location": "L272",
       "id": "line_messages_postback_button",
       "community": 0,
       "norm_label": "_postback_button()"
@@ -2266,16 +2293,34 @@
       "label": "_postback_menu_row()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L297",
+      "source_location": "L298",
       "id": "line_messages_postback_menu_row",
       "community": 0,
       "norm_label": "_postback_menu_row()"
     },
     {
+      "label": "_settings_menu_row()",
+      "file_type": "code",
+      "source_file": "app/line/messages.py",
+      "source_location": "L362",
+      "id": "line_messages_settings_menu_row",
+      "community": 0,
+      "norm_label": "_settings_menu_row()"
+    },
+    {
+      "label": "_settings_menu_list()",
+      "file_type": "code",
+      "source_file": "app/line/messages.py",
+      "source_location": "L421",
+      "id": "line_messages_settings_menu_list",
+      "community": 0,
+      "norm_label": "_settings_menu_list()"
+    },
+    {
       "label": "_message_button()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L361",
+      "source_location": "L437",
       "id": "line_messages_message_button",
       "community": 0,
       "norm_label": "_message_button()"
@@ -2284,7 +2329,7 @@
       "label": "_section_title()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L380",
+      "source_location": "L456",
       "id": "line_messages_section_title",
       "community": 0,
       "norm_label": "_section_title()"
@@ -2293,7 +2338,7 @@
       "label": "_status_badge()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L391",
+      "source_location": "L467",
       "id": "line_messages_status_badge",
       "community": 0,
       "norm_label": "_status_badge()"
@@ -2302,7 +2347,7 @@
       "label": "_metric_row()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L430",
+      "source_location": "L506",
       "id": "line_messages_metric_row",
       "community": 0,
       "norm_label": "_metric_row()"
@@ -2311,7 +2356,7 @@
       "label": "_has_display_value()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L458",
+      "source_location": "L534",
       "id": "line_messages_has_display_value",
       "community": 0,
       "norm_label": "_has_display_value()"
@@ -2320,7 +2365,7 @@
       "label": "_optional_metric_rows()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L462",
+      "source_location": "L538",
       "id": "line_messages_optional_metric_rows",
       "community": 0,
       "norm_label": "_optional_metric_rows()"
@@ -2329,7 +2374,7 @@
       "label": "_step_badge()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L470",
+      "source_location": "L546",
       "id": "line_messages_step_badge",
       "community": 0,
       "norm_label": "_step_badge()"
@@ -2338,7 +2383,7 @@
       "label": "_body_text()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L492",
+      "source_location": "L568",
       "id": "line_messages_body_text",
       "community": 0,
       "norm_label": "_body_text()"
@@ -2347,7 +2392,7 @@
       "label": "_kwh_display_value()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L502",
+      "source_location": "L578",
       "id": "line_messages_kwh_display_value",
       "community": 0,
       "norm_label": "_kwh_display_value()"
@@ -2356,7 +2401,7 @@
       "label": "_card_header()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L513",
+      "source_location": "L589",
       "id": "line_messages_card_header",
       "community": 0,
       "norm_label": "_card_header()"
@@ -2365,7 +2410,7 @@
       "label": "_card_shell()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L586",
+      "source_location": "L662",
       "id": "line_messages_card_shell",
       "community": 0,
       "norm_label": "_card_shell()"
@@ -2374,7 +2419,7 @@
       "label": "_meter_grid()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L658",
+      "source_location": "L734",
       "id": "line_messages_meter_grid",
       "community": 0,
       "norm_label": "_meter_grid()"
@@ -2383,7 +2428,7 @@
       "label": "_meter_select_grid()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L730",
+      "source_location": "L806",
       "id": "line_messages_meter_select_grid",
       "community": 0,
       "norm_label": "_meter_select_grid()"
@@ -2392,7 +2437,7 @@
       "label": "_text_with_actions()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L773",
+      "source_location": "L849",
       "id": "line_messages_text_with_actions",
       "community": 0,
       "norm_label": "_text_with_actions()"
@@ -2401,7 +2446,7 @@
       "label": "build_help_menu_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L783",
+      "source_location": "L859",
       "id": "line_messages_build_help_menu_message",
       "community": 0,
       "norm_label": "build_help_menu_message()"
@@ -2410,7 +2455,7 @@
       "label": "build_help_flow_response()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L797",
+      "source_location": "L873",
       "id": "line_messages_build_help_flow_response",
       "community": 0,
       "norm_label": "build_help_flow_response()"
@@ -2419,7 +2464,7 @@
       "label": "_help_flow_image_urls()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L825",
+      "source_location": "L901",
       "id": "line_messages_help_flow_image_urls",
       "community": 0,
       "norm_label": "_help_flow_image_urls()"
@@ -2428,7 +2473,7 @@
       "label": "_help_flow_image_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L833",
+      "source_location": "L909",
       "id": "line_messages_help_flow_image_url",
       "community": 0,
       "norm_label": "_help_flow_image_url()"
@@ -2437,7 +2482,7 @@
       "label": "_is_https_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L849",
+      "source_location": "L925",
       "id": "line_messages_is_https_url",
       "community": 0,
       "norm_label": "_is_https_url()"
@@ -2446,7 +2491,7 @@
       "label": "_line_card_asset_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L854",
+      "source_location": "L930",
       "id": "line_messages_line_card_asset_url",
       "community": 0,
       "norm_label": "_line_card_asset_url()"
@@ -2455,7 +2500,7 @@
       "label": "_start_collection_hero_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L866",
+      "source_location": "L942",
       "id": "line_messages_start_collection_hero_url",
       "community": 0,
       "norm_label": "_start_collection_hero_url()"
@@ -2464,7 +2509,7 @@
       "label": "build_start_collection_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L873",
+      "source_location": "L949",
       "id": "line_messages_build_start_collection_card",
       "community": 0,
       "norm_label": "build_start_collection_card()"
@@ -2473,7 +2518,7 @@
       "label": "build_meter_request_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L912",
+      "source_location": "L988",
       "id": "line_messages_build_meter_request_message",
       "community": 0,
       "norm_label": "build_meter_request_message()"
@@ -2482,7 +2527,7 @@
       "label": "build_confirmation_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L940",
+      "source_location": "L1016",
       "id": "line_messages_build_confirmation_card",
       "community": 0,
       "norm_label": "build_confirmation_card()"
@@ -2491,7 +2536,7 @@
       "label": "build_ocr_review_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1025",
+      "source_location": "L1101",
       "id": "line_messages_build_ocr_review_message",
       "community": 0,
       "norm_label": "build_ocr_review_message()"
@@ -2500,7 +2545,7 @@
       "label": "_confidence_text()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1058",
+      "source_location": "L1134",
       "id": "line_messages_confidence_text",
       "community": 0,
       "norm_label": "_confidence_text()"
@@ -2509,7 +2554,7 @@
       "label": "_warning_recovery_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1066",
+      "source_location": "L1142",
       "id": "line_messages_warning_recovery_card",
       "community": 0,
       "norm_label": "_warning_recovery_card()"
@@ -2518,7 +2563,7 @@
       "label": "build_duplicate_warning_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1136",
+      "source_location": "L1212",
       "id": "line_messages_build_duplicate_warning_card",
       "community": 0,
       "norm_label": "build_duplicate_warning_card()"
@@ -2527,7 +2572,7 @@
       "label": "build_progress_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1159",
+      "source_location": "L1235",
       "id": "line_messages_build_progress_message",
       "community": 0,
       "norm_label": "build_progress_message()"
@@ -2536,7 +2581,7 @@
       "label": "build_unreadable_prompt()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1171",
+      "source_location": "L1247",
       "id": "line_messages_build_unreadable_prompt",
       "community": 0,
       "norm_label": "build_unreadable_prompt()"
@@ -2545,7 +2590,7 @@
       "label": "build_lower_value_warning()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1187",
+      "source_location": "L1263",
       "id": "line_messages_build_lower_value_warning",
       "community": 0,
       "norm_label": "build_lower_value_warning()"
@@ -2554,7 +2599,7 @@
       "label": "build_status_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1215",
+      "source_location": "L1291",
       "id": "line_messages_build_status_card",
       "community": 0,
       "norm_label": "build_status_card()"
@@ -2563,7 +2608,7 @@
       "label": "build_batch_complete_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1280",
+      "source_location": "L1356",
       "id": "line_messages_build_batch_complete_card",
       "community": 0,
       "norm_label": "build_batch_complete_card()"
@@ -2572,7 +2617,7 @@
       "label": "build_history_menu_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1340",
+      "source_location": "L1416",
       "id": "line_messages_build_history_menu_message",
       "community": 0,
       "norm_label": "build_history_menu_message()"
@@ -2581,7 +2626,7 @@
       "label": "build_history_empty_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1384",
+      "source_location": "L1460",
       "id": "line_messages_build_history_empty_message",
       "community": 0,
       "norm_label": "build_history_empty_message()"
@@ -2590,7 +2635,7 @@
       "label": "build_history_batch_list_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1394",
+      "source_location": "L1470",
       "id": "line_messages_build_history_batch_list_message",
       "community": 0,
       "norm_label": "build_history_batch_list_message()"
@@ -2599,7 +2644,7 @@
       "label": "build_history_summary_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1414",
+      "source_location": "L1490",
       "id": "line_messages_build_history_summary_message",
       "community": 0,
       "norm_label": "build_history_summary_message()"
@@ -2608,7 +2653,7 @@
       "label": "build_history_detail_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1465",
+      "source_location": "L1541",
       "id": "line_messages_build_history_detail_message",
       "community": 0,
       "norm_label": "build_history_detail_message()"
@@ -2617,7 +2662,7 @@
       "label": "build_history_meter_select_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1502",
+      "source_location": "L1578",
       "id": "line_messages_build_history_meter_select_message",
       "community": 0,
       "norm_label": "build_history_meter_select_message()"
@@ -2626,16 +2671,25 @@
       "label": "build_history_meter_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1529",
+      "source_location": "L1605",
       "id": "line_messages_build_history_meter_message",
       "community": 0,
       "norm_label": "build_history_meter_message()"
     },
     {
+      "label": "_settings_rate_display()",
+      "file_type": "code",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1631",
+      "id": "line_messages_settings_rate_display",
+      "community": 0,
+      "norm_label": "_settings_rate_display()"
+    },
+    {
       "label": "build_settings_menu_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1555",
+      "source_location": "L1639",
       "id": "line_messages_build_settings_menu_message",
       "community": 0,
       "norm_label": "build_settings_menu_message()"
@@ -2644,7 +2698,7 @@
       "label": "build_report_summary_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1592",
+      "source_location": "L1779",
       "id": "line_messages_build_report_summary_message",
       "community": 0,
       "norm_label": "build_report_summary_message()"
@@ -2653,16 +2707,34 @@
       "label": "build_report_import_prompt_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1634",
+      "source_location": "L1821",
       "id": "line_messages_build_report_import_prompt_message",
       "community": 0,
       "norm_label": "build_report_import_prompt_message()"
     },
     {
+      "label": "build_settings_sync_success_message()",
+      "file_type": "code",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1834",
+      "id": "line_messages_build_settings_sync_success_message",
+      "community": 0,
+      "norm_label": "build_settings_sync_success_message()"
+    },
+    {
+      "label": "build_settings_sync_failed_message()",
+      "file_type": "code",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1846",
+      "id": "line_messages_build_settings_sync_failed_message",
+      "community": 0,
+      "norm_label": "build_settings_sync_failed_message()"
+    },
+    {
       "label": "build_report_import_preview_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1647",
+      "source_location": "L1861",
       "id": "line_messages_build_report_import_preview_message",
       "community": 0,
       "norm_label": "build_report_import_preview_message()"
@@ -2671,7 +2743,7 @@
       "label": "build_report_import_success_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1675",
+      "source_location": "L1889",
       "id": "line_messages_build_report_import_success_message",
       "community": 0,
       "norm_label": "build_report_import_success_message()"
@@ -2680,7 +2752,7 @@
       "label": "build_report_import_duplicate_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1693",
+      "source_location": "L1907",
       "id": "line_messages_build_report_import_duplicate_message",
       "community": 0,
       "norm_label": "build_report_import_duplicate_message()"
@@ -2689,7 +2761,7 @@
       "label": "_can_confirm_report_import()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1707",
+      "source_location": "L1921",
       "id": "line_messages_can_confirm_report_import",
       "community": 0,
       "norm_label": "_can_confirm_report_import()"
@@ -2698,7 +2770,7 @@
       "label": "build_settings_view_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1716",
+      "source_location": "L1930",
       "id": "line_messages_build_settings_view_message",
       "community": 0,
       "norm_label": "build_settings_view_message()"
@@ -2707,7 +2779,7 @@
       "label": "build_settings_meters_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1742",
+      "source_location": "L1956",
       "id": "line_messages_build_settings_meters_message",
       "community": 0,
       "norm_label": "build_settings_meters_message()"
@@ -2716,7 +2788,7 @@
       "label": "build_settings_meter_detail_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1763",
+      "source_location": "L1977",
       "id": "line_messages_build_settings_meter_detail_message",
       "community": 0,
       "norm_label": "build_settings_meter_detail_message()"
@@ -2725,7 +2797,7 @@
       "label": "build_settings_edit_prompt_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1789",
+      "source_location": "L2003",
       "id": "line_messages_build_settings_edit_prompt_message",
       "community": 0,
       "norm_label": "build_settings_edit_prompt_message()"
@@ -2734,7 +2806,7 @@
       "label": "build_settings_confirm_change_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1816",
+      "source_location": "L2030",
       "id": "line_messages_build_settings_confirm_change_message",
       "community": 0,
       "norm_label": "build_settings_confirm_change_message()"
@@ -2743,7 +2815,7 @@
       "label": "build_settings_recipients_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1838",
+      "source_location": "L2052",
       "id": "line_messages_build_settings_recipients_message",
       "community": 0,
       "norm_label": "build_settings_recipients_message()"
@@ -2752,7 +2824,7 @@
       "label": "build_settings_permissions_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1854",
+      "source_location": "L2068",
       "id": "line_messages_build_settings_permissions_message",
       "community": 0,
       "norm_label": "build_settings_permissions_message()"
@@ -2761,7 +2833,7 @@
       "label": "build_settings_not_admin_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1867",
+      "source_location": "L2081",
       "id": "line_messages_build_settings_not_admin_message",
       "community": 0,
       "norm_label": "build_settings_not_admin_message()"
@@ -2770,7 +2842,7 @@
       "label": "_format_number()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1877",
+      "source_location": "L2091",
       "id": "line_messages_format_number",
       "community": 0,
       "norm_label": "_format_number()"
@@ -2779,7 +2851,7 @@
       "label": "_bool_th()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1886",
+      "source_location": "L2100",
       "id": "line_messages_bool_th",
       "community": 0,
       "norm_label": "_bool_th()"
@@ -2790,7 +2862,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L1",
       "id": "app_line_richmenu_py",
-      "community": 11,
+      "community": 12,
       "norm_label": "richmenu.py"
     },
     {
@@ -2799,7 +2871,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L37",
       "id": "line_richmenu_richmenubuttonspec",
-      "community": 11,
+      "community": 12,
       "norm_label": "richmenubuttonspec"
     },
     {
@@ -2808,7 +2880,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L44",
       "id": "line_richmenu_default_buttons",
-      "community": 11,
+      "community": 12,
       "norm_label": "_default_buttons()"
     },
     {
@@ -2817,7 +2889,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L85",
       "id": "line_richmenu_load_image",
-      "community": 11,
+      "community": 12,
       "norm_label": "_load_image()"
     },
     {
@@ -2826,7 +2898,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L90",
       "id": "line_richmenu_build_spec",
-      "community": 11,
+      "community": 12,
       "norm_label": "_build_spec()"
     },
     {
@@ -2835,7 +2907,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L115",
       "id": "line_richmenu_save_line_compatible_image",
-      "community": 11,
+      "community": 12,
       "norm_label": "_save_line_compatible_image()"
     },
     {
@@ -2844,7 +2916,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L138",
       "id": "line_richmenu_compose_richmenu_image",
-      "community": 11,
+      "community": 12,
       "norm_label": "compose_richmenu_image()"
     },
     {
@@ -2961,7 +3033,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L1",
       "id": "app_report_generator_py",
-      "community": 12,
+      "community": 11,
       "norm_label": "generator.py"
     },
     {
@@ -2970,7 +3042,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L56",
       "id": "report_generator_reportreading",
-      "community": 12,
+      "community": 11,
       "norm_label": "reportreading"
     },
     {
@@ -2979,7 +3051,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L68",
       "id": "report_generator_reportdata",
-      "community": 12,
+      "community": 11,
       "norm_label": "reportdata"
     },
     {
@@ -2988,7 +3060,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L77",
       "id": "report_generator_load_font",
-      "community": 12,
+      "community": 11,
       "norm_label": "_load_font()"
     },
     {
@@ -2997,7 +3069,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L89",
       "id": "report_generator_fmt",
-      "community": 12,
+      "community": 11,
       "norm_label": "_fmt()"
     },
     {
@@ -3006,7 +3078,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L96",
       "id": "report_generator_fmt_baht",
-      "community": 12,
+      "community": 11,
       "norm_label": "_fmt_baht()"
     },
     {
@@ -3015,7 +3087,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L101",
       "id": "report_generator_format_thai_date",
-      "community": 12,
+      "community": 11,
       "norm_label": "_format_thai_date()"
     },
     {
@@ -3024,7 +3096,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L113",
       "id": "report_generator_to_sort_order",
-      "community": 12,
+      "community": 11,
       "norm_label": "_to_sort_order()"
     },
     {
@@ -3033,7 +3105,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L119",
       "id": "report_generator_draw_centered_lines",
-      "community": 12,
+      "community": 11,
       "norm_label": "_draw_centered_lines()"
     },
     {
@@ -3042,7 +3114,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L139",
       "id": "report_generator_draw_grid",
-      "community": 12,
+      "community": 11,
       "norm_label": "_draw_grid()"
     },
     {
@@ -3051,7 +3123,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L152",
       "id": "report_generator_build_report_data",
-      "community": 12,
+      "community": 11,
       "norm_label": "build_report_data()"
     },
     {
@@ -3060,7 +3132,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L195",
       "id": "report_generator_generate_report_image",
-      "community": 12,
+      "community": 11,
       "norm_label": "generate_report_image()"
     },
     {
@@ -3069,7 +3141,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L90",
       "id": "report_generator_rationale_90",
-      "community": 12,
+      "community": 11,
       "norm_label": "format decimal without thousands separators, 1 decimal when fractional."
     },
     {
@@ -3078,7 +3150,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L97",
       "id": "report_generator_rationale_97",
-      "community": 12,
+      "community": 11,
       "norm_label": "format baht without thousands separators, matching the report image."
     },
     {
@@ -3087,7 +3159,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L102",
       "id": "report_generator_rationale_102",
-      "community": 12,
+      "community": 11,
       "norm_label": "convert iso date (yyyy-mm-dd) to thai buddhist date format."
     },
     {
@@ -3195,7 +3267,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L1",
       "id": "app_services_settings_service_py",
-      "community": 19,
+      "community": 20,
       "norm_label": "settings_service.py"
     },
     {
@@ -3204,7 +3276,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L19",
       "id": "services_settings_service_is_admin",
-      "community": 19,
+      "community": 20,
       "norm_label": "is_admin()"
     },
     {
@@ -3213,7 +3285,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L23",
       "id": "services_settings_service_get_current_settings",
-      "community": 19,
+      "community": 20,
       "norm_label": "get_current_settings()"
     },
     {
@@ -3222,7 +3294,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L37",
       "id": "services_settings_service_get_meter_settings",
-      "community": 19,
+      "community": 20,
       "norm_label": "get_meter_settings()"
     },
     {
@@ -3231,7 +3303,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L41",
       "id": "services_settings_service_get_meter_detail",
-      "community": 19,
+      "community": 20,
       "norm_label": "get_meter_detail()"
     },
     {
@@ -3240,7 +3312,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L45",
       "id": "services_settings_service_validate_setting_input",
-      "community": 19,
+      "community": 20,
       "norm_label": "validate_setting_input()"
     },
     {
@@ -3249,7 +3321,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L61",
       "id": "services_settings_service_setting_label",
-      "community": 19,
+      "community": 20,
       "norm_label": "setting_label()"
     },
     {
@@ -3258,7 +3330,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L70",
       "id": "services_settings_service_setting_impact",
-      "community": 19,
+      "community": 20,
       "norm_label": "setting_impact()"
     },
     {
@@ -3267,7 +3339,7 @@
       "source_file": "app/services/settings_service.py",
       "source_location": "L79",
       "id": "services_settings_service_apply_setting_change",
-      "community": 19,
+      "community": 20,
       "norm_label": "apply_setting_change()"
     },
     {
@@ -3276,7 +3348,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L1",
       "id": "app_services_history_service_py",
-      "community": 17,
+      "community": 18,
       "norm_label": "history_service.py"
     },
     {
@@ -3285,7 +3357,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L13",
       "id": "services_history_service_batchsummary",
-      "community": 17,
+      "community": 18,
       "norm_label": "batchsummary"
     },
     {
@@ -3294,7 +3366,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L26",
       "id": "services_history_service_get_current_batch_summary",
-      "community": 17,
+      "community": 18,
       "norm_label": "get_current_batch_summary()"
     },
     {
@@ -3303,7 +3375,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L31",
       "id": "services_history_service_get_previous_batch_summary",
-      "community": 17,
+      "community": 18,
       "norm_label": "get_previous_batch_summary()"
     },
     {
@@ -3312,7 +3384,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L41",
       "id": "services_history_service_get_recent_batch_summaries",
-      "community": 17,
+      "community": 18,
       "norm_label": "get_recent_batch_summaries()"
     },
     {
@@ -3321,7 +3393,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L79",
       "id": "services_history_service_get_latest_report_batch_id",
-      "community": 17,
+      "community": 18,
       "norm_label": "get_latest_report_batch_id()"
     },
     {
@@ -3330,7 +3402,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L89",
       "id": "services_history_service_get_batch_summary",
-      "community": 17,
+      "community": 18,
       "norm_label": "get_batch_summary()"
     },
     {
@@ -3339,7 +3411,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L117",
       "id": "services_history_service_get_meter_history",
-      "community": 17,
+      "community": 18,
       "norm_label": "get_meter_history()"
     },
     {
@@ -3348,7 +3420,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L121",
       "id": "services_history_service_to_decimal",
-      "community": 17,
+      "community": 18,
       "norm_label": "_to_decimal()"
     },
     {
@@ -3357,7 +3429,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L128",
       "id": "services_history_service_to_int",
-      "community": 17,
+      "community": 18,
       "norm_label": "_to_int()"
     },
     {
@@ -3366,7 +3438,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L135",
       "id": "services_history_service_row_datetime",
-      "community": 17,
+      "community": 18,
       "norm_label": "_row_datetime()"
     },
     {
@@ -3375,7 +3447,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L143",
       "id": "services_history_service_parse_datetime",
-      "community": 17,
+      "community": 18,
       "norm_label": "_parse_datetime()"
     },
     {
@@ -3384,7 +3456,7 @@
       "source_file": "app/services/history_service.py",
       "source_location": "L159",
       "id": "services_history_service_week_from_batch_id",
-      "community": 17,
+      "community": 18,
       "norm_label": "_week_from_batch_id()"
     },
     {
@@ -3409,7 +3481,7 @@
       "label": "ReadingCalculation",
       "file_type": "code",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L16",
+      "source_location": "L17",
       "id": "services_meter_service_readingcalculation",
       "community": 1,
       "norm_label": "readingcalculation"
@@ -3418,7 +3490,7 @@
       "label": "ValidationResult",
       "file_type": "code",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L24",
+      "source_location": "L25",
       "id": "services_meter_service_validationresult",
       "community": 1,
       "norm_label": "validationresult"
@@ -3427,7 +3499,7 @@
       "label": "calculate_reading()",
       "file_type": "code",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L29",
+      "source_location": "L30",
       "id": "services_meter_service_calculate_reading",
       "community": 1,
       "norm_label": "calculate_reading()"
@@ -3436,7 +3508,7 @@
       "label": "validate_reading()",
       "file_type": "code",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L46",
+      "source_location": "L47",
       "id": "services_meter_service_validate_reading",
       "community": 1,
       "norm_label": "validate_reading()"
@@ -3445,7 +3517,7 @@
       "label": "save_reading()",
       "file_type": "code",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L71",
+      "source_location": "L72",
       "id": "services_meter_service_save_reading",
       "community": 1,
       "norm_label": "save_reading()"
@@ -3454,7 +3526,7 @@
       "label": "_get_last_value()",
       "file_type": "code",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L119",
+      "source_location": "L120",
       "id": "services_meter_service_get_last_value",
       "community": 1,
       "norm_label": "_get_last_value()"
@@ -3463,7 +3535,7 @@
       "label": "_get_rate()",
       "file_type": "code",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L128",
+      "source_location": "L129",
       "id": "services_meter_service_get_rate",
       "community": 1,
       "norm_label": "_get_rate()"
@@ -3472,7 +3544,7 @@
       "label": "_is_duplicate_in_batch()",
       "file_type": "code",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L139",
+      "source_location": "L140",
       "id": "services_meter_service_is_duplicate_in_batch",
       "community": 1,
       "norm_label": "_is_duplicate_in_batch()"
@@ -3481,7 +3553,7 @@
       "label": "_iso_week()",
       "file_type": "code",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L145",
+      "source_location": "L146",
       "id": "services_meter_service_iso_week",
       "community": 1,
       "norm_label": "_iso_week()"
@@ -3490,17 +3562,26 @@
       "label": "_get_default_rate_setting()",
       "file_type": "code",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L151",
+      "source_location": "L152",
       "id": "services_meter_service_get_default_rate_setting",
       "community": 1,
       "norm_label": "_get_default_rate_setting()"
     },
     {
+      "label": "_now()",
+      "file_type": "code",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L161",
+      "id": "services_meter_service_now",
+      "community": 1,
+      "norm_label": "_now()"
+    },
+    {
       "label": "Calculate produced_unit and amount from current_value and last reading.",
       "file_type": "rationale",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L33",
-      "id": "services_meter_service_rationale_33",
+      "source_location": "L34",
+      "id": "services_meter_service_rationale_34",
       "community": 1,
       "norm_label": "calculate produced_unit and amount from current_value and last reading."
     },
@@ -3508,8 +3589,8 @@
       "label": "Validate a reading before saving. Returns warnings for edge cases.",
       "file_type": "rationale",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L53",
-      "id": "services_meter_service_rationale_53",
+      "source_location": "L54",
+      "id": "services_meter_service_rationale_54",
       "community": 1,
       "norm_label": "validate a reading before saving. returns warnings for edge cases."
     },
@@ -3517,8 +3598,8 @@
       "label": "Calculate, build reading dict, and append to Google Sheets.",
       "file_type": "rationale",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L82",
-      "id": "services_meter_service_rationale_82",
+      "source_location": "L83",
+      "id": "services_meter_service_rationale_83",
       "community": 1,
       "norm_label": "calculate, build reading dict, and append to google sheets."
     },
@@ -3526,8 +3607,8 @@
       "label": "Get the latest confirmed current_value for a meter. Returns 0 if no previous rea",
       "file_type": "rationale",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L120",
-      "id": "services_meter_service_rationale_120",
+      "source_location": "L121",
+      "id": "services_meter_service_rationale_121",
       "community": 1,
       "norm_label": "get the latest confirmed current_value for a meter. returns 0 if no previous rea"
     },
@@ -3535,8 +3616,8 @@
       "label": "Get rate from meter master data, fallback to DEFAULT_RATE.",
       "file_type": "rationale",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L129",
-      "id": "services_meter_service_rationale_129",
+      "source_location": "L130",
+      "id": "services_meter_service_rationale_130",
       "community": 1,
       "norm_label": "get rate from meter master data, fallback to default_rate."
     },
@@ -3544,8 +3625,8 @@
       "label": "Check if meter_id already exists in the given batch.",
       "file_type": "rationale",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L140",
-      "id": "services_meter_service_rationale_140",
+      "source_location": "L141",
+      "id": "services_meter_service_rationale_141",
       "community": 1,
       "norm_label": "check if meter_id already exists in the given batch."
     },
@@ -3553,8 +3634,8 @@
       "label": "Return ISO week string like '2026-W19'.",
       "file_type": "rationale",
       "source_file": "app/services/meter_service.py",
-      "source_location": "L146",
-      "id": "services_meter_service_rationale_146",
+      "source_location": "L147",
+      "id": "services_meter_service_rationale_147",
       "community": 1,
       "norm_label": "return iso week string like '2026-w19'."
     },
@@ -3591,7 +3672,7 @@
       "source_file": "app/services/session_service.py",
       "source_location": "L35",
       "id": "services_session_service_pendingreportimport",
-      "community": 0,
+      "community": 2,
       "norm_label": "pendingreportimport"
     },
     {
@@ -3726,7 +3807,7 @@
       "source_file": "app/services/session_service.py",
       "source_location": "L126",
       "id": "services_session_service_get_latest_meter",
-      "community": 3,
+      "community": 2,
       "norm_label": "get_latest_meter()"
     },
     {
@@ -4030,7 +4111,7 @@
       "label": "BatchProgress",
       "file_type": "code",
       "source_file": "app/services/batch_service.py",
-      "source_location": "L15",
+      "source_location": "L16",
       "id": "services_batch_service_batchprogress",
       "community": 2,
       "norm_label": "batchprogress"
@@ -4039,7 +4120,7 @@
       "label": "generate_batch_id()",
       "file_type": "code",
       "source_file": "app/services/batch_service.py",
-      "source_location": "L24",
+      "source_location": "L25",
       "id": "services_batch_service_generate_batch_id",
       "community": 8,
       "norm_label": "generate_batch_id()"
@@ -4048,7 +4129,7 @@
       "label": "get_or_create_batch()",
       "file_type": "code",
       "source_file": "app/services/batch_service.py",
-      "source_location": "L31",
+      "source_location": "L30",
       "id": "services_batch_service_get_or_create_batch",
       "community": 8,
       "norm_label": "get_or_create_batch()"
@@ -4057,7 +4138,7 @@
       "label": "get_batch_progress()",
       "file_type": "code",
       "source_file": "app/services/batch_service.py",
-      "source_location": "L57",
+      "source_location": "L55",
       "id": "services_batch_service_get_batch_progress",
       "community": 8,
       "norm_label": "get_batch_progress()"
@@ -4066,7 +4147,7 @@
       "label": "update_batch_after_reading()",
       "file_type": "code",
       "source_file": "app/services/batch_service.py",
-      "source_location": "L78",
+      "source_location": "L76",
       "id": "services_batch_service_update_batch_after_reading",
       "community": 8,
       "norm_label": "update_batch_after_reading()"
@@ -4075,7 +4156,7 @@
       "label": "format_progress_message()",
       "file_type": "code",
       "source_file": "app/services/batch_service.py",
-      "source_location": "L100",
+      "source_location": "L98",
       "id": "services_batch_service_format_progress_message",
       "community": 8,
       "norm_label": "format_progress_message()"
@@ -4084,7 +4165,7 @@
       "label": "build_progress_message()",
       "file_type": "code",
       "source_file": "app/services/batch_service.py",
-      "source_location": "L111",
+      "source_location": "L109",
       "id": "services_batch_service_build_progress_message",
       "community": 8,
       "norm_label": "build_progress_message()"
@@ -4093,10 +4174,28 @@
       "label": "_expected_meter_count()",
       "file_type": "code",
       "source_file": "app/services/batch_service.py",
-      "source_location": "L115",
+      "source_location": "L113",
       "id": "services_batch_service_expected_meter_count",
       "community": 8,
       "norm_label": "_expected_meter_count()"
+    },
+    {
+      "label": "_now()",
+      "file_type": "code",
+      "source_file": "app/services/batch_service.py",
+      "source_location": "L125",
+      "id": "services_batch_service_now",
+      "community": 8,
+      "norm_label": "_now()"
+    },
+    {
+      "label": "_iso_week()",
+      "file_type": "code",
+      "source_file": "app/services/batch_service.py",
+      "source_location": "L133",
+      "id": "services_batch_service_iso_week",
+      "community": 8,
+      "norm_label": "_iso_week()"
     },
     {
       "label": "confirmation_service.py",
@@ -4293,88 +4392,97 @@
       "source_file": "tests/test_storage_sync.py",
       "source_location": "L1",
       "id": "tests_test_storage_sync_py",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_storage_sync.py"
     },
     {
       "label": "_use_sqlite()",
       "file_type": "code",
       "source_file": "tests/test_storage_sync.py",
-      "source_location": "L8",
+      "source_location": "L9",
       "id": "tests_test_storage_sync_use_sqlite",
-      "community": 20,
+      "community": 19,
       "norm_label": "_use_sqlite()"
     },
     {
       "label": "test_startup_pull_replaces_business_config_from_sheets()",
       "file_type": "code",
       "source_file": "tests/test_storage_sync.py",
-      "source_location": "L14",
+      "source_location": "L15",
       "id": "tests_test_storage_sync_test_startup_pull_replaces_business_config_from_sheets",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_startup_pull_replaces_business_config_from_sheets()"
     },
     {
       "label": "test_startup_pull_clears_pending_settings_outbox()",
       "file_type": "code",
       "source_file": "tests/test_storage_sync.py",
-      "source_location": "L42",
+      "source_location": "L43",
       "id": "tests_test_storage_sync_test_startup_pull_clears_pending_settings_outbox",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_startup_pull_clears_pending_settings_outbox()"
+    },
+    {
+      "label": "test_manual_pull_replaces_all_sqlite_tables_from_sheets()",
+      "file_type": "code",
+      "source_file": "tests/test_storage_sync.py",
+      "source_location": "L61",
+      "id": "tests_test_storage_sync_test_manual_pull_replaces_all_sqlite_tables_from_sheets",
+      "community": 19,
+      "norm_label": "test_manual_pull_replaces_all_sqlite_tables_from_sheets()"
     },
     {
       "label": "test_repository_writes_enqueue_sync_outbox()",
       "file_type": "code",
       "source_file": "tests/test_storage_sync.py",
-      "source_location": "L60",
+      "source_location": "L111",
       "id": "tests_test_storage_sync_test_repository_writes_enqueue_sync_outbox",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_repository_writes_enqueue_sync_outbox()"
     },
     {
       "label": "test_sheets_backend_does_not_enqueue_sync_outbox()",
       "file_type": "code",
       "source_file": "tests/test_storage_sync.py",
-      "source_location": "L81",
+      "source_location": "L132",
       "id": "tests_test_storage_sync_test_sheets_backend_does_not_enqueue_sync_outbox",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_sheets_backend_does_not_enqueue_sync_outbox()"
     },
     {
       "label": "test_repeated_batch_updates_coalesce_to_latest_payload()",
       "file_type": "code",
       "source_file": "tests/test_storage_sync.py",
-      "source_location": "L92",
+      "source_location": "L143",
       "id": "tests_test_storage_sync_test_repeated_batch_updates_coalesce_to_latest_payload",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_repeated_batch_updates_coalesce_to_latest_payload()"
     },
     {
       "label": "test_flush_outbox_syncs_to_sheets_and_marks_synced()",
       "file_type": "code",
       "source_file": "tests/test_storage_sync.py",
-      "source_location": "L118",
+      "source_location": "L169",
       "id": "tests_test_storage_sync_test_flush_outbox_syncs_to_sheets_and_marks_synced",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_flush_outbox_syncs_to_sheets_and_marks_synced()"
     },
     {
       "label": "test_flush_outbox_failure_marks_failed_and_successful_retry_marks_synced()",
       "file_type": "code",
       "source_file": "tests/test_storage_sync.py",
-      "source_location": "L135",
+      "source_location": "L186",
       "id": "tests_test_storage_sync_test_flush_outbox_failure_marks_failed_and_successful_retry_marks_synced",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_flush_outbox_failure_marks_failed_and_successful_retry_marks_synced()"
     },
     {
       "label": "test_empty_flush_keeps_startup_pull_error_visible()",
       "file_type": "code",
       "source_file": "tests/test_storage_sync.py",
-      "source_location": "L156",
+      "source_location": "L207",
       "id": "tests_test_storage_sync_test_empty_flush_keeps_startup_pull_error_visible",
-      "community": 20,
+      "community": 19,
       "norm_label": "test_empty_flush_keeps_startup_pull_error_visible()"
     },
     {
@@ -4786,7 +4894,7 @@
       "label": "_mock_repos()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L16",
+      "source_location": "L18",
       "id": "tests_test_meter_service_mock_repos",
       "community": 1,
       "norm_label": "_mock_repos()"
@@ -4795,7 +4903,7 @@
       "label": "TestCalculateReading",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L21",
+      "source_location": "L23",
       "id": "tests_test_meter_service_testcalculatereading",
       "community": 1,
       "norm_label": "testcalculatereading"
@@ -4804,7 +4912,7 @@
       "label": ".test_basic_calculation()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L22",
+      "source_location": "L24",
       "id": "tests_test_meter_service_testcalculatereading_test_basic_calculation",
       "community": 1,
       "norm_label": ".test_basic_calculation()"
@@ -4813,7 +4921,7 @@
       "label": ".test_no_previous_reading()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L32",
+      "source_location": "L34",
       "id": "tests_test_meter_service_testcalculatereading_test_no_previous_reading",
       "community": 1,
       "norm_label": ".test_no_previous_reading()"
@@ -4822,7 +4930,7 @@
       "label": ".test_fallback_default_rate()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L41",
+      "source_location": "L43",
       "id": "tests_test_meter_service_testcalculatereading_test_fallback_default_rate",
       "community": 1,
       "norm_label": ".test_fallback_default_rate()"
@@ -4831,7 +4939,7 @@
       "label": ".test_fallback_default_rate_uses_settings_sheet()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L48",
+      "source_location": "L50",
       "id": "tests_test_meter_service_testcalculatereading_test_fallback_default_rate_uses_settings_sheet",
       "community": 1,
       "norm_label": ".test_fallback_default_rate_uses_settings_sheet()"
@@ -4840,7 +4948,7 @@
       "label": ".test_custom_rate()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L56",
+      "source_location": "L58",
       "id": "tests_test_meter_service_testcalculatereading_test_custom_rate",
       "community": 1,
       "norm_label": ".test_custom_rate()"
@@ -4849,7 +4957,7 @@
       "label": ".test_negative_produced_unit()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L64",
+      "source_location": "L66",
       "id": "tests_test_meter_service_testcalculatereading_test_negative_produced_unit",
       "community": 1,
       "norm_label": ".test_negative_produced_unit()"
@@ -4858,7 +4966,7 @@
       "label": ".test_decimal_values()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L72",
+      "source_location": "L74",
       "id": "tests_test_meter_service_testcalculatereading_test_decimal_values",
       "community": 1,
       "norm_label": ".test_decimal_values()"
@@ -4867,7 +4975,7 @@
       "label": "TestValidateReading",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L82",
+      "source_location": "L84",
       "id": "tests_test_meter_service_testvalidatereading",
       "community": 1,
       "norm_label": "testvalidatereading"
@@ -4876,7 +4984,7 @@
       "label": ".test_valid_reading()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L83",
+      "source_location": "L85",
       "id": "tests_test_meter_service_testvalidatereading_test_valid_reading",
       "community": 1,
       "norm_label": ".test_valid_reading()"
@@ -4885,7 +4993,7 @@
       "label": ".test_value_less_than_last()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L91",
+      "source_location": "L93",
       "id": "tests_test_meter_service_testvalidatereading_test_value_less_than_last",
       "community": 1,
       "norm_label": ".test_value_less_than_last()"
@@ -4894,7 +5002,7 @@
       "label": ".test_duplicate_in_batch()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L99",
+      "source_location": "L101",
       "id": "tests_test_meter_service_testvalidatereading_test_duplicate_in_batch",
       "community": 1,
       "norm_label": ".test_duplicate_in_batch()"
@@ -4903,7 +5011,7 @@
       "label": ".test_multiple_warnings()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L107",
+      "source_location": "L109",
       "id": "tests_test_meter_service_testvalidatereading_test_multiple_warnings",
       "community": 1,
       "norm_label": ".test_multiple_warnings()"
@@ -4912,7 +5020,7 @@
       "label": ".test_value_equal_to_last()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L115",
+      "source_location": "L117",
       "id": "tests_test_meter_service_testvalidatereading_test_value_equal_to_last",
       "community": 1,
       "norm_label": ".test_value_equal_to_last()"
@@ -4921,7 +5029,7 @@
       "label": "TestSaveReading",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L123",
+      "source_location": "L125",
       "id": "tests_test_meter_service_testsavereading",
       "community": 1,
       "norm_label": "testsavereading"
@@ -4930,7 +5038,7 @@
       "label": ".test_save_calls_append_reading()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L124",
+      "source_location": "L126",
       "id": "tests_test_meter_service_testsavereading_test_save_calls_append_reading",
       "community": 1,
       "norm_label": ".test_save_calls_append_reading()"
@@ -4939,16 +5047,25 @@
       "label": ".test_save_reading_dict_fields()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L139",
+      "source_location": "L141",
       "id": "tests_test_meter_service_testsavereading_test_save_reading_dict_fields",
       "community": 1,
       "norm_label": ".test_save_reading_dict_fields()"
     },
     {
+      "label": ".test_save_reading_uses_configured_timezone_week_and_date()",
+      "file_type": "code",
+      "source_file": "tests/test_meter_service.py",
+      "source_location": "L172",
+      "id": "tests_test_meter_service_testsavereading_test_save_reading_uses_configured_timezone_week_and_date",
+      "community": 1,
+      "norm_label": ".test_save_reading_uses_configured_timezone_week_and_date()"
+    },
+    {
       "label": ".test_save_with_manual_edit()",
       "file_type": "code",
       "source_file": "tests/test_meter_service.py",
-      "source_location": "L170",
+      "source_location": "L189",
       "id": "tests_test_meter_service_testsavereading_test_save_with_manual_edit",
       "community": 1,
       "norm_label": ".test_save_with_manual_edit()"
@@ -5193,7 +5310,7 @@
       "source_file": "tests/test_line_webhook.py",
       "source_location": "L305",
       "id": "tests_test_line_webhook_test_status_shows_batch_progress",
-      "community": 2,
+      "community": 3,
       "norm_label": "test_status_shows_batch_progress()"
     },
     {
@@ -5202,7 +5319,7 @@
       "source_file": "tests/test_line_webhook.py",
       "source_location": "L314",
       "id": "tests_test_line_webhook_test_status_shows_meter_and_progress",
-      "community": 2,
+      "community": 3,
       "norm_label": "test_status_shows_meter_and_progress()"
     },
     {
@@ -5418,7 +5535,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L1",
       "id": "tests_test_report_generator_py",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_report_generator.py"
     },
     {
@@ -5427,7 +5544,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L19",
       "id": "tests_test_report_generator_test_fmt",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_fmt()"
     },
     {
@@ -5436,7 +5553,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L24",
       "id": "tests_test_report_generator_test_fmt_baht",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_fmt_baht()"
     },
     {
@@ -5445,7 +5562,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L30",
       "id": "tests_test_report_generator_test_build_report_data_uses_thai_title",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_build_report_data_uses_thai_title()"
     },
     {
@@ -5454,7 +5571,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L53",
       "id": "tests_test_report_generator_mock_report_data",
-      "community": 12,
+      "community": 11,
       "norm_label": "_mock_report_data()"
     },
     {
@@ -5463,7 +5580,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L69",
       "id": "tests_test_report_generator_test_generate_report_image",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_generate_report_image()"
     },
     {
@@ -5472,7 +5589,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L95",
       "id": "tests_test_report_generator_test_generate_report_returns_none_when_no_data",
-      "community": 12,
+      "community": 11,
       "norm_label": "test_generate_report_returns_none_when_no_data()"
     },
     {
@@ -5481,7 +5598,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L1",
       "id": "tests_test_report_generator_rationale_1",
-      "community": 12,
+      "community": 11,
       "norm_label": "tests for app.report.generator using mock data (no google sheets required)."
     },
     {
@@ -6307,7 +6424,7 @@
       "label": "TestGenerateBatchId",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L16",
+      "source_location": "L18",
       "id": "tests_test_batch_service_testgeneratebatchid",
       "community": 8,
       "norm_label": "testgeneratebatchid"
@@ -6316,7 +6433,7 @@
       "label": ".test_format_contains_week_and_source()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L17",
+      "source_location": "L19",
       "id": "tests_test_batch_service_testgeneratebatchid_test_format_contains_week_and_source",
       "community": 8,
       "norm_label": ".test_format_contains_week_and_source()"
@@ -6325,16 +6442,25 @@
       "label": ".test_different_sources_different_ids()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L24",
+      "source_location": "L26",
       "id": "tests_test_batch_service_testgeneratebatchid_test_different_sources_different_ids",
       "community": 8,
       "norm_label": ".test_different_sources_different_ids()"
     },
     {
-      "label": "TestGetOrCreateBatch",
+      "label": ".test_uses_configured_timezone_for_monday_after_midnight()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
       "source_location": "L31",
+      "id": "tests_test_batch_service_testgeneratebatchid_test_uses_configured_timezone_for_monday_after_midnight",
+      "community": 8,
+      "norm_label": ".test_uses_configured_timezone_for_monday_after_midnight()"
+    },
+    {
+      "label": "TestGetOrCreateBatch",
+      "file_type": "code",
+      "source_file": "tests/test_batch_service.py",
+      "source_location": "L41",
       "id": "tests_test_batch_service_testgetorcreatebatch",
       "community": 8,
       "norm_label": "testgetorcreatebatch"
@@ -6343,7 +6469,7 @@
       "label": ".test_creates_new_batch()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L32",
+      "source_location": "L42",
       "id": "tests_test_batch_service_testgetorcreatebatch_test_creates_new_batch",
       "community": 8,
       "norm_label": ".test_creates_new_batch()"
@@ -6352,16 +6478,25 @@
       "label": ".test_creates_new_batch_with_expected_count_from_settings_sheet()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L40",
+      "source_location": "L50",
       "id": "tests_test_batch_service_testgetorcreatebatch_test_creates_new_batch_with_expected_count_from_settings_sheet",
       "community": 8,
       "norm_label": ".test_creates_new_batch_with_expected_count_from_settings_sheet()"
     },
     {
+      "label": ".test_created_batch_uses_configured_timezone_week_and_date()",
+      "file_type": "code",
+      "source_file": "tests/test_batch_service.py",
+      "source_location": "L58",
+      "id": "tests_test_batch_service_testgetorcreatebatch_test_created_batch_uses_configured_timezone_week_and_date",
+      "community": 8,
+      "norm_label": ".test_created_batch_uses_configured_timezone_week_and_date()"
+    },
+    {
       "label": ".test_returns_existing_batch()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L48",
+      "source_location": "L68",
       "id": "tests_test_batch_service_testgetorcreatebatch_test_returns_existing_batch",
       "community": 8,
       "norm_label": ".test_returns_existing_batch()"
@@ -6370,7 +6505,7 @@
       "label": "TestGetBatchProgress",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L57",
+      "source_location": "L77",
       "id": "tests_test_batch_service_testgetbatchprogress",
       "community": 8,
       "norm_label": "testgetbatchprogress"
@@ -6379,7 +6514,7 @@
       "label": ".test_progress_with_no_readings()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L58",
+      "source_location": "L78",
       "id": "tests_test_batch_service_testgetbatchprogress_test_progress_with_no_readings",
       "community": 8,
       "norm_label": ".test_progress_with_no_readings()"
@@ -6388,7 +6523,7 @@
       "label": ".test_progress_uses_expected_count_from_settings_sheet()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L70",
+      "source_location": "L90",
       "id": "tests_test_batch_service_testgetbatchprogress_test_progress_uses_expected_count_from_settings_sheet",
       "community": 8,
       "norm_label": ".test_progress_uses_expected_count_from_settings_sheet()"
@@ -6397,7 +6532,7 @@
       "label": ".test_progress_with_some_readings()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L83",
+      "source_location": "L103",
       "id": "tests_test_batch_service_testgetbatchprogress_test_progress_with_some_readings",
       "community": 8,
       "norm_label": ".test_progress_with_some_readings()"
@@ -6406,7 +6541,7 @@
       "label": ".test_progress_with_all_readings()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L99",
+      "source_location": "L119",
       "id": "tests_test_batch_service_testgetbatchprogress_test_progress_with_all_readings",
       "community": 8,
       "norm_label": ".test_progress_with_all_readings()"
@@ -6415,7 +6550,7 @@
       "label": ".test_progress_batch_not_found()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L112",
+      "source_location": "L132",
       "id": "tests_test_batch_service_testgetbatchprogress_test_progress_batch_not_found",
       "community": 8,
       "norm_label": ".test_progress_batch_not_found()"
@@ -6424,7 +6559,7 @@
       "label": ".test_duplicate_meter_counted_once()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L117",
+      "source_location": "L137",
       "id": "tests_test_batch_service_testgetbatchprogress_test_duplicate_meter_counted_once",
       "community": 8,
       "norm_label": ".test_duplicate_meter_counted_once()"
@@ -6433,7 +6568,7 @@
       "label": "TestUpdateBatchAfterReading",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L133",
+      "source_location": "L153",
       "id": "tests_test_batch_service_testupdatebatchafterreading",
       "community": 8,
       "norm_label": "testupdatebatchafterreading"
@@ -6442,7 +6577,7 @@
       "label": ".test_updates_confirmed_count()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L134",
+      "source_location": "L154",
       "id": "tests_test_batch_service_testupdatebatchafterreading_test_updates_confirmed_count",
       "community": 8,
       "norm_label": ".test_updates_confirmed_count()"
@@ -6451,7 +6586,7 @@
       "label": ".test_marks_complete_when_all_confirmed()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L148",
+      "source_location": "L168",
       "id": "tests_test_batch_service_testupdatebatchafterreading_test_marks_complete_when_all_confirmed",
       "community": 8,
       "norm_label": ".test_marks_complete_when_all_confirmed()"
@@ -6460,7 +6595,7 @@
       "label": ".test_batch_not_found_returns_fallback()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L161",
+      "source_location": "L181",
       "id": "tests_test_batch_service_testupdatebatchafterreading_test_batch_not_found_returns_fallback",
       "community": 8,
       "norm_label": ".test_batch_not_found_returns_fallback()"
@@ -6469,7 +6604,7 @@
       "label": "TestBuildProgressMessage",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L169",
+      "source_location": "L189",
       "id": "tests_test_batch_service_testbuildprogressmessage",
       "community": 8,
       "norm_label": "testbuildprogressmessage"
@@ -6478,7 +6613,7 @@
       "label": ".test_missing_meters_message()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L170",
+      "source_location": "L190",
       "id": "tests_test_batch_service_testbuildprogressmessage_test_missing_meters_message",
       "community": 8,
       "norm_label": ".test_missing_meters_message()"
@@ -6487,7 +6622,7 @@
       "label": ".test_complete_message()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L185",
+      "source_location": "L205",
       "id": "tests_test_batch_service_testbuildprogressmessage_test_complete_message",
       "community": 8,
       "norm_label": ".test_complete_message()"
@@ -6496,7 +6631,7 @@
       "label": ".test_batch_not_found()",
       "file_type": "code",
       "source_file": "tests/test_batch_service.py",
-      "source_location": "L198",
+      "source_location": "L218",
       "id": "tests_test_batch_service_testbuildprogressmessage_test_batch_not_found",
       "community": 8,
       "norm_label": ".test_batch_not_found()"
@@ -6991,7 +7126,7 @@
       "label": "test_settings_admin_menu_shows_edit_actions()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L513",
+      "source_location": "L529",
       "id": "tests_test_line_messages_test_settings_admin_menu_shows_edit_actions",
       "community": 0,
       "norm_label": "test_settings_admin_menu_shows_edit_actions()"
@@ -7000,7 +7135,7 @@
       "label": "test_report_summary_card_shows_week_totals_and_navigation()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L522",
+      "source_location": "L553",
       "id": "tests_test_line_messages_test_report_summary_card_shows_week_totals_and_navigation",
       "community": 0,
       "norm_label": "test_report_summary_card_shows_week_totals_and_navigation()"
@@ -7009,7 +7144,7 @@
       "label": "test_report_import_preview_has_confirm_and_cancel_when_valid()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L551",
+      "source_location": "L582",
       "id": "tests_test_line_messages_test_report_import_preview_has_confirm_and_cancel_when_valid",
       "community": 0,
       "norm_label": "test_report_import_preview_has_confirm_and_cancel_when_valid()"
@@ -7018,7 +7153,7 @@
       "label": "test_report_import_preview_hides_confirm_when_invalid()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L568",
+      "source_location": "L599",
       "id": "tests_test_line_messages_test_report_import_preview_hides_confirm_when_invalid",
       "community": 0,
       "norm_label": "test_report_import_preview_hides_confirm_when_invalid()"
@@ -7029,7 +7164,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L1",
       "id": "tests_test_richmenu_composer_py",
-      "community": 11,
+      "community": 12,
       "norm_label": "test_richmenu_composer.py"
     },
     {
@@ -7038,7 +7173,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L23",
       "id": "tests_test_richmenu_composer_md5_bytes",
-      "community": 11,
+      "community": 12,
       "norm_label": "_md5_bytes()"
     },
     {
@@ -7047,7 +7182,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L27",
       "id": "tests_test_richmenu_composer_compose",
-      "community": 11,
+      "community": 12,
       "norm_label": "_compose()"
     },
     {
@@ -7056,7 +7191,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L35",
       "id": "tests_test_richmenu_composer_test_richmenu_composition_is_deterministic_and_schema_complete",
-      "community": 11,
+      "community": 12,
       "norm_label": "test_richmenu_composition_is_deterministic_and_schema_complete()"
     },
     {
@@ -7297,7 +7432,7 @@
       "label": "_FakeSheetsResponse",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L56",
+      "source_location": "L57",
       "id": "tests_test_line_webhook_postback_fakesheetsresponse",
       "community": 2,
       "norm_label": "_fakesheetsresponse"
@@ -7306,7 +7441,7 @@
       "label": ".json()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L59",
+      "source_location": "L60",
       "id": "tests_test_line_webhook_postback_fakesheetsresponse_json",
       "community": 2,
       "norm_label": ".json()"
@@ -7315,7 +7450,7 @@
       "label": "_clean_sessions()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L70",
+      "source_location": "L71",
       "id": "tests_test_line_webhook_postback_clean_sessions",
       "community": 2,
       "norm_label": "_clean_sessions()"
@@ -7324,7 +7459,7 @@
       "label": "_pending_import()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L79",
+      "source_location": "L80",
       "id": "tests_test_line_webhook_postback_pending_import",
       "community": 2,
       "norm_label": "_pending_import()"
@@ -7333,7 +7468,7 @@
       "label": "test_start_collection_postback_starts_linear_flow()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L103",
+      "source_location": "L104",
       "id": "tests_test_line_webhook_postback_test_start_collection_postback_starts_linear_flow",
       "community": 2,
       "norm_label": "test_start_collection_postback_starts_linear_flow()"
@@ -7342,7 +7477,7 @@
       "label": "test_start_collection_card_uses_batch_expected_meter_count()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L116",
+      "source_location": "L117",
       "id": "tests_test_line_webhook_postback_test_start_collection_card_uses_batch_expected_meter_count",
       "community": 2,
       "norm_label": "test_start_collection_card_uses_batch_expected_meter_count()"
@@ -7351,7 +7486,7 @@
       "label": "test_skip_meter_moves_to_next_machine()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L138",
+      "source_location": "L139",
       "id": "tests_test_line_webhook_postback_test_skip_meter_moves_to_next_machine",
       "community": 2,
       "norm_label": "test_skip_meter_moves_to_next_machine()"
@@ -7360,7 +7495,7 @@
       "label": "test_start_collection_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L158",
+      "source_location": "L159",
       "id": "tests_test_line_webhook_postback_test_start_collection_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_start_collection_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7369,7 +7504,7 @@
       "label": "test_select_meter_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L170",
+      "source_location": "L171",
       "id": "tests_test_line_webhook_postback_test_select_meter_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_select_meter_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7378,7 +7513,7 @@
       "label": "test_skip_meter_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L180",
+      "source_location": "L181",
       "id": "tests_test_line_webhook_postback_test_skip_meter_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_skip_meter_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7387,7 +7522,7 @@
       "label": "test_retake_photo_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L202",
+      "source_location": "L203",
       "id": "tests_test_line_webhook_postback_test_retake_photo_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_retake_photo_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7396,7 +7531,7 @@
       "label": "test_select_meter_postback_updates_current_meter()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L212",
+      "source_location": "L213",
       "id": "tests_test_line_webhook_postback_test_select_meter_postback_updates_current_meter",
       "community": 2,
       "norm_label": "test_select_meter_postback_updates_current_meter()"
@@ -7405,25 +7540,25 @@
       "label": "test_confirm_postback_moves_state_without_errors()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L226",
+      "source_location": "L227",
       "id": "tests_test_line_webhook_postback_test_confirm_postback_moves_state_without_errors",
-      "community": 2,
+      "community": 1,
       "norm_label": "test_confirm_postback_moves_state_without_errors()"
     },
     {
       "label": "test_confirm_postback_sends_batch_complete_card_when_all_meters_done()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L257",
+      "source_location": "L258",
       "id": "tests_test_line_webhook_postback_test_confirm_postback_sends_batch_complete_card_when_all_meters_done",
-      "community": 2,
+      "community": 1,
       "norm_label": "test_confirm_postback_sends_batch_complete_card_when_all_meters_done()"
     },
     {
       "label": "test_show_status_postback_returns_progress_card()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L298",
+      "source_location": "L299",
       "id": "tests_test_line_webhook_postback_test_show_status_postback_returns_progress_card",
       "community": 2,
       "norm_label": "test_show_status_postback_returns_progress_card()"
@@ -7432,7 +7567,7 @@
       "label": "test_confirm_postback_uses_pending_meter_in_loading_message()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L321",
+      "source_location": "L322",
       "id": "tests_test_line_webhook_postback_test_confirm_postback_uses_pending_meter_in_loading_message",
       "community": 2,
       "norm_label": "test_confirm_postback_uses_pending_meter_in_loading_message()"
@@ -7441,7 +7576,7 @@
       "label": "test_cancel_collection_marks_pending_cancelled()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L333",
+      "source_location": "L334",
       "id": "tests_test_line_webhook_postback_test_cancel_collection_marks_pending_cancelled",
       "community": 2,
       "norm_label": "test_cancel_collection_marks_pending_cancelled()"
@@ -7450,7 +7585,7 @@
       "label": "test_help_and_history_postback_are_supported()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L351",
+      "source_location": "L352",
       "id": "tests_test_line_webhook_postback_test_help_and_history_postback_are_supported",
       "community": 2,
       "norm_label": "test_help_and_history_postback_are_supported()"
@@ -7459,7 +7594,7 @@
       "label": "test_help_flow_postback_replies_with_selected_topic()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L361",
+      "source_location": "L362",
       "id": "tests_test_line_webhook_postback_test_help_flow_postback_replies_with_selected_topic",
       "community": 2,
       "norm_label": "test_help_flow_postback_replies_with_selected_topic()"
@@ -7468,7 +7603,7 @@
       "label": "test_history_postback_returns_history_menu_card()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L376",
+      "source_location": "L377",
       "id": "tests_test_line_webhook_postback_test_history_postback_returns_history_menu_card",
       "community": 2,
       "norm_label": "test_history_postback_returns_history_menu_card()"
@@ -7477,7 +7612,7 @@
       "label": "test_history_current_postback_shows_summary_actions()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L388",
+      "source_location": "L389",
       "id": "tests_test_line_webhook_postback_test_history_current_postback_shows_summary_actions",
       "community": 2,
       "norm_label": "test_history_current_postback_shows_summary_actions()"
@@ -7486,7 +7621,7 @@
       "label": "test_history_meter_postback_without_meter_returns_select_card()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L412",
+      "source_location": "L413",
       "id": "tests_test_line_webhook_postback_test_history_meter_postback_without_meter_returns_select_card",
       "community": 2,
       "norm_label": "test_history_meter_postback_without_meter_returns_select_card()"
@@ -7495,7 +7630,7 @@
       "label": "test_history_select_week_postback_shows_recent_batches()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L424",
+      "source_location": "L425",
       "id": "tests_test_line_webhook_postback_test_history_select_week_postback_shows_recent_batches",
       "community": 2,
       "norm_label": "test_history_select_week_postback_shows_recent_batches()"
@@ -7504,7 +7639,7 @@
       "label": "test_settings_postback_branches_by_operator_role()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L444",
+      "source_location": "L445",
       "id": "tests_test_line_webhook_postback_test_settings_postback_branches_by_operator_role",
       "community": 2,
       "norm_label": "test_settings_postback_branches_by_operator_role()"
@@ -7513,7 +7648,7 @@
       "label": "test_latest_report_postback_returns_report_summary_and_schedules_send()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L465",
+      "source_location": "L486",
       "id": "tests_test_line_webhook_postback_test_latest_report_postback_returns_report_summary_and_schedules_send",
       "community": 2,
       "norm_label": "test_latest_report_postback_returns_report_summary_and_schedules_send()"
@@ -7522,7 +7657,7 @@
       "label": "test_weekly_summary_postback_returns_report_summary_and_schedules_send()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L490",
+      "source_location": "L511",
       "id": "tests_test_line_webhook_postback_test_weekly_summary_postback_returns_report_summary_and_schedules_send",
       "community": 2,
       "norm_label": "test_weekly_summary_postback_returns_report_summary_and_schedules_send()"
@@ -7531,7 +7666,7 @@
       "label": "test_weekly_summary_postback_uses_session_batch_when_no_batch_id()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L519",
+      "source_location": "L540",
       "id": "tests_test_line_webhook_postback_test_weekly_summary_postback_uses_session_batch_when_no_batch_id",
       "community": 2,
       "norm_label": "test_weekly_summary_postback_uses_session_batch_when_no_batch_id()"
@@ -7540,7 +7675,7 @@
       "label": "test_weekly_summary_postback_falls_back_to_latest_batch_when_no_session_batch()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L546",
+      "source_location": "L567",
       "id": "tests_test_line_webhook_postback_test_weekly_summary_postback_falls_back_to_latest_batch_when_no_session_batch",
       "community": 2,
       "norm_label": "test_weekly_summary_postback_falls_back_to_latest_batch_when_no_session_batch()"
@@ -7549,7 +7684,7 @@
       "label": "test_weekly_summary_postback_keeps_empty_state_when_no_batch_exists()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L572",
+      "source_location": "L593",
       "id": "tests_test_line_webhook_postback_test_weekly_summary_postback_keeps_empty_state_when_no_batch_exists",
       "community": 2,
       "norm_label": "test_weekly_summary_postback_keeps_empty_state_when_no_batch_exists()"
@@ -7558,7 +7693,7 @@
       "label": "test_admin_can_start_report_import_from_settings()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L587",
+      "source_location": "L608",
       "id": "tests_test_line_webhook_postback_test_admin_can_start_report_import_from_settings",
       "community": 2,
       "norm_label": "test_admin_can_start_report_import_from_settings()"
@@ -7567,16 +7702,34 @@
       "label": "test_non_admin_cannot_start_report_import()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L597",
+      "source_location": "L618",
       "id": "tests_test_line_webhook_postback_test_non_admin_cannot_start_report_import",
       "community": 2,
       "norm_label": "test_non_admin_cannot_start_report_import()"
     },
     {
+      "label": "test_admin_can_sync_google_sheet_to_sqlite()",
+      "file_type": "code",
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L627",
+      "id": "tests_test_line_webhook_postback_test_admin_can_sync_google_sheet_to_sqlite",
+      "community": 2,
+      "norm_label": "test_admin_can_sync_google_sheet_to_sqlite()"
+    },
+    {
+      "label": "test_non_admin_cannot_sync_google_sheet_to_sqlite()",
+      "file_type": "code",
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L642",
+      "id": "tests_test_line_webhook_postback_test_non_admin_cannot_sync_google_sheet_to_sqlite",
+      "community": 2,
+      "norm_label": "test_non_admin_cannot_sync_google_sheet_to_sqlite()"
+    },
+    {
       "label": "test_admin_edit_rate_creates_input_step()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L606",
+      "source_location": "L654",
       "id": "tests_test_line_webhook_postback_test_admin_edit_rate_creates_input_step",
       "community": 2,
       "norm_label": "test_admin_edit_rate_creates_input_step()"
@@ -7585,7 +7738,7 @@
       "label": "test_settings_confirm_change_applies_pending_change()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L617",
+      "source_location": "L665",
       "id": "tests_test_line_webhook_postback_test_settings_confirm_change_applies_pending_change",
       "community": 2,
       "norm_label": "test_settings_confirm_change_applies_pending_change()"
@@ -7594,7 +7747,7 @@
       "label": "test_confirm_report_import_appends_batch_and_readings()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L643",
+      "source_location": "L691",
       "id": "tests_test_line_webhook_postback_test_confirm_report_import_appends_batch_and_readings",
       "community": 2,
       "norm_label": "test_confirm_report_import_appends_batch_and_readings()"
@@ -7603,7 +7756,7 @@
       "label": "test_confirm_report_import_duplicate_batch_does_not_append()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L671",
+      "source_location": "L719",
       "id": "tests_test_line_webhook_postback_test_confirm_report_import_duplicate_batch_does_not_append",
       "community": 2,
       "norm_label": "test_confirm_report_import_duplicate_batch_does_not_append()"
@@ -7612,7 +7765,7 @@
       "label": "test_cancel_report_import_clears_state()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L690",
+      "source_location": "L738",
       "id": "tests_test_line_webhook_postback_test_cancel_report_import_clears_state",
       "community": 2,
       "norm_label": "test_cancel_report_import_clears_state()"
@@ -7621,7 +7774,7 @@
       "label": "test_non_admin_cannot_cancel_report_import()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L701",
+      "source_location": "L749",
       "id": "tests_test_line_webhook_postback_test_non_admin_cannot_cancel_report_import",
       "community": 2,
       "norm_label": "test_non_admin_cannot_cancel_report_import()"
@@ -7630,7 +7783,7 @@
       "label": "test_next_meter_linear_with_skipped_meters()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L714",
+      "source_location": "L762",
       "id": "tests_test_line_webhook_postback_test_next_meter_linear_with_skipped_meters",
       "community": 2,
       "norm_label": "test_next_meter_linear_with_skipped_meters()"
@@ -7639,7 +7792,7 @@
       "label": "test_postback_safety_replies_on_sheets_api_error()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L731",
+      "source_location": "L779",
       "id": "tests_test_line_webhook_postback_test_postback_safety_replies_on_sheets_api_error",
       "community": 2,
       "norm_label": "test_postback_safety_replies_on_sheets_api_error()"
@@ -7866,7 +8019,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L1",
       "id": "scripts_upload_richmenu_py",
-      "community": 11,
+      "community": 12,
       "norm_label": "upload_richmenu.py"
     },
     {
@@ -7875,7 +8028,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L24",
       "id": "scripts_upload_richmenu_main",
-      "community": 11,
+      "community": 12,
       "norm_label": "main()"
     },
     {
@@ -7884,7 +8037,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L67",
       "id": "scripts_upload_richmenu_parse_args",
-      "community": 11,
+      "community": 12,
       "norm_label": "_parse_args()"
     },
     {
@@ -7893,7 +8046,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L79",
       "id": "scripts_upload_richmenu_resolve_assets",
-      "community": 11,
+      "community": 12,
       "norm_label": "_resolve_assets()"
     },
     {
@@ -7902,7 +8055,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L91",
       "id": "scripts_upload_richmenu_load_json",
-      "community": 11,
+      "community": 12,
       "norm_label": "_load_json()"
     },
     {
@@ -7911,7 +8064,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L99",
       "id": "scripts_upload_richmenu_validate_local_assets",
-      "community": 11,
+      "community": 12,
       "norm_label": "_validate_local_assets()"
     },
     {
@@ -7920,7 +8073,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L140",
       "id": "scripts_upload_richmenu_headers",
-      "community": 11,
+      "community": 12,
       "norm_label": "_headers()"
     },
     {
@@ -7929,7 +8082,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L144",
       "id": "scripts_upload_richmenu_validate_with_line",
-      "community": 11,
+      "community": 12,
       "norm_label": "_validate_with_line()"
     },
     {
@@ -7938,7 +8091,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L154",
       "id": "scripts_upload_richmenu_create_richmenu",
-      "community": 11,
+      "community": 12,
       "norm_label": "_create_richmenu()"
     },
     {
@@ -7947,7 +8100,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L168",
       "id": "scripts_upload_richmenu_upload_richmenu_image",
-      "community": 11,
+      "community": 12,
       "norm_label": "_upload_richmenu_image()"
     },
     {
@@ -7956,7 +8109,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L182",
       "id": "scripts_upload_richmenu_set_default_richmenu",
-      "community": 11,
+      "community": 12,
       "norm_label": "_set_default_richmenu()"
     },
     {
@@ -7965,8 +8118,80 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L190",
       "id": "scripts_upload_richmenu_raise_for_line",
-      "community": 11,
+      "community": 12,
       "norm_label": "_raise_for_line()"
+    },
+    {
+      "label": "Parse OCR text from the generated weekly report format.",
+      "file_type": "rationale",
+      "source_file": "app/line/parser.py",
+      "source_location": "L238",
+      "community": 7,
+      "norm_label": "parse ocr text from the generated weekly report format.",
+      "id": "line_parser_rationale_238"
+    },
+    {
+      "label": "Calculate produced_unit and amount from current_value and last reading.",
+      "file_type": "rationale",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L33",
+      "community": 1,
+      "norm_label": "calculate produced_unit and amount from current_value and last reading.",
+      "id": "services_meter_service_rationale_33"
+    },
+    {
+      "label": "Validate a reading before saving. Returns warnings for edge cases.",
+      "file_type": "rationale",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L53",
+      "community": 1,
+      "norm_label": "validate a reading before saving. returns warnings for edge cases.",
+      "id": "services_meter_service_rationale_53"
+    },
+    {
+      "label": "Calculate, build reading dict, and append to Google Sheets.",
+      "file_type": "rationale",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L82",
+      "community": 1,
+      "norm_label": "calculate, build reading dict, and append to google sheets.",
+      "id": "services_meter_service_rationale_82"
+    },
+    {
+      "label": "Get the latest confirmed current_value for a meter. Returns 0 if no previous rea",
+      "file_type": "rationale",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L120",
+      "community": 1,
+      "norm_label": "get the latest confirmed current_value for a meter. returns 0 if no previous rea",
+      "id": "services_meter_service_rationale_120"
+    },
+    {
+      "label": "Get rate from meter master data, fallback to DEFAULT_RATE.",
+      "file_type": "rationale",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L129",
+      "community": 1,
+      "norm_label": "get rate from meter master data, fallback to default_rate.",
+      "id": "services_meter_service_rationale_129"
+    },
+    {
+      "label": "Check if meter_id already exists in the given batch.",
+      "file_type": "rationale",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L140",
+      "community": 1,
+      "norm_label": "check if meter_id already exists in the given batch.",
+      "id": "services_meter_service_rationale_140"
+    },
+    {
+      "label": "Return ISO week string like '2026-W19'.",
+      "file_type": "rationale",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L146",
+      "community": 1,
+      "norm_label": "return iso week string like '2026-w19'.",
+      "id": "services_meter_service_rationale_146"
     },
     {
       "label": "Build the public URL for a report image served by the static endpoint.",
@@ -8063,7 +8288,7 @@
       "file_type": "code",
       "source_file": "sheets/repositories.py",
       "source_location": "L1",
-      "community": 9,
+      "community": 10,
       "norm_label": "repositories.py",
       "id": "sheets_repositories_py"
     },
@@ -8216,7 +8441,7 @@
       "file_type": "code",
       "source_file": "line/richmenu.py",
       "source_location": "L1",
-      "community": 11,
+      "community": 12,
       "norm_label": "richmenu.py",
       "id": "line_richmenu_py"
     },
@@ -8243,7 +8468,7 @@
       "file_type": "code",
       "source_file": "report/generator.py",
       "source_location": "L1",
-      "community": 12,
+      "community": 11,
       "norm_label": "generator.py",
       "id": "report_generator_py"
     },
@@ -8261,7 +8486,7 @@
       "file_type": "code",
       "source_file": "services/settings_service.py",
       "source_location": "L1",
-      "community": 19,
+      "community": 20,
       "norm_label": "settings_service.py",
       "id": "services_settings_service_py"
     },
@@ -8270,7 +8495,7 @@
       "file_type": "code",
       "source_file": "services/history_service.py",
       "source_location": "L1",
-      "community": 17,
+      "community": 18,
       "norm_label": "history_service.py",
       "id": "services_history_service_py"
     },
@@ -12543,6 +12768,26 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/storage/sync.py",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "app_storage_sync_py",
+      "target": "storage_sync_pull_all_from_sheets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sync.py",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "app_storage_sync_py",
+      "target": "storage_sync_pull_tables_from_sheets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sync.py",
       "source_location": "L67",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -12594,11 +12839,11 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/storage/sync.py",
-      "source_location": "L55",
+      "source_location": "L78",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "storage_sync_pull_business_config_from_sheets",
-      "target": "storage_sync_sheets_client"
+      "source": "storage_sync_pull_tables_from_sheets",
+      "target": "storage_sync_sheets_client",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -12610,6 +12855,39 @@
       "confidence_score": 1.0,
       "source": "storage_sync_flush_outbox",
       "target": "storage_sync_sheets_client"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sync.py",
+      "source_location": "L55",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "storage_sync_pull_business_config_from_sheets",
+      "target": "storage_sync_sheets_client"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sync.py",
+      "source_location": "L57",
+      "weight": 1.0,
+      "source": "storage_sync_pull_business_config_from_sheets",
+      "target": "storage_sync_pull_tables_from_sheets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app/storage/migrate_sheets_to_sqlite.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "storage_migrate_sheets_to_sqlite_main",
+      "target": "storage_sync_pull_business_config_from_sheets"
     },
     {
       "relation": "calls",
@@ -12636,13 +12914,35 @@
     {
       "relation": "calls",
       "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "app/storage/migrate_sheets_to_sqlite.py",
-      "source_location": "L13",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sync.py",
+      "source_location": "L64",
       "weight": 1.0,
-      "source": "storage_migrate_sheets_to_sqlite_main",
-      "target": "storage_sync_pull_business_config_from_sheets"
+      "source": "storage_sync_pull_all_from_sheets",
+      "target": "storage_sync_pull_tables_from_sheets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sync.py",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "storage_sync_pull_tables_from_sheets",
+      "target": "storage_sync_now",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sync.py",
+      "source_location": "L86",
+      "weight": 1.0,
+      "source": "storage_sync_pull_tables_from_sheets",
+      "target": "storage_sync_refresh_last_error",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -12775,6 +13075,16 @@
       "confidence_score": 1.0,
       "source": "storage_sqlite_sqliteclient",
       "target": "storage_sqlite_sqliteclient_replace_all"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sqlite.py",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "storage_sqlite_sqliteclient",
+      "target": "storage_sqlite_sqliteclient_replace_tables",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -12975,11 +13285,11 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/storage/sqlite.py",
-      "source_location": "L101",
+      "source_location": "L110",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "storage_sqlite_sqliteclient_replace_all",
-      "target": "storage_sqlite_sqliteclient_connect"
+      "source": "storage_sqlite_sqliteclient_replace_tables",
+      "target": "storage_sqlite_sqliteclient_connect",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -13056,6 +13366,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "storage_sqlite_sqliteclient_delete_outbox_for_table",
+      "target": "storage_sqlite_sqliteclient_connect"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sqlite.py",
+      "source_location": "L101",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "storage_sqlite_sqliteclient_replace_all",
       "target": "storage_sqlite_sqliteclient_connect"
     },
     {
@@ -13184,11 +13505,44 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/storage/sqlite.py",
+      "source_location": "L103",
+      "weight": 1.0,
+      "source": "storage_sqlite_sqliteclient_replace_all",
+      "target": "storage_sqlite_sqliteclient_replace_tables",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sqlite.py",
       "source_location": "L100",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "storage_sqlite_sqliteclient_replace_all",
       "target": "storage_sqlite_sqliteclient_headers"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sqlite.py",
+      "source_location": "L107",
+      "weight": 1.0,
+      "source": "storage_sqlite_sqliteclient_replace_tables",
+      "target": "storage_sqlite_sqliteclient_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/storage/sqlite.py",
+      "source_location": "L117",
+      "weight": 1.0,
+      "source": "storage_sqlite_sqliteclient_replace_tables",
+      "target": "storage_sqlite_sqliteclient_to_text",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -14589,6 +14943,17 @@
       "confidence_score": 1.0,
       "source": "line_webhook_send_confirm_reading_result",
       "target": "line_webhook_push_to"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/webhook.py",
+      "source_location": "L872",
+      "weight": 1.0,
+      "source": "line_webhook_handle_postback",
+      "target": "line_webhook_push_to",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -16097,6 +16462,28 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "app/line/webhook.py",
+      "source_location": "L872",
+      "weight": 1.0,
+      "source": "line_webhook_handle_postback",
+      "target": "line_messages_build_settings_sync_success_message"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app/line/webhook.py",
+      "source_location": "L876",
+      "weight": 1.0,
+      "source": "line_webhook_handle_postback",
+      "target": "line_messages_build_settings_sync_failed_message"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "line/webhook.py",
       "source_location": "L757",
       "weight": 1.0,
@@ -16596,6 +16983,28 @@
       "source_location": "L319",
       "weight": 1.0,
       "source": "tests_test_line_webhook_postback_test_non_admin_cannot_start_report_import",
+      "target": "line_webhook_handle_postback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L634",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_admin_can_sync_google_sheet_to_sqlite",
+      "target": "line_webhook_handle_postback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L647",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_non_admin_cannot_sync_google_sheet_to_sqlite",
       "target": "line_webhook_handle_postback"
     },
     {
@@ -18016,6 +18425,28 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L634",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_admin_can_sync_google_sheet_to_sqlite",
+      "target": "line_parser_parsedpostback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L647",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_non_admin_cannot_sync_google_sheet_to_sqlite",
+      "target": "line_parser_parsedpostback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L329",
       "weight": 1.0,
       "source": "tests_test_line_webhook_postback_test_admin_edit_rate_creates_input_step",
@@ -18466,12 +18897,12 @@
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
-      "source_file": "line/parser.py",
-      "source_location": "L238",
+      "source_file": "app/line/parser.py",
+      "source_location": "L239",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "line_parser_rationale_238",
-      "target": "line_parser_parse_report_import_text"
+      "source": "line_parser_rationale_239",
+      "target": "line_parser_parse_report_import_text",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -18548,6 +18979,16 @@
       "source_location": "L78",
       "weight": 1.0,
       "source": "tests_test_report_import_parser_test_parse_report_import_fails_total_mismatch",
+      "target": "line_parser_parse_report_import_text"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "line/parser.py",
+      "source_location": "L238",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_parser_rationale_238",
       "target": "line_parser_parse_report_import_text"
     },
     {
@@ -18748,6 +19189,26 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/line/messages.py",
+      "source_location": "L361",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_line_messages_py",
+      "target": "line_messages_settings_menu_row"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L420",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_line_messages_py",
+      "target": "line_messages_settings_menu_list"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
       "source_location": "L294",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -18870,9 +19331,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L730",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_line_messages_py",
-      "target": "line_messages_meter_select_grid",
-      "confidence_score": 1.0
+      "target": "line_messages_meter_select_grid"
     },
     {
       "relation": "contains",
@@ -19148,6 +19609,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/line/messages.py",
+      "source_location": "L1630",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_line_messages_py",
+      "target": "line_messages_settings_rate_display"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
       "source_location": "L1071",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -19173,6 +19644,26 @@
       "confidence_score": 1.0,
       "source": "app_line_messages_py",
       "target": "line_messages_build_report_import_prompt_message"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1834",
+      "weight": 1.0,
+      "source": "app_line_messages_py",
+      "target": "line_messages_build_settings_sync_success_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1846",
+      "weight": 1.0,
+      "source": "app_line_messages_py",
+      "target": "line_messages_build_settings_sync_failed_message",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -19341,11 +19832,22 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/line/messages.py",
+      "source_location": "L377",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_messages_settings_menu_row",
+      "target": "line_messages_build_postback_data"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
       "source_location": "L744",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_meter_select_grid",
-      "target": "line_messages_build_postback_data",
-      "confidence_score": 1.0
+      "target": "line_messages_build_postback_data"
     },
     {
       "relation": "calls",
@@ -19560,6 +20062,28 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1841",
+      "weight": 1.0,
+      "source": "line_messages_build_settings_sync_success_message",
+      "target": "line_messages_build_postback_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1856",
+      "weight": 1.0,
+      "source": "line_messages_build_settings_sync_failed_message",
+      "target": "line_messages_build_postback_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
       "source_file": "line/messages.py",
       "source_location": "L760",
       "weight": 1.0,
@@ -19766,6 +20290,17 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1765",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_messages_build_settings_menu_message",
+      "target": "line_messages_quick_reply_from_actions"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
       "source_file": "line/messages.py",
       "source_location": "L369",
       "weight": 1.0,
@@ -19933,9 +20468,20 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1523",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_history_meter_select_message",
-      "target": "line_messages_postback_button",
-      "confidence_score": 1.0
+      "target": "line_messages_postback_button"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1752",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_messages_build_settings_menu_message",
+      "target": "line_messages_postback_button"
     },
     {
       "relation": "calls",
@@ -19969,6 +20515,28 @@
       "confidence_score": 1.0,
       "source": "line_messages_build_history_menu_message",
       "target": "line_messages_postback_menu_row"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1718",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_messages_build_settings_menu_message",
+      "target": "line_messages_settings_menu_row"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1716",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_messages_build_settings_menu_message",
+      "target": "line_messages_settings_menu_list"
     },
     {
       "relation": "calls",
@@ -20056,6 +20624,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "line_messages_build_batch_complete_card",
+      "target": "line_messages_status_badge"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1667",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_messages_build_settings_menu_message",
       "target": "line_messages_status_badge"
     },
     {
@@ -20296,9 +20875,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1515",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_history_meter_select_message",
-      "target": "line_messages_body_text",
-      "confidence_score": 1.0
+      "target": "line_messages_body_text"
     },
     {
       "relation": "calls",
@@ -20439,19 +21018,8 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1510",
       "weight": 1.0,
-      "source": "line_messages_build_history_meter_select_message",
-      "target": "line_messages_card_shell",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "app/line/messages.py",
-      "source_location": "L1390",
-      "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "line_messages_build_settings_menu_message",
+      "source": "line_messages_build_history_meter_select_message",
       "target": "line_messages_card_shell"
     },
     {
@@ -20463,6 +21031,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "line_messages_build_report_summary_message",
+      "target": "line_messages_card_shell"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1390",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_messages_build_settings_menu_message",
       "target": "line_messages_card_shell"
     },
     {
@@ -20494,9 +21073,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1520",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_history_meter_select_message",
-      "target": "line_messages_meter_select_grid",
-      "confidence_score": 1.0
+      "target": "line_messages_meter_select_grid"
     },
     {
       "relation": "calls",
@@ -20574,6 +21153,28 @@
       "confidence_score": 1.0,
       "source": "line_messages_build_report_import_prompt_message",
       "target": "line_messages_text_with_actions"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1835",
+      "weight": 1.0,
+      "source": "line_messages_build_settings_sync_success_message",
+      "target": "line_messages_text_with_actions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1850",
+      "weight": 1.0,
+      "source": "line_messages_build_settings_sync_failed_message",
+      "target": "line_messages_text_with_actions",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -21600,6 +22201,17 @@
     {
       "relation": "calls",
       "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1721",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_messages_build_settings_menu_message",
+      "target": "line_messages_settings_rate_display"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/test_line_messages.py",
@@ -22120,9 +22732,9 @@
       "source_file": "app/report/sender.py",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "app_report_sender_py",
-      "target": "report_sender_cache_bust_report_url",
-      "confidence_score": 1.0
+      "target": "report_sender_cache_bust_report_url"
     },
     {
       "relation": "contains",
@@ -22161,9 +22773,9 @@
       "source_file": "app/report/sender.py",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "report_sender_rationale_18",
-      "target": "report_sender_build_report_url",
-      "confidence_score": 1.0
+      "target": "report_sender_build_report_url"
     },
     {
       "relation": "calls",
@@ -22309,9 +22921,9 @@
       "source_file": "app/report/sender.py",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "report_sender_send_report",
-      "target": "report_sender_cache_bust_report_url",
-      "confidence_score": 1.0
+      "target": "report_sender_cache_bust_report_url"
     },
     {
       "relation": "calls",
@@ -22373,9 +22985,9 @@
       "source_file": "app/report/sender.py",
       "source_location": "L102",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "report_sender_rationale_102",
-      "target": "report_sender_send_report_if_complete",
-      "confidence_score": 1.0
+      "target": "report_sender_send_report_if_complete"
     },
     {
       "relation": "calls",
@@ -23875,6 +24487,16 @@
       "target": "services_meter_service_get_default_rate_setting"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L161",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_services_meter_service_py",
+      "target": "services_meter_service_now"
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -24174,11 +24796,11 @@
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
-      "source_file": "services/meter_service.py",
-      "source_location": "L33",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L34",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "services_meter_service_rationale_33",
+      "source": "services_meter_service_rationale_34",
       "target": "services_meter_service_calculate_reading"
     },
     {
@@ -24259,6 +24881,16 @@
       "target": "services_meter_service_calculate_reading"
     },
     {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "services/meter_service.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_meter_service_rationale_33",
+      "target": "services_meter_service_calculate_reading"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "services/meter_service.py",
@@ -24293,11 +24925,11 @@
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
-      "source_file": "services/meter_service.py",
-      "source_location": "L53",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L54",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "services_meter_service_rationale_53",
+      "source": "services_meter_service_rationale_54",
       "target": "services_meter_service_validate_reading"
     },
     {
@@ -24367,6 +24999,16 @@
       "target": "services_meter_service_validate_reading"
     },
     {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "services/meter_service.py",
+      "source_location": "L53",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_meter_service_rationale_53",
+      "target": "services_meter_service_validate_reading"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "services/meter_service.py",
@@ -24375,6 +25017,17 @@
       "confidence_score": 1.0,
       "source": "services_meter_service_py",
       "target": "services_meter_service_validate_reading"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L86",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_meter_service_save_reading",
+      "target": "services_meter_service_now"
     },
     {
       "relation": "calls",
@@ -24390,11 +25043,11 @@
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
-      "source_file": "services/meter_service.py",
-      "source_location": "L82",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L83",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "services_meter_service_rationale_82",
+      "source": "services_meter_service_rationale_83",
       "target": "services_meter_service_save_reading"
     },
     {
@@ -24436,9 +25089,30 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/test_meter_service.py",
+      "source_location": "L178",
+      "weight": 1.0,
+      "source": "tests_test_meter_service_testsavereading_test_save_reading_uses_configured_timezone_week_and_date",
+      "target": "services_meter_service_save_reading"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_meter_service.py",
       "source_location": "L174",
       "weight": 1.0,
       "source": "tests_test_meter_service_testsavereading_test_save_with_manual_edit",
+      "target": "services_meter_service_save_reading"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "services/meter_service.py",
+      "source_location": "L82",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_meter_service_rationale_82",
       "target": "services_meter_service_save_reading"
     },
     {
@@ -24450,6 +25124,16 @@
       "confidence_score": 1.0,
       "source": "services_meter_service_py",
       "target": "services_meter_service_save_reading"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L121",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_meter_service_rationale_121",
+      "target": "services_meter_service_get_last_value"
     },
     {
       "relation": "rationale_for",
@@ -24485,6 +25169,16 @@
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L130",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_meter_service_rationale_130",
+      "target": "services_meter_service_get_rate"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
       "source_file": "services/meter_service.py",
       "source_location": "L129",
       "weight": 1.0,
@@ -24505,6 +25199,16 @@
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L141",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_meter_service_rationale_141",
+      "target": "services_meter_service_is_duplicate_in_batch"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
       "source_file": "services/meter_service.py",
       "source_location": "L140",
       "weight": 1.0,
@@ -24521,6 +25225,16 @@
       "confidence_score": 1.0,
       "source": "services_meter_service_py",
       "target": "services_meter_service_is_duplicate_in_batch"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "app/services/meter_service.py",
+      "source_location": "L147",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_meter_service_rationale_147",
+      "target": "services_meter_service_iso_week"
     },
     {
       "relation": "rationale_for",
@@ -26759,6 +27473,26 @@
       "target": "services_batch_service_expected_meter_count"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/services/batch_service.py",
+      "source_location": "L125",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_services_batch_service_py",
+      "target": "services_batch_service_now"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/services/batch_service.py",
+      "source_location": "L133",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_services_batch_service_py",
+      "target": "services_batch_service_iso_week"
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -27032,6 +27766,28 @@
     {
       "relation": "calls",
       "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/services/batch_service.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_batch_service_generate_batch_id",
+      "target": "services_batch_service_iso_week"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/services/batch_service.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_batch_service_generate_batch_id",
+      "target": "services_batch_service_now"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "services/confirmation_service.py",
@@ -27063,6 +27819,17 @@
       "target": "services_batch_service_generate_batch_id"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_batch_service.py",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "tests_test_batch_service_testgeneratebatchid_test_uses_configured_timezone_for_monday_after_midnight",
+      "target": "services_batch_service_generate_batch_id"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "services/batch_service.py",
@@ -27071,6 +27838,28 @@
       "confidence_score": 1.0,
       "source": "services_batch_service_py",
       "target": "services_batch_service_generate_batch_id"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/services/batch_service.py",
+      "source_location": "L35",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_batch_service_get_or_create_batch",
+      "target": "services_batch_service_now"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/services/batch_service.py",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_batch_service_get_or_create_batch",
+      "target": "services_batch_service_iso_week"
     },
     {
       "relation": "calls",
@@ -27114,6 +27903,17 @@
       "source_location": "L44",
       "weight": 1.0,
       "source": "tests_test_batch_service_testgetorcreatebatch_test_creates_new_batch_with_expected_count_from_settings_sheet",
+      "target": "services_batch_service_get_or_create_batch"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_batch_service.py",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "tests_test_batch_service_testgetorcreatebatch_test_created_batch_uses_configured_timezone_week_and_date",
       "target": "services_batch_service_get_or_create_batch"
     },
     {
@@ -28318,6 +29118,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/test_storage_sync.py",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "tests_test_storage_sync_py",
+      "target": "tests_test_storage_sync_test_manual_pull_replaces_all_sqlite_tables_from_sheets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_storage_sync.py",
       "source_location": "L60",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -28395,6 +29205,17 @@
       "confidence_score": 1.0,
       "source": "tests_test_storage_sync_test_startup_pull_clears_pending_settings_outbox",
       "target": "tests_test_storage_sync_use_sqlite"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_storage_sync.py",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "tests_test_storage_sync_test_manual_pull_replaces_all_sqlite_tables_from_sheets",
+      "target": "tests_test_storage_sync_use_sqlite",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -29058,6 +29879,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "tests/test_meter_service.py",
+      "source_location": "L172",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tests_test_meter_service_testsavereading",
+      "target": "tests_test_meter_service_testsavereading_test_save_reading_uses_configured_timezone_week_and_date"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_meter_service.py",
       "source_location": "L170",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -29548,9 +30379,9 @@
       "source_file": "tests/test_report_sender.py",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_report_sender_py",
-      "target": "tests_test_report_sender_test_cache_bust_report_url_adds_stable_version_parameter",
-      "confidence_score": 1.0
+      "target": "tests_test_report_sender_test_cache_bust_report_url_adds_stable_version_parameter"
     },
     {
       "relation": "contains",
@@ -30681,6 +31512,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "tests/test_batch_service.py",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tests_test_batch_service_testgeneratebatchid",
+      "target": "tests_test_batch_service_testgeneratebatchid_test_uses_configured_timezone_for_monday_after_midnight"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_batch_service.py",
       "source_location": "L32",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -30696,6 +31537,16 @@
       "confidence_score": 1.0,
       "source": "tests_test_batch_service_testgetorcreatebatch",
       "target": "tests_test_batch_service_testgetorcreatebatch_test_creates_new_batch_with_expected_count_from_settings_sheet"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_batch_service.py",
+      "source_location": "L58",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tests_test_batch_service_testgetorcreatebatch",
+      "target": "tests_test_batch_service_testgetorcreatebatch_test_created_batch_uses_configured_timezone_week_and_date"
     },
     {
       "relation": "method",
@@ -31307,9 +32158,9 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L419",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_messages_py",
-      "target": "tests_test_line_messages_test_history_meter_select_message_is_card_with_meter_actions",
-      "confidence_score": 1.0
+      "target": "tests_test_line_messages_test_history_meter_select_message_is_card_with_meter_actions"
     },
     {
       "relation": "contains",
@@ -31618,9 +32469,9 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L420",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_messages_test_history_meter_select_message_is_card_with_meter_actions",
-      "target": "tests_test_line_messages_as_dict",
-      "confidence_score": 1.0
+      "target": "tests_test_line_messages_as_dict"
     },
     {
       "relation": "calls",
@@ -32277,9 +33128,9 @@
       "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L412",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_webhook_postback_py",
-      "target": "tests_test_line_webhook_postback_test_history_meter_postback_without_meter_returns_select_card",
-      "confidence_score": 1.0
+      "target": "tests_test_line_webhook_postback_test_history_meter_postback_without_meter_returns_select_card"
     },
     {
       "relation": "contains",
@@ -32370,6 +33221,26 @@
       "confidence_score": 1.0,
       "source": "tests_test_line_webhook_postback_py",
       "target": "tests_test_line_webhook_postback_test_non_admin_cannot_start_report_import"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L627",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_py",
+      "target": "tests_test_line_webhook_postback_test_admin_can_sync_google_sheet_to_sqlite",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L642",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_py",
+      "target": "tests_test_line_webhook_postback_test_non_admin_cannot_sync_google_sheet_to_sqlite",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
