@@ -4,16 +4,21 @@ from app.line.messages import (
     HELP_FLOW_IMAGE_ASSETS,
     HELP_FLOW_PREVIEW_IMAGE_ASSETS,
     HELP_MENU_TOPICS,
+    build_batch_complete_card,
     build_confirmation_card,
+    build_duplicate_warning_card,
     build_help_flow_response,
     build_help_menu_message,
     build_history_batch_list_message,
     build_history_menu_message,
+    build_lower_value_warning,
     build_meter_request_message,
+    build_ocr_review_message,
     build_report_import_preview_message,
     build_settings_menu_message,
     build_start_collection_card,
     build_status_card,
+    build_unreadable_prompt,
 )
 from app.line.webhook import _normalize_message_payload
 from app.services.session_service import PendingReportImport
@@ -31,6 +36,11 @@ def _clear_help_image_env(monkeypatch):
     monkeypatch.delenv("HELP_FLOW_IMAGE_PREVIEW_BASE_URL", raising=False)
 
 
+def _clear_line_card_image_env(monkeypatch):
+    monkeypatch.delenv("LINE_CARD_IMAGE_BASE_URL", raising=False)
+    monkeypatch.delenv("LINE_CARD_START_COLLECTION_HERO_URL", raising=False)
+
+
 def test_start_collection_flex_keeps_body_contents():
     payload = _as_dict(build_start_collection_card())
 
@@ -40,6 +50,61 @@ def test_start_collection_flex_keeps_body_contents():
     assert "start_collection" in str(payload)
     assert "show_status" in str(payload)
     assert "cancel_collection" in str(payload)
+
+
+def test_start_collection_card_uses_shell_and_https_hero(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+    monkeypatch.setenv("LINE_CARD_START_COLLECTION_HERO_URL", "https://cdn.example.com/solar.png")
+
+    payload = _as_dict(
+        build_start_collection_card(
+            week="รอบสัปดาห์นี้",
+            expected_meter_count=6,
+            next_meter_id="M1",
+            confirmed_meter_count=0,
+        )
+    )
+    rendered = str(payload)
+
+    assert "เริ่มบันทึกมิเตอร์" in rendered
+    assert "รอบสัปดาห์นี้ M1-M6" in rendered
+    assert "0/6 เครื่อง" in rendered
+    assert "https://cdn.example.com/solar.png" in rendered
+    assert "action=start_collection" in rendered
+    assert "text': '1'" in rendered
+
+
+def test_start_collection_card_uses_base_https_hero_asset(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+    monkeypatch.setenv("LINE_CARD_IMAGE_BASE_URL", "https://cdn.example.com/line-cards")
+
+    payload = _as_dict(build_start_collection_card())
+
+    assert (
+        "https://cdn.example.com/line-cards/solar-meter-mascot-hero-v0.2.0.png"
+        in str(payload)
+    )
+
+
+def test_start_collection_card_hides_empty_next_meter_and_visible_cancel(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+
+    payload = _as_dict(build_start_collection_card(next_meter_id=None))
+
+    assert "เครื่องถัดไป" not in str(payload["contents"]["body"])
+    assert "cancel_collection" not in str(payload["contents"]["footer"])
+    assert "cancel_collection" in str(payload["quickReply"])
+
+
+def test_start_collection_card_omits_non_https_hero(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+    monkeypatch.setenv("LINE_CARD_START_COLLECTION_HERO_URL", "http://cdn.example.com/solar.png")
+    monkeypatch.setenv("LINE_CARD_IMAGE_BASE_URL", "https://cdn.example.com/line-cards")
+
+    payload = _as_dict(build_start_collection_card())
+
+    assert "http://cdn.example.com/solar.png" not in str(payload)
+    assert "solar-meter-mascot-hero-v0.2.0.png" not in str(payload)
 
 
 def test_confirmation_flex_keeps_footer_actions():
@@ -58,6 +123,51 @@ def test_confirmation_flex_keeps_footer_actions():
     assert "confirm_reading" in str(payload)
     assert "edit_reading" in str(payload)
     assert "retake_photo" in str(payload)
+
+
+def test_warning_recovery_cards_keep_supported_actions_only():
+    payloads = [
+        _as_dict(build_unreadable_prompt("M2")),
+        _as_dict(build_ocr_review_message("M2", Decimal("12508"), ["confidence ต่ำ"])),
+        _as_dict(build_lower_value_warning("M2", Decimal("13000"), Decimal("12508"))),
+        _as_dict(build_duplicate_warning_card("M2", old_value="13000", new_value="12508")),
+    ]
+
+    rendered = "\n".join(str(payload) for payload in payloads)
+    assert "ตรวจสอบก่อนบันทึก" in rendered
+    assert "retake_photo" in rendered
+    assert "show_status" in rendered
+    assert "cancel_collection" in rendered
+    assert "replace_reading" not in rendered
+    assert "share_report" not in rendered
+
+
+def test_duplicate_warning_card_does_not_add_kwh_to_placeholder_old_value():
+    payload = _as_dict(
+        build_duplicate_warning_card("M2", old_value="มีข้อมูลเดิม", new_value="12508")
+    )
+    rendered = str(payload)
+
+    assert "มีข้อมูลเดิม" in rendered
+    assert "มีข้อมูลเดิม kWh" not in rendered
+    assert "12508 kWh" in rendered
+
+
+def test_batch_complete_card_has_safe_followup_actions():
+    payload = _as_dict(
+        build_batch_complete_card(
+            batch_id="2026-W19-U1",
+            week="2026-W19",
+            expected_meter_count=8,
+        )
+    )
+
+    rendered = str(payload)
+    assert payload["altText"] == "บันทึกครบแล้ว กำลังสร้างรายงาน"
+    assert "บันทึกครบแล้ว" in rendered
+    assert "history_batch" in rendered
+    assert "show_status" in rendered
+    assert "latest_report" not in rendered
 
 
 def test_meter_request_message_has_quick_replies():
@@ -118,6 +228,27 @@ def test_status_card_uses_configured_total_count_in_meter_grid():
 
     assert "บันทึกแล้ว 2/6 เครื่อง" in rendered
     assert "บันทึกแล้ว 2/8 เครื่อง" not in rendered
+
+
+def test_status_card_complete_state_omits_continue_action():
+    payload = _as_dict(
+        build_status_card(
+            meter_id=None,
+            pending="",
+            progress_text="เก็บแล้วครบ 6/6 เครื่อง",
+            confirmed_count=6,
+            total_count=6,
+            missing_meter_ids=[],
+            next_meter=None,
+        )
+    )
+    rendered = str(payload)
+
+    assert "6/6 เครื่อง" in rendered
+    assert "บันทึกต่อ" not in rendered
+    assert "select_meter" not in rendered
+    assert "latest_report" in rendered
+    assert "help" in rendered
 
 
 def test_help_menu_has_topic_quick_replies():

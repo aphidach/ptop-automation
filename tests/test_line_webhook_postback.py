@@ -189,6 +189,48 @@ async def test_confirm_postback_moves_state_without_errors():
     assert "สถานะรอบบันทึก" in str(pushed_messages[1])
     assert "ถ่ายรูปเครื่อง M2" in str(pushed_messages[2])
 
+
+@pytest.mark.anyio
+async def test_confirm_postback_sends_batch_complete_card_when_all_meters_done():
+    created_tasks = []
+
+    async def report_task(*_args):
+        return None
+
+    def fake_create_task(coro):
+        created_tasks.append(coro)
+        coro.close()
+
+    with patch("app.line.webhook.confirm_pending", return_value=(
+        PendingConfirmation(meter_id="M8"),
+        "บันทึก M8 เรียบร้อย",
+        "2026-W19-U1",
+    )), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock), \
+         patch("app.line.webhook._push_to", new_callable=AsyncMock) as mock_push, \
+         patch("app.line.webhook.asyncio.create_task", side_effect=fake_create_task), \
+         patch("app.line.webhook.send_report_if_complete", side_effect=report_task), \
+         patch(
+             "app.line.webhook.get_batch_progress",
+             return_value=BatchProgress(
+                batch_id="2026-W19-U1",
+                week="2026-W19",
+                status="complete",
+                expected_meter_count=8,
+                confirmed_meter_count=8,
+                missing_meter_ids=[],
+              ),
+         ):
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_CONFIRM_READING, meter_id="M8"), "rt")
+
+    mock_push.assert_awaited_once()
+    payload = mock_push.await_args.args[1]
+    assert "บันทึกครบแล้ว" in str(payload)
+    assert "history_batch" in str(payload)
+    assert "show_status" in str(payload)
+    assert len(created_tasks) == 1
+
+
 @pytest.mark.anyio
 async def test_show_status_postback_returns_progress_card():
     set_batch_id("U1", "2026-W19-U1")
@@ -259,9 +301,11 @@ async def test_help_flow_postback_replies_with_selected_topic():
             "U1",
             ParsedPostback(type=POSTBACK_HELP_FLOW, topic="latest_report"),
             "rt",
-        )
+    )
 
     payload = mock_reply.await_args.args[1]
+    if isinstance(payload, list):
+        payload = payload[-1]
     assert "วิธีดูรายงานล่าสุด" in payload.text
 
 @pytest.mark.anyio

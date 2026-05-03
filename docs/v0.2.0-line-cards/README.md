@@ -18,6 +18,8 @@
 | `02-card-template-spec.md` | ระบุ spec ของ 12 card templates พร้อม trigger, data fields, actions, postback mapping และ readiness |
 | `03-interaction-flow-map.md` | map flow จาก Rich Menu ไปแต่ละ card, state transition, operator/admin split และ fallback text commands |
 | `04-implementation-plan.md` | ลำดับพัฒนาจาก design ไป code, touchpoints, tests และ rollout checklist |
+| `05-visual-alignment-plan.md` | แผนทำให้ LINE Flex cards จริงใกล้กับ mock reference พร้อม imagegen asset workflow และ graphify scope |
+| `06-runtime-card-shell-plan.md` | แผนเก็บ runtime gaps 1-3: card behavior, shared Card Shell และ standard Flex builders |
 
 ## Design Goals
 

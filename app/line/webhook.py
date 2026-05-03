@@ -22,7 +22,9 @@ from starlette.requests import ClientDisconnect
 
 from app.config import settings
 from app.line.messages import (
+    build_batch_complete_card,
     build_confirmation_card,
+    build_duplicate_warning_card,
     build_help_flow_response,
     build_help_menu_message,
     build_history_batch_list_message,
@@ -632,7 +634,14 @@ async def _send_confirm_reading_result(
             progress = get_batch_progress(confirmed_batch_id)
             if progress and not progress.missing_meter_ids:
                 set_collection_state(source_id, COLLECTION_REPORTING)
-                await _push_to(source_id, "บันทึกครบ 8 เครื่องแล้วครับ\nกำลังสร้างรายงาน")
+                await _push_to(
+                    source_id,
+                    build_batch_complete_card(
+                        batch_id=confirmed_batch_id,
+                        week=progress.week,
+                        expected_meter_count=progress.expected_meter_count,
+                    ),
+                )
                 asyncio.create_task(send_report_if_complete(confirmed_batch_id, source_id))
                 return
 
@@ -651,7 +660,15 @@ async def _send_confirm_reading_result(
         value = pending.manual_value if pending.manual_value is not None else pending.ocr_value
         warnings = validate_reading(pending.meter_id, value, pending.batch_id or "")
         if "ถูกบันทึกไปแล้ว" in " ".join(warnings.warnings):
-            await _push_to(source_id, "รอบนี้มีค่าเดิมอยู่แล้วครับ\nการแทนที่ข้อมูลจะเพิ่มในเวอร์ชันถัดไป")
+            new_value = format_meter_value(value) if value is not None else "-"
+            await _push_to(
+                source_id,
+                build_duplicate_warning_card(
+                    pending.meter_id,
+                    old_value="มีข้อมูลเดิม",
+                    new_value=new_value,
+                ),
+            )
             return
         if "น้อยกว่า" in " ".join(warnings.warnings):
             current = value or 0
@@ -702,6 +719,7 @@ async def _handle_postback(
                 [
                     build_start_collection_card(
                         batch_id=batch_id,
+                        week=progress.week if progress else None,
                         expected_meter_count=expected_meter_count,
                         next_meter_id=next_meter,
                         confirmed_meter_count=confirmed_meter_count,
@@ -712,15 +730,16 @@ async def _handle_postback(
             return
         await _reply_to(
             reply_token,
-                [
-                    build_start_collection_card(
-                        batch_id=batch_id,
-                        expected_meter_count=expected_meter_count,
-                        next_meter_id=None,
-                        confirmed_meter_count=confirmed_meter_count or expected_meter_count,
-                    ),
-                    "ครบ 8 เครื่องแล้วครับ",
-                ],
+            [
+                build_start_collection_card(
+                    batch_id=batch_id,
+                    week=progress.week if progress else None,
+                    expected_meter_count=expected_meter_count,
+                    next_meter_id=None,
+                    confirmed_meter_count=confirmed_meter_count or expected_meter_count,
+                ),
+                f"ครบ {expected_meter_count} เครื่องแล้วครับ",
+            ],
         )
         return
 
