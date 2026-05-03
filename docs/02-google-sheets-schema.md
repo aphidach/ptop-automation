@@ -47,7 +47,7 @@ Confirmed meter readings. This is the main business data.
 | batch_id | string | yes | 2026-W19-Uxxxx | Weekly batch id |
 | date | date | yes | 2026-05-04 | Reading date |
 | week | string | yes | 2026-W19 | ISO week |
-| line_source_id | string | yes | Uxxxx/Gxxxx/Cxxxx | User/group/room id |
+| line_source_id | string | yes | Uxxxx/Cxxxx/Rxxxx | User/group/room id |
 | line_user_id | string | no | Uxxxx | Sender id |
 | meter_id | string | yes | M1 | Foreign key to `meters` |
 | current_value | number | yes | 12500 | Confirmed meter value |
@@ -71,7 +71,7 @@ Tracks completion of a weekly set.
 | batch_id | string | yes | 2026-W19-Uxxxx | Unique batch id |
 | week | string | yes | 2026-W19 | ISO week |
 | date | date | yes | 2026-05-04 | Reading date |
-| line_source_id | string | yes | Uxxxx/Gxxxx/Cxxxx | LINE source |
+| line_source_id | string | yes | Uxxxx/Cxxxx/Rxxxx | LINE source |
 | expected_meter_count | number | yes | 8 | Usually 8 |
 | confirmed_meter_count | number | yes | 6 | Count from readings |
 | status | string | yes | collecting | `collecting`, `complete`, `reported` |

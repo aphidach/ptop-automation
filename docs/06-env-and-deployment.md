@@ -89,6 +89,15 @@ reports/
 
 Webhook endpoint must validate the LINE signature.
 
+Set LINE allowlists before production use:
+
+```text
+ALLOWED_LINE_SOURCE_IDS=Cxxxxxxxx,Uxxxxxxxx
+ALLOWED_LINE_USER_IDS=Uxxxxxxxx,Uyyyyyyyy
+```
+
+`ALLOWED_LINE_SOURCE_IDS` controls allowed chats: group IDs, room IDs, or direct user chat IDs. `ALLOWED_LINE_USER_IDS` controls allowed senders. When both are set, the event must match both lists before the bot replies.
+
 ## Deployment Options
 
 Good MVP options:

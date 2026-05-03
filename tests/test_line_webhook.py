@@ -1,4 +1,4 @@
-from unittest.mock import Mock, patch
+from unittest.mock import AsyncMock, Mock, patch
 from types import SimpleNamespace
 
 import pytest
@@ -6,6 +6,7 @@ import pytest
 from decimal import Decimal
 from starlette.requests import ClientDisconnect
 
+from app.config import settings
 from app.line.parser import METER_VALUE, ParsedCommand, GEN, HELP, REPORT, STATUS, CANCEL, METER, OK, UNKNOWN
 from app.line.webhook import (
     _build_reply,
@@ -40,6 +41,27 @@ def _clean_sessions():
     with patch("app.services.confirmation_service.get_latest_pending_confirmation", return_value=None):
         yield
     session_service._store = session_service.InMemorySessionStore()
+
+
+class _FakeLineRequest:
+    headers = {"X-Line-Signature": "test-signature"}
+
+    def __init__(self, body: bytes = b"{}"):
+        self._body = body
+
+    async def body(self):
+        return self._body
+
+
+def _line_text_event(source, text: str = "HELP"):
+    return SimpleNamespace(
+        type="message",
+        source=source,
+        message=SimpleNamespace(type="text", id="msg-1", text=text),
+        reply_token="reply-token",
+        delivery_context=None,
+        webhook_event_id="event-1",
+    )
 
 
 def test_gen_without_batch_returns_no_data_message():
@@ -329,6 +351,68 @@ async def test_production_ocr_reader_uses_google_client(monkeypatch):
 
     assert result == "ocr-result"
     assert fake_client.image_path == "meter.jpg"
+
+
+@pytest.mark.anyio
+async def test_handle_webhook_ignores_unauthorized_line_user(monkeypatch):
+    monkeypatch.setattr(settings, "ALLOWED_LINE_SOURCE_IDS", ["G1"])
+    monkeypatch.setattr(settings, "ALLOWED_LINE_USER_IDS", ["U1"])
+    monkeypatch.setattr(settings, "ADMIN_LINE_USER_IDS", [])
+    monkeypatch.setattr(settings, "OWNER_LINE_USER_IDS", [])
+    event = _line_text_event(SimpleNamespace(type="group", group_id="G1", user_id="U2"), "STATUS")
+
+    with patch("app.line.webhook._webhook_parser.parse", return_value=[event]), \
+         patch("app.line.webhook._build_text_reply") as mock_build_reply, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        response = await handle_webhook(_FakeLineRequest())
+
+    assert response == {"ok": True}
+    mock_build_reply.assert_not_called()
+    mock_reply.assert_not_awaited()
+
+
+@pytest.mark.anyio
+async def test_handle_webhook_allows_group_chat_and_uses_chat_source_id(monkeypatch):
+    monkeypatch.setattr(settings, "ALLOWED_LINE_SOURCE_IDS", ["G1"])
+    monkeypatch.setattr(settings, "ALLOWED_LINE_USER_IDS", ["U1"])
+    monkeypatch.setattr(settings, "ADMIN_LINE_USER_IDS", [])
+    monkeypatch.setattr(settings, "OWNER_LINE_USER_IDS", [])
+    event = _line_text_event(SimpleNamespace(type="group", group_id="G1", user_id="U1"), "STATUS")
+
+    with patch("app.line.webhook._webhook_parser.parse", return_value=[event]), \
+         patch("app.line.webhook._build_text_reply", return_value="ok") as mock_build_reply, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        response = await handle_webhook(_FakeLineRequest())
+
+    assert response == {"ok": True}
+    assert mock_build_reply.call_args.args[1] == "G1"
+    mock_reply.assert_awaited_once_with("reply-token", "ok")
+
+
+@pytest.mark.anyio
+async def test_handle_webhook_logs_line_source_and_user_id(monkeypatch):
+    monkeypatch.setattr(settings, "ALLOWED_LINE_SOURCE_IDS", ["G1"])
+    monkeypatch.setattr(settings, "ALLOWED_LINE_USER_IDS", ["U1"])
+    monkeypatch.setattr(settings, "ADMIN_LINE_USER_IDS", [])
+    monkeypatch.setattr(settings, "OWNER_LINE_USER_IDS", [])
+    event = _line_text_event(SimpleNamespace(type="group", group_id="G1", user_id="U1"), "STATUS")
+
+    with patch("app.line.webhook._webhook_parser.parse", return_value=[event]), \
+         patch("app.line.webhook._build_text_reply", return_value="ok"), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock), \
+         patch("app.line.webhook.logger.info") as mock_log_info:
+        response = await handle_webhook(_FakeLineRequest())
+
+    assert response == {"ok": True}
+    assert any(
+        call.args
+        and call.args[0].startswith("LINE event: type=message")
+        and "line_source_id=%s" in call.args[0]
+        and "line_user_id=%s" in call.args[0]
+        and call.args[-2] == "G1"
+        and call.args[-1] == "U1"
+        for call in mock_log_info.call_args_list
+    )
 
 
 @pytest.mark.anyio

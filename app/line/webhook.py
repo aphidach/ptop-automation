@@ -168,6 +168,49 @@ _SHEETS_RETRY_MESSAGE = (
 )
 
 
+def _line_source_attr(source, snake_name: str, camel_name: str) -> str | None:
+    return getattr(source, snake_name, None) or getattr(source, camel_name, None)
+
+
+def _line_user_id(source) -> str | None:
+    if not source:
+        return None
+    return _line_source_attr(source, "user_id", "userId")
+
+
+def _line_chat_id(source) -> str | None:
+    if not source:
+        return None
+
+    source_type = getattr(source, "type", None)
+    if source_type == "group":
+        return _line_source_attr(source, "group_id", "groupId")
+    if source_type == "room":
+        return _line_source_attr(source, "room_id", "roomId")
+    if source_type == "user":
+        return _line_user_id(source)
+
+    return (
+        _line_source_attr(source, "group_id", "groupId")
+        or _line_source_attr(source, "room_id", "roomId")
+        or _line_user_id(source)
+    )
+
+
+def _is_line_event_allowed(chat_id: str | None, user_id: str | None) -> bool:
+    allowed_chat_ids = set(settings.ALLOWED_LINE_SOURCE_IDS)
+    allowed_user_ids = set(settings.ALLOWED_LINE_USER_IDS)
+    if allowed_user_ids:
+        allowed_user_ids.update(settings.ADMIN_LINE_USER_IDS)
+        allowed_user_ids.update(settings.OWNER_LINE_USER_IDS)
+
+    if allowed_chat_ids and chat_id not in allowed_chat_ids:
+        return False
+    if allowed_user_ids and user_id not in allowed_user_ids:
+        return False
+    return True
+
+
 def _is_sheets_quota_error(exc: APIError) -> bool:
     return "Quota exceeded" in str(exc) or "[429]" in str(exc)
 
@@ -913,9 +956,10 @@ async def handle_webhook(request: Request):
         logger.info("LINE webhook client disconnected before request body was read")
         return Response(status_code=204)
     signature = request.headers.get("X-Line-Signature", "")
+    body_text = body.decode("utf-8")
 
     try:
-        events = _webhook_parser.parse(body.decode("utf-8"), signature)
+        events = _webhook_parser.parse(body_text, signature)
     except InvalidSignatureError:
         logger.warning("Invalid LINE signature")
         return Response(status_code=403)
@@ -924,54 +968,60 @@ async def handle_webhook(request: Request):
         event_type = getattr(event, "type", None)
         source = getattr(event, "source", None)
         source_type = getattr(source, "type", None) if source else None
-        source_id = (
-            getattr(source, "user_id", None)
-            or getattr(source, "group_id", None)
-            or getattr(source, "room_id", None)
-            if source
-            else None
-        )
+        source_id = _line_chat_id(source)
+        source_user_id = _line_user_id(source)
         delivery_context = getattr(event, "delivery_context", None)
         is_redelivery = (
             getattr(delivery_context, "is_redelivery", False) if delivery_context else False
         )
         if is_redelivery:
             logger.info(
-                "Skipping redelivered LINE event: id=%s type=%s source_id=%s",
+                "Skipping redelivered LINE event: id=%s type=%s line_source_id=%s line_user_id=%s",
                 getattr(event, "webhook_event_id", None),
                 event_type,
                 source_id,
-            )
-            continue
-
-        if event_type == "postback":
-            if not source_id:
-                continue
-            parsed = parse_postback_action(getattr(getattr(event, "postback", None), "data", ""))
-            await _handle_postback_safely(source_id, parsed, getattr(event, "reply_token", ""))
-            continue
-
-        if event_type != "message":
-            logger.info(
-                "LINE event: type=%s, source_type=%s, source_id=%s",
-                event_type,
-                source_type,
-                source_id,
+                source_user_id,
             )
             continue
 
         if not source_id:
             continue
 
+        if not _is_line_event_allowed(source_id, source_user_id):
+            logger.info(
+                "Skipping unauthorized LINE event: type=%s source_type=%s line_source_id=%s line_user_id=%s",
+                event_type,
+                source_type,
+                source_id,
+                source_user_id,
+            )
+            continue
+
+        if event_type == "postback":
+            parsed = parse_postback_action(getattr(getattr(event, "postback", None), "data", ""))
+            await _handle_postback_safely(source_id, parsed, getattr(event, "reply_token", ""))
+            continue
+
+        if event_type != "message":
+            logger.info(
+                "LINE event: type=%s, source_type=%s, line_source_id=%s, line_user_id=%s",
+                event_type,
+                source_type,
+                source_id,
+                source_user_id,
+            )
+            continue
+
         message = getattr(event, "message", None)
         message_type = getattr(message, "type", None) if message else None
         message_id = getattr(message, "id", None) if message else None
         logger.info(
-            "LINE event: type=message, message_type=%s, message_id=%s, source_type=%s, source_id=%s",
+            "LINE event: type=message, message_type=%s, message_id=%s, source_type=%s, line_source_id=%s, line_user_id=%s",
             message_type,
             message_id,
             source_type,
             source_id,
+            source_user_id,
         )
 
         reply_token = getattr(event, "reply_token", None)

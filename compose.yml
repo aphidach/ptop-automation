@@ -1,0 +1,32 @@
+services:
+  ptop-automation:
+    image: ghcr.io/aphidach/ptop-automation:latest
+    pull_policy: always
+    container_name: ptop-automation
+    restart: unless-stopped
+    init: true
+
+    env_file:
+      - .env
+
+    ports:
+      - "${PORT:-8000}:8000"
+
+    volumes:
+      - ./credentials:/app/credentials:ro
+      - ./reports:/app/reports
+      - ./tmp/images:/app/tmp/images
+
+    cpus: "0.25"
+    mem_limit: 256m
+    memswap_limit: 256m
+    pids_limit: 128
+
+    security_opt:
+      - no-new-privileges:true
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
