@@ -49,6 +49,7 @@ from app.line.messages import (
     build_settings_recipients_message,
     build_settings_view_message,
     build_start_collection_card,
+    build_status_card,
     build_unreadable_prompt,
 )
 from app.line.parser import (
@@ -426,6 +427,42 @@ def _build_status_message(source_id: str) -> str:
         return "ยังไม่มีข้อมูลรอบนี้ครับ"
     return "\n".join(lines)
 
+
+def _build_status_card_message(source_id: str):
+    meter_id = get_collection_current_meter(source_id) or get_latest_meter(source_id)
+    pending_text = ""
+    pending = get_pending_confirmation(source_id)
+    if pending:
+        value = pending.manual_value if pending.manual_value is not None else pending.ocr_value
+        value_text = format_meter_value(value) if value is not None else "-"
+        pending_text = f"{pending.meter_id} = {value_text}"
+
+    batch_id = get_session_batch_id(source_id)
+    progress = None
+    progress_text = ""
+    next_meter = None
+    if batch_id:
+        try:
+            progress = get_batch_progress(batch_id)
+            progress_text = build_progress_message(batch_id)
+            next_meter = _next_meter_to_capture(source_id, batch_id)
+        except Exception:
+            logger.exception("Failed to build status card for batch: %s", batch_id)
+            progress_text = "ยังดึงความคืบหน้าไม่ได้ครับ"
+
+    return build_status_card(
+        meter_id=meter_id,
+        pending=pending_text,
+        progress_text=progress_text,
+        batch_id=batch_id,
+        week=progress.week if progress else None,
+        confirmed_count=progress.confirmed_meter_count if progress else None,
+        total_count=progress.expected_meter_count if progress else None,
+        missing_meter_ids=progress.missing_meter_ids if progress else None,
+        next_meter=next_meter,
+    )
+
+
 def _build_settings_input_reply(text: str, source_id: str, operator_id: str | None = None):
     key = get_settings_input_key(source_id)
     if not key:
@@ -601,6 +638,7 @@ async def _send_confirm_reading_result(
 
             messages = [reply]
             next_meter = _next_meter_to_capture(source_id, confirmed_batch_id)
+            messages.append(_build_status_card_message(source_id))
             if next_meter:
                 messages.append(build_meter_request_message(next_meter))
             await _push_to(source_id, messages)
@@ -655,17 +693,39 @@ async def _handle_postback(
         clear_collection_meter(source_id)
         clear_pending_confirmation(source_id)
         next_meter = _set_next_collection_meter(source_id, batch_id)
+        progress = get_batch_progress(batch_id)
+        expected_meter_count = progress.expected_meter_count if progress else len(settings.VALID_METER_IDS)
+        confirmed_meter_count = progress.confirmed_meter_count if progress else 0
         if next_meter:
             await _reply_to(
                 reply_token,
-                [build_start_collection_card(), build_meter_request_message(next_meter)],
+                [
+                    build_start_collection_card(
+                        batch_id=batch_id,
+                        expected_meter_count=expected_meter_count,
+                        next_meter_id=next_meter,
+                        confirmed_meter_count=confirmed_meter_count,
+                    ),
+                    build_meter_request_message(next_meter),
+                ],
             )
             return
-        await _reply_to(reply_token, [build_start_collection_card(), "ครบ 8 เครื่องแล้วครับ"])
+        await _reply_to(
+            reply_token,
+                [
+                    build_start_collection_card(
+                        batch_id=batch_id,
+                        expected_meter_count=expected_meter_count,
+                        next_meter_id=None,
+                        confirmed_meter_count=confirmed_meter_count or expected_meter_count,
+                    ),
+                    "ครบ 8 เครื่องแล้วครับ",
+                ],
+        )
         return
 
     if action == POSTBACK_SHOW_STATUS:
-        await _reply_to(reply_token, _build_status_message(source_id))
+        await _reply_to(reply_token, _build_status_card_message(source_id))
         return
 
     if action == POSTBACK_SKIP_METER:

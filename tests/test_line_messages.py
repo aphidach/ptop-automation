@@ -13,6 +13,7 @@ from app.line.messages import (
     build_report_import_preview_message,
     build_settings_menu_message,
     build_start_collection_card,
+    build_status_card,
 )
 from app.line.webhook import _normalize_message_payload
 from app.services.session_service import PendingReportImport
@@ -35,7 +36,10 @@ def test_start_collection_flex_keeps_body_contents():
 
     assert payload["contents"]["type"] == "bubble"
     assert "body" in payload["contents"]
-    assert "เริ่มบันทึกค่ามิเตอร์สัปดาห์นี้" in str(payload)
+    assert "เริ่มบันทึกมิเตอร์" in str(payload)
+    assert "start_collection" in str(payload)
+    assert "show_status" in str(payload)
+    assert "cancel_collection" in str(payload)
 
 
 def test_confirmation_flex_keeps_footer_actions():
@@ -59,7 +63,9 @@ def test_confirmation_flex_keeps_footer_actions():
 def test_meter_request_message_has_quick_replies():
     payload = _as_dict(build_meter_request_message("M1"))
 
-    assert payload["text"] == "กรุณาถ่ายรูปเครื่อง M1"
+    assert payload["altText"] == "ถ่ายรูปเครื่อง M1"
+    assert payload["contents"]["type"] == "bubble"
+    assert "ถ่ายรูป M1" in str(payload)
     assert len(payload["quickReply"]["items"]) == 11
 
 
@@ -73,6 +79,45 @@ def test_meter_request_uses_select_meter_postbacks_instead_of_m1_text_jump():
         and action["data"] == "action=select_meter&meter_id=M4"
         for action in actions
     )
+
+def test_status_card_renders_progress_actions():
+    payload = _as_dict(
+        build_status_card(
+            meter_id="M2",
+            pending="M1 = 12,500",
+            progress_text="เก็บแล้ว 1/8 ขาด M2, M3",
+            batch_id="2026-W19-U1",
+            week="2026-W19",
+            confirmed_count=1,
+            total_count=8,
+            missing_meter_ids=["M2", "M3", "M4", "M5", "M6", "M7", "M8"],
+            next_meter="M2",
+        )
+    )
+
+    assert payload["altText"] == "สถานะรอบบันทึก"
+    assert "สถานะรอบบันทึก" in str(payload)
+    assert "M1 = 12,500" in str(payload)
+    assert "select_meter" in str(payload)
+    assert "latest_report" in str(payload)
+
+
+def test_status_card_uses_configured_total_count_in_meter_grid():
+    payload = _as_dict(
+        build_status_card(
+            meter_id="M2",
+            pending="",
+            progress_text="เก็บแล้ว 2/6 ขาด M3-M6",
+            confirmed_count=2,
+            total_count=6,
+            missing_meter_ids=["M3", "M4", "M5", "M6"],
+            next_meter="M3",
+        )
+    )
+    rendered = str(payload)
+
+    assert "บันทึกแล้ว 2/6 เครื่อง" in rendered
+    assert "บันทึกแล้ว 2/8 เครื่อง" not in rendered
 
 
 def test_help_menu_has_topic_quick_replies():

@@ -17,6 +17,7 @@ from app.line.parser import (
     POSTBACK_HISTORY_CURRENT,
     POSTBACK_HISTORY_SELECT_WEEK,
     POSTBACK_SELECT_METER,
+    POSTBACK_SHOW_STATUS,
     POSTBACK_SKIP_METER,
     POSTBACK_START_COLLECTION,
     POSTBACK_SETTINGS,
@@ -107,6 +108,28 @@ async def test_start_collection_postback_starts_linear_flow():
 
 
 @pytest.mark.anyio
+async def test_start_collection_card_uses_batch_expected_meter_count():
+    progress = BatchProgress(
+        batch_id="2026-W19-U1",
+        week="2026-W19",
+        status="collecting",
+        expected_meter_count=6,
+        confirmed_meter_count=0,
+        missing_meter_ids=["M1", "M2", "M3", "M4", "M5", "M6"],
+    )
+
+    with patch("app.line.webhook.ensure_batch_id", return_value="2026-W19-U1"), \
+         patch("app.line.webhook.get_batch_progress", return_value=progress), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_START_COLLECTION), "rt")
+
+    rendered = str(mock_reply.await_args.args[1][0])
+    assert "0/6 เครื่อง" in rendered
+    assert "M1-M6" in rendered
+    assert "M1-M8" not in rendered
+
+
+@pytest.mark.anyio
 async def test_skip_meter_moves_to_next_machine():
     set_batch_id("U1", "2026-W19-U1")
     set_collection_current_meter("U1", "M1")
@@ -161,8 +184,32 @@ async def test_confirm_postback_moves_state_without_errors():
     mock_reply.assert_awaited_once_with("rt", "กำลังบันทึก M1 ครับ...")
     assert mock_push.await_count == 1
     pushed_messages = mock_push.await_args.args[1]
-    assert len(pushed_messages) == 2
+    assert len(pushed_messages) == 3
     assert pushed_messages[0] == "บันทึก M1 เรียบร้อย"
+    assert "สถานะรอบบันทึก" in str(pushed_messages[1])
+    assert "ถ่ายรูปเครื่อง M2" in str(pushed_messages[2])
+
+@pytest.mark.anyio
+async def test_show_status_postback_returns_progress_card():
+    set_batch_id("U1", "2026-W19-U1")
+    set_collection_current_meter("U1", "M2")
+    progress = BatchProgress(
+        batch_id="2026-W19-U1",
+        week="2026-W19",
+        status="collecting",
+        expected_meter_count=8,
+        confirmed_meter_count=1,
+        missing_meter_ids=["M2", "M3", "M4", "M5", "M6", "M7", "M8"],
+    )
+
+    with patch("app.line.webhook.get_batch_progress", return_value=progress), \
+         patch("app.line.webhook.build_progress_message", return_value="เก็บแล้ว 1/8 ขาด M2-M8"), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SHOW_STATUS), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    assert "สถานะรอบบันทึก" in str(payload)
+    assert "select_meter" in str(payload)
 
 
 @pytest.mark.anyio
