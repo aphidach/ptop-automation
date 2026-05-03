@@ -88,6 +88,7 @@ class ParsedPostback:
     type: str = POSTBACK_UNKNOWN
     meter_id: Optional[str] = None
     batch_id: Optional[str] = None
+    period_days: Optional[int] = None
     topic: Optional[str] = None
     field: Optional[str] = None
     change_id: Optional[str] = None
@@ -125,6 +126,7 @@ _REPORT_ROW_START = re.compile(r"^\s*(\d{1,2})\s*[\.)]\s+")
 _ISO_DATE = re.compile(r"\b(20\d{2})-(\d{1,2})-(\d{1,2})\b")
 _SLASH_DATE = re.compile(r"\b(\d{1,2})[/-](\d{1,2})[/-](\d{4})\b")
 _BOOL_TRUE = {"1", "true", "yes", "on"}
+_HISTORY_PERIOD_DAYS = {7, 30, 90}
 
 
 def parse_command(text: str) -> ParsedCommand:
@@ -206,6 +208,7 @@ def parse_postback_action(raw: str) -> ParsedPostback:
         type=action,
         meter_id=_normalize_meter_id(data.get("meter_id")),
         batch_id=(data.get("batch_id") or "").strip() or None,
+        period_days=_normalize_history_period(data.get("period_days")),
         topic=(data.get("topic") or "").strip() or None,
         field=(data.get("field") or "").strip() or None,
         change_id=(data.get("change_id") or "").strip() or None,
@@ -227,6 +230,16 @@ def _normalize_bool(value: Optional[str]) -> bool:
     if not value:
         return False
     return value.strip().lower() in _BOOL_TRUE
+
+
+def _normalize_history_period(value: Optional[str]) -> Optional[int]:
+    if not value:
+        return None
+    try:
+        period_days = int(value.strip())
+    except ValueError:
+        return None
+    return period_days if period_days in _HISTORY_PERIOD_DAYS else None
 
 
 def is_valid_meter(meter_id: str, valid_ids: list[str]) -> bool:

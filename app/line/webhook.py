@@ -847,8 +847,9 @@ async def _handle_postback(
         if not is_valid_meter(meter_id, settings.VALID_METER_IDS):
             await _reply_to(reply_token, build_history_meter_select_message(settings.VALID_METER_IDS))
             return
-        readings = history_service.get_meter_history(meter_id, source_id)
-        await _reply_to(reply_token, build_history_meter_message(meter_id, readings))
+        period_days = parsed.period_days or 7
+        readings = history_service.get_meter_history(meter_id, source_id, period_days=period_days)
+        await _reply_to(reply_token, build_history_meter_message(meter_id, readings, period_days=period_days))
         return
 
     if action == POSTBACK_SETTINGS:

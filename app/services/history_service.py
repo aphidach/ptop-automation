@@ -8,6 +8,9 @@ from app.config import settings
 from app.services.batch_service import generate_batch_id
 from app.sheets import repositories
 
+METER_HISTORY_PERIOD_DAYS = {7, 30, 90}
+METER_HISTORY_MAX_POINTS = 12
+
 
 @dataclass
 class BatchSummary:
@@ -135,8 +138,28 @@ def get_batch_summary(batch_id: str) -> BatchSummary | None:
     )
 
 
-def get_meter_history(meter_id: str, source_id: str, limit: int = 3) -> list[dict]:
-    return repositories.get_readings_by_meter(meter_id, source_id)[:limit]
+def get_meter_history(
+    meter_id: str,
+    source_id: str,
+    period_days: int = 7,
+    *,
+    now: datetime | None = None,
+    limit: int = METER_HISTORY_MAX_POINTS,
+) -> list[dict]:
+    period = period_days if period_days in METER_HISTORY_PERIOD_DAYS else 7
+    current_time = now or datetime.now(timezone.utc)
+    if current_time.tzinfo is None:
+        current_time = current_time.replace(tzinfo=timezone.utc)
+    cutoff = current_time.astimezone(timezone.utc) - timedelta(days=period)
+
+    rows = []
+    for row in repositories.get_readings_by_meter(meter_id, source_id):
+        seen_at = _reading_datetime(row)
+        if seen_at and seen_at >= cutoff:
+            rows.append(row)
+        if len(rows) >= limit:
+            break
+    return rows
 
 
 def _to_decimal(value) -> Decimal:
@@ -155,6 +178,14 @@ def _to_int(value, fallback: int) -> int:
 
 def _row_datetime(row: dict) -> datetime | None:
     for key in ("date", "created_at", "updated_at"):
+        parsed = _parse_datetime(row.get(key))
+        if parsed:
+            return parsed
+    return None
+
+
+def _reading_datetime(row: dict) -> datetime | None:
+    for key in ("created_at", "date"):
         parsed = _parse_datetime(row.get(key))
         if parsed:
             return parsed

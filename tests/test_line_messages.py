@@ -14,6 +14,7 @@ from app.line.messages import (
     build_history_batch_list_message,
     build_history_detail_message,
     build_history_menu_message,
+    build_history_meter_message,
     build_history_meter_select_message,
     build_history_summary_message,
     build_lower_value_warning,
@@ -440,29 +441,134 @@ def test_normalize_line_message_payload_accepts_mixed_list():
 
 def test_history_menu_has_usable_actions():
     payload = _as_dict(build_history_menu_message())
+    rendered = str(payload)
 
     assert payload["altText"] == "ประวัติการบันทึก"
-    assert "ประวัติ" in str(payload)
-    assert "history_current" in str(payload)
-    assert "history_previous" in str(payload)
-    assert "history_select_week" in str(payload)
-    assert "history_meter" in str(payload)
-    assert "latest_report" in str(payload)
+    assert payload["contents"]["type"] == "bubble"
+    assert payload["contents"]["size"] == "giga"
+    assert "เลือกข้อมูลที่ต้องการดู" in rendered
+    assert "เลือกเส้นทางด้านล่างเพื่อดูข้อมูลย้อนหลัง" in rendered
+    assert "history_current" in rendered
+    assert "history_previous" in rendered
+    assert "history_select_week" in rendered
+    assert "history_meter" in rendered
+    assert "latest_report" in rendered
     assert "help" in str(payload["contents"]["footer"])
     assert "help" not in str(payload["quickReply"])
+    assert len(payload["quickReply"]["items"]) == 4
 
 
 def test_history_meter_select_message_is_card_with_meter_actions():
-    payload = _as_dict(build_history_meter_select_message(("M1", "M2", "M3")))
+    payload = _as_dict(build_history_meter_select_message())
     rendered = str(payload)
 
     assert payload["altText"] == "ดูตามมิเตอร์"
+    assert payload["contents"]["size"] == "giga"
     assert "เลือกมิเตอร์ที่ต้องการดู" in rendered
+    assert "แตะเครื่องด้านล่างเพื่อดูประวัติรายเครื่อง" in rendered
     assert "action=history_meter&meter_id=M1" in rendered
-    assert "action=history_meter&meter_id=M3" in rendered
-    assert "action=history_meter&meter_id=M4" not in rendered
+    assert "action=history_meter&meter_id=M8" in rendered
+    assert "▦" in rendered
     assert "action=history" in rendered
     assert "latest_report" in rendered
+
+
+def test_history_meter_message_renders_rich_card_with_period_actions():
+    payload = _as_dict(
+        build_history_meter_message(
+            "M1",
+            [
+                {
+                    "meter_id": "M1",
+                    "week": "2026-W18",
+                    "current_value": "135420",
+                    "produced_unit": "375.8",
+                    "created_at": "2026-04-28T03:09:00+07:00",
+                },
+                {
+                    "meter_id": "M1",
+                    "week": "2026-W17",
+                    "current_value": "135044.2",
+                    "produced_unit": "320.1",
+                    "created_at": "2026-04-21T03:09:00+07:00",
+                },
+            ],
+            period_days=30,
+        )
+    )
+    rendered = str(payload)
+
+    assert payload["altText"] == "ประวัติ M1"
+    assert payload["contents"]["type"] == "bubble"
+    assert payload["contents"]["size"] == "giga"
+    assert len(payload["quickReply"]["items"]) == 3
+    assert "ประวัติ M1" in rendered
+    assert "มิเตอร์ #001" in rendered
+    assert "ปกติ" in rendered
+    assert "รอบปัจจุบัน" in rendered
+    assert "135,420" in rendered
+    assert "kWh" in rendered
+    assert "เพิ่มขึ้น" in rendered
+    assert "+375.8" in rendered
+    assert "(+0.28%)" in rendered
+    assert "รอบบันทึก" in rendered
+    assert "2026-W18" in rendered
+    assert "รอบก่อนหน้า" in rendered
+    assert "2026-W17" in rendered
+    assert "อัปเดตล่าสุด" in rendered
+    assert "28 เม.ย. 2569" in rendered
+    assert "03:09" in rendered
+    assert "กราฟการใช้ไฟฟ้า" in rendered
+    assert "●" in rendered
+    assert "7 วัน" in rendered
+    assert "30 วัน" in rendered
+    assert "90 วัน" in rendered
+    assert "action=history_meter&meter_id=M1&period_days=7" in rendered
+    assert "action=history_meter&meter_id=M1&period_days=30" in rendered
+    assert "action=history_meter&meter_id=M1&period_days=90" in rendered
+    assert "ส่งรายงานล่าสุด" in rendered
+    assert "เลือกเครื่องอื่น" in rendered
+    assert "กลับประวัติ" in rendered
+    footer_action_group = payload["contents"]["footer"]["contents"][0]
+    assert footer_action_group["layout"] == "vertical"
+    assert footer_action_group["contents"][0]["action"]["label"] == "ส่งรายงานล่าสุด"
+    assert footer_action_group["contents"][1]["layout"] == "horizontal"
+
+
+def test_history_meter_single_reading_uses_latest_point_chart():
+    payload = _as_dict(
+        build_history_meter_message(
+            "M1",
+            [
+                {
+                    "meter_id": "M1",
+                    "week": "2026-W18",
+                    "current_value": "135420",
+                    "produced_unit": "375.8",
+                    "created_at": "2026-04-28T03:09:00+07:00",
+                }
+            ],
+            period_days=7,
+        )
+    )
+    rendered = str(payload)
+
+    assert "135,420 kWh" in rendered
+    assert "W18" in rendered
+    assert "●" in rendered
+    assert "action=history_meter&meter_id=M1&period_days=7" in rendered
+
+
+def test_history_meter_empty_state_stays_actionable():
+    payload = _as_dict(build_history_meter_message("M2", [], period_days=90))
+    rendered = str(payload)
+
+    assert payload["altText"] == "ประวัติ M2"
+    assert "ยังไม่มีประวัติของ M2 ในช่วง 90 วันครับ" in rendered
+    assert "action=start_collection" in rendered
+    assert "action=history_meter" in rendered
+    assert "action=history" in rendered
+    assert "action=history_meter&meter_id=M2&period_days=90" in rendered
 
 
 def test_history_batch_list_shows_recent_weeks():
@@ -495,6 +601,22 @@ def test_history_batch_list_shows_recent_weeks():
     assert "history_batch" in rendered
     assert "batch_id=2026-W18-U1" in rendered
     assert "กลับประวัติ" in rendered
+
+    first_row = payload["contents"]["body"]["contents"][3]["contents"][0]
+    assert first_row["contents"][0]["width"] == "34px"
+    assert first_row["contents"][1]["size"] == "md"
+    assert first_row["contents"][1]["wrap"] is False
+    assert first_row["contents"][2]["size"] == "sm"
+    assert first_row["contents"][2]["wrap"] is False
+
+
+def test_history_batch_list_empty_uses_text_fallback():
+    payload = _as_dict(build_history_batch_list_message([]))
+
+    assert payload["text"] == "ยังไม่มีประวัติย้อนหลังใน 1 เดือนนี้ครับ"
+    assert "start_collection" in str(payload)
+    assert "latest_report" in str(payload)
+    assert "help" in str(payload)
 
 
 def test_history_summary_message_is_flex_card():

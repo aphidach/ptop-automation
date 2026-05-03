@@ -168,3 +168,56 @@ def test_recent_batch_summaries_include_reading_only_batches_from_last_month(moc
     )
 
     assert [summary.week for summary in summaries] == ["2026-W18", "2026-W17"]
+
+
+@patch("app.services.history_service.repositories")
+def test_meter_history_filters_by_selected_period(mock_repo):
+    mock_repo.get_readings_by_meter.return_value = [
+        {
+            "meter_id": "M1",
+            "week": "2026-W18",
+            "created_at": "2026-05-03T01:00:00+00:00",
+        },
+        {
+            "meter_id": "M1",
+            "week": "2026-W17",
+            "date": "2026-04-29",
+        },
+        {
+            "meter_id": "M1",
+            "week": "2026-W16",
+            "created_at": "2026-04-20T01:00:00+00:00",
+        },
+    ]
+
+    rows = history_service.get_meter_history(
+        "M1",
+        "U1",
+        period_days=7,
+        now=datetime(2026, 5, 4, tzinfo=timezone.utc),
+    )
+
+    assert [row["week"] for row in rows] == ["2026-W18", "2026-W17"]
+
+
+@patch("app.services.history_service.repositories")
+def test_meter_history_caps_dense_history_and_keeps_order(mock_repo):
+    mock_repo.get_readings_by_meter.return_value = [
+        {
+            "meter_id": "M1",
+            "week": f"2026-W{i:02d}",
+            "created_at": f"2026-05-{min(i, 28):02d}T01:00:00+00:00",
+        }
+        for i in range(20, 0, -1)
+    ]
+
+    rows = history_service.get_meter_history(
+        "M1",
+        "U1",
+        period_days=30,
+        now=datetime(2026, 5, 28, tzinfo=timezone.utc),
+    )
+
+    assert len(rows) == 12
+    assert rows[0]["week"] == "2026-W20"
+    assert rows[-1]["week"] == "2026-W09"

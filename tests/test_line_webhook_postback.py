@@ -426,6 +426,32 @@ async def test_history_meter_postback_without_meter_returns_select_card():
 
 
 @pytest.mark.anyio
+async def test_history_meter_postback_with_period_returns_meter_card():
+    readings = [
+        {
+            "meter_id": "M1",
+            "week": "2026-W18",
+            "current_value": "135420",
+            "produced_unit": "375.8",
+            "created_at": "2026-04-28T03:09:00+07:00",
+        }
+    ]
+    with patch("app.line.webhook.history_service.get_meter_history", return_value=readings) as mock_history, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback(
+            "U1",
+            ParsedPostback(type=POSTBACK_HISTORY_METER, meter_id="M1", period_days=30),
+            "rt",
+        )
+
+    mock_history.assert_called_once_with("M1", "U1", period_days=30)
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "ประวัติ M1"
+    assert "action=history_meter&meter_id=M1&period_days=30" in str(payload)
+
+
+@pytest.mark.anyio
 async def test_history_select_week_postback_shows_recent_batches():
     summaries = [
         SimpleNamespace(
