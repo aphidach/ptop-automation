@@ -14,6 +14,7 @@ from linebot.v3.messaging import (
     Configuration,
     ReplyMessageRequest,
     PushMessageRequest,
+    FlexMessage,
     TextMessage,
 )
 from linebot.v3.messaging.exceptions import ApiException
@@ -22,7 +23,9 @@ from starlette.requests import ClientDisconnect
 
 from app.config import settings
 from app.line.messages import (
+    build_batch_complete_card,
     build_confirmation_card,
+    build_duplicate_warning_card,
     build_help_flow_response,
     build_help_menu_message,
     build_history_batch_list_message,
@@ -39,16 +42,21 @@ from app.line.messages import (
     build_report_import_preview_message,
     build_report_import_prompt_message,
     build_report_import_success_message,
+    build_report_unavailable_message,
     build_settings_confirm_change_message,
     build_settings_edit_prompt_message,
     build_settings_menu_message,
+    build_report_summary_message,
     build_settings_meter_detail_message,
     build_settings_meters_message,
     build_settings_not_admin_message,
     build_settings_permissions_message,
     build_settings_recipients_message,
+    build_settings_sync_failed_message,
+    build_settings_sync_success_message,
     build_settings_view_message,
     build_start_collection_card,
+    build_status_card,
     build_unreadable_prompt,
 )
 from app.line.parser import (
@@ -93,6 +101,7 @@ from app.line.parser import (
     POSTBACK_SETTINGS_METERS,
     POSTBACK_SETTINGS_PERMISSIONS,
     POSTBACK_SETTINGS_RECIPIENTS,
+    POSTBACK_SETTINGS_SYNC_SHEETS,
     POSTBACK_SETTINGS_VIEW,
     POSTBACK_WEEKLY_SUMMARY,
     POSTBACK_SKIP_METER,
@@ -166,6 +175,7 @@ from app.services.session_service import (
     set_latest_meter,
 )
 from app.services import history_service, report_import_service, settings_service
+from app.storage import sync as storage_sync
 from app.line.client import ImageDownloadError, download_image
 from app.report.sender import send_report, send_report_if_complete
 from app.ocr.confidence import score_ocr_reading
@@ -376,6 +386,9 @@ def _normalize_message_payload(messages) -> list:
         for item in items
     ]
 
+def _is_report_unavailable_message(message) -> bool:
+    return getattr(message, "alt_text", "") == "รายงานยังไม่พร้อม"
+
 
 def _set_next_collection_meter(source_id: str, batch_id: str | None) -> str | None:
     next_meter = _next_meter_to_capture(source_id, batch_id)
@@ -426,6 +439,42 @@ def _build_status_message(source_id: str) -> str:
         return "ยังไม่มีข้อมูลรอบนี้ครับ"
     return "\n".join(lines)
 
+
+def _build_status_card_message(source_id: str):
+    meter_id = get_collection_current_meter(source_id) or get_latest_meter(source_id)
+    pending_text = ""
+    pending = get_pending_confirmation(source_id)
+    if pending:
+        value = pending.manual_value if pending.manual_value is not None else pending.ocr_value
+        value_text = format_meter_value(value) if value is not None else "-"
+        pending_text = f"{pending.meter_id} = {value_text}"
+
+    batch_id = get_session_batch_id(source_id)
+    progress = None
+    progress_text = ""
+    next_meter = None
+    if batch_id:
+        try:
+            progress = get_batch_progress(batch_id)
+            progress_text = build_progress_message(batch_id)
+            next_meter = _next_meter_to_capture(source_id, batch_id)
+        except Exception:
+            logger.exception("Failed to build status card for batch: %s", batch_id)
+            progress_text = "ยังดึงความคืบหน้าไม่ได้ครับ"
+
+    return build_status_card(
+        meter_id=meter_id,
+        pending=pending_text,
+        progress_text=progress_text,
+        batch_id=batch_id,
+        week=progress.week if progress else None,
+        confirmed_count=progress.confirmed_meter_count if progress else None,
+        total_count=progress.expected_meter_count if progress else None,
+        missing_meter_ids=progress.missing_meter_ids if progress else None,
+        next_meter=next_meter,
+    )
+
+
 def _build_settings_input_reply(text: str, source_id: str, operator_id: str | None = None):
     key = get_settings_input_key(source_id)
     if not key:
@@ -461,6 +510,12 @@ def _build_settings_edit_prompt(source_id: str, key: str, operator_id: str | Non
     set_settings_input_key(source_id, key)
     clear_pending_setting_change(source_id)
     return build_settings_edit_prompt_message(key, values.get(key, ""))
+
+async def _flush_settings_change_to_sheets() -> str:
+    if settings.STORAGE_BACKEND.strip().lower() != "sqlite":
+        return ""
+    await asyncio.to_thread(storage_sync.flush_outbox)
+    return storage_sync.sync_state.last_push_error
 
 async def _reply_history_current(source_id: str, reply_token: str) -> None:
     summary = history_service.get_current_batch_summary(source_id, get_session_batch_id(source_id))
@@ -510,11 +565,11 @@ def _after_successful_confirmation(
         return
 
 
-def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
+def _build_reply(cmd: ParsedCommand, source_id: str) -> str | TextMessage | FlexMessage | list[str | TextMessage | FlexMessage] | None:
     return _build_text_reply(cmd, source_id)
 
 
-def _build_text_reply(cmd: ParsedCommand, source_id: str) -> str | None:
+def _build_text_reply(cmd: ParsedCommand, source_id: str) -> str | TextMessage | FlexMessage | list[str | TextMessage | FlexMessage] | None:
     state = get_collection_state(source_id)
     if cmd.type == METER:
         if not is_valid_meter(cmd.meter_id, settings.VALID_METER_IDS):
@@ -552,14 +607,16 @@ def _build_text_reply(cmd: ParsedCommand, source_id: str) -> str | None:
         return reply
 
     if cmd.type == STATUS:
-        return _build_status_message(source_id)
+        return _build_status_card_message(source_id)
 
     if cmd.type in (GEN, REPORT):
         batch_id = _resolve_batch_id(cmd.batch_id, source_id)
         if not batch_id:
             return "ยังไม่มีข้อมูลรอบนี้ครับ"
-        asyncio.create_task(send_report(batch_id, source_id))
-        return "กำลังส่งรูปรายงานครับ"
+        report_message = build_report_summary_message(batch_id)
+        if not _is_report_unavailable_message(report_message):
+            asyncio.create_task(send_report(batch_id, source_id))
+        return report_message
 
     if cmd.type == HELP:
         return (
@@ -595,14 +652,27 @@ async def _send_confirm_reading_result(
             progress = get_batch_progress(confirmed_batch_id)
             if progress and not progress.missing_meter_ids:
                 set_collection_state(source_id, COLLECTION_REPORTING)
-                await _push_to(source_id, "บันทึกครบ 8 เครื่องแล้วครับ\nกำลังสร้างรายงาน")
+                await _push_to(
+                    source_id,
+                    build_batch_complete_card(
+                        batch_id=confirmed_batch_id,
+                        week=progress.week,
+                        expected_meter_count=progress.expected_meter_count,
+                    ),
+                )
                 asyncio.create_task(send_report_if_complete(confirmed_batch_id, source_id))
                 return
 
             messages = [reply]
             next_meter = _next_meter_to_capture(source_id, confirmed_batch_id)
+            messages.append(_build_status_card_message(source_id))
             if next_meter:
-                messages.append(build_meter_request_message(next_meter))
+                messages.append(
+                    build_meter_request_message(
+                        next_meter,
+                        meter_ids=settings.VALID_METER_IDS,
+                    ),
+                )
             await _push_to(source_id, messages)
             return
 
@@ -613,7 +683,15 @@ async def _send_confirm_reading_result(
         value = pending.manual_value if pending.manual_value is not None else pending.ocr_value
         warnings = validate_reading(pending.meter_id, value, pending.batch_id or "")
         if "ถูกบันทึกไปแล้ว" in " ".join(warnings.warnings):
-            await _push_to(source_id, "รอบนี้มีค่าเดิมอยู่แล้วครับ\nการแทนที่ข้อมูลจะเพิ่มในเวอร์ชันถัดไป")
+            new_value = format_meter_value(value) if value is not None else "-"
+            await _push_to(
+                source_id,
+                build_duplicate_warning_card(
+                    pending.meter_id,
+                    old_value="มีข้อมูลเดิม",
+                    new_value=new_value,
+                ),
+            )
             return
         if "น้อยกว่า" in " ".join(warnings.warnings):
             current = value or 0
@@ -655,17 +733,44 @@ async def _handle_postback(
         clear_collection_meter(source_id)
         clear_pending_confirmation(source_id)
         next_meter = _set_next_collection_meter(source_id, batch_id)
+        progress = get_batch_progress(batch_id)
+        expected_meter_count = progress.expected_meter_count if progress else len(settings.VALID_METER_IDS)
+        confirmed_meter_count = progress.confirmed_meter_count if progress else 0
         if next_meter:
             await _reply_to(
                 reply_token,
-                [build_start_collection_card(), build_meter_request_message(next_meter)],
+                [
+                    build_start_collection_card(
+                        batch_id=batch_id,
+                        week=progress.week if progress else None,
+                        expected_meter_count=expected_meter_count,
+                        next_meter_id=next_meter,
+                        confirmed_meter_count=confirmed_meter_count,
+                    ),
+                    build_meter_request_message(
+                        next_meter,
+                        meter_ids=settings.VALID_METER_IDS,
+                    ),
+                ],
             )
             return
-        await _reply_to(reply_token, [build_start_collection_card(), "ครบ 8 เครื่องแล้วครับ"])
+        await _reply_to(
+            reply_token,
+            [
+                build_start_collection_card(
+                    batch_id=batch_id,
+                    week=progress.week if progress else None,
+                    expected_meter_count=expected_meter_count,
+                    next_meter_id=None,
+                    confirmed_meter_count=confirmed_meter_count or expected_meter_count,
+                ),
+                f"ครบ {expected_meter_count} เครื่องแล้วครับ",
+            ],
+        )
         return
 
     if action == POSTBACK_SHOW_STATUS:
-        await _reply_to(reply_token, _build_status_message(source_id))
+        await _reply_to(reply_token, _build_status_card_message(source_id))
         return
 
     if action == POSTBACK_SKIP_METER:
@@ -680,7 +785,10 @@ async def _handle_postback(
                 reply_token,
                 [
                     f"ข้าม {target} แล้วครับ\nต่อไป: {next_meter}",
-                    build_meter_request_message(next_meter),
+                    build_meter_request_message(
+                        next_meter,
+                        meter_ids=settings.VALID_METER_IDS,
+                    ),
                 ],
             )
             return
@@ -694,7 +802,13 @@ async def _handle_postback(
         set_collection_current_meter(source_id, meter_id)
         set_latest_meter(source_id, meter_id)
         set_collection_state(source_id, COLLECTION_WAITING_IMAGE)
-        await _reply_to(reply_token, build_meter_request_message(meter_id))
+        await _reply_to(
+            reply_token,
+            build_meter_request_message(
+                meter_id,
+                meter_ids=settings.VALID_METER_IDS,
+            ),
+        )
         return
 
     if action == POSTBACK_HISTORY:
@@ -728,17 +842,24 @@ async def _handle_postback(
 
     if action == POSTBACK_HISTORY_METER:
         if not meter_id:
-            await _reply_to(reply_token, build_history_meter_select_message())
+            await _reply_to(reply_token, build_history_meter_select_message(settings.VALID_METER_IDS))
             return
         if not is_valid_meter(meter_id, settings.VALID_METER_IDS):
-            await _reply_to(reply_token, build_history_meter_select_message())
+            await _reply_to(reply_token, build_history_meter_select_message(settings.VALID_METER_IDS))
             return
-        readings = history_service.get_meter_history(meter_id, source_id)
-        await _reply_to(reply_token, build_history_meter_message(meter_id, readings))
+        period_days = parsed.period_days or 7
+        readings = history_service.get_meter_history(meter_id, source_id, period_days=period_days)
+        await _reply_to(reply_token, build_history_meter_message(meter_id, readings, period_days=period_days))
         return
 
     if action == POSTBACK_SETTINGS:
-        await _reply_to(reply_token, build_settings_menu_message(is_admin))
+        await _reply_to(
+            reply_token,
+            build_settings_menu_message(
+                is_admin,
+                settings_service.get_current_settings(),
+            ),
+        )
         return
 
     if action == POSTBACK_SETTINGS_IMPORT_REPORT:
@@ -748,6 +869,24 @@ async def _handle_postback(
         clear_pending_report_import(source_id)
         set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
         await _reply_to(reply_token, build_report_import_prompt_message())
+        return
+
+    if action == POSTBACK_SETTINGS_SYNC_SHEETS:
+        if not is_admin:
+            await _reply_to(reply_token, build_settings_not_admin_message())
+            return
+        if settings.STORAGE_BACKEND.strip().lower() != "sqlite":
+            await _reply_to(reply_token, "เมนูนี้ใช้ได้เมื่อ STORAGE_BACKEND=sqlite เท่านั้นครับ")
+            return
+        await _reply_to(reply_token, "กำลังดึงข้อมูลจาก Google Sheet มาแทนที่ SQLite ครับ...")
+        success = await asyncio.to_thread(storage_sync.pull_all_from_sheets)
+        if success:
+            await _push_to(source_id, build_settings_sync_success_message())
+            return
+        await _push_to(
+            source_id,
+            build_settings_sync_failed_message(storage_sync.sync_state.last_pull_error),
+        )
         return
 
     if action == POSTBACK_CONFIRM_IMPORT_REPORT:
@@ -855,15 +994,35 @@ async def _handle_postback(
             await _reply_to(reply_token, "หมดเวลายืนยันการแก้ไขแล้วครับ")
             return
         settings_service.apply_setting_change(source_id, change.key, change.old_value, change.new_value)
+        sync_error = await _flush_settings_change_to_sheets()
         clear_pending_setting_change(source_id)
         set_settings_input_key(source_id, None)
-        await _reply_to(reply_token, build_settings_view_message(settings_service.get_current_settings(), True))
+        settings_view = build_settings_view_message(settings_service.get_current_settings(), True)
+        if sync_error:
+            await _reply_to(
+                reply_token,
+                [
+                    build_settings_sync_failed_message(sync_error),
+                    settings_view,
+                ],
+            )
+            return
+        if settings.STORAGE_BACKEND.strip().lower() == "sqlite":
+            await _reply_to(reply_token, ["บันทึกและซิงก์ Google Sheet แล้วครับ", settings_view])
+            return
+        await _reply_to(reply_token, settings_view)
         return
 
     if action == POSTBACK_SETTINGS_CANCEL_CHANGE:
         clear_pending_setting_change(source_id)
         set_settings_input_key(source_id, None)
-        await _reply_to(reply_token, build_settings_menu_message(is_admin))
+        await _reply_to(
+            reply_token,
+            build_settings_menu_message(
+                is_admin,
+                settings_service.get_current_settings(),
+            ),
+        )
         return
 
     if action == POSTBACK_SETTINGS_CONTACT_ADMIN:
@@ -918,25 +1077,43 @@ async def _handle_postback(
             return
         clear_pending_confirmation(source_id)
         set_collection_state(source_id, COLLECTION_WAITING_IMAGE)
-        await _reply_to(reply_token, build_meter_request_message(target))
+        await _reply_to(
+            reply_token,
+            build_meter_request_message(
+                target,
+                meter_ids=settings.VALID_METER_IDS,
+            ),
+        )
         return
 
     if action == POSTBACK_LATEST_REPORT:
         if not batch_id:
             batch_id = history_service.get_latest_report_batch_id(source_id)
         if not batch_id:
-            await _reply_to(reply_token, build_history_empty_message("ยังไม่มีรูปรายงานสำหรับรอบนี้ครับ"))
+            await _reply_to(
+                reply_token,
+                build_report_unavailable_message(reason="ยังไม่มีรูปรายงานสำหรับรอบนี้"),
+            )
             return
-        asyncio.create_task(send_report(batch_id, source_id))
-        await _reply_to(reply_token, "กำลังส่งรายงานล่าสุดครับ")
+        report_message = build_report_summary_message(batch_id)
+        await _reply_to(reply_token, report_message)
+        if not _is_report_unavailable_message(report_message):
+            asyncio.create_task(send_report(batch_id, source_id))
         return
 
     if action == POSTBACK_WEEKLY_SUMMARY:
         if not batch_id:
-            await _reply_to(reply_token, "ยังไม่มีข้อมูลรอบนี้ครับ")
+            batch_id = generate_batch_id(source_id)
+        if not batch_id:
+            await _reply_to(
+                reply_token,
+                build_report_unavailable_message(reason="ยังไม่มีข้อมูลรอบนี้"),
+            )
             return
-        asyncio.create_task(send_report(batch_id, source_id))
-        await _reply_to(reply_token, "กำลังส่งสรุปรายสัปดาห์ครับ")
+        report_message = build_report_summary_message(batch_id)
+        await _reply_to(reply_token, report_message)
+        if not _is_report_unavailable_message(report_message):
+            asyncio.create_task(send_report(batch_id, source_id))
         return
 
     await _reply_to(reply_token, "ไม่รู้จัก postback action นี้")
@@ -1155,19 +1332,19 @@ async def handle_webhook(request: Request):
                 continue
             if cmd.type != UNKNOWN and reply_token:
                 try:
-                    reply_text = _build_text_reply(cmd, source_id)
+                    reply_message = _build_text_reply(cmd, source_id)
                 except APIError as exc:
                     if not _is_sheets_quota_error(exc):
                         log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": str(exc)[:200]})
                         raise
                     logger.warning("Google Sheets quota exceeded while handling LINE command")
                     log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": "quota_exceeded"})
-                    reply_text = (
+                    reply_message = (
                         "Google Sheets ใช้งานเกินโควตาชั่วคราวครับ "
                         "กรุณาลองใหม่อีกครั้ง หรือพิมพ์ STATUS ภายหลัง"
                     )
-                if reply_text:
-                    await _reply_to(reply_token, reply_text)
+                if reply_message:
+                    await _reply_to(reply_token, reply_message)
             elif cmd.type == UNKNOWN and reply_token:
                 await _reply_to(reply_token, "พิมพ์คำสั่งไม่ถูกต้องครับ พิมพ์ HELP เพื่อดูคำสั่งที่ใช้ได้")
             continue

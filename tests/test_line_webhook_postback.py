@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, Mock, patch
 from types import SimpleNamespace
 from decimal import Decimal
 
@@ -15,18 +15,26 @@ from app.line.parser import (
     POSTBACK_HELP_FLOW,
     POSTBACK_HISTORY,
     POSTBACK_HISTORY_CURRENT,
+    POSTBACK_HISTORY_METER,
     POSTBACK_HISTORY_SELECT_WEEK,
+    POSTBACK_LATEST_REPORT,
+    POSTBACK_RETAKE_PHOTO,
     POSTBACK_SELECT_METER,
+    POSTBACK_SHOW_STATUS,
     POSTBACK_SKIP_METER,
     POSTBACK_START_COLLECTION,
+    POSTBACK_WEEKLY_SUMMARY,
     POSTBACK_SETTINGS,
     POSTBACK_SETTINGS_CONFIRM_CHANGE,
     POSTBACK_SETTINGS_EDIT_RATE,
     POSTBACK_SETTINGS_IMPORT_REPORT,
+    POSTBACK_SETTINGS_SYNC_SHEETS,
 )
+from app.config import settings
 from app.line.webhook import _handle_postback, _next_meter_to_capture
 from app.services.batch_service import BatchProgress
 from app.services.confirmation_service import PendingConfirmation
+from app.storage import sync as storage_sync
 from app.services.session_service import (
     COLLECTION_WAITING_IMAGE,
     REPORT_IMPORT_IDLE,
@@ -107,6 +115,28 @@ async def test_start_collection_postback_starts_linear_flow():
 
 
 @pytest.mark.anyio
+async def test_start_collection_card_uses_batch_expected_meter_count():
+    progress = BatchProgress(
+        batch_id="2026-W19-U1",
+        week="2026-W19",
+        status="collecting",
+        expected_meter_count=6,
+        confirmed_meter_count=0,
+        missing_meter_ids=["M1", "M2", "M3", "M4", "M5", "M6"],
+    )
+
+    with patch("app.line.webhook.ensure_batch_id", return_value="2026-W19-U1"), \
+         patch("app.line.webhook.get_batch_progress", return_value=progress), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_START_COLLECTION), "rt")
+
+    rendered = str(mock_reply.await_args.args[1][0])
+    assert "0/6 เครื่อง" in rendered
+    assert "M1-M6" in rendered
+    assert "M1-M8" not in rendered
+
+
+@pytest.mark.anyio
 async def test_skip_meter_moves_to_next_machine():
     set_batch_id("U1", "2026-W19-U1")
     set_collection_current_meter("U1", "M1")
@@ -127,13 +157,71 @@ async def test_skip_meter_moves_to_next_machine():
 
 
 @pytest.mark.anyio
+async def test_start_collection_postback_uses_configured_meter_ids_for_meter_request():
+    with patch("app.line.webhook.ensure_batch_id", return_value="2026-W19-U1"), \
+         patch("app.line.webhook.get_batch_progress", return_value=None), \
+         patch("app.line.webhook.build_meter_request_message") as mock_meter_message, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock):
+        mock_meter_message.return_value = "meter_request"
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_START_COLLECTION), "rt")
+
+    mock_meter_message.assert_called_once_with("M1", meter_ids=settings.VALID_METER_IDS)
+
+
+@pytest.mark.anyio
+async def test_select_meter_postback_uses_configured_meter_ids_for_meter_request():
+    with patch("app.line.webhook.build_meter_request_message") as mock_meter_message, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock):
+        mock_meter_message.return_value = "meter_request"
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SELECT_METER, meter_id="M3"), "rt")
+
+    mock_meter_message.assert_called_once_with("M3", meter_ids=settings.VALID_METER_IDS)
+
+
+@pytest.mark.anyio
+async def test_skip_meter_postback_uses_configured_meter_ids_for_meter_request():
+    set_batch_id("U1", "2026-W19-U1")
+    set_collection_current_meter("U1", "M1")
+    progress = BatchProgress(
+        batch_id="2026-W19-U1",
+        week="2026-W19",
+        status="collecting",
+        expected_meter_count=8,
+        confirmed_meter_count=0,
+        missing_meter_ids=["M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"],
+    )
+
+    with patch("app.line.webhook.get_batch_progress", return_value=progress), \
+         patch("app.line.webhook.build_meter_request_message") as mock_meter_message, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock):
+        mock_meter_message.return_value = "meter_request"
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SKIP_METER, meter_id="M1"), "rt")
+
+    mock_meter_message.assert_called_once_with("M2", meter_ids=settings.VALID_METER_IDS)
+
+
+@pytest.mark.anyio
+async def test_retake_photo_postback_uses_configured_meter_ids_for_meter_request():
+    with patch("app.line.webhook.build_meter_request_message") as mock_meter_message, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock):
+        mock_meter_message.return_value = "meter_request"
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_RETAKE_PHOTO, meter_id="M4"), "rt")
+
+    mock_meter_message.assert_called_once_with("M4", meter_ids=settings.VALID_METER_IDS)
+
+
+@pytest.mark.anyio
 async def test_select_meter_postback_updates_current_meter():
-    with patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+    with patch("app.line.webhook.build_meter_request_message", return_value="meter_card") as mock_request, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SELECT_METER, meter_id="M3"), "rt")
 
     assert get_collection_current_meter("U1") == "M3"
     assert get_collection_state("U1") == COLLECTION_WAITING_IMAGE
     assert mock_reply.await_count == 1
+    assert mock_request.call_count == 1
+    assert mock_request.call_args.args == ("M3",)
+    assert mock_request.call_args.kwargs == {"meter_ids": ["M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"]}
 
 
 @pytest.mark.anyio
@@ -161,8 +249,74 @@ async def test_confirm_postback_moves_state_without_errors():
     mock_reply.assert_awaited_once_with("rt", "กำลังบันทึก M1 ครับ...")
     assert mock_push.await_count == 1
     pushed_messages = mock_push.await_args.args[1]
-    assert len(pushed_messages) == 2
+    assert len(pushed_messages) == 3
     assert pushed_messages[0] == "บันทึก M1 เรียบร้อย"
+    assert "สถานะรอบบันทึก" in str(pushed_messages[1])
+    assert "ถ่ายรูปเครื่อง M2" in str(pushed_messages[2])
+
+
+@pytest.mark.anyio
+async def test_confirm_postback_sends_batch_complete_card_when_all_meters_done():
+    created_tasks = []
+
+    async def report_task(*_args):
+        return None
+
+    def fake_create_task(coro):
+        created_tasks.append(coro)
+        coro.close()
+
+    with patch("app.line.webhook.confirm_pending", return_value=(
+        PendingConfirmation(meter_id="M8"),
+        "บันทึก M8 เรียบร้อย",
+        "2026-W19-U1",
+    )), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock), \
+         patch("app.line.webhook._push_to", new_callable=AsyncMock) as mock_push, \
+         patch("app.line.webhook.asyncio.create_task", side_effect=fake_create_task), \
+         patch("app.line.webhook.send_report_if_complete", side_effect=report_task), \
+         patch(
+             "app.line.webhook.get_batch_progress",
+             return_value=BatchProgress(
+                batch_id="2026-W19-U1",
+                week="2026-W19",
+                status="complete",
+                expected_meter_count=8,
+                confirmed_meter_count=8,
+                missing_meter_ids=[],
+              ),
+         ):
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_CONFIRM_READING, meter_id="M8"), "rt")
+
+    mock_push.assert_awaited_once()
+    payload = mock_push.await_args.args[1]
+    assert "บันทึกครบแล้ว" in str(payload)
+    assert "history_batch" in str(payload)
+    assert "show_status" in str(payload)
+    assert len(created_tasks) == 1
+
+
+@pytest.mark.anyio
+async def test_show_status_postback_returns_progress_card():
+    set_batch_id("U1", "2026-W19-U1")
+    set_collection_current_meter("U1", "M2")
+    progress = BatchProgress(
+        batch_id="2026-W19-U1",
+        week="2026-W19",
+        status="collecting",
+        expected_meter_count=8,
+        confirmed_meter_count=1,
+        missing_meter_ids=["M2", "M3", "M4", "M5", "M6", "M7", "M8"],
+    )
+
+    with patch("app.line.webhook.get_batch_progress", return_value=progress), \
+         patch("app.line.webhook.build_progress_message", return_value="เก็บแล้ว 1/8 ขาด M2-M8"), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SHOW_STATUS), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    assert "สถานะรอบบันทึก" in str(payload)
+    assert "select_meter" in str(payload)
 
 
 @pytest.mark.anyio
@@ -202,7 +356,10 @@ async def test_help_and_history_postback_are_supported():
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_HISTORY), "rt")
 
     assert mock_reply.await_count == 2
-    assert "ต้องการดูวิธีใช้งานส่วนไหน" in mock_reply.await_args_list[0].args[1].text
+    help_payload = mock_reply.await_args_list[0].args[1].dict(by_alias=True, exclude_none=True)
+    assert help_payload["altText"] == "Help วิธีใช้งาน"
+    assert "ต้องการดูวิธีใช้งานส่วนไหน" in str(help_payload)
+    assert "action=help_flow&topic=start_collection" in str(help_payload)
 
 
 @pytest.mark.anyio
@@ -212,10 +369,25 @@ async def test_help_flow_postback_replies_with_selected_topic():
             "U1",
             ParsedPostback(type=POSTBACK_HELP_FLOW, topic="latest_report"),
             "rt",
-        )
+    )
 
     payload = mock_reply.await_args.args[1]
+    if isinstance(payload, list):
+        payload = payload[-1]
     assert "วิธีดูรายงานล่าสุด" in payload.text
+
+
+@pytest.mark.anyio
+async def test_history_postback_returns_history_menu_card():
+    with patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_HISTORY), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "ประวัติการบันทึก"
+    assert "history_current" in str(payload)
+    assert "latest_report" in str(payload)
+
 
 @pytest.mark.anyio
 async def test_history_current_postback_shows_summary_actions():
@@ -236,8 +408,48 @@ async def test_history_current_postback_shows_summary_actions():
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_HISTORY_CURRENT), "rt")
 
     payload = mock_reply.await_args.args[1]
-    assert "ประวัติรอบปัจจุบัน" in payload.text
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "ประวัติรอบปัจจุบัน"
     assert "history_batch_detail" in str(payload)
+
+
+@pytest.mark.anyio
+async def test_history_meter_postback_without_meter_returns_select_card():
+    with patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_HISTORY_METER), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "ดูตามมิเตอร์"
+    assert "action=history_meter&meter_id=M1" in str(payload)
+    assert "action=history" in str(payload)
+
+
+@pytest.mark.anyio
+async def test_history_meter_postback_with_period_returns_meter_card():
+    readings = [
+        {
+            "meter_id": "M1",
+            "week": "2026-W18",
+            "current_value": "135420",
+            "produced_unit": "375.8",
+            "created_at": "2026-04-28T03:09:00+07:00",
+        }
+    ]
+    with patch("app.line.webhook.history_service.get_meter_history", return_value=readings) as mock_history, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback(
+            "U1",
+            ParsedPostback(type=POSTBACK_HISTORY_METER, meter_id="M1", period_days=30),
+            "rt",
+        )
+
+    mock_history.assert_called_once_with("M1", "U1", period_days=30)
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "ประวัติ M1"
+    assert "action=history_meter&meter_id=M1&period_days=30" in str(payload)
+
 
 @pytest.mark.anyio
 async def test_history_select_week_postback_shows_recent_batches():
@@ -255,26 +467,183 @@ async def test_history_select_week_postback_shows_recent_batches():
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_HISTORY_SELECT_WEEK), "rt")
 
     payload = mock_reply.await_args.args[1]
-    assert "ประวัติย้อนหลัง 1 เดือน" in payload.text
-    assert "2026-W18" in payload.text
-    assert "history_batch" in str(payload)
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    rendered = str(payload_dict)
+    assert payload_dict["altText"] == "ประวัติย้อนหลัง 1 เดือน"
+    assert "ประวัติย้อนหลัง 1 เดือน" in rendered
+    assert "2026-W18" in rendered
+    assert "history_batch" in rendered
 
 @pytest.mark.anyio
 async def test_settings_postback_branches_by_operator_role():
     with patch("app.line.webhook.settings_service.is_admin", return_value=False), \
+         patch(
+             "app.line.webhook.settings_service.get_current_settings",
+             return_value={
+                 "default_rate": "4.2",
+                 "expected_meter_count": "8",
+                 "report_title": "รายงานพลังงานรายสัปดาห์",
+             },
+         ), \
          patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS), "rt")
 
     payload = mock_reply.await_args.args[1]
-    assert "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ" in payload.text
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "การตั้งค่าปัจจุบัน"
+    assert "การตั้งค่าปัจจุบัน" in str(payload)
+    assert "settings_view" in str(payload)
+    assert "4.20 บาท/kWh" in str(payload)
     assert "settings_edit_rate" not in str(payload)
     assert "settings_import_report" not in str(payload)
+    assert "settings_sync_sheets" not in str(payload)
+    assert "help" in str(payload)
 
     with patch("app.line.webhook.settings_service.is_admin", return_value=True), \
+         patch(
+             "app.line.webhook.settings_service.get_current_settings",
+             return_value={
+                 "default_rate": "4.2",
+                 "expected_meter_count": "8",
+                 "report_title": "รายงานพลังงานรายสัปดาห์",
+             },
+         ), \
          patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS), "rt")
 
-    assert "settings_import_report" in str(mock_reply.await_args.args[1])
+    rendered = str(mock_reply.await_args.args[1])
+    assert "settings_sync_sheets" in rendered
+    assert "settings_import_report" in rendered
+
+
+@pytest.mark.anyio
+async def test_latest_report_postback_returns_report_summary_and_schedules_send():
+    with patch("app.line.webhook.history_service.get_latest_report_batch_id", return_value="2026-W19-U1"), \
+         patch(
+            "app.line.message_builders.reports.build_report_data",
+            return_value=SimpleNamespace(
+                week="2026-W19",
+                readings=[1, 2, 3],
+                total_produced_unit=Decimal("1234.5"),
+                total_amount=Decimal("4567.89"),
+            ),
+         ), \
+         patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_LATEST_REPORT), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W19"
+    assert "action=history_batch_detail&batch_id=2026-W19-U1" in str(payload)
+    mock_send_report.assert_called_once_with("2026-W19-U1", "U1")
+    mock_create_task.assert_called_once_with("send-report-task")
+
+
+@pytest.mark.anyio
+async def test_weekly_summary_postback_returns_report_summary_and_schedules_send():
+    with patch(
+         "app.line.message_builders.reports.build_report_data",
+         return_value=SimpleNamespace(
+            week="2026-W18",
+            readings=[1, 2],
+            total_produced_unit=Decimal("888.0"),
+            total_amount=Decimal("1110.0"),
+         ),
+    ), \
+         patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback(
+            "U1",
+            ParsedPostback(type=POSTBACK_WEEKLY_SUMMARY, batch_id="2026-W18-U1"),
+            "rt",
+        )
+
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W18"
+    assert "action=history_batch_detail&batch_id=2026-W18-U1" in str(payload)
+    assert "action=latest_report&batch_id=2026-W18-U1" in str(payload)
+    mock_send_report.assert_called_once_with("2026-W18-U1", "U1")
+    mock_create_task.assert_called_once_with("send-report-task")
+
+
+@pytest.mark.anyio
+async def test_weekly_summary_postback_uses_session_batch_when_no_batch_id():
+    set_batch_id("U1", "2026-W19-U1")
+
+    with patch(
+         "app.line.message_builders.reports.build_report_data",
+         return_value=SimpleNamespace(
+            week="2026-W19",
+            readings=[1],
+            total_produced_unit=Decimal("100.0"),
+            total_amount=Decimal("420.0"),
+         ),
+    ), \
+         patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_WEEKLY_SUMMARY), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W19"
+    assert "action=history_batch_detail&batch_id=2026-W19-U1" in str(payload)
+    assert "action=latest_report&batch_id=2026-W19-U1" in str(payload)
+    mock_send_report.assert_called_once_with("2026-W19-U1", "U1")
+    mock_create_task.assert_called_once_with("send-report-task")
+
+
+@pytest.mark.anyio
+async def test_weekly_summary_postback_uses_current_week_when_no_session_batch():
+    with patch("app.line.webhook.generate_batch_id", return_value="2026-W19-U1"), \
+         patch("app.line.webhook.history_service.get_latest_report_batch_id") as mock_latest_batch, \
+         patch(
+            "app.line.message_builders.reports.build_report_data",
+            return_value=SimpleNamespace(
+                week="2026-W19",
+                readings=[1, 2],
+                total_produced_unit=Decimal("888.0"),
+                total_amount=Decimal("1110.0"),
+            ),
+         ), \
+         patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_WEEKLY_SUMMARY), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W19"
+    assert "action=history_batch_detail&batch_id=2026-W19-U1" in str(payload)
+    assert "action=latest_report&batch_id=2026-W19-U1" in str(payload)
+    mock_latest_batch.assert_not_called()
+    mock_send_report.assert_called_once_with("2026-W19-U1", "U1")
+    mock_create_task.assert_called_once_with("send-report-task")
+
+
+@pytest.mark.anyio
+async def test_weekly_summary_postback_keeps_empty_state_when_no_batch_exists():
+    with patch("app.line.webhook.generate_batch_id", return_value="2026-W19-U1"), \
+         patch("app.line.webhook.history_service.get_latest_report_batch_id") as mock_latest_batch, \
+         patch("app.line.message_builders.reports.build_report_data", return_value=None) as mock_build_report_data, \
+         patch("app.line.webhook.send_report") as mock_send_report, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_WEEKLY_SUMMARY), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "รายงานยังไม่พร้อม"
+    assert "2026-W19" in str(payload)
+    assert "ยังไม่มีข้อมูลรายงานของรอบนี้" in str(payload)
+    mock_latest_batch.assert_not_called()
+    mock_build_report_data.assert_called_once_with("2026-W19-U1")
+    mock_send_report.assert_not_called()
+    mock_create_task.assert_not_called()
 
 
 @pytest.mark.anyio
@@ -284,7 +653,13 @@ async def test_admin_can_start_report_import_from_settings():
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS_IMPORT_REPORT), "rt")
 
     assert get_report_import_state("U1") == REPORT_IMPORT_WAITING_IMAGE
-    assert "นำข้อมูลเข้าด้วยรายงานเก่า" in mock_reply.await_args.args[1].text
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    rendered = str(payload_dict)
+    assert payload_dict["altText"] == "นำเข้ารายงานเก่า"
+    assert "ส่งรูปรายงานเก่า" in rendered
+    assert "OCR" in rendered
+    assert "cancel_import_report" in rendered
 
 
 @pytest.mark.anyio
@@ -294,6 +669,33 @@ async def test_non_admin_cannot_start_report_import():
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS_IMPORT_REPORT), "rt")
 
     assert get_report_import_state("U1") == REPORT_IMPORT_IDLE
+    assert "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ" in mock_reply.await_args.args[1].text
+
+@pytest.mark.anyio
+async def test_admin_can_sync_google_sheet_to_sqlite(monkeypatch):
+    monkeypatch.setattr(settings, "STORAGE_BACKEND", "sqlite")
+
+    with patch("app.line.webhook.settings_service.is_admin", return_value=True), \
+         patch("app.line.webhook.storage_sync.pull_all_from_sheets", return_value=True) as mock_sync, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply, \
+         patch("app.line.webhook._push_to", new_callable=AsyncMock) as mock_push:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS_SYNC_SHEETS), "rt")
+
+    mock_sync.assert_called_once()
+    assert "กำลังดึงข้อมูลจาก Google Sheet" in mock_reply.await_args.args[1]
+    assert "ซิงก์ Google Sheet สำเร็จ" in mock_push.await_args.args[1].text
+
+
+@pytest.mark.anyio
+async def test_non_admin_cannot_sync_google_sheet_to_sqlite():
+    with patch("app.line.webhook.settings_service.is_admin", return_value=False), \
+         patch("app.line.webhook.storage_sync.pull_all_from_sheets") as mock_sync, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply, \
+         patch("app.line.webhook._push_to", new_callable=AsyncMock) as mock_push:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS_SYNC_SHEETS), "rt")
+
+    mock_sync.assert_not_called()
+    mock_push.assert_not_called()
     assert "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ" in mock_reply.await_args.args[1].text
 
 @pytest.mark.anyio
@@ -308,7 +710,8 @@ async def test_admin_edit_rate_creates_input_step():
     assert "4.2" in payload.text
 
 @pytest.mark.anyio
-async def test_settings_confirm_change_applies_pending_change():
+async def test_settings_confirm_change_applies_pending_change(monkeypatch):
+    monkeypatch.setattr(settings, "STORAGE_BACKEND", "sqlite")
     set_pending_setting_change(
         source_id="U1",
         change_id="chg_1",
@@ -321,6 +724,7 @@ async def test_settings_confirm_change_applies_pending_change():
 
     with patch("app.line.webhook.settings_service.is_admin", return_value=True), \
          patch("app.line.webhook.settings_service.apply_setting_change") as mock_apply, \
+         patch("app.line.webhook.storage_sync.flush_outbox", return_value=1) as mock_flush, \
          patch("app.line.webhook.settings_service.get_current_settings", return_value={"default_rate": "4.5"}), \
          patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
         await _handle_postback(
@@ -330,7 +734,46 @@ async def test_settings_confirm_change_applies_pending_change():
         )
 
     mock_apply.assert_called_once_with("U1", "default_rate", "4.2", "4.5")
-    assert "การตั้งค่าปัจจุบัน" in mock_reply.await_args.args[1].text
+    mock_flush.assert_called_once()
+    payload = mock_reply.await_args.args[1]
+    assert payload[0] == "บันทึกและซิงก์ Google Sheet แล้วครับ"
+    assert "ค่าปัจจุบันของระบบ" in str(payload[1])
+
+
+@pytest.mark.anyio
+async def test_settings_confirm_change_reports_google_sync_failure(monkeypatch):
+    monkeypatch.setattr(settings, "STORAGE_BACKEND", "sqlite")
+    set_pending_setting_change(
+        source_id="U1",
+        change_id="chg_1",
+        key="report_title",
+        old_value="รายงานเดิม",
+        new_value="การผลิตไฟ",
+        label="ชื่อรายงาน",
+        impact="ใช้ครั้งถัดไป",
+    )
+
+    def fail_flush():
+        storage_sync.sync_state.last_push_error = "quota exceeded"
+        return 0
+
+    with patch("app.line.webhook.settings_service.is_admin", return_value=True), \
+         patch("app.line.webhook.settings_service.apply_setting_change") as mock_apply, \
+         patch("app.line.webhook.storage_sync.flush_outbox", side_effect=fail_flush) as mock_flush, \
+         patch("app.line.webhook.settings_service.get_current_settings", return_value={"report_title": "การผลิตไฟ"}), \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback(
+            "U1",
+            ParsedPostback(type=POSTBACK_SETTINGS_CONFIRM_CHANGE, change_id="chg_1"),
+            "rt",
+        )
+
+    mock_apply.assert_called_once_with("U1", "report_title", "รายงานเดิม", "การผลิตไฟ")
+    mock_flush.assert_called_once()
+    payload = mock_reply.await_args.args[1]
+    assert "ซิงก์ Google Sheet ไม่สำเร็จ" in payload[0].text
+    assert "quota exceeded" in payload[0].text
+    assert "ค่าปัจจุบันของระบบ" in str(payload[1])
 
 
 @pytest.mark.anyio

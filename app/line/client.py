@@ -97,6 +97,26 @@ async def push_text(to: str, text: str) -> None:
         logger.exception("Failed to push text message via LINE API to %s", to)
 
 
+async def push_message(to: str, messages) -> bool:
+    """Send one or more prepared LINE message objects via push API."""
+    from linebot.v3.messaging import (
+        AsyncMessagingApi,
+        ApiClient,
+        Configuration,
+        PushMessageRequest,
+    )
+
+    payload = list(messages) if isinstance(messages, (list, tuple)) else [messages]
+    config = Configuration(access_token=settings.LINE_CHANNEL_ACCESS_TOKEN)
+    api = AsyncMessagingApi(ApiClient(config))
+    try:
+        api.push_message(PushMessageRequest(to=to, messages=payload))
+    except Exception:
+        logger.exception("Failed to push message via LINE API to %s", to)
+        return False
+    return True
+
+
 def _is_https_url(url: str) -> bool:
     parsed = urlparse(url)
     return parsed.scheme == "https" and bool(parsed.netloc)

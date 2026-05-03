@@ -9,6 +9,16 @@ dist/
 credentials/
 reports/
 tmp/
+data/
+
+# Local agent/runtime state
+.codex/
+
+# graphify runtime artifacts
+.graphify_*
+graphify-out/.graphify_*
+graphify-out/cache/
+**/graphify-out/cache/
 credentials/*.json
 tmp/
 reports/

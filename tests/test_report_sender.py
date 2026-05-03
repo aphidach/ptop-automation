@@ -5,6 +5,7 @@ import pytest
 from app.report.sender import (
     _build_report_delivery_url,
     _build_report_url,
+    _cache_bust_report_url,
     send_report,
     send_report_if_complete,
 )
@@ -19,6 +20,17 @@ def test_build_report_url_uses_app_base_url():
     assert url == "https://example.com/reports/2026-W19-U1.png"
 
 
+def test_cache_bust_report_url_adds_stable_version_parameter():
+    assert (
+        _cache_bust_report_url("https://example.com/reports/2026-W19-U1.png", version=123)
+        == "https://example.com/reports/2026-W19-U1.png?v=123"
+    )
+    assert (
+        _cache_bust_report_url("https://example.com/reports/2026-W19-U1.png?x=1&v=old", version=123)
+        == "https://example.com/reports/2026-W19-U1.png?x=1&v=123"
+    )
+
+
 def test_build_report_delivery_url_uploads_to_r2():
     with patch("app.report.sender.settings") as mock_settings, \
          patch("app.report.sender.upload_report_image") as mock_upload:
@@ -29,6 +41,22 @@ def test_build_report_delivery_url_uploads_to_r2():
 
     assert url == "https://cdn.example.com/reports/2026-W19-U1.png"
     mock_upload.assert_called_once_with("reports/2026-W19-U1.png")
+
+
+@pytest.mark.anyio
+async def test_send_report_pushes_card_when_generation_fails():
+    with patch("app.report.sender.generate_report_image", return_value=None), \
+         patch("app.report.sender.push_message", new_callable=AsyncMock) as mock_push_message, \
+         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text:
+        sent = await send_report("2026-W19-U1", "U1")
+
+    assert sent is False
+    mock_push_text.assert_not_called()
+    mock_push_message.assert_awaited_once()
+    payload = mock_push_message.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "รายงานยังไม่พร้อม"
+    assert "สร้างรูปรายงานไม่สำเร็จ" in str(payload)
 
 
 @pytest.mark.anyio
@@ -59,7 +87,8 @@ async def test_send_report_does_not_mark_reported_when_image_push_fails():
          patch("app.report.sender.repositories") as mock_repositories, \
          patch("app.report.sender.generate_report_image") as mock_generate, \
          patch("app.report.sender.push_image", new_callable=AsyncMock) as mock_push_image, \
-         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text:
+         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text, \
+         patch("app.report.sender.time.time_ns", return_value=123456789):
         mock_settings.APP_BASE_URL = "https://example.com"
         mock_settings.REPORT_IMAGE_STORAGE = "local"
         mock_repositories.get_batch_by_id.return_value = {"status": "complete"}
@@ -70,8 +99,8 @@ async def test_send_report_does_not_mark_reported_when_image_push_fails():
 
     mock_push_image.assert_called_once_with(
         "U1",
-        "https://example.com/reports/2026-W19-U1.png",
-        "https://example.com/reports/2026-W19-U1.png",
+        "https://example.com/reports/2026-W19-U1.png?v=123456789",
+        "https://example.com/reports/2026-W19-U1.png?v=123456789",
     )
     mock_repositories.update_batch_report_image_url.assert_called_once_with(
         "2026-W19-U1",
@@ -89,7 +118,8 @@ async def test_send_report_marks_reported_after_successful_image_push():
          patch("app.report.sender.repositories") as mock_repositories, \
          patch("app.report.sender.generate_report_image") as mock_generate, \
          patch("app.report.sender.push_image", new_callable=AsyncMock) as mock_push_image, \
-         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text:
+         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text, \
+         patch("app.report.sender.time.time_ns", return_value=123456789):
         mock_settings.APP_BASE_URL = "https://example.com"
         mock_settings.REPORT_IMAGE_STORAGE = "local"
         mock_repositories.get_batch_by_id.return_value = {"status": "complete"}
@@ -102,6 +132,11 @@ async def test_send_report_marks_reported_after_successful_image_push():
         "2026-W19-U1",
         "https://example.com/reports/2026-W19-U1.png",
     )
+    mock_push_image.assert_called_once_with(
+        "U1",
+        "https://example.com/reports/2026-W19-U1.png?v=123456789",
+        "https://example.com/reports/2026-W19-U1.png?v=123456789",
+    )
     mock_repositories.update_batch_status.assert_called_once_with("2026-W19-U1", "reported")
     mock_push_text.assert_not_called()
 
@@ -112,7 +147,8 @@ async def test_manual_send_report_does_not_mark_reported():
          patch("app.report.sender.repositories") as mock_repositories, \
          patch("app.report.sender.generate_report_image") as mock_generate, \
          patch("app.report.sender.push_image", new_callable=AsyncMock) as mock_push_image, \
-         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text:
+         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text, \
+         patch("app.report.sender.time.time_ns", return_value=123456789):
         mock_settings.APP_BASE_URL = "https://example.com"
         mock_settings.REPORT_IMAGE_STORAGE = "local"
         mock_generate.return_value = "reports/2026-W19-U1.png"
@@ -125,6 +161,11 @@ async def test_manual_send_report_does_not_mark_reported():
         "2026-W19-U1",
         "https://example.com/reports/2026-W19-U1.png",
     )
+    mock_push_image.assert_called_once_with(
+        "U1",
+        "https://example.com/reports/2026-W19-U1.png?v=123456789",
+        "https://example.com/reports/2026-W19-U1.png?v=123456789",
+    )
     mock_repositories.update_batch_status.assert_not_called()
     mock_push_text.assert_not_called()
 
@@ -136,7 +177,8 @@ async def test_send_report_uses_r2_url_and_marks_reported():
          patch("app.report.sender.generate_report_image") as mock_generate, \
          patch("app.report.sender.upload_report_image") as mock_upload, \
          patch("app.report.sender.push_image", new_callable=AsyncMock) as mock_push_image, \
-         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text:
+         patch("app.report.sender.push_text", new_callable=AsyncMock) as mock_push_text, \
+         patch("app.report.sender.time.time_ns", return_value=123456789):
         mock_settings.REPORT_IMAGE_STORAGE = "r2"
         mock_repositories.get_batch_by_id.return_value = {"status": "complete"}
         mock_generate.return_value = "reports/2026-W19-U1.png"
@@ -147,8 +189,8 @@ async def test_send_report_uses_r2_url_and_marks_reported():
 
     mock_push_image.assert_called_once_with(
         "U1",
-        "https://cdn.example.com/reports/2026-W19-U1.png",
-        "https://cdn.example.com/reports/2026-W19-U1.png",
+        "https://cdn.example.com/reports/2026-W19-U1.png?v=123456789",
+        "https://cdn.example.com/reports/2026-W19-U1.png?v=123456789",
     )
     mock_repositories.update_batch_report_image_url.assert_called_once_with(
         "2026-W19-U1",

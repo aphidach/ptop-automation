@@ -14,6 +14,7 @@ services:
 
     volumes:
       - ./credentials:/app/credentials:ro
+      - data:/app/data
       - reports:/app/reports
       - tmp-images:/app/tmp/images
 
@@ -32,5 +33,6 @@ services:
         max-file: "3"
 
 volumes:
+  data:
   reports:
   tmp-images:

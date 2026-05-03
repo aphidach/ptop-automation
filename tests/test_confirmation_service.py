@@ -223,6 +223,19 @@ class TestManualConfirm:
         assert "บันทึก" in reply
         assert batch_id is not None
 
+    def test_manual_confirm_creates_persistent_confirmation(self, _mock_meter_service):
+        pending, _, _ = manual_confirm("U1", "M1", Decimal("12508"))
+
+        assert pending is not None
+        pending_row = _mock_meter_service[4].call_args.args[0]
+        assert pending_row["confirmation_id"] == pending.confirmation_id
+        assert pending_row["line_source_id"] == "U1"
+        assert pending_row["meter_id"] == "M1"
+        assert pending_row["ocr_value"] == "12508"
+        assert pending_row["status"] == "pending"
+        _mock_meter_service[5].assert_called_with(pending.confirmation_id, "confirmed")
+        assert _mock_meter_service[1].call_args.kwargs["confirmation_method"] == "manual_entry"
+
     def test_manual_confirm_clears_pending(self):
         manual_confirm("U1", "M1", 12508)
         assert get_pending_confirmation("U1") is None
@@ -253,7 +266,9 @@ class TestManualConfirm:
         assert pending is not None
         assert "12,508" in reply
         assert batch_id is not None
-        _mock_meter_service[5].assert_called_with("cnf_old", "expired")
+        _mock_meter_service[5].assert_any_call("cnf_old", "expired")
+        _mock_meter_service[5].assert_called_with(pending.confirmation_id, "confirmed")
+        assert _mock_meter_service[1].call_args.kwargs["confirmation_method"] == "manual_entry"
 
 
 class TestCancelPending:

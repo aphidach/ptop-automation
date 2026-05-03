@@ -1,18 +1,32 @@
+from types import SimpleNamespace
+from unittest.mock import patch
 from decimal import Decimal
 
 from app.line.messages import (
     HELP_FLOW_IMAGE_ASSETS,
     HELP_FLOW_PREVIEW_IMAGE_ASSETS,
     HELP_MENU_TOPICS,
+    build_batch_complete_card,
     build_confirmation_card,
+    build_duplicate_warning_card,
     build_help_flow_response,
     build_help_menu_message,
     build_history_batch_list_message,
+    build_history_detail_message,
     build_history_menu_message,
+    build_history_meter_message,
+    build_history_meter_select_message,
+    build_history_summary_message,
+    build_lower_value_warning,
     build_meter_request_message,
+    build_ocr_review_message,
     build_report_import_preview_message,
     build_settings_menu_message,
+    build_settings_view_message,
     build_start_collection_card,
+    build_status_card,
+    build_report_summary_message,
+    build_unreadable_prompt,
 )
 from app.line.webhook import _normalize_message_payload
 from app.services.session_service import PendingReportImport
@@ -30,12 +44,75 @@ def _clear_help_image_env(monkeypatch):
     monkeypatch.delenv("HELP_FLOW_IMAGE_PREVIEW_BASE_URL", raising=False)
 
 
+def _clear_line_card_image_env(monkeypatch):
+    monkeypatch.delenv("LINE_CARD_IMAGE_BASE_URL", raising=False)
+    monkeypatch.delenv("LINE_CARD_START_COLLECTION_HERO_URL", raising=False)
+
+
 def test_start_collection_flex_keeps_body_contents():
     payload = _as_dict(build_start_collection_card())
 
     assert payload["contents"]["type"] == "bubble"
     assert "body" in payload["contents"]
-    assert "เริ่มบันทึกค่ามิเตอร์สัปดาห์นี้" in str(payload)
+    assert "เริ่มบันทึกมิเตอร์" in str(payload)
+    assert "start_collection" in str(payload)
+    assert "show_status" in str(payload)
+    assert "cancel_collection" in str(payload)
+
+
+def test_start_collection_card_uses_shell_and_https_hero(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+    monkeypatch.setenv("LINE_CARD_START_COLLECTION_HERO_URL", "https://cdn.example.com/solar.png")
+
+    payload = _as_dict(
+        build_start_collection_card(
+            week="รอบสัปดาห์นี้",
+            expected_meter_count=6,
+            next_meter_id="M1",
+            confirmed_meter_count=0,
+        )
+    )
+    rendered = str(payload)
+
+    assert "เริ่มบันทึกมิเตอร์" in rendered
+    assert "รอบสัปดาห์นี้ M1-M6" in rendered
+    assert "0/6 เครื่อง" in rendered
+    assert "https://cdn.example.com/solar.png" in rendered
+    assert "action=start_collection" in rendered
+    assert "text': '1'" in rendered
+
+
+def test_start_collection_card_uses_base_https_hero_asset(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+    monkeypatch.setenv("LINE_CARD_IMAGE_BASE_URL", "https://cdn.example.com/line-cards")
+
+    payload = _as_dict(build_start_collection_card())
+
+    assert (
+        "https://cdn.example.com/line-cards/solar-meter-mascot-hero-v0.2.0.png"
+        in str(payload)
+    )
+
+
+def test_start_collection_card_hides_empty_next_meter_and_visible_cancel(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+
+    payload = _as_dict(build_start_collection_card(next_meter_id=None))
+
+    assert "เครื่องถัดไป" not in str(payload["contents"]["body"])
+    assert "cancel_collection" not in str(payload["contents"]["footer"])
+    assert "cancel_collection" in str(payload["quickReply"])
+
+
+def test_start_collection_card_omits_non_https_hero(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+    monkeypatch.setenv("LINE_CARD_START_COLLECTION_HERO_URL", "http://cdn.example.com/solar.png")
+    monkeypatch.setenv("LINE_CARD_IMAGE_BASE_URL", "https://cdn.example.com/line-cards")
+
+    payload = _as_dict(build_start_collection_card())
+
+    assert "http://cdn.example.com/solar.png" not in str(payload)
+    assert "solar-meter-mascot-hero-v0.2.0.png" not in str(payload)
 
 
 def test_confirmation_flex_keeps_footer_actions():
@@ -56,11 +133,94 @@ def test_confirmation_flex_keeps_footer_actions():
     assert "retake_photo" in str(payload)
 
 
+def test_warning_recovery_cards_keep_supported_actions_only():
+    payloads = [
+        _as_dict(build_unreadable_prompt("M2")),
+        _as_dict(build_ocr_review_message("M2", Decimal("12508"), ["confidence ต่ำ"])),
+        _as_dict(build_lower_value_warning("M2", Decimal("13000"), Decimal("12508"))),
+        _as_dict(build_duplicate_warning_card("M2", old_value="13000", new_value="12508")),
+    ]
+
+    rendered = "\n".join(str(payload) for payload in payloads)
+    assert "ตรวจสอบก่อนบันทึก" in rendered
+    assert "retake_photo" in rendered
+    assert "show_status" in rendered
+    assert "cancel_collection" in rendered
+    assert "replace_reading" not in rendered
+    assert "share_report" not in rendered
+
+
+def test_duplicate_warning_card_does_not_add_kwh_to_placeholder_old_value():
+    payload = _as_dict(
+        build_duplicate_warning_card("M2", old_value="มีข้อมูลเดิม", new_value="12508")
+    )
+    rendered = str(payload)
+
+    assert "มีข้อมูลเดิม" in rendered
+    assert "มีข้อมูลเดิม kWh" not in rendered
+    assert "12508 kWh" in rendered
+
+
+def test_batch_complete_card_has_safe_followup_actions():
+    payload = _as_dict(
+        build_batch_complete_card(
+            batch_id="2026-W19-U1",
+            week="2026-W19",
+            expected_meter_count=8,
+        )
+    )
+
+    rendered = str(payload)
+    assert payload["altText"] == "บันทึกครบแล้ว กำลังสร้างรายงาน"
+    assert "บันทึกครบแล้ว" in rendered
+    assert "history_batch" in rendered
+    assert "show_status" in rendered
+    assert "latest_report" not in rendered
+
+
 def test_meter_request_message_has_quick_replies():
     payload = _as_dict(build_meter_request_message("M1"))
 
-    assert payload["text"] == "กรุณาถ่ายรูปเครื่อง M1"
+    assert payload["altText"] == "ถ่ายรูปเครื่อง M1"
+    assert payload["contents"]["type"] == "bubble"
+    assert "ถ่ายรูป M1" in str(payload)
     assert len(payload["quickReply"]["items"]) == 11
+
+
+def test_meter_request_message_uses_configured_meter_ids_and_no_stale_m8():
+    payload = _as_dict(
+        build_meter_request_message(
+            "M3",
+            meter_ids=["M1", "M2", "M3", "M4", "M5", "M6"],
+        ),
+    )
+    rendered = str(payload)
+
+    assert "M7" not in rendered
+    assert "M8" not in rendered
+    assert "M1-M8" not in rendered
+    assert len(payload["quickReply"]["items"]) == 9
+    assert any(
+        item["action"]["type"] == "postback"
+        and item["action"]["data"] == "action=select_meter&meter_id=M6"
+        for item in payload["quickReply"]["items"]
+    )
+
+
+def test_meter_request_message_caps_configured_meter_quick_replies():
+    payload = _as_dict(
+        build_meter_request_message(
+            "M1",
+            meter_ids=[f"M{i}" for i in range(1, 12)],
+        ),
+    )
+    actions = [item["action"] for item in payload["quickReply"]["items"]]
+
+    assert len(payload["quickReply"]["items"]) <= 13
+    assert any(action["data"] == "action=skip_meter&meter_id=M1" for action in actions)
+    assert any(action["data"] == "action=show_status" for action in actions)
+    assert any(action["data"] == "action=cancel_collection" for action in actions)
+    assert any(action["data"] == "action=select_meter&meter_id=M1" for action in actions)
 
 
 def test_meter_request_uses_select_meter_postbacks_instead_of_m1_text_jump():
@@ -74,19 +234,114 @@ def test_meter_request_uses_select_meter_postbacks_instead_of_m1_text_jump():
         for action in actions
     )
 
+def test_status_card_renders_progress_actions():
+    payload = _as_dict(
+        build_status_card(
+            meter_id="M2",
+            pending="M1 = 12,500",
+            progress_text="เก็บแล้ว 1/8 ขาด M2, M3",
+            batch_id="2026-W19-U1",
+            week="2026-W19",
+            confirmed_count=1,
+            total_count=8,
+            missing_meter_ids=["M2", "M3", "M4", "M5", "M6", "M7", "M8"],
+            next_meter="M2",
+        )
+    )
 
-def test_help_menu_has_topic_quick_replies():
+    assert payload["altText"] == "สถานะรอบบันทึก"
+    assert "สถานะรอบบันทึก" in str(payload)
+    assert "M1 = 12,500" in str(payload)
+    assert "select_meter" in str(payload)
+    assert "latest_report" in str(payload)
+
+
+def test_status_card_uses_configured_total_count_in_meter_grid():
+    payload = _as_dict(
+        build_status_card(
+            meter_id="M2",
+            pending="",
+            progress_text="เก็บแล้ว 2/6 ขาด M3-M6",
+            confirmed_count=2,
+            total_count=6,
+            missing_meter_ids=["M3", "M4", "M5", "M6"],
+            next_meter="M3",
+        )
+    )
+    rendered = str(payload)
+
+    assert "บันทึกแล้ว 2/6 เครื่อง" in rendered
+    assert "บันทึกแล้ว 2/8 เครื่อง" not in rendered
+
+
+def test_status_card_complete_state_omits_continue_action():
+    payload = _as_dict(
+        build_status_card(
+            meter_id=None,
+            pending="",
+            progress_text="เก็บแล้วครบ 6/6 เครื่อง",
+            confirmed_count=6,
+            total_count=6,
+            missing_meter_ids=[],
+            next_meter=None,
+        )
+    )
+    rendered = str(payload)
+
+    assert "6/6 เครื่อง" in rendered
+    assert "บันทึกต่อ" not in rendered
+    assert "select_meter" not in rendered
+    assert "latest_report" in rendered
+    assert "help" in rendered
+
+
+def test_help_menu_renders_flex_dashboard_with_core_actions(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+
+    payload = _as_dict(build_help_menu_message())
+    rendered = str(payload)
+
+    assert payload["altText"] == "Help วิธีใช้งาน"
+    assert payload["contents"]["type"] == "bubble"
+    assert "text" not in payload
+    assert len(payload["quickReply"]["items"]) == 4
+    assert len(payload["quickReply"]["items"]) <= 13
+    assert "ช่วยเหลือ" in rendered
+    assert "ต้องการดูวิธีใช้งานส่วนไหนครับ?" in rendered
+    assert "เมนูด่วน" in rendered
+    assert "หมวดหมู่ช่วยเหลือ" in rendered
+    assert "แนะนำสำหรับคุณ" in rendered
+    assert "ติดต่อแอดมิน" in rendered
+    assert "วิธีใช้งานพื้นฐาน" in rendered
+    assert "การถ่ายรูปให้ OCR แม่น" in rendered
+    assert "ปัญหาที่พบบ่อย" in rendered
+    assert "ตั้งค่าระบบ" in rendered
+    assert "อ่านค่าไม่ได้" in rendered
+    assert "ตัวเลขผิด" in rendered
+    assert "ส่งรายงานไม่ได้" in rendered
+    assert "action=help_flow&topic=start_collection" in rendered
+    assert "action=help_flow&topic=confirm_reading" in rendered
+    assert "action=help_flow&topic=troubleshooting" in rendered
+    assert "action=help_flow&topic=settings" in rendered
+    assert "action=help_flow&topic=text_commands" in rendered
+    assert "action=show_status" in rendered
+    assert "action=latest_report" in rendered
+    assert "action=settings_contact_admin" in rendered
+
+
+def test_help_menu_uses_only_https_hero(monkeypatch):
+    _clear_line_card_image_env(monkeypatch)
+    monkeypatch.setenv("LINE_CARD_START_COLLECTION_HERO_URL", "http://cdn.example.com/solar.png")
+
     payload = _as_dict(build_help_menu_message())
 
-    assert payload["text"] == "ต้องการดูวิธีใช้งานส่วนไหนครับ?"
-    assert len(payload["quickReply"]["items"]) <= 13
-    assert "action=help_flow&topic=start_collection" in str(payload)
-    assert "action=help_flow&topic=confirm_reading" in str(payload)
-    assert "action=help_flow&topic=latest_report" in str(payload)
-    assert "action=help_flow&topic=settings_admin" in str(payload)
-    assert "action=help_flow&topic=troubleshooting" in str(payload)
-    assert "action=help_flow&topic=text_commands" in str(payload)
-    assert "action=help_flow&topic=contact_admin" in str(payload)
+    assert "http://cdn.example.com/solar.png" not in str(payload)
+
+    monkeypatch.setenv("LINE_CARD_START_COLLECTION_HERO_URL", "https://cdn.example.com/solar.png")
+
+    payload = _as_dict(build_help_menu_message())
+
+    assert "https://cdn.example.com/solar.png" in str(payload)
 
 
 def test_help_flow_without_image_url_returns_text_fallback(monkeypatch):
@@ -186,12 +441,135 @@ def test_normalize_line_message_payload_accepts_mixed_list():
 
 def test_history_menu_has_usable_actions():
     payload = _as_dict(build_history_menu_message())
+    rendered = str(payload)
 
-    assert "ประวัติการบันทึกมิเตอร์" in payload["text"]
-    assert "history_current" in str(payload)
-    assert "history_select_week" in str(payload)
-    assert "history_meter" in str(payload)
-    assert "latest_report" in str(payload)
+    assert payload["altText"] == "ประวัติการบันทึก"
+    assert payload["contents"]["type"] == "bubble"
+    assert payload["contents"]["size"] == "giga"
+    assert "เลือกข้อมูลที่ต้องการดู" in rendered
+    assert "เลือกเส้นทางด้านล่างเพื่อดูข้อมูลย้อนหลัง" in rendered
+    assert "history_current" in rendered
+    assert "history_previous" in rendered
+    assert "history_select_week" in rendered
+    assert "history_meter" in rendered
+    assert "latest_report" in rendered
+    assert "help" in str(payload["contents"]["footer"])
+    assert "help" not in str(payload["quickReply"])
+    assert len(payload["quickReply"]["items"]) == 4
+
+
+def test_history_meter_select_message_is_card_with_meter_actions():
+    payload = _as_dict(build_history_meter_select_message())
+    rendered = str(payload)
+
+    assert payload["altText"] == "ดูตามมิเตอร์"
+    assert payload["contents"]["size"] == "giga"
+    assert "เลือกมิเตอร์ที่ต้องการดู" in rendered
+    assert "แตะเครื่องด้านล่างเพื่อดูประวัติรายเครื่อง" in rendered
+    assert "action=history_meter&meter_id=M1" in rendered
+    assert "action=history_meter&meter_id=M8" in rendered
+    assert "▦" in rendered
+    assert "action=history" in rendered
+    assert "latest_report" in rendered
+
+
+def test_history_meter_message_renders_rich_card_with_period_actions():
+    payload = _as_dict(
+        build_history_meter_message(
+            "M1",
+            [
+                {
+                    "meter_id": "M1",
+                    "week": "2026-W18",
+                    "current_value": "135420",
+                    "produced_unit": "375.8",
+                    "created_at": "2026-04-28T03:09:00+07:00",
+                },
+                {
+                    "meter_id": "M1",
+                    "week": "2026-W17",
+                    "current_value": "135044.2",
+                    "produced_unit": "320.1",
+                    "created_at": "2026-04-21T03:09:00+07:00",
+                },
+            ],
+            period_days=30,
+        )
+    )
+    rendered = str(payload)
+
+    assert payload["altText"] == "ประวัติ M1"
+    assert payload["contents"]["type"] == "bubble"
+    assert payload["contents"]["size"] == "giga"
+    assert len(payload["quickReply"]["items"]) == 3
+    assert "ประวัติ M1" in rendered
+    assert "มิเตอร์ #001" in rendered
+    assert "ปกติ" in rendered
+    assert "รอบปัจจุบัน" in rendered
+    assert "135,420" in rendered
+    assert "kWh" in rendered
+    assert "เพิ่มขึ้น" in rendered
+    assert "+375.8" in rendered
+    assert "(+0.28%)" in rendered
+    assert "รอบบันทึก" in rendered
+    assert "2026-W18" in rendered
+    assert "รอบก่อนหน้า" in rendered
+    assert "2026-W17" in rendered
+    assert "อัปเดตล่าสุด" in rendered
+    assert "28 เม.ย. 2569" in rendered
+    assert "03:09" in rendered
+    assert "กราฟการใช้ไฟฟ้า" in rendered
+    assert "●" in rendered
+    assert "7 วัน" in rendered
+    assert "30 วัน" in rendered
+    assert "90 วัน" in rendered
+    assert "action=history_meter&meter_id=M1&period_days=7" in rendered
+    assert "action=history_meter&meter_id=M1&period_days=30" in rendered
+    assert "action=history_meter&meter_id=M1&period_days=90" in rendered
+    assert "ส่งรายงานล่าสุด" in rendered
+    assert "เลือกเครื่องอื่น" in rendered
+    assert "กลับประวัติ" in rendered
+    footer_action_group = payload["contents"]["footer"]["contents"][0]
+    assert footer_action_group["layout"] == "vertical"
+    assert footer_action_group["contents"][0]["action"]["label"] == "ส่งรายงานล่าสุด"
+    assert footer_action_group["contents"][1]["layout"] == "horizontal"
+
+
+def test_history_meter_single_reading_uses_latest_point_chart():
+    payload = _as_dict(
+        build_history_meter_message(
+            "M1",
+            [
+                {
+                    "meter_id": "M1",
+                    "week": "2026-W18",
+                    "current_value": "135420",
+                    "produced_unit": "375.8",
+                    "created_at": "2026-04-28T03:09:00+07:00",
+                }
+            ],
+            period_days=7,
+        )
+    )
+    rendered = str(payload)
+
+    assert "135,420 kWh" in rendered
+    assert "W18" in rendered
+    assert "●" in rendered
+    assert "action=history_meter&meter_id=M1&period_days=7" in rendered
+
+
+def test_history_meter_empty_state_stays_actionable():
+    payload = _as_dict(build_history_meter_message("M2", [], period_days=90))
+    rendered = str(payload)
+
+    assert payload["altText"] == "ประวัติ M2"
+    assert "ยังไม่มีประวัติของ M2 ในช่วง 90 วันครับ" in rendered
+    assert "action=start_collection" in rendered
+    assert "action=history_meter" in rendered
+    assert "action=history" in rendered
+    assert "action=history_meter&meter_id=M2&period_days=90" in rendered
+
 
 def test_history_batch_list_shows_recent_weeks():
     summaries = [
@@ -210,28 +588,247 @@ def test_history_batch_list_shows_recent_weeks():
     ]
 
     payload = _as_dict(build_history_batch_list_message(summaries))
+    rendered = str(payload)
 
-    assert "ประวัติย้อนหลัง 1 เดือน" in payload["text"]
-    assert "2026-W18: 8/8" in payload["text"]
-    assert "2026-W17: 7/8" in payload["text"]
-    assert "history_batch" in str(payload)
-    assert "batch_id=2026-W18-U1" in str(payload)
+    assert payload["altText"] == "ประวัติย้อนหลัง 1 เดือน"
+    assert payload["contents"]["type"] == "bubble"
+    assert payload["contents"]["size"] == "mega"
+    assert "ประวัติย้อนหลัง 1 เดือน" in rendered
+    assert "2026-W18" in rendered
+    assert "8/8 เครื่อง" in rendered
+    assert "2026-W17" in rendered
+    assert "7/8 เครื่อง" in rendered
+    assert "history_batch" in rendered
+    assert "batch_id=2026-W18-U1" in rendered
+    assert "กลับประวัติ" in rendered
+
+    first_row = payload["contents"]["body"]["contents"][3]["contents"][0]
+    assert first_row["contents"][0]["width"] == "34px"
+    assert first_row["contents"][1]["size"] == "md"
+    assert first_row["contents"][1]["wrap"] is False
+    assert first_row["contents"][2]["size"] == "sm"
+    assert first_row["contents"][2]["wrap"] is False
+
+
+def test_history_batch_list_empty_uses_text_fallback():
+    payload = _as_dict(build_history_batch_list_message([]))
+
+    assert payload["text"] == "ยังไม่มีประวัติย้อนหลังใน 1 เดือนนี้ครับ"
+    assert "start_collection" in str(payload)
+    assert "latest_report" in str(payload)
+    assert "help" in str(payload)
+
+
+def test_history_summary_message_is_flex_card():
+    summary = SimpleNamespace(
+        batch_id="2026-W18-U1",
+        week="2026-W18",
+        status="reported",
+        expected_meter_count=8,
+        confirmed_meter_count=8,
+        missing_meter_ids=[],
+        produced_unit=Decimal("815113.15"),
+        amount=Decimal("3423475.23"),
+    )
+
+    payload = _as_dict(build_history_summary_message("ประวัติสัปดาห์ก่อน", summary))
+    rendered = str(payload)
+
+    assert payload["altText"] == "ประวัติสัปดาห์ก่อน"
+    assert "2026-W18" in rendered
+    assert "815,113.15 kWh" in rendered
+    assert "3,423,475.23 บาท" in rendered
+    assert "action=history_batch_detail&batch_id=2026-W18-U1" in rendered
+    assert "action=history" in rendered
+
+
+def test_history_detail_message_uses_rich_detail_card():
+    summary = SimpleNamespace(
+        batch_id="2026-W18-U1",
+        week="2026-W18",
+        expected_meter_count=8,
+        confirmed_meter_count=8,
+        missing_meter_ids=[],
+        date="2026-04-28",
+        created_at="2026-04-28T02:00:00+07:00",
+        updated_at="2026-04-28T02:29:00+07:00",
+        readings=[
+            {"meter_id": "M1", "current_value": "135420", "produced_unit": "375.8"},
+            {"meter_id": "M2", "current_value": "250509.1", "produced_unit": "657.8"},
+            {"meter_id": "M3", "current_value": "104860", "produced_unit": "880"},
+            {"meter_id": "M4", "current_value": "84352", "produced_unit": "761"},
+            {"meter_id": "M5", "current_value": "60601", "produced_unit": "1387"},
+            {"meter_id": "M6", "current_value": "61270", "produced_unit": "1528"},
+            {"meter_id": "M7", "current_value": "58196", "produced_unit": "1322"},
+            {"meter_id": "M8", "current_value": "59905", "produced_unit": "1369"},
+        ],
+    )
+
+    payload = _as_dict(build_history_detail_message(summary))
+    rendered = str(payload)
+
+    assert payload["altText"] == "รายละเอียดรอบ 2026-W18"
+    assert payload["contents"]["size"] == "giga"
+    assert "22 - 28 เม.ย. 2569" in rendered
+    assert "บันทึกครบถ้วน" in rendered
+    assert "M1" in rendered
+    assert "135,420 kWh" in rendered
+    assert "+375.8 kWh" in rendered
+    assert "รวมทั้งสิ้น" in rendered
+    assert "815,113.1 kWh" in rendered
+    assert "เพิ่มขึ้นรวม" in rendered
+    assert "+8,280.6 kWh" in rendered
+    assert "เฉลี่ยต่อเครื่อง" in rendered
+    assert "101,889.1 kWh" in rendered
+    assert "ข้อมูลอัปเดตล่าสุด: 28 เม.ย. 2569 02:29" in rendered
+    assert "action=latest_report&batch_id=2026-W18-U1" in rendered
+    assert "action=history_meter" in rendered
+    assert "action=start_collection" in rendered
+    assert "action=history" in rendered
+
 
 def test_settings_operator_menu_does_not_show_edit_actions():
-    payload = _as_dict(build_settings_menu_message(is_admin=False))
+    payload = _as_dict(
+        build_settings_menu_message(
+            is_admin=False,
+            values={
+                "default_rate": "4.2",
+                "expected_meter_count": "8",
+                "report_title": "รายงานพลังงานรายสัปดาห์",
+            },
+        )
+    )
+    rendered = str(payload)
 
-    assert "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ" in payload["text"]
-    assert "settings_view" in str(payload)
-    assert "settings_edit_rate" not in str(payload)
-    assert "settings_import_report" not in str(payload)
+    assert payload["altText"] == "การตั้งค่าปัจจุบัน"
+    assert payload["contents"]["size"] == "mega"
+    assert "การตั้งค่าปัจจุบัน" in rendered
+    assert "ข้อมูลการตั้งค่าระบบ" in rendered
+    assert "ดูได้เฉพาะข้อมูลปัจจุบัน" in rendered
+    assert "จำนวนมิเตอร์" in rendered
+    assert "รอบบันทึก" in rendered
+    assert "รายสัปดาห์" in rendered
+    assert "อัตราไฟฟ้าเริ่มต้น" in rendered
+    assert "4.20 บาท/kWh" in rendered
+    assert "8 เครื่อง" in rendered
+    assert "Asia/Bangkok" in rendered
+    assert "รายงานพลังงานรายสัปดาห์" in rendered
+    assert "ดูค่าปัจจุบันฉบับเต็ม" in rendered
+    assert "settings_view" in rendered
+    assert "settings_meters" in rendered
+    assert "settings_edit_rate" not in rendered
+    assert "settings_import_report" not in rendered
+    assert "settings_sync_sheets" not in rendered
+    assert "help" in str(payload["quickReply"])
+
 
 def test_settings_admin_menu_shows_edit_actions():
-    payload = _as_dict(build_settings_menu_message(is_admin=True))
+    payload = _as_dict(
+        build_settings_menu_message(
+            is_admin=True,
+            values={
+                "default_rate": "4.2",
+                "expected_meter_count": "8",
+                "report_title": "รายงานพลังงานรายสัปดาห์",
+            },
+        )
+    )
+    rendered = str(payload)
 
-    assert "เลือกสิ่งที่ต้องการจัดการ" in payload["text"]
-    assert "settings_edit_rate" in str(payload)
-    assert "settings_edit_report_title" in str(payload)
-    assert "settings_import_report" in str(payload)
+    assert payload["altText"] == "การตั้งค่าปัจจุบัน"
+    assert payload["contents"]["size"] == "mega"
+    assert "ดูค่าปัจจุบันฉบับเต็ม" in rendered
+    assert "จำนวนมิเตอร์" in rendered
+    assert "อัตราไฟฟ้าเริ่มต้น" in rendered
+    assert "Timezone" in rendered
+    assert "เมนูสำหรับผู้ดูแลระบบเท่านั้น" in rendered
+    assert "4.20 บาท/kWh" in rendered
+    assert "Sync Google Sheet" in str(payload["contents"]["body"])
+    assert "แทนที่ SQLite" in str(payload["contents"]["body"])
+    assert "OCR จากรูปรายงาน" in str(payload["contents"]["body"])
+    assert "settings_edit_rate" in rendered
+    assert "settings_edit_expected_count" in rendered
+    assert "settings_edit_report_title" in rendered
+    assert "settings_sync_sheets" in rendered
+    assert "settings_import_report" in rendered
+    assert "settings_recipients" in str(payload["quickReply"])
+    assert "settings_permissions" in str(payload["quickReply"])
+
+
+def test_settings_view_message_renders_full_settings_card():
+    payload = _as_dict(
+        build_settings_view_message(
+            {
+                "default_rate": "4.5",
+                "expected_meter_count": "8",
+                "timezone": "Asia/Bangkok",
+                "report_title": "รายงานการผลิตไฟฟ้า",
+                "updated_at": "2024-04-28T03:04:00+07:00",
+            },
+            is_admin=True,
+        )
+    )
+    rendered = str(payload)
+
+    assert payload["altText"] == "ค่าปัจจุบันของระบบ"
+    assert payload["contents"]["size"] == "mega"
+    assert "ค่าปัจจุบันของระบบ" in rendered
+    assert "ข้อมูลการตั้งค่าล่าสุด" in rendered
+    assert "จำนวนมิเตอร์" in rendered
+    assert "8 เครื่อง" in rendered
+    assert "รอบบันทึก" in rendered
+    assert "รายสัปดาห์" in rendered
+    assert "4.50 บาท/kWh" in rendered
+    assert "Asia/Bangkok" in rendered
+    assert "รายงานการผลิตไฟฟ้า" in rendered
+    assert "อัปเดตล่าสุด: 28 เม.ย. 2567 03:04" in rendered
+    assert "settings_edit_rate" in str(payload["quickReply"])
+    assert "settings_edit_report_title" in str(payload["quickReply"])
+    assert "settings_edit_expected_count" in str(payload["quickReply"])
+
+
+def test_report_summary_card_shows_week_totals_and_navigation():
+    with patch(
+        "app.line.message_builders.reports.build_report_data",
+        return_value=SimpleNamespace(
+            week="2026-W19",
+            readings=[1, 2, 3, 4],
+            total_produced_unit=Decimal("1234.5"),
+            total_amount=Decimal("4567.89"),
+        ),
+    ):
+        payload = _as_dict(build_report_summary_message("2026-W19-U1"))
+
+    rendered = str(payload)
+    assert payload["altText"] == "รายงานสัปดาห์ 2026-W19"
+    assert "สรุปรายงานสัปดาห์" in rendered
+    assert "สัปดาห์" in rendered
+    reading_row = next(
+        item
+        for item in payload["contents"]["body"]["contents"]
+        if item.get("type") == "box" and item.get("contents", [{}])[0].get("text") == "จำนวนเครื่อง"
+    )
+    assert reading_row["contents"][1]["text"] == "4"
+    assert "1,234.5 kWh" in rendered
+    assert "4,567.89 บาท" in rendered
+    assert "action=latest_report&batch_id=2026-W19-U1" in rendered
+    assert "action=history_batch_detail&batch_id=2026-W19-U1" in rendered
+    assert "action=history" in rendered
+    assert "share_report" not in rendered
+
+
+def test_report_summary_missing_data_returns_card():
+    with patch("app.line.message_builders.reports.build_report_data", return_value=None):
+        payload = _as_dict(build_report_summary_message("2026-W19-U1"))
+
+    rendered = str(payload)
+    assert payload["altText"] == "รายงานยังไม่พร้อม"
+    assert "รายงานยังไม่พร้อม" in rendered
+    assert "ยังไม่มีข้อมูลรายงานของรอบนี้" in rendered
+    assert "2026-W19" in rendered
+    assert "start_collection" in rendered
+    assert "GEN 2026-W19-U1" in rendered
+
 
 def test_report_import_preview_has_confirm_and_cancel_when_valid():
     pending = PendingReportImport(
@@ -244,11 +841,18 @@ def test_report_import_preview_has_confirm_and_cancel_when_valid():
     )
 
     payload = _as_dict(build_report_import_preview_message(pending))
+    rendered = str(payload)
 
-    assert "ตรวจสอบรายงานก่อนนำเข้า" in payload["text"]
-    assert "2026-W18" in payload["text"]
-    assert "confirm_import_report" in str(payload)
-    assert "cancel_import_report" in str(payload)
+    assert payload["altText"] == "ตรวจสอบรายงานก่อนนำเข้า"
+    assert payload["contents"]["type"] == "bubble"
+    assert payload["contents"]["size"] == "mega"
+    assert "นำเข้ารายงานเก่า" in rendered
+    assert "2026-W18" in rendered
+    assert "8/8" in rendered
+    assert "9,456.9" in rendered
+    assert "OCR" in rendered
+    assert "confirm_import_report" in rendered
+    assert "cancel_import_report" in rendered
 
 def test_report_import_preview_hides_confirm_when_invalid():
     pending = PendingReportImport(
@@ -262,7 +866,9 @@ def test_report_import_preview_hides_confirm_when_invalid():
     )
 
     payload = _as_dict(build_report_import_preview_message(pending))
+    rendered = str(payload)
 
-    assert "ข้อผิดพลาด" in payload["text"]
-    assert "confirm_import_report" not in str(payload)
-    assert "cancel_import_report" in str(payload)
+    assert payload["altText"] == "ตรวจสอบรายงานก่อนนำเข้า"
+    assert "อ่านแถวได้ 7/8 แถว" in rendered
+    assert "confirm_import_report" not in rendered
+    assert "cancel_import_report" in rendered

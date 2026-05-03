@@ -13,7 +13,7 @@ RUN pip install --no-cache-dir --no-compile --prefix=/install -r requirements-pr
 
 FROM python-base AS runtime
 
-ARG APP_VERSION=0.1.3
+ARG APP_VERSION=0.3.0
 ENV APP_VERSION=${APP_VERSION}
 LABEL org.opencontainers.image.title="solar-meter-bot" \
     org.opencontainers.image.description="LINE bot for solar meter OCR reporting" \
@@ -24,7 +24,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system appuser \
     && useradd --system --gid appuser --home-dir /app --shell /usr/sbin/nologin appuser \
-    && mkdir -p /app/tmp/images /app/tmp/ocr-debug /app/reports /app/credentials \
+    && mkdir -p /app/tmp/images /app/tmp/ocr-debug /app/reports /app/credentials /app/data \
     && chown -R appuser:appuser /app
 
 COPY --from=dependencies /install /usr/local

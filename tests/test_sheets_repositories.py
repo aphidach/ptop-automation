@@ -1,6 +1,13 @@
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from app.sheets import repositories
+
+
+@pytest.fixture(autouse=True)
+def _use_sheets_backend(monkeypatch):
+    monkeypatch.setattr(repositories.settings, "STORAGE_BACKEND", "sheets")
 
 
 def test_append_pending_confirmation_uses_pending_tab():

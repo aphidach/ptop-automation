@@ -5,6 +5,7 @@ from app.line.parser import (
     POSTBACK_FORCE_CONFIRM_READING,
     POSTBACK_HELP_FLOW,
     POSTBACK_HISTORY,
+    POSTBACK_HISTORY_METER,
     POSTBACK_LATEST_REPORT,
     POSTBACK_SELECT_METER,
     POSTBACK_START_COLLECTION,
@@ -77,6 +78,22 @@ def test_parse_postback_query_with_meter_and_week():
     assert parsed.type == POSTBACK_SELECT_METER
     assert parsed.meter_id == "M1"
     assert parsed.batch_id == "2026-W19"
+
+
+def test_parse_history_meter_period_days():
+    parsed = parse_postback_action("action=history_meter&meter_id=m1&period_days=30")
+
+    assert parsed.type == POSTBACK_HISTORY_METER
+    assert parsed.meter_id == "M1"
+    assert parsed.period_days == 30
+
+
+def test_parse_history_meter_rejects_unsupported_period_days():
+    parsed = parse_postback_action("action=history_meter&meter_id=M1&period_days=14")
+
+    assert parsed.type == POSTBACK_HISTORY_METER
+    assert parsed.meter_id == "M1"
+    assert parsed.period_days is None
 
 
 def test_parse_postback_json_payload():
