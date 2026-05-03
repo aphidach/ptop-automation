@@ -47,17 +47,19 @@ def validate_reading(
     meter_id: str,
     current_value: Decimal,
     batch_id: str,
+    allow_duplicate: bool = False,
+    allow_lower_value: bool = False,
 ) -> ValidationResult:
     """Validate a reading before saving. Returns warnings for edge cases."""
     warnings: list[str] = []
 
     last_value = _get_last_value(meter_id)
-    if current_value < last_value:
+    if current_value < last_value and not allow_lower_value:
         warnings.append(
             f"ค่าปัจจุบัน ({current_value}) น้อยกว่าค่าครั้งก่อน ({last_value})"
         )
 
-    if _is_duplicate_in_batch(meter_id, batch_id):
+    if _is_duplicate_in_batch(meter_id, batch_id) and not allow_duplicate:
         warnings.append(
             f"มิเตอร์ {meter_id} ถูกบันทึกไปแล้วในรอบนี้ ต้องการแทนที่หรือไม่?"
         )
@@ -125,11 +127,12 @@ def _get_last_value(meter_id: str) -> Decimal:
 
 def _get_rate(meter_id: str) -> Decimal:
     """Get rate from meter master data, fallback to DEFAULT_RATE."""
+    sheet_default = _get_default_rate_setting()
     meter = repositories.get_meter_by_id(meter_id)
-    if meter:
-        raw = meter.get("default_rate", settings.DEFAULT_RATE)
+    if meter and meter.get("default_rate", "") != "":
+        raw = meter.get("default_rate", sheet_default)
     else:
-        raw = settings.DEFAULT_RATE
+        raw = sheet_default
     return Decimal(str(raw))
 
 
@@ -143,3 +146,12 @@ def _iso_week(dt: datetime) -> str:
     """Return ISO week string like '2026-W19'."""
     iso = dt.isocalendar()
     return f"{iso[0]}-W{iso[1]:02d}"
+
+
+def _get_default_rate_setting() -> Decimal:
+    values = repositories.get_settings()
+    if isinstance(values, dict):
+        raw = values.get("default_rate")
+        if raw:
+            return Decimal(str(raw))
+    return Decimal(str(settings.DEFAULT_RATE))

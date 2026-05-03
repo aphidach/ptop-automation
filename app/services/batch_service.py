@@ -42,7 +42,7 @@ def get_or_create_batch(batch_id: str, line_source_id: str) -> dict:
         "week": week_str,
         "date": now.strftime("%Y-%m-%d"),
         "line_source_id": line_source_id,
-        "expected_meter_count": str(settings.EXPECTED_METER_COUNT),
+        "expected_meter_count": str(_expected_meter_count()),
         "confirmed_meter_count": "0",
         "status": "collecting",
         "report_image_url": "",
@@ -64,11 +64,12 @@ def get_batch_progress(batch_id: str) -> Optional[BatchProgress]:
     confirmed_count = len(confirmed_ids)
     missing = [m for m in settings.VALID_METER_IDS if m not in confirmed_ids]
 
+    expected = _expected_meter_count()
     return BatchProgress(
         batch_id=batch_id,
         week=batch.get("week", ""),
         status=batch.get("status", "collecting"),
-        expected_meter_count=settings.EXPECTED_METER_COUNT,
+        expected_meter_count=expected,
         confirmed_meter_count=confirmed_count,
         missing_meter_ids=missing,
     )
@@ -82,7 +83,7 @@ def update_batch_after_reading(batch_id: str) -> BatchProgress:
             batch_id=batch_id,
             week="",
             status="unknown",
-            expected_meter_count=settings.EXPECTED_METER_COUNT,
+            expected_meter_count=_expected_meter_count(),
             confirmed_meter_count=0,
             missing_meter_ids=list(settings.VALID_METER_IDS),
         )
@@ -109,3 +110,15 @@ def format_progress_message(progress: Optional[BatchProgress]) -> str:
 
 def build_progress_message(batch_id: str) -> str:
     return format_progress_message(get_batch_progress(batch_id))
+
+
+def _expected_meter_count() -> int:
+    values = repositories.get_settings()
+    if isinstance(values, dict):
+        raw = values.get("expected_meter_count")
+        if raw:
+            try:
+                return int(str(raw))
+            except ValueError:
+                pass
+    return settings.EXPECTED_METER_COUNT

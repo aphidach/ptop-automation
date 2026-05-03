@@ -1,0 +1,9 @@
+*
+
+!Dockerfile
+!requirements-prod.txt
+!app/
+!app/**
+
+app/**/__pycache__/
+app/**/*.py[cod]

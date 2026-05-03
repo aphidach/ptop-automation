@@ -28,18 +28,20 @@ Done when:
 - User can send an image
 - Backend downloads the image successfully
 
-## Phase 3: OpenTyphoon OCR
+## Phase 3: Google Vision OCR
 
-- Add `typhoon-ocr` package
-- Add `TYPHOON_OCR_API_KEY`
+Current status: implemented as the production OCR path.
+
+- Add `google-cloud-vision` package
+- Enable Cloud Vision API for the Google service account project
 - Implement OCR client
-- Implement global rate limiter for 2 r/s and 20 r/min
 - Implement meter value parser
 
 Done when:
 
 - Backend can OCR a local test image
 - Parsed value is returned or marked unreadable
+- Real-image evaluator reaches the current target of `8/8` on `tmp/test-ocr`
 
 ## Phase 4: Confirmation Flow
 
@@ -99,7 +101,7 @@ python-dotenv
 line-bot-sdk
 gspread
 google-auth
-typhoon-ocr
+google-cloud-vision
 pydantic
 pydantic-settings
 pandas
@@ -114,7 +116,7 @@ Recommended order:
 
 1. LINE webhook and text command handling
 2. Image download
-3. OCR client and rate limiter
+3. OCR client
 4. Confirmation flow
 5. Google Sheets append
 6. Report image generation

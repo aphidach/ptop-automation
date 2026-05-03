@@ -1,7 +1,7 @@
 import pytest
 from decimal import Decimal
 
-from app.ocr.value_parser import ParseResult, parse_meter_value
+from app.ocr.value_parser import parse_energy_meter_value, parse_meter_value
 
 
 class TestParseMeterValue:
@@ -24,6 +24,10 @@ class TestParseMeterValue:
 
     def test_space_separated(self):
         result = parse_meter_value("12 500")
+        assert result.value == 12500
+
+    def test_newline_separated(self):
+        result = parse_meter_value("12\n500")
         assert result.value == 12500
 
     def test_comma_with_leading_zeros(self):
@@ -109,3 +113,104 @@ Reading: 12,508 kWh
 Date: 04/05/2026"""
         result = parse_meter_value(text)
         assert result.value == 12508
+
+
+class TestParseEnergyMeterValue:
+    def test_e_del_mwh_converts_to_kwh(self):
+        result = parse_energy_meter_value("E Del 58.196 MWh")
+        assert result.value == Decimal("58196")
+        assert result.source_label == "E Del"
+        assert result.unit == "MWh"
+        assert result.reason == "energy_label_match"
+
+    def test_e_del_second_sample(self):
+        result = parse_energy_meter_value("E Del 84.352 MWh")
+        assert result.value == Decimal("84352")
+
+    def test_total_energy_kwh_keeps_value(self):
+        result = parse_energy_meter_value("Total Energy kWh 135420.05")
+        assert result.value == Decimal("135420.05")
+        assert result.unit == "kWh"
+
+    def test_total_energy_consumed_keeps_kwh(self):
+        result = parse_energy_meter_value("Total Energy Consumed: 250509 kWh")
+        assert result.value == Decimal("250509")
+        assert result.source_label == "Total Energy Consumed"
+
+    def test_energy_label_beats_power_value(self):
+        result = parse_energy_meter_value("Ptot 20.2791 kW\nE Del 58.196 MWh")
+        assert result.value == Decimal("58196")
+
+    def test_html_table_energy_value(self):
+        result = parse_energy_meter_value("<td>E Del</td><td>60.601</td><td>MWh</td>")
+        assert result.value == Decimal("60601")
+
+    def test_ocr_unit_mjh_is_treated_as_mwh(self):
+        result = parse_energy_meter_value("<td>E Del</td><td>84.352</td><td>MJh</td>")
+        assert result.value == Decimal("84352")
+        assert result.unit == "MWh"
+
+    def test_google_vision_muth_unit_is_treated_as_mwh(self):
+        result = parse_energy_meter_value("E Del\n58.196\nMuth")
+        assert result.value == Decimal("58196")
+        assert result.unit == "MWh"
+
+    def test_google_vision_mulh_integer_mwh_keeps_plausible_kwh_value(self):
+        result = parse_energy_meter_value("E Del 61270 Mulh")
+        assert result.value == Decimal("61270")
+        assert result.unit == "MWh"
+
+    def test_google_vision_muh_unit_after_noise_is_treated_as_mwh(self):
+        result = parse_energy_meter_value("E Del\nI\n84.352 Muh")
+        assert result.value == Decimal("84352")
+        assert result.unit == "MWh"
+
+    def test_e_delivered_label_is_supported(self):
+        result = parse_energy_meter_value("E Delivered 61.270 MWh")
+        assert result.value == Decimal("61270")
+        assert result.source_label == "Energy Delivered"
+
+    def test_large_integer_mwh_uses_implied_decimal_when_conversion_exceeds_max(self):
+        result = parse_energy_meter_value("Energy Delivered 61270 MWh")
+        assert result.value == Decimal("61270")
+        assert result.source_label == "Energy Delivered"
+        assert result.unit == "MWh"
+
+    def test_e_def_label_ocr_typo_is_supported(self):
+        result = parse_energy_meter_value("E Def 58.196 MWh")
+        assert result.value == Decimal("58196")
+        assert result.source_label == "E Del"
+
+    def test_total_energy_header_uses_larger_kwh_value(self):
+        result = parse_energy_meter_value(
+            "Comm Frequency Hz Total Energy kWh\n50.0 135420.05"
+        )
+        assert result.value == Decimal("135420.05")
+
+    def test_google_vision_total_energy_uses_value_after_nearby_kwh_unit(self):
+        result = parse_energy_meter_value(
+            "Total Energy\n230, 16, 472\nkWh\n50.0 135420.05"
+        )
+        assert result.value == Decimal("135420.05")
+        assert result.source_label == "Total Energy"
+        assert result.unit == "kWh"
+
+    def test_mpr45s_detail_crop_combines_decimal_tail(self):
+        result = parse_energy_meter_value("ENTES\nMPR-45S\n0250509. IkW h")
+        assert result.value == Decimal("250509.1")
+        assert result.source_label == "MPR-45S energy row"
+        assert result.unit == "kWh"
+
+    def test_mpr45s_detail_crop_implies_missing_decimal_tail_low_confidence(self):
+        result = parse_energy_meter_value(
+            "ENTES\nMPR-45S\n[google_vision_mpr45s_detail]\n0250509 kW h"
+        )
+        assert result.value == Decimal("250509.1")
+        assert result.source_label == "MPR-45S energy row"
+        assert result.confidence == "low"
+        assert result.reason == "model_specific_implied_decimal_tail"
+
+    def test_fallback_still_supports_plain_manual_value(self):
+        result = parse_energy_meter_value("M1 12508")
+        assert result.value == Decimal("12508")
+        assert result.reason == "fallback_generic_number"

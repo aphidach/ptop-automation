@@ -13,7 +13,9 @@ LINE_CHANNEL_SECRET=your_line_channel_secret
 GOOGLE_APPLICATION_CREDENTIALS=credentials/google-service-account.json
 GOOGLE_SHEETS_SPREADSHEET_ID=your_spreadsheet_id
 
-TYPHOON_OCR_API_KEY=your_opentyphoon_api_key
+OCR_MAX_PRODUCED_UNIT_KWH=10000
+
+REPORT_IMAGE_STORAGE=local
 
 EXPECTED_METER_COUNT=8
 DEFAULT_RATE=4.2
@@ -46,11 +48,14 @@ https://your-tunnel-url/webhook/line
 
 1. Create a Google Cloud project
 2. Enable Google Sheets API
-3. Create a service account
-4. Download service account JSON
-5. Place it at `credentials/google-service-account.json`
-6. Create the spreadsheet tabs from `docs/02-google-sheets-schema.md`
-7. Share the spreadsheet with the service account email as Editor
+3. Enable Cloud Vision API
+4. Create a service account
+5. Download service account JSON
+6. Place it at `credentials/google-service-account.json`
+7. Create the spreadsheet tabs from `docs/02-google-sheets-schema.md`
+8. Share the spreadsheet with the service account email as Editor
+
+The same service account is used for both Google Sheets and Google Vision. If OCR fails with a Google API permission error, check that Cloud Vision API is enabled in the same Google Cloud project as the service account.
 
 Never commit the credential JSON file.
 
@@ -118,7 +123,31 @@ Better:
 
 LINE image messages usually require an accessible image URL. Recommended options:
 
+- Upload generated report image to Cloudflare R2 and send its public HTTPS URL
 - Upload generated report image to Google Cloud Storage and send the public or signed URL
 - For MVP, use a simple static file endpoint if the backend is publicly reachable
 
 Do not rely on local file paths for LINE delivery in production.
+
+### Cloudflare R2
+
+Report images use local static hosting by default:
+
+```bash
+REPORT_IMAGE_STORAGE=local
+```
+
+To send report images through Cloudflare R2, create an R2 bucket, configure a public or custom HTTPS domain for that bucket, create an R2 access key with write access to the bucket, then set:
+
+```bash
+REPORT_IMAGE_STORAGE=r2
+R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
+R2_ACCESS_KEY_ID=your_r2_access_key_id
+R2_SECRET_ACCESS_KEY=your_r2_secret_access_key
+R2_BUCKET=your_r2_bucket
+R2_PUBLIC_URL=https://your-public-r2-domain.example.com
+```
+
+Generated reports are uploaded to `reports/{batch_id}.png`, and the LINE image message uses `R2_PUBLIC_URL/reports/{batch_id}.png`.
+
+`R2_ENDPOINT` must be the account-level S3 API endpoint only. Do not append the bucket name because `R2_BUCKET` is configured separately.

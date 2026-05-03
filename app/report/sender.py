@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from urllib.parse import urlparse
 
 from app.config import settings
 from app.line.client import push_image, push_text
 from app.report.generator import generate_report_image
 from app.sheets import repositories
+from app.storage.r2 import R2ConfigError, R2UploadError, upload_report_image
 
 logger = logging.getLogger(__name__)
 
@@ -16,9 +18,25 @@ def _build_report_url(filename: str) -> str:
     base = settings.APP_BASE_URL.rstrip("/")
     return f"{base}/reports/{filename}"
 
+
+def _uses_r2_report_storage() -> bool:
+    return settings.REPORT_IMAGE_STORAGE.lower() == "r2"
+
+
+def _report_url_setting_name() -> str:
+    return "R2_PUBLIC_URL" if _uses_r2_report_storage() else "APP_BASE_URL"
+
+
 def _is_https_url(url: str) -> bool:
     parsed = urlparse(url)
     return parsed.scheme == "https" and bool(parsed.netloc)
+
+
+def _build_report_delivery_url(image_path: str) -> str:
+    if _uses_r2_report_storage():
+        return upload_report_image(image_path)
+
+    return _build_report_url(Path(image_path).name)
 
 
 async def send_report(batch_id: str, source_id: str, mark_reported: bool = False) -> bool:
@@ -28,8 +46,17 @@ async def send_report(batch_id: str, source_id: str, mark_reported: bool = False
         await push_text(source_id, "สร้างรูปรายงานไม่สำเร็จครับ พิมพ์ GEN เพื่อลองใหม่")
         return False
 
-    filename = image_path.rsplit("/", 1)[-1]
-    original_url = _build_report_url(filename)
+    try:
+        original_url = _build_report_delivery_url(image_path)
+    except (R2ConfigError, R2UploadError) as exc:
+        logger.error("Cannot upload report image for batch %s: %s", batch_id, exc)
+        await push_text(
+            source_id,
+            "สร้างรูปรายงานแล้วครับ แต่อัปโหลดไป R2 ไม่สำเร็จ\n"
+            "กรุณาตรวจสอบค่า R2 แล้วลองพิมพ์ REPORT อีกครั้ง",
+        )
+        return False
+
     preview_url = original_url
     if not _is_https_url(original_url):
         logger.error("Cannot send LINE image with non-HTTPS report URL: %s", original_url)
@@ -37,10 +64,11 @@ async def send_report(batch_id: str, source_id: str, mark_reported: bool = False
             source_id,
             "สร้างรูปรายงานแล้วครับ\n"
             f"{original_url}\n"
-            "ยังส่งเป็นรูปเข้า LINE ไม่ได้ เพราะ APP_BASE_URL ต้องเป็น HTTPS URL สาธารณะ",
+            f"ยังส่งเป็นรูปเข้า LINE ไม่ได้ เพราะ {_report_url_setting_name()} ต้องเป็น HTTPS URL สาธารณะ",
         )
         return False
 
+    repositories.update_batch_report_image_url(batch_id, original_url)
     sent = await push_image(source_id, original_url, preview_url)
     if not sent:
         await push_text(
