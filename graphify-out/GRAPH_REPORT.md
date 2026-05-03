@@ -1,12 +1,12 @@
 # Graph Report - repo-ptop-autometion  (2026-05-04)
 
 ## Corpus Check
-- 73 files · ~1,266,874 words
+- 84 files · ~1,267,786 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1099 nodes · 2769 edges · 32 communities detected
-- Extraction: 75% EXTRACTED · 25% INFERRED · 0% AMBIGUOUS · INFERRED: 688 edges (avg confidence: 0.77)
+- 1247 nodes · 3262 edges · 32 communities detected
+- Extraction: 71% EXTRACTED · 29% INFERRED · 0% AMBIGUOUS · INFERRED: 932 edges (avg confidence: 0.78)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -39,21 +39,21 @@
 - [[_COMMUNITY_Community 28|Community 28]]
 - [[_COMMUNITY_Community 29|Community 29]]
 - [[_COMMUNITY_Community 30|Community 30]]
-- [[_COMMUNITY_Community 33|Community 33]]
+- [[_COMMUNITY_Community 31|Community 31]]
 - [[_COMMUNITY_Community 34|Community 34]]
 - [[_COMMUNITY_Community 35|Community 35]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `_handle_postback()` - 100 edges
+1. `_handle_postback()` - 125 edges
 2. `build_postback_data()` - 50 edges
-3. `ParsedPostback` - 43 edges
-4. `handle_webhook()` - 40 edges
-5. `_as_dict()` - 39 edges
-6. `_text_with_actions()` - 33 edges
-7. `parse_meter_value()` - 30 edges
-8. `parse_energy_meter_value()` - 29 edges
-9. `BatchProgress` - 27 edges
-10. `confirm_pending()` - 27 edges
+3. `build_postback_data()` - 45 edges
+4. `handle_webhook()` - 44 edges
+5. `ParsedPostback` - 43 edges
+6. `_as_dict()` - 39 edges
+7. `_text_with_actions()` - 33 edges
+8. `parse_meter_value()` - 30 edges
+9. `parse_energy_meter_value()` - 29 edges
+10. `BatchProgress` - 27 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `test_get_worksheet_caches_by_tab_name()` --calls--> `SheetsClient`  [INFERRED]
@@ -78,23 +78,23 @@
 - **Rich Menu Help Support Message** — richmenu_help_help_action, richmenu_help_usage_questions, richmenu_help_admin_contact [EXTRACTED 1.00]
 - **Rich Menu Help Visual Composition** — richmenu_help_support_mascot, richmenu_help_chat_contact_icon, richmenu_help_solar_energy_context, richmenu_help_green_visual_theme [EXTRACTED 1.00]
 
-## Communities (56 total, 5 thin omitted)
+## Communities (58 total, 5 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.04
-Nodes (185): _body_text(), _bool_th(), build_batch_complete_card(), build_confirmation_card(), build_duplicate_warning_card(), build_help_flow_response(), build_help_menu_message(), build_history_batch_list_message() (+177 more)
+Nodes (157): build_history_empty_message(), ParsedCommand, ParsedPostback, _after_successful_confirmation(), _build_reply(), _build_settings_edit_prompt(), _build_settings_input_reply(), _build_status_card_message() (+149 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.04
-Nodes (70): build_confirmation_message(), cancel_pending(), clear_pending_confirmation(), confirm_pending(), _confirmation_method(), create_pending_confirmation(), _create_pending_confirmation_record(), _decimal_or_none() (+62 more)
+Cohesion: 0.03
+Nodes (166): build_history_detail_message(), build_history_summary_message(), _history_detail_date_range(), _history_detail_footer_meta(), _history_detail_header(), _history_detail_meter_ids(), _history_detail_meter_row(), _history_detail_progress_panel() (+158 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.06
-Nodes (85): ParsedPostback, _build_settings_input_reply(), _handle_postback(), Protocol, BatchProgress, clear_collection_meter(), clear_collection_skip_meters(), clear_pending_confirmation() (+77 more)
+Cohesion: 0.05
+Nodes (138): _body_text(), _bool_th(), build_batch_complete_card(), build_confirmation_card(), build_duplicate_warning_card(), build_help_menu_message(), build_history_batch_list_message(), build_history_detail_message() (+130 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.07
-Nodes (72): ParsedCommand, _after_successful_confirmation(), _build_reply(), _build_settings_edit_prompt(), _build_status_card_message(), _build_status_message(), _build_text_reply(), _coerce_manual_value_command() (+64 more)
+Cohesion: 0.04
+Nodes (71): build_confirmation_message(), cancel_pending(), clear_pending_confirmation(), confirm_pending(), _confirmation_method(), create_pending_confirmation(), _create_pending_confirmation_record(), _decimal_or_none() (+63 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.05
@@ -110,11 +110,11 @@ Nodes (46): Exception, _content_type_to_ext(), download_image(), ImageDownloadEr
 
 ### Community 7 - "Community 7"
 Cohesion: 0.08
-Nodes (46): _decimal_diff(), is_valid_meter(), _iso_week(), _normalize_bool(), _normalize_history_period(), _normalize_meter_id(), _normalize_year(), parse_command() (+38 more)
+Nodes (28): build_progress_message(), _expected_meter_count(), format_progress_message(), generate_batch_id(), get_batch_progress(), get_or_create_batch(), _iso_week(), _now() (+20 more)
 
 ### Community 8 - "Community 8"
-Cohesion: 0.1
-Nodes (14): build_progress_message(), _expected_meter_count(), format_progress_message(), generate_batch_id(), get_batch_progress(), get_or_create_batch(), _iso_week(), _now() (+6 more)
+Cohesion: 0.08
+Nodes (46): _decimal_diff(), is_valid_meter(), _iso_week(), _normalize_bool(), _normalize_history_period(), _normalize_meter_id(), _normalize_year(), parse_command() (+38 more)
 
 ### Community 10 - "Community 10"
 Cohesion: 0.26
@@ -133,16 +133,16 @@ Cohesion: 0.18
 Nodes (5): SheetsClient, test_get_worksheet_caches_by_tab_name(), test_get_worksheet_caches_each_tab_separately(), test_upsert_row_appends_when_key_is_missing(), test_upsert_row_updates_existing_key_row()
 
 ### Community 14 - "Community 14"
+Cohesion: 0.24
+Nodes (16): _is_https_url(), _line_card_asset_url(), _start_collection_hero_url(), build_help_menu_message(), _help_action_tile(), _help_category_list(), _help_contact_cta(), _help_flow_image_url() (+8 more)
+
+### Community 15 - "Community 15"
 Cohesion: 0.22
 Nodes (15): ConfidenceResult, _get_last_value(), _get_max_produced_unit(), _has_conflicting_candidates(), is_low(), score_ocr_reading(), test_conflicting_large_candidates_are_low_confidence(), test_fallback_generic_parse_is_low_confidence() (+7 more)
 
-### Community 15 - "Community 15"
+### Community 16 - "Community 16"
 Cohesion: 0.27
 Nodes (15): _build_batch(), _build_reading(), build_report_import_preview(), can_confirm_import(), _classify_existing_readings(), confirm_report_import(), _decimal_equal(), _matches_pending_import_row() (+7 more)
-
-### Community 16 - "Community 16"
-Cohesion: 0.33
-Nodes (14): BatchSummary, get_batch_summary(), get_current_batch_summary(), get_latest_report_batch_id(), get_meter_history(), get_previous_batch_summary(), get_recent_batch_summaries(), _has_report_data() (+6 more)
 
 ### Community 17 - "Community 17"
 Cohesion: 0.15
@@ -202,15 +202,15 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **What is the exact relationship between `Chat Bubble Indicator` and `LINE Rich Menu Call To Action`?**
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
-- **Why does `_process_ocr_and_confirm()` connect `Community 3` to `Community 0`, `Community 1`, `Community 2`, `Community 5`, `Community 14`?**
-  _High betweenness centrality (0.189) - this node is a cross-community bridge._
-- **Why does `_handle_postback()` connect `Community 2` to `Community 0`, `Community 3`, `Community 6`, `Community 7`, `Community 8`?**
-  _High betweenness centrality (0.162) - this node is a cross-community bridge._
-- **Why does `parse_meter_value()` connect `Community 5` to `Community 3`, `Community 4`?**
-  _High betweenness centrality (0.114) - this node is a cross-community bridge._
-- **Are the 83 inferred relationships involving `_handle_postback()` (e.g. with `set_collection_state()` and `clear_collection_skip_meters()`) actually correct?**
-  _`_handle_postback()` has 83 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 40 inferred relationships involving `ParsedPostback` (e.g. with `_FakeSheetsResponse` and `test_start_collection_postback_starts_linear_flow()`) actually correct?**
-  _`ParsedPostback` has 40 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 24 inferred relationships involving `handle_webhook()` (e.g. with `parse_postback_action()` and `get_collection_state()`) actually correct?**
-  _`handle_webhook()` has 24 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `_handle_postback()` connect `Community 0` to `Community 1`, `Community 2`, `Community 6`, `Community 7`, `Community 8`, `Community 14`?**
+  _High betweenness centrality (0.223) - this node is a cross-community bridge._
+- **Why does `_process_ocr_and_confirm()` connect `Community 0` to `Community 1`, `Community 2`, `Community 3`, `Community 5`, `Community 15`?**
+  _High betweenness centrality (0.176) - this node is a cross-community bridge._
+- **Why does `parse_meter_value()` connect `Community 5` to `Community 0`, `Community 4`?**
+  _High betweenness centrality (0.107) - this node is a cross-community bridge._
+- **Are the 108 inferred relationships involving `_handle_postback()` (e.g. with `set_collection_state()` and `clear_collection_skip_meters()`) actually correct?**
+  _`_handle_postback()` has 108 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 42 inferred relationships involving `build_postback_data()` (e.g. with `build_report_unavailable_message()` and `build_report_import_prompt_message()`) actually correct?**
+  _`build_postback_data()` has 42 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 28 inferred relationships involving `handle_webhook()` (e.g. with `parse_postback_action()` and `get_collection_state()`) actually correct?**
+  _`handle_webhook()` has 28 INFERRED edges - model-reasoned connections that need verification._

@@ -90,7 +90,7 @@ def test_gen_schedules_image_send_for_current_batch():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
          patch(
-             "app.line.messages.build_report_data",
+             "app.line.message_builders.reports.build_report_data",
              return_value=SimpleNamespace(
                  week="2026-W19",
                  readings=[1, 2, 3],
@@ -114,7 +114,7 @@ def test_gen_does_not_schedule_image_send_when_report_is_unavailable():
 
     with patch("app.line.webhook.send_report") as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
-         patch("app.line.messages.build_report_data", return_value=None):
+         patch("app.line.message_builders.reports.build_report_data", return_value=None):
         reply = _build_reply(ParsedCommand(type=GEN), "U1")
 
     mock_send_report.assert_not_called()
@@ -129,7 +129,7 @@ def test_gen_with_week_ref_schedules_image_send_for_source_week():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
          patch(
-             "app.line.messages.build_report_data",
+             "app.line.message_builders.reports.build_report_data",
              return_value=SimpleNamespace(
                  week="2026-W18",
                  readings=[1, 2],
@@ -150,7 +150,7 @@ def test_gen_with_batch_id_schedules_image_send_for_that_batch():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
          patch(
-             "app.line.messages.build_report_data",
+             "app.line.message_builders.reports.build_report_data",
              return_value=SimpleNamespace(
                  week="2026-W18",
                  readings=[1],
@@ -213,7 +213,7 @@ def test_report_schedules_image_send_for_current_batch():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
          patch(
-             "app.line.messages.build_report_data",
+             "app.line.message_builders.reports.build_report_data",
              return_value=SimpleNamespace(
                  week="2026-W19",
                  readings=[1, 2, 3, 4],
@@ -234,7 +234,7 @@ def test_report_with_batch_id_schedules_image_send_for_that_batch():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
          patch(
-             "app.line.messages.build_report_data",
+             "app.line.message_builders.reports.build_report_data",
              return_value=SimpleNamespace(
                  week="2026-W18",
                  readings=[1],

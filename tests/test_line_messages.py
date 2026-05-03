@@ -789,7 +789,7 @@ def test_settings_view_message_renders_full_settings_card():
 
 def test_report_summary_card_shows_week_totals_and_navigation():
     with patch(
-        "app.line.messages.build_report_data",
+        "app.line.message_builders.reports.build_report_data",
         return_value=SimpleNamespace(
             week="2026-W19",
             readings=[1, 2, 3, 4],
@@ -818,7 +818,7 @@ def test_report_summary_card_shows_week_totals_and_navigation():
 
 
 def test_report_summary_missing_data_returns_card():
-    with patch("app.line.messages.build_report_data", return_value=None):
+    with patch("app.line.message_builders.reports.build_report_data", return_value=None):
         payload = _as_dict(build_report_summary_message("2026-W19-U1"))
 
     rendered = str(payload)
