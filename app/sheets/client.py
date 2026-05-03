@@ -4,6 +4,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 from app.config import settings
+from app.storage.schema import TAB_HEADERS
 
 logger = logging.getLogger(__name__)
 
@@ -12,63 +13,7 @@ SCOPES = [
     "https://www.googleapis.com/auth/drive",
 ]
 
-_tab_headers = {
-    "meters": ["meter_id", "name", "location", "sort_order", "active", "default_rate"],
-    "readings": [
-        "reading_id",
-        "batch_id",
-        "date",
-        "week",
-        "line_source_id",
-        "line_user_id",
-        "meter_id",
-        "current_value",
-        "last_value",
-        "produced_unit",
-        "rate",
-        "amount",
-        "ocr_raw_text",
-        "ocr_value",
-        "confirmation_method",
-        "image_message_id",
-        "image_file_id",
-        "created_at",
-    ],
-    "batches": [
-        "batch_id",
-        "week",
-        "date",
-        "line_source_id",
-        "expected_meter_count",
-        "confirmed_meter_count",
-        "status",
-        "report_image_url",
-        "created_at",
-        "updated_at",
-    ],
-    "pending_confirmations": [
-        "confirmation_id",
-        "line_source_id",
-        "line_user_id",
-        "meter_id",
-        "batch_id",
-        "image_message_id",
-        "ocr_value",
-        "ocr_raw_text",
-        "status",
-        "expires_at",
-        "created_at",
-    ],
-    "settings": ["key", "value", "notes"],
-    "audit_log": [
-        "event_id",
-        "timestamp",
-        "event_type",
-        "line_source_id",
-        "meter_id",
-        "payload_json",
-    ],
-}
+_tab_headers = TAB_HEADERS
 
 
 class SheetsClient:
@@ -127,6 +72,29 @@ class SheetsClient:
         values = [row.get(h, "") for h in headers]
         ws.append_row(values)
         logger.info("Appended row to tab '%s'", tab_name)
+
+    def upsert_row(self, tab_name: str, key_column: str, row: dict) -> str:
+        ws = self.get_worksheet(tab_name)
+        headers = _tab_headers.get(tab_name)
+        if not headers:
+            raise ValueError(f"Unknown tab '{tab_name}', no headers defined")
+        if key_column not in headers:
+            raise ValueError(f"Unknown key column '{key_column}' for tab '{tab_name}'")
+
+        key_value = str(row.get(key_column, ""))
+        values = [row.get(h, "") for h in headers]
+        key_col = headers.index(key_column) + 1
+        cells = ws.findall(key_value, in_column=key_col)
+        if not cells:
+            ws.append_row(values)
+            logger.info("Appended row to tab '%s' during upsert", tab_name)
+            return "appended"
+
+        target_row = cells[0].row
+        for col, value in enumerate(values, start=1):
+            ws.update_cell(target_row, col, value)
+        logger.info("Updated tab '%s' row %d during upsert", tab_name, target_row)
+        return "updated"
 
     def find_rows(self, tab_name: str, column: str, value: str) -> list[dict]:
         rows = self.read_all(tab_name)

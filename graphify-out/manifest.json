@@ -1,27 +1,27 @@
 {
   "/Users/masano/Public/code/repo-ptop-autometion/app/config.py": {
-    "mtime": 1777776827.2558908,
-    "hash": "ac79d213086172d67ebcd98911d9a62c"
+    "mtime": 1777827830.3104255,
+    "hash": "5ce998fcb30152ab06ecb021eafaf71f"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/logging_config.py": {
     "mtime": 1777776827.2560356,
     "hash": "b2b02beb4196eb0c8859fb64485860ab"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/version.py": {
-    "mtime": 1777816391.0284417,
-    "hash": "06ab141645cd708655a12ae12bfc349e"
+    "mtime": 1777826956.3656495,
+    "hash": "70481bde9882d40d81768d6109a2ce11"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/__init__.py": {
     "mtime": 1777614823.2640803,
     "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/main.py": {
-    "mtime": 1777776827.2562718,
-    "hash": "c12ef2a7c1cc2c986699856167bf3112"
+    "mtime": 1777827966.8173945,
+    "hash": "112ac63b8cdce90f967f1d5dd52fcf28"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/sheets/client.py": {
-    "mtime": 1777647625.5764909,
-    "hash": "210e6a7ad768f9e2b72e81479ae71155"
+    "mtime": 1777827865.5541096,
+    "hash": "6eb6bc17d0007d7911482b6e71cb5175"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/sheets/__init__.py": {
     "mtime": 1777767048.919948,
@@ -32,8 +32,8 @@
     "hash": "5f98de981003b92b2df20667e92ad421"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/sheets/repositories.py": {
-    "mtime": 1777767048.9202893,
-    "hash": "e8d5b77feb623212cfacf19030e0497b"
+    "mtime": 1777827905.6880302,
+    "hash": "545c6b357a2e3ca1d756a4fab4cb1b75"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/ocr/confidence.py": {
     "mtime": 1777767048.9159293,
@@ -71,17 +71,33 @@
     "mtime": 1777614831.9663422,
     "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
+  "/Users/masano/Public/code/repo-ptop-autometion/app/storage/sync.py": {
+    "mtime": 1777828785.7786713,
+    "hash": "9a679ca665fef4d94745c2497ac70f62"
+  },
   "/Users/masano/Public/code/repo-ptop-autometion/app/storage/__init__.py": {
     "mtime": 1777767048.9205568,
     "hash": "a48f5f8611ab42fbc79d10b5b293ced3"
+  },
+  "/Users/masano/Public/code/repo-ptop-autometion/app/storage/sqlite.py": {
+    "mtime": 1777828135.2704916,
+    "hash": "959bf21c2bc8a34a8a559cf3168c0b09"
+  },
+  "/Users/masano/Public/code/repo-ptop-autometion/app/storage/migrate_sheets_to_sqlite.py": {
+    "mtime": 1777827948.0328982,
+    "hash": "75dbd11fbf74f96256ad07fae921717c"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/storage/r2.py": {
     "mtime": 1777767048.9207873,
     "hash": "98c6a246c4888914c75bf3e36f9cdd88"
   },
+  "/Users/masano/Public/code/repo-ptop-autometion/app/storage/schema.py": {
+    "mtime": 1777827198.793679,
+    "hash": "bd8b27891a17b33c632f0a9d14273d5a"
+  },
   "/Users/masano/Public/code/repo-ptop-autometion/app/line/webhook.py": {
-    "mtime": 1777823499.5997298,
-    "hash": "ff7f30aaa9cdb61a15462ecedeb3cb15"
+    "mtime": 1777825942.8676715,
+    "hash": "df5a248972f8a47514377539cffedb83"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/line/client.py": {
     "mtime": 1777648767.259223,
@@ -96,8 +112,8 @@
     "hash": "deee58a0171155a70b4f7cd5d2305f74"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/line/messages.py": {
-    "mtime": 1777823424.5875454,
-    "hash": "683bf86fdf1a886c223ed8e0f5497c1c"
+    "mtime": 1777826624.2650368,
+    "hash": "b80dcabb29422d816b30b86dc3cd4ab1"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/app/line/richmenu.py": {
     "mtime": 1777779315.428852,
@@ -151,6 +167,14 @@
     "mtime": 1777814675.7729104,
     "hash": "11c263cf8fcd2c8a7f6f29013442037e"
   },
+  "/Users/masano/Public/code/repo-ptop-autometion/tests/test_storage_sync.py": {
+    "mtime": 1777828785.7789333,
+    "hash": "06a58e8791f24f2fc0fbd1cfc513aefd"
+  },
+  "/Users/masano/Public/code/repo-ptop-autometion/tests/conftest.py": {
+    "mtime": 1777828785.7788186,
+    "hash": "94667d10387f6a2095aa9bd2db16010b"
+  },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_google_vision_ocr.py": {
     "mtime": 1777767048.927527,
     "hash": "4cc42c855ce296cd95dd2f2a5e570295"
@@ -191,6 +215,10 @@
     "mtime": 1777642850.199562,
     "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
+  "/Users/masano/Public/code/repo-ptop-autometion/tests/test_sqlite_repositories.py": {
+    "mtime": 1777827013.4705632,
+    "hash": "c7fe273ed3dca2ff26551fb2a3d1abfd"
+  },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_value_parser.py": {
     "mtime": 1777767048.9307382,
     "hash": "b480eeb00f9bc386510940698b4d70f0"
@@ -216,8 +244,8 @@
     "hash": "530d0a20a265203720c2d806d1315c07"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_sheets_client.py": {
-    "mtime": 1777647664.6593232,
-    "hash": "e5056a22367696578e0927074cd14b45"
+    "mtime": 1777828049.1811056,
+    "hash": "fb70dd530e1b13e7838ed757b39c0070"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_evaluate_ocr.py": {
     "mtime": 1777767048.927347,
@@ -228,20 +256,20 @@
     "hash": "6f59e785eadd3cb80b83429e1d8c0c32"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_line_messages.py": {
-    "mtime": 1777823520.6281233,
-    "hash": "f0fe9e8ce27ea110ff2bef79144c1474"
+    "mtime": 1777826632.1078134,
+    "hash": "9e96b7d60bf02bbf8de51df5f71d45c5"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_richmenu_composer.py": {
     "mtime": 1777779315.4290936,
     "hash": "f10e39c3a56d2bcc8a6b9dfc36b4248a"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_sheets_repositories.py": {
-    "mtime": 1777767048.930433,
-    "hash": "d85f7b8712b95c1942fb82d310dbdb3a"
+    "mtime": 1777827013.4702024,
+    "hash": "f3ad0f43a83d1af382a5fcdd452c567e"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_main.py": {
-    "mtime": 1777816391.0297408,
-    "hash": "047df1770cfb1f779a120700263e8aef"
+    "mtime": 1777828070.0675259,
+    "hash": "395721c1845251e00e22768e29e1c11f"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_line_client.py": {
     "mtime": 1777648802.7709866,
@@ -252,8 +280,8 @@
     "hash": "9782bf7eafb37abcf83aaf8df7ff4f3e"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tests/test_line_webhook_postback.py": {
-    "mtime": 1777823531.7333043,
-    "hash": "6db95a6cf5a9f27c44805317012fb564"
+    "mtime": 1777824856.3257205,
+    "hash": "c4e7fd15e9bbce672cfab56539d1ca29"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/scripts/evaluate_ocr.py": {
     "mtime": 1777767048.9254713,
@@ -272,16 +300,16 @@
     "hash": "c0598f1e6f2d9b9a4e08887eb60cddd4"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/README.md": {
-    "mtime": 1777779315.4294465,
-    "hash": "95bb317f09f3aec651cd01829c5714e9"
+    "mtime": 1777828160.5128236,
+    "hash": "fe6eeddb83d17c259d747f9116336ad8"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/AGENTS.md": {
     "mtime": 1777821951.0551631,
     "hash": "8a454de68fdbfed3b383678c805651cb"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/compose.yml": {
-    "mtime": 1777814675.7737496,
-    "hash": "4ba519e604588cfa543371a5d6bbeff3"
+    "mtime": 1777826956.3670566,
+    "hash": "bb60758f3c65a5cb44d469337462a340"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/CLAUDE.md": {
     "mtime": 1777614730.7628438,
@@ -304,8 +332,8 @@
     "hash": "db094e1b64d15a190ed028518330177d"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/docs/10-release-and-packaging.md": {
-    "mtime": 1777816391.0291364,
-    "hash": "49d4ce04ad606f4372e9bb88a4c66b6d"
+    "mtime": 1777827099.5336528,
+    "hash": "ff84c70ba0c8ddad911ba453d4165877"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/docs/02-google-sheets-schema.md": {
     "mtime": 1777774905.941351,
@@ -328,8 +356,8 @@
     "hash": "78332b910073407b88cc7306a2f94e0d"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/docs/01-architecture.md": {
-    "mtime": 1777767048.9214823,
-    "hash": "bc82678ac880d99c674a14d0a89c3499"
+    "mtime": 1777828160.5132682,
+    "hash": "14d54609ec11f409d5936222b0cda6b2"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/docs/09-history-settings-ux-design.md": {
     "mtime": 1777774905.9419436,
@@ -371,6 +399,10 @@
     "mtime": 1777767048.923723,
     "hash": "467c1f80bbd3739eb79ece1ce2809efc"
   },
+  "/Users/masano/Public/code/repo-ptop-autometion/docs/v0.2.0-line-cards/05-visual-alignment-plan.md": {
+    "mtime": 1777824943.5376801,
+    "hash": "042bcb0ad02c636525908b8b855668e2"
+  },
   "/Users/masano/Public/code/repo-ptop-autometion/docs/v0.2.0-line-cards/04-implementation-plan.md": {
     "mtime": 1777821512.8189833,
     "hash": "81f3b487087fd26c69c40a7062b67af7"
@@ -379,9 +411,13 @@
     "mtime": 1777821512.7989657,
     "hash": "3ed6986aa1667a071a7fd9075185aca6"
   },
+  "/Users/masano/Public/code/repo-ptop-autometion/docs/v0.2.0-line-cards/06-runtime-card-shell-plan.md": {
+    "mtime": 1777826864.9159257,
+    "hash": "1be133cab399d5710761174795f71b59"
+  },
   "/Users/masano/Public/code/repo-ptop-autometion/docs/v0.2.0-line-cards/README.md": {
-    "mtime": 1777821512.7979598,
-    "hash": "f0290a8440ca2d2bc78d779d25cbe9fc"
+    "mtime": 1777825296.6798673,
+    "hash": "2d9982d54cd0fb4dce0996449d8f475f"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/docs/v0.2.0-line-cards/02-card-template-spec.md": {
     "mtime": 1777821512.805563,
@@ -390,6 +426,10 @@
   "/Users/masano/Public/code/repo-ptop-autometion/docs/v0.2.0-line-cards/03-interaction-flow-map.md": {
     "mtime": 1777821512.8145928,
     "hash": "6c879f3d85da5d8605a2e0aeab16da08"
+  },
+  "/Users/masano/Public/code/repo-ptop-autometion/docs/v0.3.0-sqlite-performance/README.md": {
+    "mtime": 1777828160.5130343,
+    "hash": "33d56cb1c09a162e1320a92c727917fe"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/reports/ocr/ocr-evaluation-20260503-005947.md": {
     "mtime": 1777744800.399114,
@@ -527,6 +567,14 @@
     "mtime": 1777821398.2904496,
     "hash": "67719eb0f0fd90f4dbc0b0d3de79363d"
   },
+  "/Users/masano/Public/code/repo-ptop-autometion/docs/v0.2.0-line-cards/assets/card-shell-reference-v0.2.0.png": {
+    "mtime": 1777825771.942946,
+    "hash": "7f7bd92befee4f5fb5c5d6e7a7d25a92"
+  },
+  "/Users/masano/Public/code/repo-ptop-autometion/docs/v0.2.0-line-cards/assets/solar-meter-mascot-hero-v0.2.0.png": {
+    "mtime": 1777825771.9428494,
+    "hash": "472b0c55ed07069714f5f7a15040605c"
+  },
   "/Users/masano/Public/code/repo-ptop-autometion/docs/help-flows/original/confirm-reading-board-ai.png": {
     "mtime": 1777815126.7032886,
     "hash": "64f320de4dcb5899d04a866309a655db"
@@ -599,697 +647,25 @@
     "mtime": 1777815126.7499323,
     "hash": "c517595c54e0487ab698251d320c4b8d"
   },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011710/1-display.jpg": {
-    "mtime": 1777745830.6013083,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004830/5-display.jpg": {
-    "mtime": 1777744115.0943356,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004830/3-display.jpg": {
-    "mtime": 1777744112.4152896,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004830/6-display.jpg": {
-    "mtime": 1777744116.382521,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004830/8-display.jpg": {
-    "mtime": 1777744120.53217,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004830/1-display.jpg": {
-    "mtime": 1777744110.1591434,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004830/4-display.jpg": {
-    "mtime": 1777744113.6015394,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004830/7-display.jpg": {
-    "mtime": 1777744118.6913927,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004830/2-display.jpg": {
-    "mtime": 1777744111.254491,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014141/5-display.jpg": {
-    "mtime": 1777747303.8894901,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014141/3-display.jpg": {
-    "mtime": 1777747302.805693,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014141/6-display.jpg": {
-    "mtime": 1777747304.9240434,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014141/8-display.jpg": {
-    "mtime": 1777747306.1717684,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014141/1-display.jpg": {
-    "mtime": 1777747301.4872622,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014141/4-display.jpg": {
-    "mtime": 1777747303.470942,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014141/7-display.jpg": {
-    "mtime": 1777747305.4880939,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014141/2-display.jpg": {
-    "mtime": 1777747302.1759725,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013355/5-display.jpg": {
-    "mtime": 1777746839.2392898,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013355/3-display.jpg": {
-    "mtime": 1777746837.7141285,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013355/1-display.jpg": {
-    "mtime": 1777746835.936968,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013355/4-display.jpg": {
-    "mtime": 1777746838.4288206,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013355/2-display.jpg": {
-    "mtime": 1777746836.8808522,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-010140/5-display.jpg": {
-    "mtime": 1777744905.6515,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-010140/3-display.jpg": {
-    "mtime": 1777744902.7283552,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-010140/6-display.jpg": {
-    "mtime": 1777744906.7611492,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-010140/8-display.jpg": {
-    "mtime": 1777744910.8089716,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-010140/1-display.jpg": {
-    "mtime": 1777744900.4618065,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-010140/4-display.jpg": {
-    "mtime": 1777744904.1283927,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-010140/7-display.jpg": {
-    "mtime": 1777744908.7987137,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-010140/2-display.jpg": {
-    "mtime": 1777744901.611831,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011830/5-display.jpg": {
-    "mtime": 1777745913.4383376,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011830/3-display.jpg": {
-    "mtime": 1777745912.0335555,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011830/6-display.jpg": {
-    "mtime": 1777745914.113163,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011830/1-display.jpg": {
-    "mtime": 1777745910.599233,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011830/4-display.jpg": {
-    "mtime": 1777745912.8284602,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011830/2-display.jpg": {
-    "mtime": 1777745911.4179535,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005429/5-display.jpg": {
-    "mtime": 1777744475.520759,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005429/3-display.jpg": {
-    "mtime": 1777744473.1510997,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005429/6-display.jpg": {
-    "mtime": 1777744476.787822,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005429/8-display.jpg": {
-    "mtime": 1777744480.2710457,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005429/1-display.jpg": {
-    "mtime": 1777744469.9970665,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005429/4-display.jpg": {
-    "mtime": 1777744474.1713128,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005429/7-display.jpg": {
-    "mtime": 1777744478.3878121,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005429/2-display.jpg": {
-    "mtime": 1777744471.6799257,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013324/5-display.jpg": {
-    "mtime": 1777746807.2648494,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013324/3-display.jpg": {
-    "mtime": 1777746806.061544,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013324/6-display.jpg": {
-    "mtime": 1777746807.7903533,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013324/8-display.jpg": {
-    "mtime": 1777746808.930056,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013324/1-display.jpg": {
-    "mtime": 1777746804.4898965,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013324/4-display.jpg": {
-    "mtime": 1777746806.85914,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013324/7-display.jpg": {
-    "mtime": 1777746808.3203738,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-013324/2-display.jpg": {
-    "mtime": 1777746805.4271085,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-012941/5-display.jpg": {
-    "mtime": 1777746584.090292,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-012941/3-display.jpg": {
-    "mtime": 1777746582.8789098,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-012941/6-display.jpg": {
-    "mtime": 1777746584.7654314,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-012941/8-display.jpg": {
-    "mtime": 1777746586.1081545,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-012941/1-display.jpg": {
-    "mtime": 1777746581.481336,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-012941/4-display.jpg": {
-    "mtime": 1777746583.4867523,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-012941/7-display.jpg": {
-    "mtime": 1777746585.493089,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-012941/2-display.jpg": {
-    "mtime": 1777746582.2243726,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014420/5-display.jpg": {
-    "mtime": 1777747463.2477412,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014420/3-display.jpg": {
-    "mtime": 1777747462.222535,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014420/6-display.jpg": {
-    "mtime": 1777747464.1595082,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014420/8-display.jpg": {
-    "mtime": 1777747465.0162697,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014420/1-display.jpg": {
-    "mtime": 1777747460.869795,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014420/4-display.jpg": {
-    "mtime": 1777747462.667966,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014420/7-display.jpg": {
-    "mtime": 1777747464.5928006,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014420/2-display.jpg": {
-    "mtime": 1777747461.5532808,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005947/5-display.jpg": {
-    "mtime": 1777744792.9726663,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005947/3-display.jpg": {
-    "mtime": 1777744790.9269135,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005947/6-display.jpg": {
-    "mtime": 1777744793.8259785,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005947/8-display.jpg": {
-    "mtime": 1777744798.6922143,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005947/1-display.jpg": {
-    "mtime": 1777744787.7625747,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005947/4-display.jpg": {
-    "mtime": 1777744792.0864232,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005947/7-display.jpg": {
-    "mtime": 1777744797.125943,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005947/2-display.jpg": {
-    "mtime": 1777744789.261065,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-010256/1-display.jpg": {
-    "mtime": 1777744976.4749784,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005517/5-display.jpg": {
-    "mtime": 1777744524.4147072,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005517/3-display.jpg": {
-    "mtime": 1777744521.1280422,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005517/6-display.jpg": {
-    "mtime": 1777744525.7484035,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005517/8-display.jpg": {
-    "mtime": 1777744647.0456047,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005517/1-display.jpg": {
-    "mtime": 1777744517.9342816,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005517/4-display.jpg": {
-    "mtime": 1777744522.437163,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005517/7-display.jpg": {
-    "mtime": 1777744645.9220972,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005517/2-display.jpg": {
-    "mtime": 1777744518.9392662,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/manual/5-energy-row-bottom.png": {
-    "mtime": 1777746887.3883147,
-    "hash": "64a55ef2f3c2baaa880c857c968ea427"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/manual/5-auto-a.png": {
-    "mtime": 1777747050.6241167,
-    "hash": "eb09c74ba15ecd8e461fe2f81562ff21"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/manual/5-auto-c.png": {
-    "mtime": 1777747050.6527057,
-    "hash": "9145e9e220c40223ac1aa084666a8ab4"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/manual/5-auto-b.png": {
-    "mtime": 1777747050.6399722,
-    "hash": "1faeb7e7daec24159dcdb4932c396caa"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/manual/5-energy-row.png": {
-    "mtime": 1777746875.540084,
-    "hash": "f29ff7ed7988af014704502bfb4bfcb5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011724/1-display.jpg": {
-    "mtime": 1777745846.090295,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004511/5-display.jpg": {
-    "mtime": 1777743919.2533274,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004511/3-display.jpg": {
-    "mtime": 1777743915.9249766,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004511/6-display.jpg": {
-    "mtime": 1777743920.9123352,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004511/8-display.jpg": {
-    "mtime": 1777744042.6938236,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004511/1-display.jpg": {
-    "mtime": 1777743911.9432533,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004511/4-display.jpg": {
-    "mtime": 1777743917.2601929,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004511/7-display.jpg": {
-    "mtime": 1777744041.1439912,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-004511/2-display.jpg": {
-    "mtime": 1777743913.5962331,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005843/5-display.jpg": {
-    "mtime": 1777744728.9774597,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005843/3-display.jpg": {
-    "mtime": 1777744726.4389882,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005843/6-display.jpg": {
-    "mtime": 1777744730.186102,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005843/8-display.jpg": {
-    "mtime": 1777744735.8760297,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005843/1-display.jpg": {
-    "mtime": 1777744723.545382,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005843/4-display.jpg": {
-    "mtime": 1777744727.7264779,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005843/7-display.jpg": {
-    "mtime": 1777744732.647201,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-005843/2-display.jpg": {
-    "mtime": 1777744725.1436644,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-012607/1-display.jpg": {
-    "mtime": 1777746367.240297,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014330/5-display.jpg": {
-    "mtime": 1777747412.919384,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014330/3-display.jpg": {
-    "mtime": 1777747411.5974867,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014330/6-display.jpg": {
-    "mtime": 1777747414.007434,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014330/8-display.jpg": {
-    "mtime": 1777747415.1638412,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014330/1-display.jpg": {
-    "mtime": 1777747410.3845167,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014330/4-display.jpg": {
-    "mtime": 1777747412.28389,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014330/7-display.jpg": {
-    "mtime": 1777747414.4803104,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-014330/2-display.jpg": {
-    "mtime": 1777747411.2000847,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011907/5-display.jpg": {
-    "mtime": 1777745950.051718,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011907/3-display.jpg": {
-    "mtime": 1777745948.9195328,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011907/6-display.jpg": {
-    "mtime": 1777745950.5790496,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011907/8-display.jpg": {
-    "mtime": 1777745951.5249703,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011907/1-display.jpg": {
-    "mtime": 1777745947.6041307,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011907/4-display.jpg": {
-    "mtime": 1777745949.4155366,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011907/7-display.jpg": {
-    "mtime": 1777745951.1004474,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011907/2-display.jpg": {
-    "mtime": 1777745948.2853615,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011931/5-display.jpg": {
-    "mtime": 1777745986.858968,
-    "hash": "72bf4bf05acf6a321d00b69f1376552a"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011931/3-display.jpg": {
-    "mtime": 1777745985.971406,
-    "hash": "c1746f160cf11a76934e14188bedfc4d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011931/6-display.jpg": {
-    "mtime": 1777745987.4931345,
-    "hash": "099b85c242fd021209ea7fd3c1852d53"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011931/8-display.jpg": {
-    "mtime": 1777745988.3881893,
-    "hash": "583c325d6dceeb9ffe1b38b606cb30c3"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011931/1-display.jpg": {
-    "mtime": 1777745984.6599684,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011931/4-display.jpg": {
-    "mtime": 1777745986.4205055,
-    "hash": "64f87da13c9f2635477894e5e56a388d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011931/7-display.jpg": {
-    "mtime": 1777745987.955253,
-    "hash": "4645eb9cd63257cf9d643084f415289f"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011931/2-display.jpg": {
-    "mtime": 1777745985.344773,
-    "hash": "c2bbb20da1243d7a3af95c21402ddae5"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/ocr-debug/20260503-011556/1-display.jpg": {
-    "mtime": 1777745757.0121093,
-    "hash": "0ca624c6a42f3b997f9d22dc6bb232fe"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612051211587158426.jpg": {
-    "mtime": 1777642257.2319913,
-    "hash": "4b0ad78ee0c16a99ab6f94ddd10c0626"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612229309134274664.jpg": {
-    "mtime": 1777748410.222919,
-    "hash": "10af740da98ca71c185624c7516609de"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612058516454900223.jpg": {
-    "mtime": 1777646610.452494,
-    "hash": "9722d6765552dee7b9adcfe44325cada"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612229385101770770.jpg": {
-    "mtime": 1777748455.940343,
-    "hash": "1aa657d85adffb2a45b04bcf76ac5c97"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612057615082193390.jpg": {
-    "mtime": 1777646073.2311063,
-    "hash": "3f42eeeb4636924ce55b046f3b4e9ace"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612054341645500625.jpg": {
-    "mtime": 1777644122.809442,
-    "hash": "1769175255278f7f2c4e2159f04aca19"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612053666295972572.jpg": {
-    "mtime": 1777643784.3283043,
-    "hash": "1769175255278f7f2c4e2159f04aca19"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612058162824741069.jpg": {
-    "mtime": 1777646398.929808,
-    "hash": "da4eab57b5637b2470ad7ba1ac0e305d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612230862721515555.jpg": {
-    "mtime": 1777749336.9246662,
-    "hash": "5ada9c2a799c25e6aac6f32082659834"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612123789655802333.jpg": {
-    "mtime": 1777685516.2201147,
-    "hash": "8abe4229a0bc95a2aa0e250185f940df"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612210123213635806.jpg": {
-    "mtime": 1777736975.3090684,
-    "hash": "9722d6765552dee7b9adcfe44325cada"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612230912465961012.jpg": {
-    "mtime": 1777749366.0383415,
-    "hash": "f6d79d3a69f56a584559e1e4242d9c9c"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612211207357333624.jpg": {
-    "mtime": 1777737621.6916718,
-    "hash": "cf910f5d93a94c3cca6cbb0c3ea9dc21"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612211375716696099.jpg": {
-    "mtime": 1777737723.074901,
-    "hash": "3f42eeeb4636924ce55b046f3b4e9ace"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612057727153471800.jpg": {
-    "mtime": 1777646140.2676096,
-    "hash": "4256c8a135dad378d02bd5c2de5d5c07"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612052542893588652.jpg": {
-    "mtime": 1777643049.4364438,
-    "hash": "1769175255278f7f2c4e2159f04aca19"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612230938554531926.jpg": {
-    "mtime": 1777749381.882021,
-    "hash": "f6d79d3a69f56a584559e1e4242d9c9c"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612229579969134746.jpg": {
-    "mtime": 1777748572.2100582,
-    "hash": "61008823de6fca87b81bf0b03f0f9457"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612058406765461794.jpg": {
-    "mtime": 1777646548.0641994,
-    "hash": "62546058c610b1b72c94307b4b572c95"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612231472875307196.jpg": {
-    "mtime": 1777749700.7566588,
-    "hash": "4b0ad78ee0c16a99ab6f94ddd10c0626"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612230991738306629.jpg": {
-    "mtime": 1777749413.5738518,
-    "hash": "10af740da98ca71c185624c7516609de"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612211107952328858.jpg": {
-    "mtime": 1777737562.5035334,
-    "hash": "da4eab57b5637b2470ad7ba1ac0e305d"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612231218952143036.jpg": {
-    "mtime": 1777749548.9795232,
-    "hash": "5fed86b00d11660b8103c4175514ad9e"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612210955464212515.jpg": {
-    "mtime": 1777737470.9897408,
-    "hash": "a118ddb3ab89c228b2b2204d55fdced0"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612231171539730484.jpg": {
-    "mtime": 1777749520.6226082,
-    "hash": "61008823de6fca87b81bf0b03f0f9457"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612231123204571307.jpg": {
-    "mtime": 1777749491.803862,
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612358996326350900.jpg": {
+    "mtime": 1777825710.8614314,
     "hash": "88fce64943525ba1a5a19118c6355c08"
   },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612210204129624444.jpg": {
-    "mtime": 1777737023.4479303,
-    "hash": "a118ddb3ab89c228b2b2204d55fdced0"
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612358679957602340.jpg": {
+    "mtime": 1777825521.6034327,
+    "hash": "10af740da98ca71c185624c7516609de"
   },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612228182141829393.jpg": {
-    "mtime": 1777747739.537353,
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612358368254493115.jpg": {
+    "mtime": 1777825336.0422463,
     "hash": "5ada9c2a799c25e6aac6f32082659834"
   },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612048642375417993.jpg": {
-    "mtime": 1777640724.611538,
-    "hash": "4b0ad78ee0c16a99ab6f94ddd10c0626"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612210885889097917.jpg": {
-    "mtime": 1777737429.8933794,
-    "hash": "62546058c610b1b72c94307b4b572c95"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612229231187591271.jpg": {
-    "mtime": 1777748364.5975256,
-    "hash": "f6d79d3a69f56a584559e1e4242d9c9c"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612058585241485789.jpg": {
-    "mtime": 1777646650.9853952,
-    "hash": "ac5b17196eec9c86f0c33b25b7198f68"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612229514655432722.jpg": {
-    "mtime": 1777748533.4020097,
-    "hash": "88fce64943525ba1a5a19118c6355c08"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612057823354552542.jpg": {
-    "mtime": 1777646197.1982245,
-    "hash": "cf910f5d93a94c3cca6cbb0c3ea9dc21"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612229639578583041.jpg": {
-    "mtime": 1777748607.3288794,
-    "hash": "5fed86b00d11660b8103c4175514ad9e"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612231049569370113.jpg": {
-    "mtime": 1777749448.4678257,
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612358854961529055.jpg": {
+    "mtime": 1777825625.9261796,
     "hash": "1aa657d85adffb2a45b04bcf76ac5c97"
   },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612209350035636480.jpg": {
-    "mtime": 1777736513.8185987,
-    "hash": "ac5b17196eec9c86f0c33b25b7198f68"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612229696167608441.jpg": {
-    "mtime": 1777748641.7501502,
-    "hash": "4b0ad78ee0c16a99ab6f94ddd10c0626"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612058300213362740.jpg": {
-    "mtime": 1777646486.9069872,
-    "hash": "a118ddb3ab89c228b2b2204d55fdced0"
-  },
-  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612211311593652277.jpg": {
-    "mtime": 1777737684.697799,
-    "hash": "4256c8a135dad378d02bd5c2de5d5c07"
+  "/Users/masano/Public/code/repo-ptop-autometion/tmp/images/612358586307969076.jpg": {
+    "mtime": 1777825466.1161425,
+    "hash": "f6d79d3a69f56a584559e1e4242d9c9c"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/tmp/test-ocr/8.jpg": {
     "mtime": 1777741366.943403,
@@ -1328,8 +704,8 @@
     "hash": "5f5b5f9a96aaf5e27e5f130e616bbff2"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/reports/2026-W18-U08585bd3f4116f311ae320cab4e9e1b6.png": {
-    "mtime": 1777784274.004296,
-    "hash": "adccc90d8cb96f3d50ad8e8cbaa24e2a"
+    "mtime": 1777826646.1345098,
+    "hash": "a58e761e0d1dcbf11f234e4d5c4b88ec"
   },
   "/Users/masano/Public/code/repo-ptop-autometion/reports/2026-W18-U7dcf996f81585d2c906dca81cd2a705f.png": {
     "mtime": 1777783664.5791922,

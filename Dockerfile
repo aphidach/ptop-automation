@@ -24,7 +24,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system appuser \
     && useradd --system --gid appuser --home-dir /app --shell /usr/sbin/nologin appuser \
-    && mkdir -p /app/tmp/images /app/tmp/ocr-debug /app/reports /app/credentials \
+    && mkdir -p /app/tmp/images /app/tmp/ocr-debug /app/reports /app/credentials /app/data \
     && chown -R appuser:appuser /app
 
 COPY --from=dependencies /install /usr/local

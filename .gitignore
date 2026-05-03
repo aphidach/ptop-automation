@@ -9,6 +9,7 @@ dist/
 credentials/
 reports/
 tmp/
+data/
 
 # Local agent/runtime state
 .codex/

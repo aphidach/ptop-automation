@@ -11,8 +11,9 @@ flowchart TD
     C --> O["Google Vision OCR"]
     O --> P["Meter Value Parser"]
     P --> H["Human Confirmation Flow"]
-    H --> G["Google Sheets Client"]
-    G --> R["Report Generator"]
+    H --> D["SQLite Repository"]
+    D --> R["Report Generator"]
+    D -. optional export .-> G["Google Sheets"]
     R --> B["LINE Reply / Push Message"]
     B --> U
 ```
@@ -53,7 +54,7 @@ sequenceDiagram
     participant LINE
     participant API as Python Backend
     participant OCR as Google Vision OCR
-    participant Sheet as Google Sheets
+    participant DB as SQLite
 
     User->>LINE: Send "M1"
     LINE->>API: Text webhook event
@@ -70,20 +71,22 @@ sequenceDiagram
 
     User->>LINE: Send "OK"
     LINE->>API: Text webhook event
-    API->>Sheet: Append confirmed reading
-    API->>Sheet: Check batch completeness
+    API->>DB: Append confirmed reading
+    API->>DB: Check batch completeness
     API-->>User: Reply saved or send report if complete
 ```
 
 ## State Management
 
-Google Sheets is enough for durable business data, but conversation state should not live only in memory if deployment can restart.
+SQLite is the primary durable store for `v0.3.0` because this bot is optimized for a single operator or a small group. Google Sheets can still be used as a legacy/export target, but it should not sit in the critical webhook confirmation path.
+
+When `SHEETS_SYNC_ENABLED=true`, the app pulls `meters` and `settings` from Google Sheets on startup, then periodically mirrors changed operational rows from SQLite back to Google Sheets.
 
 Recommended MVP options:
 
-- Simple MVP: in-memory session dict, acceptable only for local demo
-- Better MVP: SQLite or Redis for `latest_meter_id`, `pending_confirmation`, `batch_id`
-- Production: Redis for short-lived conversation state plus Google Sheets for durable readings
+- Simple local state: in-memory session dict, acceptable only for local demo
+- Current `v0.3.0` storage: SQLite for meters, settings, batches, readings, pending confirmations, and audit rows
+- Future scale-out option: Redis for short-lived conversation state plus Postgres or another server database if multiple app instances become necessary
 
 ## Batch Strategy
 
@@ -107,7 +110,7 @@ Example:
 - OCR unreadable: ask user to type value manually, e.g. `M1 12508`
 - Unknown meter id: ask user to type meter id first
 - Duplicate reading in same batch: ask whether to replace previous value
-- Google Sheets write failure: keep pending confirmation and ask user to retry `OK`
+- SQLite write failure: keep pending confirmation and ask user to retry `OK`
 - LINE reply failure: log event and use push message if possible
 
 ## Security Boundaries

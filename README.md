@@ -3,12 +3,16 @@
 เอกสารชุดนี้เป็น technical spec สำหรับระบบ:
 
 ```text
-LINE -> Python Backend -> Google Vision OCR -> Google Sheets -> Report image -> LINE
+LINE -> Python Backend -> Google Vision OCR -> SQLite -> Report image -> LINE
+                                                └-> optional Google Sheets export
 ```
 
 ## Current Status
 
 - Production OCR path: Google Vision `DOCUMENT_TEXT_DETECTION`
+- Primary storage path: SQLite (`STORAGE_BACKEND=sqlite`)
+- Legacy/export storage path: Google Sheets (`STORAGE_BACKEND=sheets`)
+- Optional business mirror: Google Sheets auto sync (`SHEETS_SYNC_ENABLED=true`)
 - Credential: ใช้ service account เดียวกับ Google Sheets ผ่าน `GOOGLE_APPLICATION_CREDENTIALS`
 - Real-image fixture: `tmp/test-ocr`
 - Latest OCR target: `8/8`
@@ -30,6 +34,7 @@ LINE -> Python Backend -> Google Vision OCR -> Google Sheets -> Report image -> 
 - [MVP Roadmap](docs/07-roadmap.md)
 - [Version 2.0 LINE UX Design](docs/08-v2-line-ux-design.md)
 - [History and Settings LINE UX Design](docs/09-history-settings-ux-design.md)
+- [v0.3.0 SQLite Performance Upgrade](docs/v0.3.0-sqlite-performance/README.md)
 
 ## Recommended MVP
 

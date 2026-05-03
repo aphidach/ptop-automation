@@ -7,6 +7,13 @@ from app.version import __version__
 load_dotenv()
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in {"1", "true", "yes", "on"}
+
+
 class Settings:
     APP_NAME: str = "solar-meter-bot"
     APP_VERSION: str = os.getenv("APP_VERSION", __version__)
@@ -20,6 +27,12 @@ class Settings:
 
     GOOGLE_APPLICATION_CREDENTIALS: str = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "")
     GOOGLE_SHEETS_SPREADSHEET_ID: str = os.getenv("GOOGLE_SHEETS_SPREADSHEET_ID", "")
+    STORAGE_BACKEND: str = os.getenv("STORAGE_BACKEND", "sqlite")
+    SQLITE_DB_PATH: str = os.getenv("SQLITE_DB_PATH", "data/solar-meter-bot.db")
+    SHEETS_SYNC_ENABLED: bool = _env_bool("SHEETS_SYNC_ENABLED", False)
+    SHEETS_SYNC_INTERVAL_SECONDS: int = int(os.getenv("SHEETS_SYNC_INTERVAL_SECONDS", "600"))
+    SHEETS_STARTUP_PULL_ENABLED: bool = _env_bool("SHEETS_STARTUP_PULL_ENABLED", True)
+    SHEETS_SYNC_BATCH_SIZE: int = int(os.getenv("SHEETS_SYNC_BATCH_SIZE", "50"))
 
     TYPHOON_OCR_API_KEY: str = os.getenv("TYPHOON_OCR_API_KEY", "")
 

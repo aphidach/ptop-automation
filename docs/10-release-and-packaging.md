@@ -1,6 +1,6 @@
 # Release and Packaging
 
-Initial release version: `0.1.0`.
+Current release version: `0.3.0`.
 
 This project publishes deployable Docker images to GitHub Container Registry when a semantic version tag is pushed.
 
@@ -9,7 +9,7 @@ This project publishes deployable Docker images to GitHub Container Registry whe
 - Python package metadata: `pyproject.toml`
 - Runtime version constant: `app/version.py`
 - Docker image label/build arg: `APP_VERSION`
-- Default Makefile version: `VERSION ?= 0.1.2`
+- Default Makefile version: `VERSION ?= 0.3.0`
 
 Keep these values aligned when cutting a new release.
 
@@ -86,11 +86,11 @@ If report images must be visible outside the container, prefer `REPORT_IMAGE_STO
 
 ## Next Release
 
-For the next version, update `pyproject.toml`, `app/version.py`, and `Makefile`, then tag:
+For the current `0.3.0` release, confirm versions are aligned, then tag:
 
 ```bash
 rtk make test
-rtk make docker-build VERSION=0.2.0
-rtk make release-tag VERSION=0.2.0
-rtk git push origin v0.2.0
+rtk make docker-build VERSION=0.3.0
+rtk make release-tag VERSION=0.3.0
+rtk git push origin v0.3.0
 ```
