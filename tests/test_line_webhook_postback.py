@@ -653,7 +653,13 @@ async def test_admin_can_start_report_import_from_settings():
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS_IMPORT_REPORT), "rt")
 
     assert get_report_import_state("U1") == REPORT_IMPORT_WAITING_IMAGE
-    assert "นำข้อมูลเข้าด้วยรายงานเก่า" in mock_reply.await_args.args[1].text
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    rendered = str(payload_dict)
+    assert payload_dict["altText"] == "นำเข้ารายงานเก่า"
+    assert "ส่งรูปรายงานเก่า" in rendered
+    assert "OCR" in rendered
+    assert "cancel_import_report" in rendered
 
 
 @pytest.mark.anyio

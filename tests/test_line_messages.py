@@ -838,11 +838,18 @@ def test_report_import_preview_has_confirm_and_cancel_when_valid():
     )
 
     payload = _as_dict(build_report_import_preview_message(pending))
+    rendered = str(payload)
 
-    assert "ตรวจสอบรายงานก่อนนำเข้า" in payload["text"]
-    assert "2026-W18" in payload["text"]
-    assert "confirm_import_report" in str(payload)
-    assert "cancel_import_report" in str(payload)
+    assert payload["altText"] == "ตรวจสอบรายงานก่อนนำเข้า"
+    assert payload["contents"]["type"] == "bubble"
+    assert payload["contents"]["size"] == "mega"
+    assert "นำเข้ารายงานเก่า" in rendered
+    assert "2026-W18" in rendered
+    assert "8/8" in rendered
+    assert "9,456.9" in rendered
+    assert "OCR" in rendered
+    assert "confirm_import_report" in rendered
+    assert "cancel_import_report" in rendered
 
 def test_report_import_preview_hides_confirm_when_invalid():
     pending = PendingReportImport(
@@ -856,7 +863,9 @@ def test_report_import_preview_hides_confirm_when_invalid():
     )
 
     payload = _as_dict(build_report_import_preview_message(pending))
+    rendered = str(payload)
 
-    assert "ข้อผิดพลาด" in payload["text"]
-    assert "confirm_import_report" not in str(payload)
-    assert "cancel_import_report" in str(payload)
+    assert payload["altText"] == "ตรวจสอบรายงานก่อนนำเข้า"
+    assert "อ่านแถวได้ 7/8 แถว" in rendered
+    assert "confirm_import_report" not in rendered
+    assert "cancel_import_report" in rendered
