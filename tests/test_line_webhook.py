@@ -23,6 +23,7 @@ from app.services.batch_service import BatchProgress
 from app.services.session_service import (
     COLLECTION_WAITING_IMAGE,
     COLLECTION_WAITING_MANUAL_VALUE,
+    REPORT_IMPORT_WAITING_IMAGE,
     get_batch_id,
     get_collection_current_meter,
     get_collection_state,
@@ -31,6 +32,7 @@ from app.services.session_service import (
     set_collection_state,
     set_latest_meter,
     set_pending_confirmation,
+    set_report_import_state,
 )
 
 
@@ -58,6 +60,17 @@ def _line_text_event(source, text: str = "HELP"):
         type="message",
         source=source,
         message=SimpleNamespace(type="text", id="msg-1", text=text),
+        reply_token="reply-token",
+        delivery_context=None,
+        webhook_event_id="event-1",
+    )
+
+
+def _line_image_event(source):
+    return SimpleNamespace(
+        type="message",
+        source=source,
+        message=SimpleNamespace(type="image", id="img-1"),
         reply_token="reply-token",
         delivery_context=None,
         webhook_event_id="event-1",
@@ -413,6 +426,31 @@ async def test_handle_webhook_logs_line_source_and_user_id(monkeypatch):
         and call.args[-1] == "U1"
         for call in mock_log_info.call_args_list
     )
+
+
+@pytest.mark.anyio
+async def test_handle_webhook_image_in_import_mode_skips_meter_ocr(monkeypatch):
+    monkeypatch.setattr(settings, "ALLOWED_LINE_SOURCE_IDS", ["G1"])
+    monkeypatch.setattr(settings, "ALLOWED_LINE_USER_IDS", ["U1"])
+    monkeypatch.setattr(settings, "ADMIN_LINE_USER_IDS", ["U1"])
+    monkeypatch.setattr(settings, "OWNER_LINE_USER_IDS", [])
+    set_report_import_state("G1", REPORT_IMPORT_WAITING_IMAGE)
+    set_collection_current_meter("G1", "M1")
+    event = _line_image_event(SimpleNamespace(type="group", group_id="G1", user_id="U1"))
+
+    with patch("app.line.webhook._webhook_parser.parse", return_value=[event]), \
+         patch("app.line.webhook.download_image", new_callable=AsyncMock, return_value="report.jpg"), \
+         patch("app.line.webhook._process_report_import_image", new=Mock(return_value="report-task")) as mock_import, \
+         patch("app.line.webhook._process_ocr_and_confirm", new=Mock(return_value="meter-task")) as mock_meter, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        response = await handle_webhook(_FakeLineRequest())
+
+    assert response == {"ok": True}
+    mock_import.assert_called_once_with("G1", "report.jpg", "img-1")
+    mock_meter.assert_not_called()
+    mock_create_task.assert_called_once_with("report-task")
+    assert "รับรูปรายงานเก่า" in mock_reply.await_args.args[1]
 
 
 @pytest.mark.anyio

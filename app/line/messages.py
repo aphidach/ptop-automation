@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+import os
 from decimal import Decimal
 from typing import Iterable, Sequence
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse
 
 from linebot.v3.messaging import (
     FlexContainer,
     FlexMessage,
+    ImageMessage,
     MessageAction,
     PostbackAction,
     QuickReply,
@@ -36,6 +38,10 @@ from app.line.parser import (
     POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT,
     POSTBACK_SETTINGS_EDIT_RATE,
     POSTBACK_SETTINGS_EDIT_REPORT_TITLE,
+    POSTBACK_CANCEL_IMPORT_REPORT,
+    POSTBACK_CONFIRM_IMPORT_REPORT,
+    POSTBACK_HELP_FLOW,
+    POSTBACK_SETTINGS_IMPORT_REPORT,
     POSTBACK_SETTINGS_METER_DETAIL,
     POSTBACK_SETTINGS_METERS,
     POSTBACK_SETTINGS_PERMISSIONS,
@@ -49,6 +55,167 @@ from app.line.parser import (
 
 QUICK_TEXT_LIMIT = 20
 DEFAULT_METER_IDS = ("M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8")
+
+HELP_TOPIC_START_COLLECTION = "start_collection"
+HELP_TOPIC_CONFIRM_READING = "confirm_reading"
+HELP_TOPIC_STATUS = "status"
+HELP_TOPIC_LATEST_REPORT = "latest_report"
+HELP_TOPIC_HISTORY = "history"
+HELP_TOPIC_SETTINGS = "settings"
+HELP_TOPIC_SETTINGS_ADMIN = "settings_admin"
+HELP_TOPIC_IMPORT_REPORT = "import_report"
+HELP_TOPIC_TROUBLESHOOTING = "troubleshooting"
+HELP_TOPIC_TEXT_COMMANDS = "text_commands"
+HELP_TOPIC_CONTACT_ADMIN = "contact_admin"
+
+HELP_FLOW_IMAGE_ASSETS = {
+    HELP_TOPIC_START_COLLECTION: "start-collection-board-ai.png",
+    HELP_TOPIC_CONFIRM_READING: "confirm-reading-board-ai.png",
+    HELP_TOPIC_LATEST_REPORT: "latest-report-board-ai.png",
+    HELP_TOPIC_HISTORY: "history-board-ai.png",
+    HELP_TOPIC_SETTINGS: "settings-board-ai.png",
+    HELP_TOPIC_SETTINGS_ADMIN: "settings-admin-board-ai.png",
+    HELP_TOPIC_IMPORT_REPORT: "import-report-board-ai.png",
+    HELP_TOPIC_TROUBLESHOOTING: "troubleshooting-board-ai.png",
+    HELP_TOPIC_TEXT_COMMANDS: "text-commands-board-ai.png",
+}
+
+HELP_FLOW_PREVIEW_IMAGE_ASSETS = {
+    HELP_TOPIC_START_COLLECTION: "start-collection-board-ai-preview.jpg",
+    HELP_TOPIC_CONFIRM_READING: "confirm-reading-board-ai-preview.jpg",
+    HELP_TOPIC_LATEST_REPORT: "latest-report-board-ai-preview.jpg",
+    HELP_TOPIC_HISTORY: "history-board-ai-preview.jpg",
+    HELP_TOPIC_SETTINGS: "settings-board-ai-preview.jpg",
+    HELP_TOPIC_SETTINGS_ADMIN: "settings-admin-board-ai-preview.jpg",
+    HELP_TOPIC_IMPORT_REPORT: "import-report-board-ai-preview.jpg",
+    HELP_TOPIC_TROUBLESHOOTING: "troubleshooting-board-ai-preview.jpg",
+    HELP_TOPIC_TEXT_COMMANDS: "text-commands-board-ai-preview.jpg",
+}
+
+HELP_FLOW_TOPICS = {
+    HELP_TOPIC_START_COLLECTION: {
+        "label": "บันทึกมิเตอร์",
+        "title": "วิธีเริ่มบันทึกค่ามิเตอร์",
+        "text": (
+            "วิธีเริ่มบันทึกค่ามิเตอร์\n"
+            "1) กดเมนู บันทึกมิเตอร์\n"
+            "2) ระบบเปิดรอบสัปดาห์และบอกเครื่องถัดไป เช่น M1\n"
+            "3) ถ่ายรูปมิเตอร์ให้ชัด แล้วตรวจค่า OCR\n"
+            "4) ทำต่อจนครบ M1 ถึง M8 ระบบจะสร้างรายงานให้อัตโนมัติ"
+        ),
+    },
+    HELP_TOPIC_CONFIRM_READING: {
+        "label": "ยืนยัน/แก้ OCR",
+        "title": "วิธียืนยันหรือแก้ค่า OCR",
+        "text": (
+            "วิธียืนยันหรือแก้ค่า OCR\n"
+            "ตรวจเครื่องและค่าที่ระบบอ่านได้ก่อนกดยืนยัน\n"
+            "ถ้าผิด ให้กด แก้ไข แล้วพิมพ์ เช่น M1 12508\n"
+            "ถ้ารูปไม่ชัด ให้กด ถ่ายใหม่"
+        ),
+    },
+    HELP_TOPIC_STATUS: {
+        "label": "ดูสถานะ",
+        "title": "วิธีดูสถานะรอบบันทึก",
+        "text": (
+            "วิธีดูสถานะ\n"
+            "กด ดูสถานะ หรือพิมพ์ STATUS เพื่อดูเครื่องปัจจุบัน "
+            "ค่าที่รอยืนยัน ความคืบหน้า และรายการที่ยังขาด"
+        ),
+    },
+    HELP_TOPIC_LATEST_REPORT: {
+        "label": "รายงานล่าสุด",
+        "title": "วิธีดูรายงานล่าสุด",
+        "text": (
+            "วิธีดูรายงานล่าสุด\n"
+            "กดเมนู รายงานล่าสุด ระบบจะค้นหารอบล่าสุดที่มีรายงานแล้วส่งรูปกลับใน LINE\n"
+            "ถ้ายังไม่มีรายงาน ให้เริ่มบันทึกมิเตอร์ก่อน"
+        ),
+    },
+    HELP_TOPIC_HISTORY: {
+        "label": "ประวัติ",
+        "title": "วิธีดูประวัติ",
+        "text": (
+            "วิธีดูประวัติ\n"
+            "กดเมนู ประวัติ แล้วเลือกรอบปัจจุบัน สัปดาห์ก่อน "
+            "รอบย้อนหลัง หรือดูตามมิเตอร์"
+        ),
+    },
+    HELP_TOPIC_SETTINGS: {
+        "label": "ตั้งค่า",
+        "title": "วิธีดูการตั้งค่า",
+        "text": (
+            "วิธีดูการตั้งค่า\n"
+            "กดเมนู ตั้งค่า เพื่อดูค่าปัจจุบันและรายชื่อมิเตอร์\n"
+            "การแก้ไขต้องใช้สิทธิ์ admin"
+        ),
+    },
+    HELP_TOPIC_SETTINGS_ADMIN: {
+        "label": "ตั้งค่าแอดมิน",
+        "title": "วิธีจัดการการตั้งค่า",
+        "text": (
+            "วิธีจัดการการตั้งค่า\n"
+            "Admin กด ตั้งค่า เพื่อแก้ rate จำนวนเครื่อง ชื่อรายงาน "
+            "ผู้รับรายงาน และสิทธิ์ผู้ใช้งาน"
+        ),
+    },
+    HELP_TOPIC_IMPORT_REPORT: {
+        "label": "นำเข้ารายงานเก่า",
+        "title": "วิธีนำเข้ารายงานเก่า",
+        "text": (
+            "วิธีนำเข้ารายงานเก่า\n"
+            "Admin กด ตั้งค่า > นำเข้ารายงานเก่า แล้วส่งรูปรายงานเก่า\n"
+            "ระบบจะอ่านตารางและให้ตรวจสอบก่อนบันทึก"
+        ),
+    },
+    HELP_TOPIC_TROUBLESHOOTING: {
+        "label": "แก้ปัญหา",
+        "title": "วิธีแก้ปัญหาที่พบบ่อย",
+        "text": (
+            "วิธีแก้ปัญหาที่พบบ่อย\n"
+            "ถ้า OCR ไม่ชัด ให้กด ถ่ายใหม่\n"
+            "ถ้าค่าผิด ให้กด แก้ไข แล้วพิมพ์ค่าเอง\n"
+            "ถ้าค่าต่ำกว่าเดิม ตรวจสอบมิเตอร์ก่อนยืนยัน"
+        ),
+    },
+    HELP_TOPIC_TEXT_COMMANDS: {
+        "label": "คำสั่งพิมพ์เอง",
+        "title": "คำสั่งพิมพ์เอง",
+        "text": (
+            "คำสั่งพิมพ์เอง\n"
+            "M1 ถึง M8 — เลือกมิเตอร์\n"
+            "M1 12508 — กรอกค่าเองหรือแก้ OCR\n"
+            "OK — ยืนยันค่าล่าสุด\n"
+            "STATUS — ดูสถานะ\n"
+            "REPORT [รอบ] — ส่งรายงาน\n"
+            "HELP — ดูคำสั่ง\n"
+            "CANCEL — ยกเลิก pending confirmation"
+        ),
+    },
+    HELP_TOPIC_CONTACT_ADMIN: {
+        "label": "ติดต่อแอดมิน",
+        "title": "ติดต่อผู้ดูแลระบบ",
+        "text": (
+            "ติดต่อผู้ดูแลระบบ\n"
+            "แจ้งผู้ดูแลใน LINE group นี้ หากต้องการแก้การตั้งค่า "
+            "สิทธิ์ผู้ใช้งาน หรือเพิ่ม admin"
+        ),
+    },
+}
+
+HELP_MENU_TOPICS = (
+    HELP_TOPIC_START_COLLECTION,
+    HELP_TOPIC_CONFIRM_READING,
+    HELP_TOPIC_STATUS,
+    HELP_TOPIC_LATEST_REPORT,
+    HELP_TOPIC_HISTORY,
+    HELP_TOPIC_SETTINGS,
+    HELP_TOPIC_SETTINGS_ADMIN,
+    HELP_TOPIC_IMPORT_REPORT,
+    HELP_TOPIC_TROUBLESHOOTING,
+    HELP_TOPIC_TEXT_COMMANDS,
+    HELP_TOPIC_CONTACT_ADMIN,
+)
 
 
 def build_postback_data(action: str, **kwargs: str | int | bool | None) -> str:
@@ -92,6 +259,77 @@ def _text_with_actions(
         text=text,
         quick_reply=_quick_reply_from_actions(list(action_items)),
     )
+
+
+def build_help_menu_message() -> TextMessage:
+    return _text_with_actions(
+        text="ต้องการดูวิธีใช้งานส่วนไหนครับ?",
+        action_items=(
+            (
+                HELP_FLOW_TOPICS[topic]["label"],
+                "postback",
+                build_postback_data(action=POSTBACK_HELP_FLOW, topic=topic),
+            )
+            for topic in HELP_MENU_TOPICS
+        ),
+    )
+
+
+def build_help_flow_response(topic: str | None):
+    topic_key = (topic or "").strip()
+    help_topic = HELP_FLOW_TOPICS.get(topic_key)
+    if not help_topic:
+        return build_help_menu_message()
+
+    text_message = _text_with_actions(
+        text=help_topic["text"],
+        action_items=(
+            ("Help", "postback", build_postback_data(action=POSTBACK_HELP)),
+            (
+                "คำสั่งพิมพ์เอง",
+                "postback",
+                build_postback_data(action=POSTBACK_HELP_FLOW, topic=HELP_TOPIC_TEXT_COMMANDS),
+            ),
+        ),
+    )
+    image_urls = _help_flow_image_urls(topic_key)
+    if not image_urls:
+        return text_message
+
+    original_url, preview_url = image_urls
+    return [
+        ImageMessage(original_content_url=original_url, preview_image_url=preview_url),
+        text_message,
+    ]
+
+
+def _help_flow_image_urls(topic: str) -> tuple[str, str] | None:
+    original_url = _help_flow_image_url(topic, preview=False)
+    preview_url = _help_flow_image_url(topic, preview=True)
+    if original_url and preview_url:
+        return original_url, preview_url
+    return None
+
+
+def _help_flow_image_url(topic: str, *, preview: bool) -> str:
+    suffix = "_PREVIEW_URL" if preview else "_URL"
+    base_env = "HELP_FLOW_IMAGE_PREVIEW_BASE_URL" if preview else "HELP_FLOW_IMAGE_BASE_URL"
+    assets = HELP_FLOW_PREVIEW_IMAGE_ASSETS if preview else HELP_FLOW_IMAGE_ASSETS
+
+    direct_url = os.getenv(f"HELP_FLOW_IMAGE_{topic.upper()}{suffix}", "").strip()
+    if _is_https_url(direct_url):
+        return direct_url
+
+    base_url = os.getenv(base_env, "").strip().rstrip("/")
+    asset = assets.get(topic)
+    if asset and _is_https_url(base_url):
+        return f"{base_url}/{asset}"
+    return ""
+
+
+def _is_https_url(url: str) -> bool:
+    parsed = urlparse(url)
+    return parsed.scheme == "https" and bool(parsed.netloc)
 
 
 def build_start_collection_card() -> FlexMessage:
@@ -480,7 +718,90 @@ def build_settings_menu_message(is_admin: bool) -> TextMessage:
             ("ชื่อรายงาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_REPORT_TITLE)),
             ("ผู้รับรายงาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_RECIPIENTS)),
             ("สิทธิ์ผู้ใช้งาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_PERMISSIONS)),
+            ("นำเข้ารายงานเก่า", "postback", build_postback_data(action=POSTBACK_SETTINGS_IMPORT_REPORT)),
         ),
+    )
+
+def build_report_import_prompt_message() -> TextMessage:
+    return _text_with_actions(
+        text=(
+            "นำข้อมูลเข้าด้วยรายงานเก่า\n\n"
+            "ส่งรูปรายงานเก่าเป็นรูปภาพได้เลยครับ "
+            "ระบบจะอ่านตารางและให้ตรวจสอบก่อนบันทึก"
+        ),
+        action_items=(
+            ("ยกเลิก", "postback", build_postback_data(action=POSTBACK_CANCEL_IMPORT_REPORT)),
+            ("กลับตั้งค่า", "postback", build_postback_data(action=POSTBACK_SETTINGS)),
+        ),
+    )
+
+def build_report_import_preview_message(pending) -> TextMessage:
+    lines = [
+        "ตรวจสอบรายงานก่อนนำเข้า",
+        "",
+        f"วันที่: {pending.date or '-'}",
+        f"รอบ: {pending.week or '-'}",
+        f"อ่านได้: {len(pending.rows)}/8 แถว",
+        f"รวมผลิต: {_format_number(pending.total_produced_unit)} kWh",
+        f"ยอดเงินรวม: {_format_number(pending.total_amount)} บาท",
+    ]
+    if pending.warnings:
+        lines.extend(["", "คำเตือน:"])
+        lines.extend(f"- {item}" for item in pending.warnings[:3])
+    if pending.errors:
+        lines.extend(["", "ข้อผิดพลาด:"])
+        lines.extend(f"- {item}" for item in pending.errors[:3])
+
+    actions: list[tuple[str, str, str]] = []
+    if _can_confirm_report_import(pending):
+        actions.append((
+            "ยืนยันนำเข้า",
+            "postback",
+            build_postback_data(action=POSTBACK_CONFIRM_IMPORT_REPORT),
+        ))
+    actions.append(("ยกเลิก", "postback", build_postback_data(action=POSTBACK_CANCEL_IMPORT_REPORT)))
+    actions.append(("กลับตั้งค่า", "postback", build_postback_data(action=POSTBACK_SETTINGS)))
+    return _text_with_actions(text="\n".join(lines), action_items=actions)
+
+def build_report_import_success_message(batch_id: str, week: str) -> TextMessage:
+    return _text_with_actions(
+        text=(
+            "นำเข้ารายงานเก่าเรียบร้อยครับ\n\n"
+            f"รอบ: {week}\n"
+            "บันทึกครบ 8/8 เครื่อง และสร้างรูปรายงานแล้ว"
+        ),
+        action_items=(
+            ("ดูประวัติ", "postback", build_postback_data(action=POSTBACK_HISTORY_BATCH, batch_id=batch_id)),
+            (
+                "ดูรายละเอียด",
+                "postback",
+                build_postback_data(action=POSTBACK_HISTORY_BATCH_DETAIL, batch_id=batch_id),
+            ),
+            ("รายงานล่าสุด", "postback", build_postback_data(action=POSTBACK_LATEST_REPORT, batch_id=batch_id)),
+        ),
+    )
+
+def build_report_import_duplicate_message(batch_id: str, week: str) -> TextMessage:
+    return _text_with_actions(
+        text=(
+            "รอบนี้มีข้อมูลอยู่แล้วครับ\n\n"
+            f"รอบ: {week or batch_id}\n"
+            "เวอร์ชันนี้ยังไม่รองรับการแทนที่หรือรวมข้อมูล"
+        ),
+        action_items=(
+            ("ดูรายละเอียด", "postback", build_postback_data(action=POSTBACK_HISTORY_BATCH_DETAIL, batch_id=batch_id)),
+            ("รายงานล่าสุด", "postback", build_postback_data(action=POSTBACK_LATEST_REPORT, batch_id=batch_id)),
+            ("กลับตั้งค่า", "postback", build_postback_data(action=POSTBACK_SETTINGS)),
+        ),
+    )
+
+def _can_confirm_report_import(pending) -> bool:
+    return bool(
+        pending.batch_id
+        and pending.week
+        and len(pending.rows) == 8
+        and not pending.errors
+        and not pending.duplicate
     )
 
 def build_settings_view_message(values: dict[str, str], is_admin: bool) -> TextMessage:
