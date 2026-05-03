@@ -23,6 +23,8 @@ from starlette.requests import ClientDisconnect
 from app.config import settings
 from app.line.messages import (
     build_confirmation_card,
+    build_help_flow_response,
+    build_help_menu_message,
     build_history_batch_list_message,
     build_history_detail_message,
     build_history_empty_message,
@@ -33,6 +35,10 @@ from app.line.messages import (
     build_lower_value_warning,
     build_meter_request_message,
     build_ocr_review_message,
+    build_report_import_duplicate_message,
+    build_report_import_preview_message,
+    build_report_import_prompt_message,
+    build_report_import_success_message,
     build_settings_confirm_change_message,
     build_settings_edit_prompt_message,
     build_settings_menu_message,
@@ -60,6 +66,7 @@ from app.line.parser import (
     POSTBACK_EDIT_READING,
     POSTBACK_FORCE_CONFIRM_READING,
     POSTBACK_HELP,
+    POSTBACK_HELP_FLOW,
     POSTBACK_HISTORY_BATCH,
     POSTBACK_HISTORY_BATCH_DETAIL,
     POSTBACK_HISTORY_CURRENT,
@@ -75,10 +82,13 @@ from app.line.parser import (
     POSTBACK_SETTINGS_CANCEL_CHANGE,
     POSTBACK_SETTINGS_CONFIRM_CHANGE,
     POSTBACK_SETTINGS_CONTACT_ADMIN,
+    POSTBACK_CANCEL_IMPORT_REPORT,
+    POSTBACK_CONFIRM_IMPORT_REPORT,
     POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT,
     POSTBACK_SETTINGS_EDIT_METER,
     POSTBACK_SETTINGS_EDIT_RATE,
     POSTBACK_SETTINGS_EDIT_REPORT_TITLE,
+    POSTBACK_SETTINGS_IMPORT_REPORT,
     POSTBACK_SETTINGS_METER_DETAIL,
     POSTBACK_SETTINGS_METERS,
     POSTBACK_SETTINGS_PERMISSIONS,
@@ -124,28 +134,38 @@ from app.services.session_service import (
     COLLECTION_WAITING_IMAGE,
     COLLECTION_WAITING_MANUAL_VALUE,
     COLLECTION_REPORTING,
+    REPORT_IMPORT_IDLE,
+    REPORT_IMPORT_PROCESSING_OCR,
+    REPORT_IMPORT_WAITING_CONFIRMATION,
+    REPORT_IMPORT_WAITING_IMAGE,
     clear_collection_meter,
     clear_collection_skip_meters,
+    clear_pending_report_import,
     clear_pending_setting_change,
     finish_image_processing,
     get_batch_id as get_session_batch_id,
     get_collection_current_meter,
     get_collection_state,
     get_latest_meter,
+    get_pending_report_import,
     get_pending_setting_change,
+    get_report_import_state,
     get_settings_input_key,
     is_collection_meter_skipped,
     reset_collection_session,
+    reset_report_import_session,
     set_collection_current_meter,
     set_collection_state,
     set_collection_meter_skipped,
     set_batch_id,
+    set_pending_report_import,
     set_pending_setting_change,
+    set_report_import_state,
     set_settings_input_key,
     start_image_processing,
     set_latest_meter,
 )
-from app.services import history_service, settings_service
+from app.services import history_service, report_import_service, settings_service
 from app.line.client import ImageDownloadError, download_image
 from app.report.sender import send_report, send_report_if_complete
 from app.ocr.confidence import score_ocr_reading
@@ -209,6 +229,12 @@ def _is_line_event_allowed(chat_id: str | None, user_id: str | None) -> bool:
     if allowed_user_ids and user_id not in allowed_user_ids:
         return False
     return True
+
+
+def _is_admin_operator(source_id: str, operator_id: str | None = None) -> bool:
+    if operator_id and settings_service.is_admin(operator_id):
+        return True
+    return settings_service.is_admin(source_id)
 
 
 def _is_sheets_quota_error(exc: APIError) -> bool:
@@ -324,9 +350,10 @@ async def _handle_postback_safely(
     source_id: str,
     parsed: ParsedPostback,
     reply_token: str,
+    operator_id: str | None = None,
 ) -> None:
     try:
-        await _handle_postback(source_id, parsed, reply_token)
+        await _handle_postback(source_id, parsed, reply_token, operator_id)
     except APIError as exc:
         log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": str(exc)[:200]})
         if _is_sheets_quota_error(exc):
@@ -399,11 +426,11 @@ def _build_status_message(source_id: str) -> str:
         return "ยังไม่มีข้อมูลรอบนี้ครับ"
     return "\n".join(lines)
 
-def _build_settings_input_reply(text: str, source_id: str):
+def _build_settings_input_reply(text: str, source_id: str, operator_id: str | None = None):
     key = get_settings_input_key(source_id)
     if not key:
         return None
-    if not settings_service.is_admin(source_id):
+    if not _is_admin_operator(source_id, operator_id):
         set_settings_input_key(source_id, None)
         return build_settings_not_admin_message()
 
@@ -427,8 +454,8 @@ def _build_settings_input_reply(text: str, source_id: str):
     change = get_pending_setting_change(source_id)
     return build_settings_confirm_change_message(change)
 
-def _build_settings_edit_prompt(source_id: str, key: str):
-    if not settings_service.is_admin(source_id):
+def _build_settings_edit_prompt(source_id: str, key: str, operator_id: str | None = None):
+    if not _is_admin_operator(source_id, operator_id):
         return build_settings_not_admin_message()
     values = settings_service.get_current_settings()
     set_settings_input_key(source_id, key)
@@ -614,10 +641,12 @@ async def _handle_postback(
     source_id: str,
     parsed: ParsedPostback,
     reply_token: str,
+    operator_id: str | None = None,
 ) -> None:
     action = parsed.type
     meter_id = parsed.meter_id
     batch_id = _resolve_batch_id(parsed.batch_id, source_id)
+    is_admin = _is_admin_operator(source_id, operator_id)
 
     if action == POSTBACK_START_COLLECTION:
         batch_id = ensure_batch_id(source_id)
@@ -709,7 +738,51 @@ async def _handle_postback(
         return
 
     if action == POSTBACK_SETTINGS:
-        await _reply_to(reply_token, build_settings_menu_message(settings_service.is_admin(source_id)))
+        await _reply_to(reply_token, build_settings_menu_message(is_admin))
+        return
+
+    if action == POSTBACK_SETTINGS_IMPORT_REPORT:
+        if not is_admin:
+            await _reply_to(reply_token, build_settings_not_admin_message())
+            return
+        clear_pending_report_import(source_id)
+        set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
+        await _reply_to(reply_token, build_report_import_prompt_message())
+        return
+
+    if action == POSTBACK_CONFIRM_IMPORT_REPORT:
+        if not is_admin:
+            await _reply_to(reply_token, build_settings_not_admin_message())
+            return
+        pending_import = get_pending_report_import(source_id)
+        if not pending_import:
+            reset_report_import_session(source_id)
+            await _reply_to(reply_token, "ไม่มีรายงานที่รอยืนยันครับ")
+            return
+        result = report_import_service.confirm_report_import(
+            source_id,
+            pending_import,
+            line_user_id=operator_id or "",
+        )
+        if result.success:
+            set_batch_id(source_id, result.batch_id)
+            reset_report_import_session(source_id)
+            await _reply_to(reply_token, build_report_import_success_message(result.batch_id, result.week))
+            return
+        if result.duplicate:
+            reset_report_import_session(source_id)
+            await _reply_to(reply_token, build_report_import_duplicate_message(result.batch_id, result.week))
+            return
+        set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
+        await _reply_to(reply_token, build_report_import_preview_message(pending_import))
+        return
+
+    if action == POSTBACK_CANCEL_IMPORT_REPORT:
+        if not is_admin:
+            await _reply_to(reply_token, build_settings_not_admin_message())
+            return
+        reset_report_import_session(source_id)
+        await _reply_to(reply_token, "ยกเลิกการนำเข้ารายงานเก่าแล้วครับ")
         return
 
     if action == POSTBACK_SETTINGS_VIEW:
@@ -717,7 +790,7 @@ async def _handle_postback(
             reply_token,
             build_settings_view_message(
                 settings_service.get_current_settings(),
-                settings_service.is_admin(source_id),
+                is_admin,
             ),
         )
         return
@@ -727,32 +800,32 @@ async def _handle_postback(
             reply_token,
             build_settings_meters_message(
                 settings_service.get_meter_settings(),
-                settings_service.is_admin(source_id),
+                is_admin,
             ),
         )
         return
 
     if action == POSTBACK_SETTINGS_METER_DETAIL:
         if not meter_id:
-            await _reply_to(reply_token, build_settings_meters_message(settings_service.get_meter_settings(), settings_service.is_admin(source_id)))
+            await _reply_to(reply_token, build_settings_meters_message(settings_service.get_meter_settings(), is_admin))
             return
         meter = settings_service.get_meter_detail(meter_id)
         if not meter:
             await _reply_to(reply_token, "ไม่พบมิเตอร์นี้ครับ")
             return
-        await _reply_to(reply_token, build_settings_meter_detail_message(meter, settings_service.is_admin(source_id)))
+        await _reply_to(reply_token, build_settings_meter_detail_message(meter, is_admin))
         return
 
     if action == POSTBACK_SETTINGS_EDIT_RATE:
-        await _reply_to(reply_token, _build_settings_edit_prompt(source_id, settings_service.SETTING_DEFAULT_RATE))
+        await _reply_to(reply_token, _build_settings_edit_prompt(source_id, settings_service.SETTING_DEFAULT_RATE, operator_id))
         return
 
     if action == POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT:
-        await _reply_to(reply_token, _build_settings_edit_prompt(source_id, settings_service.SETTING_EXPECTED_METER_COUNT))
+        await _reply_to(reply_token, _build_settings_edit_prompt(source_id, settings_service.SETTING_EXPECTED_METER_COUNT, operator_id))
         return
 
     if action == POSTBACK_SETTINGS_EDIT_REPORT_TITLE:
-        await _reply_to(reply_token, _build_settings_edit_prompt(source_id, settings_service.SETTING_REPORT_TITLE))
+        await _reply_to(reply_token, _build_settings_edit_prompt(source_id, settings_service.SETTING_REPORT_TITLE, operator_id))
         return
 
     if action == POSTBACK_SETTINGS_EDIT_METER:
@@ -760,21 +833,21 @@ async def _handle_postback(
         return
 
     if action == POSTBACK_SETTINGS_RECIPIENTS:
-        if not settings_service.is_admin(source_id):
+        if not is_admin:
             await _reply_to(reply_token, build_settings_not_admin_message())
             return
         await _reply_to(reply_token, build_settings_recipients_message(settings_service.get_current_settings(), True))
         return
 
     if action == POSTBACK_SETTINGS_PERMISSIONS:
-        if not settings_service.is_admin(source_id):
+        if not is_admin:
             await _reply_to(reply_token, build_settings_not_admin_message())
             return
         await _reply_to(reply_token, build_settings_permissions_message(True))
         return
 
     if action == POSTBACK_SETTINGS_CONFIRM_CHANGE:
-        if not settings_service.is_admin(source_id):
+        if not is_admin:
             await _reply_to(reply_token, build_settings_not_admin_message())
             return
         change = get_pending_setting_change(source_id)
@@ -790,7 +863,7 @@ async def _handle_postback(
     if action == POSTBACK_SETTINGS_CANCEL_CHANGE:
         clear_pending_setting_change(source_id)
         set_settings_input_key(source_id, None)
-        await _reply_to(reply_token, build_settings_menu_message(settings_service.is_admin(source_id)))
+        await _reply_to(reply_token, build_settings_menu_message(is_admin))
         return
 
     if action == POSTBACK_SETTINGS_CONTACT_ADMIN:
@@ -800,17 +873,12 @@ async def _handle_postback(
         )
         return
 
+    if action == POSTBACK_HELP_FLOW:
+        await _reply_to(reply_token, build_help_flow_response(parsed.topic))
+        return
+
     if action == POSTBACK_HELP:
-        await _reply_to(
-            reply_token,
-            (
-                "ช่วยเหลือ:\n"
-                "1) กดบันทึกมิเตอร์เพื่อเริ่มเก็บข้อมูล\n"
-                "2) ถ่ายรูปตามลำดับ M1 → M8\n"
-                "3) กดยืนยันหลังจาก OCR อ่านค่าเสร็จ\n"
-                "หรือพิมพ์คำสั่งเดิมเช่น STATUS / HELP"
-            ),
-        )
+        await _reply_to(reply_token, build_help_menu_message())
         return
 
     if action == POSTBACK_CANCEL_COLLECTION:
@@ -872,6 +940,41 @@ async def _handle_postback(
         return
 
     await _reply_to(reply_token, "ไม่รู้จัก postback action นี้")
+
+
+async def _process_report_import_image(
+    source_id: str,
+    image_path: str,
+    message_id: str,
+) -> None:
+    try:
+        ocr_result = await _read_ocr_image(image_path)
+        if not ocr_result.success:
+            log_event(EVENT_OCR_FAILED, source_id, "", {"error": ocr_result.error[:200]})
+            set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
+            await _push_to(source_id, "อ่านรายงานเก่าไม่ได้ครับ กรุณาส่งรูปใหม่อีกครั้ง")
+            return
+
+        pending_import = report_import_service.build_report_import_preview(
+            source_id,
+            ocr_result.raw_text,
+            image_message_id=message_id,
+        )
+        set_pending_report_import(source_id, pending_import)
+        if pending_import.duplicate:
+            set_report_import_state(source_id, REPORT_IMPORT_IDLE)
+        elif report_import_service.can_confirm_import(pending_import):
+            set_report_import_state(source_id, REPORT_IMPORT_WAITING_CONFIRMATION)
+        else:
+            set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
+        await _push_to(source_id, build_report_import_preview_message(pending_import))
+    except Exception:
+        logger.exception("Report import OCR failed for source=%s", source_id)
+        log_event(EVENT_OCR_FAILED, source_id, "", {"phase": "report_import"})
+        set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
+        await _push_to(source_id, "เกิดข้อผิดพลาดในการอ่านรายงานเก่าครับ กรุณาลองใหม่")
+    finally:
+        finish_image_processing(source_id, message_id)
 
 
 async def _process_ocr_and_confirm(
@@ -999,7 +1102,12 @@ async def handle_webhook(request: Request):
 
         if event_type == "postback":
             parsed = parse_postback_action(getattr(getattr(event, "postback", None), "data", ""))
-            await _handle_postback_safely(source_id, parsed, getattr(event, "reply_token", ""))
+            await _handle_postback_safely(
+                source_id,
+                parsed,
+                getattr(event, "reply_token", ""),
+                source_user_id,
+            )
             continue
 
         if event_type != "message":
@@ -1030,7 +1138,11 @@ async def handle_webhook(request: Request):
             text = getattr(message, "text", "")
             cmd = _coerce_manual_value_command(parse_command(text), text, source_id)
             try:
-                settings_reply = _build_settings_input_reply(text, source_id) if cmd.type == UNKNOWN else None
+                settings_reply = (
+                    _build_settings_input_reply(text, source_id, source_user_id)
+                    if cmd.type == UNKNOWN
+                    else None
+                )
             except APIError as exc:
                 if not _is_sheets_quota_error(exc):
                     log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": str(exc)[:200]})
@@ -1061,6 +1173,57 @@ async def handle_webhook(request: Request):
             continue
 
         if message_type == "image":
+            report_import_state = get_report_import_state(source_id)
+            if report_import_state in (
+                REPORT_IMPORT_WAITING_IMAGE,
+                REPORT_IMPORT_PROCESSING_OCR,
+                REPORT_IMPORT_WAITING_CONFIRMATION,
+            ):
+                if not _is_admin_operator(source_id, source_user_id):
+                    await _reply_to(reply_token, build_settings_not_admin_message())
+                    continue
+                if report_import_state == REPORT_IMPORT_PROCESSING_OCR:
+                    await _reply_to(reply_token, "กำลังอ่านรายงานเก่าอยู่ครับ")
+                    continue
+                if report_import_state == REPORT_IMPORT_WAITING_CONFIRMATION:
+                    pending_import = get_pending_report_import(source_id)
+                    if pending_import:
+                        await _reply_to(reply_token, build_report_import_preview_message(pending_import))
+                    else:
+                        set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
+                        await _reply_to(reply_token, build_report_import_prompt_message())
+                    continue
+
+                if not start_image_processing(source_id, message_id):
+                    logger.info("Skipping duplicate report import image message_id=%s", message_id)
+                    continue
+
+                try:
+                    image_path = await download_image(message_id)
+                    logger.info("Downloaded report import image: %s", image_path)
+                    set_report_import_state(source_id, REPORT_IMPORT_PROCESSING_OCR)
+                    if reply_token:
+                        await _reply_to(reply_token, "รับรูปรายงานเก่าแล้วครับ กำลังอ่านตาราง...")
+                    asyncio.create_task(
+                        _process_report_import_image(source_id, str(image_path), message_id)
+                    )
+                except ImageDownloadError as exc:
+                    finish_image_processing(source_id, message_id)
+                    set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
+                    logger.error("Report import image download failed: %s", exc)
+                    log_event(
+                        EVENT_LINE_DOWNLOAD_FAILED,
+                        source_id,
+                        "",
+                        {"message_id": message_id, "error": str(exc)[:200]},
+                    )
+                    if reply_token:
+                        await _reply_to(
+                            reply_token,
+                            "ดาวน์โหลดรูปไม่สำเร็จครับ กรุณาส่งรูปรายงานใหม่อีกครั้ง",
+                        )
+                continue
+
             meter_id = get_collection_current_meter(source_id) or get_latest_meter(source_id)
             if not meter_id:
                 meter_id = _restore_collection_from_current_batch(source_id)

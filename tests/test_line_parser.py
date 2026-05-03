@@ -3,6 +3,7 @@ from app.line.parser import (
     POSTBACK_UNKNOWN,
     POSTBACK_CONFIRM_READING,
     POSTBACK_FORCE_CONFIRM_READING,
+    POSTBACK_HELP_FLOW,
     POSTBACK_HISTORY,
     POSTBACK_LATEST_REPORT,
     POSTBACK_SELECT_METER,
@@ -104,6 +105,13 @@ def test_parse_settings_confirm_change_id():
 def test_parse_force_confirm_postback():
     parsed = parse_postback_action("action=force_confirm_reading")
     assert parsed.type == POSTBACK_FORCE_CONFIRM_READING
+
+
+def test_parse_help_flow_topic_postback():
+    parsed = parse_postback_action("action=help_flow&topic=start_collection")
+
+    assert parsed.type == POSTBACK_HELP_FLOW
+    assert parsed.topic == "start_collection"
 
 
 def test_parse_postback_unknown_payload():

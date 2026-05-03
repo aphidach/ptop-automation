@@ -32,6 +32,21 @@ class PendingSettingChange:
 
 
 @dataclass
+class PendingReportImport:
+    batch_id: str
+    week: str
+    date: str
+    rows: list[dict[str, str]]
+    total_produced_unit: Decimal
+    total_amount: Decimal
+    warnings: list[str] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
+    duplicate: bool = False
+    ocr_raw_text: str = ""
+    image_message_id: str = ""
+
+
+@dataclass
 class Session:
     line_source_id: str
     line_user_id: Optional[str] = None
@@ -41,8 +56,10 @@ class Session:
     collection_skipped_meters: set[str] = field(default_factory=set)
     pending_confirmation: Optional[PendingConfirmation] = None
     pending_setting_change: Optional[PendingSettingChange] = None
+    pending_report_import: Optional[PendingReportImport] = None
     settings_input_key: Optional[str] = None
     batch_id: Optional[str] = None
+    report_import_state: str = "idle"
     processing_image_message_ids: set[str] = field(default_factory=set)
     processed_image_message_ids: set[str] = field(default_factory=set)
 
@@ -95,6 +112,10 @@ COLLECTION_WAITING_CONFIRMATION = "waiting_confirmation"
 COLLECTION_WAITING_MANUAL_VALUE = "waiting_manual_value"
 COLLECTION_COMPLETED = "completed"
 COLLECTION_REPORTING = "reporting"
+REPORT_IMPORT_IDLE = "idle"
+REPORT_IMPORT_WAITING_IMAGE = "waiting_image"
+REPORT_IMPORT_PROCESSING_OCR = "processing_ocr"
+REPORT_IMPORT_WAITING_CONFIRMATION = "waiting_confirmation"
 
 
 def set_latest_meter(source_id: str, meter_id: str, user_id: Optional[str] = None) -> None:
@@ -233,6 +254,38 @@ def clear_pending_setting_change(source_id: str) -> None:
     session = _store.get(source_id)
     if session:
         session.pending_setting_change = None
+
+
+def set_report_import_state(source_id: str, state: str) -> None:
+    session = get_or_create_session(source_id)
+    session.report_import_state = state
+
+
+def get_report_import_state(source_id: str) -> str:
+    session = _store.get(source_id)
+    return session.report_import_state if session else REPORT_IMPORT_IDLE
+
+
+def set_pending_report_import(source_id: str, pending: PendingReportImport) -> None:
+    session = get_or_create_session(source_id)
+    session.pending_report_import = pending
+
+
+def get_pending_report_import(source_id: str) -> Optional[PendingReportImport]:
+    session = _store.get(source_id)
+    return session.pending_report_import if session else None
+
+
+def clear_pending_report_import(source_id: str) -> None:
+    session = _store.get(source_id)
+    if session:
+        session.pending_report_import = None
+
+
+def reset_report_import_session(source_id: str) -> None:
+    session = get_or_create_session(source_id)
+    session.report_import_state = REPORT_IMPORT_IDLE
+    session.pending_report_import = None
 
 
 def start_image_processing(source_id: str, message_id: str) -> bool:
