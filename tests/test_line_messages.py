@@ -1,3 +1,5 @@
+from types import SimpleNamespace
+from unittest.mock import patch
 from decimal import Decimal
 
 from app.line.messages import (
@@ -18,6 +20,7 @@ from app.line.messages import (
     build_settings_menu_message,
     build_start_collection_card,
     build_status_card,
+    build_report_summary_message,
     build_unreadable_prompt,
 )
 from app.line.webhook import _normalize_message_payload
@@ -399,11 +402,13 @@ def test_normalize_line_message_payload_accepts_mixed_list():
 def test_history_menu_has_usable_actions():
     payload = _as_dict(build_history_menu_message())
 
-    assert "ประวัติการบันทึกมิเตอร์" in payload["text"]
+    assert payload["altText"] == "ประวัติการบันทึก"
+    assert "ประวัติ" in str(payload)
     assert "history_current" in str(payload)
     assert "history_select_week" in str(payload)
     assert "history_meter" in str(payload)
     assert "latest_report" in str(payload)
+    assert "help" not in str(payload["quickReply"])
 
 def test_history_batch_list_shows_recent_weeks():
     summaries = [
@@ -432,18 +437,49 @@ def test_history_batch_list_shows_recent_weeks():
 def test_settings_operator_menu_does_not_show_edit_actions():
     payload = _as_dict(build_settings_menu_message(is_admin=False))
 
-    assert "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ" in payload["text"]
+    assert payload["altText"] == "ตั้งค่าระบบ"
     assert "settings_view" in str(payload)
     assert "settings_edit_rate" not in str(payload)
     assert "settings_import_report" not in str(payload)
+    assert "help" in str(payload["quickReply"])
 
 def test_settings_admin_menu_shows_edit_actions():
     payload = _as_dict(build_settings_menu_message(is_admin=True))
 
-    assert "เลือกสิ่งที่ต้องการจัดการ" in payload["text"]
+    assert payload["altText"] == "ตั้งค่าระบบ"
     assert "settings_edit_rate" in str(payload)
     assert "settings_edit_report_title" in str(payload)
     assert "settings_import_report" in str(payload)
+
+
+def test_report_summary_card_shows_week_totals_and_navigation():
+    with patch(
+        "app.line.messages.build_report_data",
+        return_value=SimpleNamespace(
+            week="2026-W19",
+            readings=[1, 2, 3, 4],
+            total_produced_unit=Decimal("1234.5"),
+            total_amount=Decimal("4567.89"),
+        ),
+    ):
+        payload = _as_dict(build_report_summary_message("2026-W19-U1"))
+
+    rendered = str(payload)
+    assert payload["altText"] == "รายงานสัปดาห์ 2026-W19"
+    assert "สรุปรายงานสัปดาห์" in rendered
+    assert "สัปดาห์" in rendered
+    reading_row = next(
+        item
+        for item in payload["contents"]["body"]["contents"]
+        if item.get("type") == "box" and item.get("contents", [{}])[0].get("text") == "จำนวนเครื่อง"
+    )
+    assert reading_row["contents"][1]["text"] == "4"
+    assert "1,234.5 kWh" in rendered
+    assert "4,567.89 บาท" in rendered
+    assert "action=latest_report&batch_id=2026-W19-U1" in rendered
+    assert "action=history_batch_detail&batch_id=2026-W19-U1" in rendered
+    assert "action=history" in rendered
+    assert "share_report" not in rendered
 
 def test_report_import_preview_has_confirm_and_cancel_when_valid():
     pending = PendingReportImport(

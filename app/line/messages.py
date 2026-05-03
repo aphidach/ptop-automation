@@ -52,6 +52,7 @@ from app.line.parser import (
     POSTBACK_SHOW_STATUS,
     POSTBACK_START_COLLECTION,
 )
+from app.report.generator import build_report_data
 
 QUICK_TEXT_LIMIT = 20
 LINE_QUICK_REPLY_ITEM_LIMIT = 13
@@ -1229,16 +1230,24 @@ def build_batch_complete_card(
     )
 
 
-def build_history_menu_message() -> TextMessage:
-    return _text_with_actions(
-        text="ประวัติการบันทึกมิเตอร์\n\nเลือกรายการที่ต้องการดูครับ",
-        action_items=(
+def build_history_menu_message() -> FlexMessage:
+    return _card_shell(
+        alt_text="ประวัติการบันทึก",
+        title="ประวัติ",
+        subtitle="เลือกข้อมูลที่ต้องการดู",
+        body_contents=(
+            _body_text(
+                "เลือกรายการด้านล่างเพื่อดูข้อมูลรอบที่ต้องการ",
+                size="sm",
+                color=CARD_COLORS["text"],
+            ),
+        ),
+        quick_actions=(
             ("รอบปัจจุบัน", "postback", build_postback_data(action=POSTBACK_HISTORY_CURRENT)),
             ("สัปดาห์ก่อน", "postback", build_postback_data(action=POSTBACK_HISTORY_PREVIOUS)),
             ("เลือกรอบย้อนหลัง", "postback", build_postback_data(action=POSTBACK_HISTORY_SELECT_WEEK)),
             ("ดูตามมิเตอร์", "postback", build_postback_data(action=POSTBACK_HISTORY_METER)),
             ("รายงานล่าสุด", "postback", build_postback_data(action=POSTBACK_LATEST_REPORT)),
-            ("กลับเมนูหลัก", "postback", build_postback_data(action=POSTBACK_HELP)),
         ),
     )
 
@@ -1360,32 +1369,86 @@ def build_history_meter_message(meter_id: str, readings: Sequence[dict]) -> Text
         ),
     )
 
-def build_settings_menu_message(is_admin: bool) -> TextMessage:
-    if not is_admin:
-        return _text_with_actions(
-            text=(
-                "ตั้งค่าระบบ\n\n"
-                "คุณสามารถดูการตั้งค่าปัจจุบันได้\n"
-                "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ"
-            ),
-            action_items=(
-                ("ดูการตั้งค่าปัจจุบัน", "postback", build_postback_data(action=POSTBACK_SETTINGS_VIEW)),
-                ("ดูรายชื่อมิเตอร์", "postback", build_postback_data(action=POSTBACK_SETTINGS_METERS)),
-                ("ติดต่อผู้ดูแล", "postback", build_postback_data(action=POSTBACK_SETTINGS_CONTACT_ADMIN)),
-                ("Help", "postback", build_postback_data(action=POSTBACK_HELP)),
-            ),
-        )
-
-    return _text_with_actions(
-        text="ตั้งค่าระบบ\n\nเลือกสิ่งที่ต้องการจัดการครับ",
-        action_items=(
-            ("มิเตอร์ M1-M8", "postback", build_postback_data(action=POSTBACK_SETTINGS_METERS)),
+def build_settings_menu_message(is_admin: bool) -> FlexMessage:
+    quick_actions = (
+        ("ดูค่าปัจจุบัน", "postback", build_postback_data(action=POSTBACK_SETTINGS_VIEW)),
+        ("ดูรายชื่อมิเตอร์", "postback", build_postback_data(action=POSTBACK_SETTINGS_METERS)),
+        ("ติดต่อผู้ดูแล", "postback", build_postback_data(action=POSTBACK_SETTINGS_CONTACT_ADMIN)),
+        ("Help", "postback", build_postback_data(action=POSTBACK_HELP)),
+    )
+    if is_admin:
+        quick_actions = (
+            ("ดูรายชื่อมิเตอร์", "postback", build_postback_data(action=POSTBACK_SETTINGS_METERS)),
             ("อัตราค่าไฟ", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_RATE)),
             ("จำนวนเครื่อง", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_EXPECTED_COUNT)),
             ("ชื่อรายงาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_EDIT_REPORT_TITLE)),
             ("ผู้รับรายงาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_RECIPIENTS)),
             ("สิทธิ์ผู้ใช้งาน", "postback", build_postback_data(action=POSTBACK_SETTINGS_PERMISSIONS)),
             ("นำเข้ารายงานเก่า", "postback", build_postback_data(action=POSTBACK_SETTINGS_IMPORT_REPORT)),
+        )
+
+    return _card_shell(
+        alt_text="ตั้งค่าระบบ",
+        title="ตั้งค่าระบบ",
+        subtitle="เลือกเมนูที่ต้องการ",
+        body_contents=(
+            _body_text(
+                (
+                    "คุณสามารถดูการตั้งค่าได้ตามสิทธิ์ผู้ใช้"
+                    if is_admin
+                    else "ตั้งค่าสำหรับ operator: ดูค่าได้ แต่แก้ไขได้เฉพาะ Admin"
+                ),
+                size="sm",
+                color=CARD_COLORS["text"],
+            ),
+        ),
+        quick_actions=quick_actions,
+    )
+
+
+def build_report_summary_message(
+    batch_id: str,
+    *,
+    report_status: str = "พร้อมส่งรายงาน",
+) -> FlexMessage | TextMessage:
+    report = build_report_data(batch_id)
+    if not report:
+        return _text_with_actions(
+            text=f"ยังไม่มีข้อมูลรายงานของ {batch_id} ครับ",
+            action_items=(
+                ("รายงานล่าสุด", "postback", build_postback_data(action=POSTBACK_LATEST_REPORT)),
+            ),
+        )
+
+    week = report.week or batch_id
+    reading_count = len(report.readings)
+    body_contents = [
+        _metric_row("สัปดาห์", week, color=CARD_COLORS["text"]),
+        _metric_row("จำนวนเครื่อง", str(reading_count), color=CARD_COLORS["text"]),
+        _metric_row("ผลผลิตรวม", f"{_format_number(report.total_produced_unit)} kWh", color=CARD_COLORS["dark_green"]),
+        _metric_row("ยอดเงินรวม", f"{_format_number(report.total_amount)} บาท", color=CARD_COLORS["primary"]),
+    ]
+
+    return _card_shell(
+        alt_text=f"รายงานสัปดาห์ {week}",
+        title="สรุปรายงานสัปดาห์",
+        subtitle=week,
+        status_badge=report_status,
+        body_contents=body_contents,
+        primary_action=_postback_button(
+            "ดูรายงานล่าสุด",
+            POSTBACK_LATEST_REPORT,
+            batch_id=batch_id,
+            style="primary",
+            color=CARD_COLORS["primary"],
+        ),
+        secondary_actions=(
+            _postback_button(
+                "ดูรายละเอียด",
+                POSTBACK_HISTORY_BATCH_DETAIL,
+                batch_id=batch_id,
+            ),
+            _postback_button("ประวัติ", POSTBACK_HISTORY),
         ),
     )
 

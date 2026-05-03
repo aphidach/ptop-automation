@@ -144,7 +144,7 @@
       "source_file": "app/config.py",
       "source_location": "L1",
       "id": "app_config_py",
-      "community": 31,
+      "community": 34,
       "norm_label": "config.py"
     },
     {
@@ -153,7 +153,7 @@
       "source_file": "app/config.py",
       "source_location": "L10",
       "id": "app_config_env_bool",
-      "community": 31,
+      "community": 34,
       "norm_label": "_env_bool()"
     },
     {
@@ -162,7 +162,7 @@
       "source_file": "app/config.py",
       "source_location": "L17",
       "id": "app_config_settings",
-      "community": 31,
+      "community": 34,
       "norm_label": "settings"
     },
     {
@@ -396,7 +396,7 @@
       "source_file": "app/sheets/setup.py",
       "source_location": "L1",
       "id": "app_sheets_setup_py",
-      "community": 32,
+      "community": 31,
       "norm_label": "setup.py"
     },
     {
@@ -405,7 +405,7 @@
       "source_file": "app/sheets/setup.py",
       "source_location": "L14",
       "id": "sheets_setup_main",
-      "community": 32,
+      "community": 31,
       "norm_label": "main()"
     },
     {
@@ -414,7 +414,7 @@
       "source_file": "app/sheets/setup.py",
       "source_location": "L1",
       "id": "sheets_setup_rationale_1",
-      "community": 32,
+      "community": 31,
       "norm_label": "initialize google sheets tabs with headers.  usage:     python -m app.sheets.set"
     },
     {
@@ -1627,7 +1627,7 @@
       "label": "_line_source_attr()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L194",
+      "source_location": "L196",
       "id": "line_webhook_line_source_attr",
       "community": 3,
       "norm_label": "_line_source_attr()"
@@ -1636,7 +1636,7 @@
       "label": "_line_user_id()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L198",
+      "source_location": "L200",
       "id": "line_webhook_line_user_id",
       "community": 3,
       "norm_label": "_line_user_id()"
@@ -1645,7 +1645,7 @@
       "label": "_line_chat_id()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L204",
+      "source_location": "L206",
       "id": "line_webhook_line_chat_id",
       "community": 3,
       "norm_label": "_line_chat_id()"
@@ -1654,7 +1654,7 @@
       "label": "_is_line_event_allowed()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L223",
+      "source_location": "L225",
       "id": "line_webhook_is_line_event_allowed",
       "community": 3,
       "norm_label": "_is_line_event_allowed()"
@@ -1663,7 +1663,7 @@
       "label": "_is_admin_operator()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L237",
+      "source_location": "L239",
       "id": "line_webhook_is_admin_operator",
       "community": 3,
       "norm_label": "_is_admin_operator()"
@@ -1672,7 +1672,7 @@
       "label": "_is_sheets_quota_error()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L243",
+      "source_location": "L245",
       "id": "line_webhook_is_sheets_quota_error",
       "community": 3,
       "norm_label": "_is_sheets_quota_error()"
@@ -1681,7 +1681,7 @@
       "label": "_is_invalid_reply_token_error()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L247",
+      "source_location": "L249",
       "id": "line_webhook_is_invalid_reply_token_error",
       "community": 3,
       "norm_label": "_is_invalid_reply_token_error()"
@@ -1690,7 +1690,7 @@
       "label": "_resolve_batch_id()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L252",
+      "source_location": "L254",
       "id": "line_webhook_resolve_batch_id",
       "community": 3,
       "norm_label": "_resolve_batch_id()"
@@ -1699,7 +1699,7 @@
       "label": "_parse_bare_meter_value()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L260",
+      "source_location": "L262",
       "id": "line_webhook_parse_bare_meter_value",
       "community": 3,
       "norm_label": "_parse_bare_meter_value()"
@@ -1708,7 +1708,7 @@
       "label": "_coerce_manual_value_command()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L270",
+      "source_location": "L272",
       "id": "line_webhook_coerce_manual_value_command",
       "community": 3,
       "norm_label": "_coerce_manual_value_command()"
@@ -1717,7 +1717,7 @@
       "label": "_next_meter_to_capture()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L288",
+      "source_location": "L290",
       "id": "line_webhook_next_meter_to_capture",
       "community": 3,
       "norm_label": "_next_meter_to_capture()"
@@ -1726,7 +1726,7 @@
       "label": "_restore_collection_from_current_batch()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L303",
+      "source_location": "L305",
       "id": "line_webhook_restore_collection_from_current_batch",
       "community": 3,
       "norm_label": "_restore_collection_from_current_batch()"
@@ -1735,7 +1735,7 @@
       "label": "_reply_to()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L313",
+      "source_location": "L315",
       "id": "line_webhook_reply_to",
       "community": 3,
       "norm_label": "_reply_to()"
@@ -1744,7 +1744,7 @@
       "label": "_push_to()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L332",
+      "source_location": "L334",
       "id": "line_webhook_push_to",
       "community": 3,
       "norm_label": "_push_to()"
@@ -1753,7 +1753,7 @@
       "label": "_maybe_await()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L343",
+      "source_location": "L345",
       "id": "line_webhook_maybe_await",
       "community": 3,
       "norm_label": "_maybe_await()"
@@ -1762,7 +1762,7 @@
       "label": "_read_ocr_image()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L348",
+      "source_location": "L350",
       "id": "line_webhook_read_ocr_image",
       "community": 3,
       "norm_label": "_read_ocr_image()"
@@ -1771,7 +1771,7 @@
       "label": "_handle_postback_safely()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L352",
+      "source_location": "L354",
       "id": "line_webhook_handle_postback_safely",
       "community": 3,
       "norm_label": "_handle_postback_safely()"
@@ -1780,7 +1780,7 @@
       "label": "_normalize_message_payload()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L369",
+      "source_location": "L371",
       "id": "line_webhook_normalize_message_payload",
       "community": 3,
       "norm_label": "_normalize_message_payload()"
@@ -1789,7 +1789,7 @@
       "label": "_set_next_collection_meter()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L383",
+      "source_location": "L385",
       "id": "line_webhook_set_next_collection_meter",
       "community": 3,
       "norm_label": "_set_next_collection_meter()"
@@ -1798,7 +1798,7 @@
       "label": "_build_status_message()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L394",
+      "source_location": "L396",
       "id": "line_webhook_build_status_message",
       "community": 3,
       "norm_label": "_build_status_message()"
@@ -1807,7 +1807,7 @@
       "label": "_build_status_card_message()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L433",
+      "source_location": "L435",
       "id": "line_webhook_build_status_card_message",
       "community": 3,
       "norm_label": "_build_status_card_message()"
@@ -1816,7 +1816,7 @@
       "label": "_build_settings_input_reply()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L468",
+      "source_location": "L470",
       "id": "line_webhook_build_settings_input_reply",
       "community": 3,
       "norm_label": "_build_settings_input_reply()"
@@ -1825,7 +1825,7 @@
       "label": "_build_settings_edit_prompt()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L496",
+      "source_location": "L498",
       "id": "line_webhook_build_settings_edit_prompt",
       "community": 3,
       "norm_label": "_build_settings_edit_prompt()"
@@ -1834,7 +1834,7 @@
       "label": "_reply_history_current()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L504",
+      "source_location": "L506",
       "id": "line_webhook_reply_history_current",
       "community": 3,
       "norm_label": "_reply_history_current()"
@@ -1843,7 +1843,7 @@
       "label": "_reply_history_previous()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L514",
+      "source_location": "L516",
       "id": "line_webhook_reply_history_previous",
       "community": 3,
       "norm_label": "_reply_history_previous()"
@@ -1852,7 +1852,7 @@
       "label": "_reply_history_detail()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L521",
+      "source_location": "L523",
       "id": "line_webhook_reply_history_detail",
       "community": 3,
       "norm_label": "_reply_history_detail()"
@@ -1861,7 +1861,7 @@
       "label": "_after_successful_confirmation()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L533",
+      "source_location": "L535",
       "id": "line_webhook_after_successful_confirmation",
       "community": 3,
       "norm_label": "_after_successful_confirmation()"
@@ -1870,7 +1870,7 @@
       "label": "_build_reply()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L552",
+      "source_location": "L554",
       "id": "line_webhook_build_reply",
       "community": 3,
       "norm_label": "_build_reply()"
@@ -1879,7 +1879,7 @@
       "label": "_build_text_reply()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L556",
+      "source_location": "L558",
       "id": "line_webhook_build_text_reply",
       "community": 3,
       "norm_label": "_build_text_reply()"
@@ -1888,7 +1888,7 @@
       "label": "_send_confirm_reading_result()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L622",
+      "source_location": "L625",
       "id": "line_webhook_send_confirm_reading_result",
       "community": 3,
       "norm_label": "_send_confirm_reading_result()"
@@ -1897,7 +1897,7 @@
       "label": "_handle_postback()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L700",
+      "source_location": "L703",
       "id": "line_webhook_handle_postback",
       "community": 2,
       "norm_label": "_handle_postback()"
@@ -1906,7 +1906,7 @@
       "label": "_process_report_import_image()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L1047",
+      "source_location": "L1050",
       "id": "line_webhook_process_report_import_image",
       "community": 3,
       "norm_label": "_process_report_import_image()"
@@ -1915,7 +1915,7 @@
       "label": "_process_ocr_and_confirm()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L1082",
+      "source_location": "L1085",
       "id": "line_webhook_process_ocr_and_confirm",
       "community": 3,
       "norm_label": "_process_ocr_and_confirm()"
@@ -1924,7 +1924,7 @@
       "label": "handle_webhook()",
       "file_type": "code",
       "source_file": "app/line/webhook.py",
-      "source_location": "L1157",
+      "source_location": "L1160",
       "id": "line_webhook_handle_webhook",
       "community": 3,
       "norm_label": "handle_webhook()"
@@ -2221,7 +2221,7 @@
       "label": "build_postback_data()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L237",
+      "source_location": "L238",
       "id": "line_messages_build_postback_data",
       "community": 0,
       "norm_label": "build_postback_data()"
@@ -2230,7 +2230,7 @@
       "label": "_message_action()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L246",
+      "source_location": "L247",
       "id": "line_messages_message_action",
       "community": 0,
       "norm_label": "_message_action()"
@@ -2239,7 +2239,7 @@
       "label": "_postback_action()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L250",
+      "source_location": "L251",
       "id": "line_messages_postback_action",
       "community": 0,
       "norm_label": "_postback_action()"
@@ -2248,7 +2248,7 @@
       "label": "_quick_reply_from_actions()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L258",
+      "source_location": "L259",
       "id": "line_messages_quick_reply_from_actions",
       "community": 0,
       "norm_label": "_quick_reply_from_actions()"
@@ -2257,7 +2257,7 @@
       "label": "_postback_button()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L270",
+      "source_location": "L271",
       "id": "line_messages_postback_button",
       "community": 0,
       "norm_label": "_postback_button()"
@@ -2266,7 +2266,7 @@
       "label": "_message_button()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L296",
+      "source_location": "L297",
       "id": "line_messages_message_button",
       "community": 0,
       "norm_label": "_message_button()"
@@ -2275,7 +2275,7 @@
       "label": "_section_title()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L315",
+      "source_location": "L316",
       "id": "line_messages_section_title",
       "community": 0,
       "norm_label": "_section_title()"
@@ -2284,7 +2284,7 @@
       "label": "_status_badge()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L326",
+      "source_location": "L327",
       "id": "line_messages_status_badge",
       "community": 0,
       "norm_label": "_status_badge()"
@@ -2293,7 +2293,7 @@
       "label": "_metric_row()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L365",
+      "source_location": "L366",
       "id": "line_messages_metric_row",
       "community": 0,
       "norm_label": "_metric_row()"
@@ -2302,7 +2302,7 @@
       "label": "_has_display_value()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L393",
+      "source_location": "L394",
       "id": "line_messages_has_display_value",
       "community": 0,
       "norm_label": "_has_display_value()"
@@ -2311,7 +2311,7 @@
       "label": "_optional_metric_rows()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L397",
+      "source_location": "L398",
       "id": "line_messages_optional_metric_rows",
       "community": 0,
       "norm_label": "_optional_metric_rows()"
@@ -2320,7 +2320,7 @@
       "label": "_step_badge()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L405",
+      "source_location": "L406",
       "id": "line_messages_step_badge",
       "community": 0,
       "norm_label": "_step_badge()"
@@ -2329,7 +2329,7 @@
       "label": "_body_text()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L427",
+      "source_location": "L428",
       "id": "line_messages_body_text",
       "community": 0,
       "norm_label": "_body_text()"
@@ -2338,7 +2338,7 @@
       "label": "_kwh_display_value()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L437",
+      "source_location": "L438",
       "id": "line_messages_kwh_display_value",
       "community": 0,
       "norm_label": "_kwh_display_value()"
@@ -2347,7 +2347,7 @@
       "label": "_card_header()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L448",
+      "source_location": "L449",
       "id": "line_messages_card_header",
       "community": 0,
       "norm_label": "_card_header()"
@@ -2356,7 +2356,7 @@
       "label": "_card_shell()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L521",
+      "source_location": "L522",
       "id": "line_messages_card_shell",
       "community": 0,
       "norm_label": "_card_shell()"
@@ -2365,7 +2365,7 @@
       "label": "_meter_grid()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L593",
+      "source_location": "L594",
       "id": "line_messages_meter_grid",
       "community": 0,
       "norm_label": "_meter_grid()"
@@ -2374,7 +2374,7 @@
       "label": "_text_with_actions()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L665",
+      "source_location": "L666",
       "id": "line_messages_text_with_actions",
       "community": 0,
       "norm_label": "_text_with_actions()"
@@ -2383,7 +2383,7 @@
       "label": "build_help_menu_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L675",
+      "source_location": "L676",
       "id": "line_messages_build_help_menu_message",
       "community": 0,
       "norm_label": "build_help_menu_message()"
@@ -2392,7 +2392,7 @@
       "label": "build_help_flow_response()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L689",
+      "source_location": "L690",
       "id": "line_messages_build_help_flow_response",
       "community": 0,
       "norm_label": "build_help_flow_response()"
@@ -2401,7 +2401,7 @@
       "label": "_help_flow_image_urls()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L717",
+      "source_location": "L718",
       "id": "line_messages_help_flow_image_urls",
       "community": 0,
       "norm_label": "_help_flow_image_urls()"
@@ -2410,7 +2410,7 @@
       "label": "_help_flow_image_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L725",
+      "source_location": "L726",
       "id": "line_messages_help_flow_image_url",
       "community": 0,
       "norm_label": "_help_flow_image_url()"
@@ -2419,7 +2419,7 @@
       "label": "_is_https_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L741",
+      "source_location": "L742",
       "id": "line_messages_is_https_url",
       "community": 0,
       "norm_label": "_is_https_url()"
@@ -2428,7 +2428,7 @@
       "label": "_line_card_asset_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L746",
+      "source_location": "L747",
       "id": "line_messages_line_card_asset_url",
       "community": 0,
       "norm_label": "_line_card_asset_url()"
@@ -2437,7 +2437,7 @@
       "label": "_start_collection_hero_url()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L758",
+      "source_location": "L759",
       "id": "line_messages_start_collection_hero_url",
       "community": 0,
       "norm_label": "_start_collection_hero_url()"
@@ -2446,7 +2446,7 @@
       "label": "build_start_collection_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L765",
+      "source_location": "L766",
       "id": "line_messages_build_start_collection_card",
       "community": 0,
       "norm_label": "build_start_collection_card()"
@@ -2455,7 +2455,7 @@
       "label": "build_meter_request_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L804",
+      "source_location": "L805",
       "id": "line_messages_build_meter_request_message",
       "community": 0,
       "norm_label": "build_meter_request_message()"
@@ -2464,7 +2464,7 @@
       "label": "build_confirmation_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L832",
+      "source_location": "L833",
       "id": "line_messages_build_confirmation_card",
       "community": 0,
       "norm_label": "build_confirmation_card()"
@@ -2473,7 +2473,7 @@
       "label": "build_ocr_review_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L917",
+      "source_location": "L918",
       "id": "line_messages_build_ocr_review_message",
       "community": 0,
       "norm_label": "build_ocr_review_message()"
@@ -2482,7 +2482,7 @@
       "label": "_confidence_text()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L950",
+      "source_location": "L951",
       "id": "line_messages_confidence_text",
       "community": 0,
       "norm_label": "_confidence_text()"
@@ -2491,7 +2491,7 @@
       "label": "_warning_recovery_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L958",
+      "source_location": "L959",
       "id": "line_messages_warning_recovery_card",
       "community": 0,
       "norm_label": "_warning_recovery_card()"
@@ -2500,7 +2500,7 @@
       "label": "build_duplicate_warning_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1028",
+      "source_location": "L1029",
       "id": "line_messages_build_duplicate_warning_card",
       "community": 0,
       "norm_label": "build_duplicate_warning_card()"
@@ -2509,7 +2509,7 @@
       "label": "build_progress_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1051",
+      "source_location": "L1052",
       "id": "line_messages_build_progress_message",
       "community": 0,
       "norm_label": "build_progress_message()"
@@ -2518,7 +2518,7 @@
       "label": "build_unreadable_prompt()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1063",
+      "source_location": "L1064",
       "id": "line_messages_build_unreadable_prompt",
       "community": 0,
       "norm_label": "build_unreadable_prompt()"
@@ -2527,7 +2527,7 @@
       "label": "build_lower_value_warning()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1079",
+      "source_location": "L1080",
       "id": "line_messages_build_lower_value_warning",
       "community": 0,
       "norm_label": "build_lower_value_warning()"
@@ -2536,7 +2536,7 @@
       "label": "build_status_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1107",
+      "source_location": "L1108",
       "id": "line_messages_build_status_card",
       "community": 0,
       "norm_label": "build_status_card()"
@@ -2545,7 +2545,7 @@
       "label": "build_batch_complete_card()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1172",
+      "source_location": "L1173",
       "id": "line_messages_build_batch_complete_card",
       "community": 0,
       "norm_label": "build_batch_complete_card()"
@@ -2554,7 +2554,7 @@
       "label": "build_history_menu_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1232",
+      "source_location": "L1233",
       "id": "line_messages_build_history_menu_message",
       "community": 0,
       "norm_label": "build_history_menu_message()"
@@ -2563,7 +2563,7 @@
       "label": "build_history_empty_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1245",
+      "source_location": "L1254",
       "id": "line_messages_build_history_empty_message",
       "community": 0,
       "norm_label": "build_history_empty_message()"
@@ -2572,7 +2572,7 @@
       "label": "build_history_batch_list_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1255",
+      "source_location": "L1264",
       "id": "line_messages_build_history_batch_list_message",
       "community": 0,
       "norm_label": "build_history_batch_list_message()"
@@ -2581,7 +2581,7 @@
       "label": "build_history_summary_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1275",
+      "source_location": "L1284",
       "id": "line_messages_build_history_summary_message",
       "community": 0,
       "norm_label": "build_history_summary_message()"
@@ -2590,7 +2590,7 @@
       "label": "build_history_detail_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1305",
+      "source_location": "L1314",
       "id": "line_messages_build_history_detail_message",
       "community": 0,
       "norm_label": "build_history_detail_message()"
@@ -2599,7 +2599,7 @@
       "label": "build_history_meter_select_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1326",
+      "source_location": "L1335",
       "id": "line_messages_build_history_meter_select_message",
       "community": 0,
       "norm_label": "build_history_meter_select_message()"
@@ -2608,7 +2608,7 @@
       "label": "build_history_meter_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1337",
+      "source_location": "L1346",
       "id": "line_messages_build_history_meter_message",
       "community": 0,
       "norm_label": "build_history_meter_message()"
@@ -2617,16 +2617,25 @@
       "label": "build_settings_menu_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1363",
+      "source_location": "L1372",
       "id": "line_messages_build_settings_menu_message",
       "community": 0,
       "norm_label": "build_settings_menu_message()"
     },
     {
+      "label": "build_report_summary_message()",
+      "file_type": "code",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1409",
+      "id": "line_messages_build_report_summary_message",
+      "community": 0,
+      "norm_label": "build_report_summary_message()"
+    },
+    {
       "label": "build_report_import_prompt_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1392",
+      "source_location": "L1455",
       "id": "line_messages_build_report_import_prompt_message",
       "community": 0,
       "norm_label": "build_report_import_prompt_message()"
@@ -2635,7 +2644,7 @@
       "label": "build_report_import_preview_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1405",
+      "source_location": "L1468",
       "id": "line_messages_build_report_import_preview_message",
       "community": 0,
       "norm_label": "build_report_import_preview_message()"
@@ -2644,7 +2653,7 @@
       "label": "build_report_import_success_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1433",
+      "source_location": "L1496",
       "id": "line_messages_build_report_import_success_message",
       "community": 0,
       "norm_label": "build_report_import_success_message()"
@@ -2653,7 +2662,7 @@
       "label": "build_report_import_duplicate_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1451",
+      "source_location": "L1514",
       "id": "line_messages_build_report_import_duplicate_message",
       "community": 0,
       "norm_label": "build_report_import_duplicate_message()"
@@ -2662,7 +2671,7 @@
       "label": "_can_confirm_report_import()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1465",
+      "source_location": "L1528",
       "id": "line_messages_can_confirm_report_import",
       "community": 0,
       "norm_label": "_can_confirm_report_import()"
@@ -2671,7 +2680,7 @@
       "label": "build_settings_view_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1474",
+      "source_location": "L1537",
       "id": "line_messages_build_settings_view_message",
       "community": 0,
       "norm_label": "build_settings_view_message()"
@@ -2680,7 +2689,7 @@
       "label": "build_settings_meters_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1500",
+      "source_location": "L1563",
       "id": "line_messages_build_settings_meters_message",
       "community": 0,
       "norm_label": "build_settings_meters_message()"
@@ -2689,7 +2698,7 @@
       "label": "build_settings_meter_detail_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1521",
+      "source_location": "L1584",
       "id": "line_messages_build_settings_meter_detail_message",
       "community": 0,
       "norm_label": "build_settings_meter_detail_message()"
@@ -2698,7 +2707,7 @@
       "label": "build_settings_edit_prompt_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1547",
+      "source_location": "L1610",
       "id": "line_messages_build_settings_edit_prompt_message",
       "community": 0,
       "norm_label": "build_settings_edit_prompt_message()"
@@ -2707,7 +2716,7 @@
       "label": "build_settings_confirm_change_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1574",
+      "source_location": "L1637",
       "id": "line_messages_build_settings_confirm_change_message",
       "community": 0,
       "norm_label": "build_settings_confirm_change_message()"
@@ -2716,7 +2725,7 @@
       "label": "build_settings_recipients_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1596",
+      "source_location": "L1659",
       "id": "line_messages_build_settings_recipients_message",
       "community": 0,
       "norm_label": "build_settings_recipients_message()"
@@ -2725,7 +2734,7 @@
       "label": "build_settings_permissions_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1612",
+      "source_location": "L1675",
       "id": "line_messages_build_settings_permissions_message",
       "community": 0,
       "norm_label": "build_settings_permissions_message()"
@@ -2734,7 +2743,7 @@
       "label": "build_settings_not_admin_message()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1625",
+      "source_location": "L1688",
       "id": "line_messages_build_settings_not_admin_message",
       "community": 0,
       "norm_label": "build_settings_not_admin_message()"
@@ -2743,7 +2752,7 @@
       "label": "_format_number()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1635",
+      "source_location": "L1698",
       "id": "line_messages_format_number",
       "community": 0,
       "norm_label": "_format_number()"
@@ -2752,7 +2761,7 @@
       "label": "_bool_th()",
       "file_type": "code",
       "source_file": "app/line/messages.py",
-      "source_location": "L1644",
+      "source_location": "L1707",
       "id": "line_messages_bool_th",
       "community": 0,
       "norm_label": "_bool_th()"
@@ -2763,7 +2772,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L1",
       "id": "app_line_richmenu_py",
-      "community": 13,
+      "community": 12,
       "norm_label": "richmenu.py"
     },
     {
@@ -2772,7 +2781,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L37",
       "id": "line_richmenu_richmenubuttonspec",
-      "community": 13,
+      "community": 12,
       "norm_label": "richmenubuttonspec"
     },
     {
@@ -2781,7 +2790,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L44",
       "id": "line_richmenu_default_buttons",
-      "community": 13,
+      "community": 12,
       "norm_label": "_default_buttons()"
     },
     {
@@ -2790,7 +2799,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L85",
       "id": "line_richmenu_load_image",
-      "community": 13,
+      "community": 12,
       "norm_label": "_load_image()"
     },
     {
@@ -2799,7 +2808,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L90",
       "id": "line_richmenu_build_spec",
-      "community": 13,
+      "community": 12,
       "norm_label": "_build_spec()"
     },
     {
@@ -2808,7 +2817,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L115",
       "id": "line_richmenu_save_line_compatible_image",
-      "community": 13,
+      "community": 12,
       "norm_label": "_save_line_compatible_image()"
     },
     {
@@ -2817,7 +2826,7 @@
       "source_file": "app/line/richmenu.py",
       "source_location": "L138",
       "id": "line_richmenu_compose_richmenu_image",
-      "community": 13,
+      "community": 12,
       "norm_label": "compose_richmenu_image()"
     },
     {
@@ -2925,7 +2934,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L1",
       "id": "app_report_generator_py",
-      "community": 12,
+      "community": 13,
       "norm_label": "generator.py"
     },
     {
@@ -2934,7 +2943,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L56",
       "id": "report_generator_reportreading",
-      "community": 12,
+      "community": 13,
       "norm_label": "reportreading"
     },
     {
@@ -2943,7 +2952,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L68",
       "id": "report_generator_reportdata",
-      "community": 12,
+      "community": 13,
       "norm_label": "reportdata"
     },
     {
@@ -2952,7 +2961,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L77",
       "id": "report_generator_load_font",
-      "community": 12,
+      "community": 13,
       "norm_label": "_load_font()"
     },
     {
@@ -2961,7 +2970,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L89",
       "id": "report_generator_fmt",
-      "community": 12,
+      "community": 13,
       "norm_label": "_fmt()"
     },
     {
@@ -2970,7 +2979,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L96",
       "id": "report_generator_fmt_baht",
-      "community": 12,
+      "community": 13,
       "norm_label": "_fmt_baht()"
     },
     {
@@ -2979,7 +2988,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L101",
       "id": "report_generator_format_thai_date",
-      "community": 12,
+      "community": 13,
       "norm_label": "_format_thai_date()"
     },
     {
@@ -2988,7 +2997,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L113",
       "id": "report_generator_to_sort_order",
-      "community": 12,
+      "community": 13,
       "norm_label": "_to_sort_order()"
     },
     {
@@ -2997,7 +3006,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L119",
       "id": "report_generator_draw_centered_lines",
-      "community": 12,
+      "community": 13,
       "norm_label": "_draw_centered_lines()"
     },
     {
@@ -3006,7 +3015,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L139",
       "id": "report_generator_draw_grid",
-      "community": 12,
+      "community": 13,
       "norm_label": "_draw_grid()"
     },
     {
@@ -3015,7 +3024,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L152",
       "id": "report_generator_build_report_data",
-      "community": 12,
+      "community": 13,
       "norm_label": "build_report_data()"
     },
     {
@@ -3024,7 +3033,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L195",
       "id": "report_generator_generate_report_image",
-      "community": 12,
+      "community": 13,
       "norm_label": "generate_report_image()"
     },
     {
@@ -3033,7 +3042,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L90",
       "id": "report_generator_rationale_90",
-      "community": 12,
+      "community": 13,
       "norm_label": "format decimal without thousands separators, 1 decimal when fractional."
     },
     {
@@ -3042,7 +3051,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L97",
       "id": "report_generator_rationale_97",
-      "community": 12,
+      "community": 13,
       "norm_label": "format baht without thousands separators, matching the report image."
     },
     {
@@ -3051,7 +3060,7 @@
       "source_file": "app/report/generator.py",
       "source_location": "L102",
       "id": "report_generator_rationale_102",
-      "community": 12,
+      "community": 13,
       "norm_label": "convert iso date (yyyy-mm-dd) to thai buddhist date format."
     },
     {
@@ -3681,7 +3690,7 @@
       "source_file": "app/services/session_service.py",
       "source_location": "L121",
       "id": "services_session_service_set_latest_meter",
-      "community": 2,
+      "community": 3,
       "norm_label": "set_latest_meter()"
     },
     {
@@ -3915,7 +3924,7 @@
       "source_file": "app/services/session_service.py",
       "source_location": "L302",
       "id": "services_session_service_finish_image_processing",
-      "community": 3,
+      "community": 2,
       "norm_label": "finish_image_processing()"
     },
     {
@@ -4158,7 +4167,7 @@
       "source_file": "app/services/confirmation_service.py",
       "source_location": "L205",
       "id": "services_confirmation_service_format_meter_value",
-      "community": 3,
+      "community": 1,
       "norm_label": "format_meter_value()"
     },
     {
@@ -4957,7 +4966,7 @@
       "label": "_clean_sessions()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L40",
+      "source_location": "L41",
       "id": "tests_test_line_webhook_clean_sessions",
       "community": 3,
       "norm_label": "_clean_sessions()"
@@ -4966,7 +4975,7 @@
       "label": "_FakeLineRequest",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L48",
+      "source_location": "L49",
       "id": "tests_test_line_webhook_fakelinerequest",
       "community": 3,
       "norm_label": "_fakelinerequest"
@@ -4975,7 +4984,7 @@
       "label": ".__init__()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L51",
+      "source_location": "L52",
       "id": "tests_test_line_webhook_fakelinerequest_init",
       "community": 3,
       "norm_label": ".__init__()"
@@ -4984,7 +4993,7 @@
       "label": ".body()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L54",
+      "source_location": "L55",
       "id": "tests_test_line_webhook_fakelinerequest_body",
       "community": 3,
       "norm_label": ".body()"
@@ -4993,7 +5002,7 @@
       "label": "_line_text_event()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L58",
+      "source_location": "L59",
       "id": "tests_test_line_webhook_line_text_event",
       "community": 3,
       "norm_label": "_line_text_event()"
@@ -5002,7 +5011,7 @@
       "label": "_line_image_event()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L69",
+      "source_location": "L70",
       "id": "tests_test_line_webhook_line_image_event",
       "community": 3,
       "norm_label": "_line_image_event()"
@@ -5011,7 +5020,7 @@
       "label": "test_gen_without_batch_returns_no_data_message()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L80",
+      "source_location": "L81",
       "id": "tests_test_line_webhook_test_gen_without_batch_returns_no_data_message",
       "community": 3,
       "norm_label": "test_gen_without_batch_returns_no_data_message()"
@@ -5020,7 +5029,7 @@
       "label": "test_gen_schedules_image_send_for_current_batch()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L86",
+      "source_location": "L87",
       "id": "tests_test_line_webhook_test_gen_schedules_image_send_for_current_batch",
       "community": 3,
       "norm_label": "test_gen_schedules_image_send_for_current_batch()"
@@ -5029,7 +5038,7 @@
       "label": "test_gen_with_week_ref_schedules_image_send_for_source_week()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L98",
+      "source_location": "L111",
       "id": "tests_test_line_webhook_test_gen_with_week_ref_schedules_image_send_for_source_week",
       "community": 3,
       "norm_label": "test_gen_with_week_ref_schedules_image_send_for_source_week()"
@@ -5038,7 +5047,7 @@
       "label": "test_gen_with_batch_id_schedules_image_send_for_that_batch()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L108",
+      "source_location": "L132",
       "id": "tests_test_line_webhook_test_gen_with_batch_id_schedules_image_send_for_that_batch",
       "community": 3,
       "norm_label": "test_gen_with_batch_id_schedules_image_send_for_that_batch()"
@@ -5047,7 +5056,7 @@
       "label": "test_resolve_batch_id_uses_current_session_when_empty()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L118",
+      "source_location": "L153",
       "id": "tests_test_line_webhook_test_resolve_batch_id_uses_current_session_when_empty",
       "community": 3,
       "norm_label": "test_resolve_batch_id_uses_current_session_when_empty()"
@@ -5056,7 +5065,7 @@
       "label": "test_resolve_batch_id_converts_week_ref_to_source_batch_id()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L124",
+      "source_location": "L159",
       "id": "tests_test_line_webhook_test_resolve_batch_id_converts_week_ref_to_source_batch_id",
       "community": 3,
       "norm_label": "test_resolve_batch_id_converts_week_ref_to_source_batch_id()"
@@ -5065,7 +5074,7 @@
       "label": "test_resolve_batch_id_preserves_full_batch_id_case()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L128",
+      "source_location": "L163",
       "id": "tests_test_line_webhook_test_resolve_batch_id_preserves_full_batch_id_case",
       "community": 3,
       "norm_label": "test_resolve_batch_id_preserves_full_batch_id_case()"
@@ -5074,7 +5083,7 @@
       "label": "test_restore_collection_from_current_batch_uses_sheet_progress()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L132",
+      "source_location": "L167",
       "id": "tests_test_line_webhook_test_restore_collection_from_current_batch_uses_sheet_progress",
       "community": 2,
       "norm_label": "test_restore_collection_from_current_batch_uses_sheet_progress()"
@@ -5083,7 +5092,7 @@
       "label": "test_report_without_batch_returns_no_data_message()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L152",
+      "source_location": "L187",
       "id": "tests_test_line_webhook_test_report_without_batch_returns_no_data_message",
       "community": 3,
       "norm_label": "test_report_without_batch_returns_no_data_message()"
@@ -5092,7 +5101,7 @@
       "label": "test_report_schedules_image_send_for_current_batch()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L158",
+      "source_location": "L193",
       "id": "tests_test_line_webhook_test_report_schedules_image_send_for_current_batch",
       "community": 3,
       "norm_label": "test_report_schedules_image_send_for_current_batch()"
@@ -5101,7 +5110,7 @@
       "label": "test_report_with_batch_id_schedules_image_send_for_that_batch()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L170",
+      "source_location": "L216",
       "id": "tests_test_line_webhook_test_report_with_batch_id_schedules_image_send_for_that_batch",
       "community": 3,
       "norm_label": "test_report_with_batch_id_schedules_image_send_for_that_batch()"
@@ -5110,7 +5119,7 @@
       "label": "test_help_includes_all_commands()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L186",
+      "source_location": "L243",
       "id": "tests_test_line_webhook_test_help_includes_all_commands",
       "community": 3,
       "norm_label": "test_help_includes_all_commands()"
@@ -5119,7 +5128,7 @@
       "label": "test_status_no_data()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L198",
+      "source_location": "L255",
       "id": "tests_test_line_webhook_test_status_no_data",
       "community": 3,
       "norm_label": "test_status_no_data()"
@@ -5128,7 +5137,7 @@
       "label": "test_status_shows_current_meter()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L204",
+      "source_location": "L261",
       "id": "tests_test_line_webhook_test_status_shows_current_meter",
       "community": 3,
       "norm_label": "test_status_shows_current_meter()"
@@ -5137,7 +5146,7 @@
       "label": "test_status_shows_pending_confirmation()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L212",
+      "source_location": "L269",
       "id": "tests_test_line_webhook_test_status_shows_pending_confirmation",
       "community": 3,
       "norm_label": "test_status_shows_pending_confirmation()"
@@ -5146,7 +5155,7 @@
       "label": "test_status_shows_pending_confirmation_from_sheet_fallback()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L226",
+      "source_location": "L283",
       "id": "tests_test_line_webhook_test_status_shows_pending_confirmation_from_sheet_fallback",
       "community": 3,
       "norm_label": "test_status_shows_pending_confirmation_from_sheet_fallback()"
@@ -5155,7 +5164,7 @@
       "label": "test_status_shows_batch_progress()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L247",
+      "source_location": "L304",
       "id": "tests_test_line_webhook_test_status_shows_batch_progress",
       "community": 3,
       "norm_label": "test_status_shows_batch_progress()"
@@ -5164,16 +5173,16 @@
       "label": "test_status_shows_meter_and_progress()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L256",
+      "source_location": "L313",
       "id": "tests_test_line_webhook_test_status_shows_meter_and_progress",
-      "community": 2,
+      "community": 3,
       "norm_label": "test_status_shows_meter_and_progress()"
     },
     {
       "label": "test_cancel_no_pending()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L267",
+      "source_location": "L324",
       "id": "tests_test_line_webhook_test_cancel_no_pending",
       "community": 3,
       "norm_label": "test_cancel_no_pending()"
@@ -5182,7 +5191,7 @@
       "label": "test_cancel_with_pending()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L273",
+      "source_location": "L330",
       "id": "tests_test_line_webhook_test_cancel_with_pending",
       "community": 3,
       "norm_label": "test_cancel_with_pending()"
@@ -5191,7 +5200,7 @@
       "label": "test_status_via_build_reply()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L287",
+      "source_location": "L344",
       "id": "tests_test_line_webhook_test_status_via_build_reply",
       "community": 3,
       "norm_label": "test_status_via_build_reply()"
@@ -5200,7 +5209,7 @@
       "label": "test_manual_value_state_accepts_bare_number_for_current_meter()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L295",
+      "source_location": "L356",
       "id": "tests_test_line_webhook_test_manual_value_state_accepts_bare_number_for_current_meter",
       "community": 3,
       "norm_label": "test_manual_value_state_accepts_bare_number_for_current_meter()"
@@ -5209,7 +5218,7 @@
       "label": "test_reply_to_accepts_sync_line_sdk_response()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L307",
+      "source_location": "L368",
       "id": "tests_test_line_webhook_test_reply_to_accepts_sync_line_sdk_response",
       "community": 3,
       "norm_label": "test_reply_to_accepts_sync_line_sdk_response()"
@@ -5218,7 +5227,7 @@
       "label": "test_push_to_accepts_sync_line_sdk_response()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L327",
+      "source_location": "L388",
       "id": "tests_test_line_webhook_test_push_to_accepts_sync_line_sdk_response",
       "community": 3,
       "norm_label": "test_push_to_accepts_sync_line_sdk_response()"
@@ -5227,7 +5236,7 @@
       "label": "test_production_ocr_reader_uses_google_client()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L347",
+      "source_location": "L408",
       "id": "tests_test_line_webhook_test_production_ocr_reader_uses_google_client",
       "community": 3,
       "norm_label": "test_production_ocr_reader_uses_google_client()"
@@ -5236,7 +5245,7 @@
       "label": "test_handle_webhook_ignores_unauthorized_line_user()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L370",
+      "source_location": "L431",
       "id": "tests_test_line_webhook_test_handle_webhook_ignores_unauthorized_line_user",
       "community": 3,
       "norm_label": "test_handle_webhook_ignores_unauthorized_line_user()"
@@ -5245,7 +5254,7 @@
       "label": "test_handle_webhook_allows_group_chat_and_uses_chat_source_id()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L388",
+      "source_location": "L449",
       "id": "tests_test_line_webhook_test_handle_webhook_allows_group_chat_and_uses_chat_source_id",
       "community": 3,
       "norm_label": "test_handle_webhook_allows_group_chat_and_uses_chat_source_id()"
@@ -5254,7 +5263,7 @@
       "label": "test_handle_webhook_logs_line_source_and_user_id()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L406",
+      "source_location": "L467",
       "id": "tests_test_line_webhook_test_handle_webhook_logs_line_source_and_user_id",
       "community": 3,
       "norm_label": "test_handle_webhook_logs_line_source_and_user_id()"
@@ -5263,7 +5272,7 @@
       "label": "test_handle_webhook_image_in_import_mode_skips_meter_ocr()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L432",
+      "source_location": "L493",
       "id": "tests_test_line_webhook_test_handle_webhook_image_in_import_mode_skips_meter_ocr",
       "community": 3,
       "norm_label": "test_handle_webhook_image_in_import_mode_skips_meter_ocr()"
@@ -5272,7 +5281,7 @@
       "label": "test_handle_webhook_returns_204_on_client_disconnect()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook.py",
-      "source_location": "L457",
+      "source_location": "L518",
       "id": "tests_test_line_webhook_test_handle_webhook_returns_204_on_client_disconnect",
       "community": 3,
       "norm_label": "test_handle_webhook_returns_204_on_client_disconnect()"
@@ -5373,7 +5382,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L1",
       "id": "tests_test_report_generator_py",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_report_generator.py"
     },
     {
@@ -5382,7 +5391,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L19",
       "id": "tests_test_report_generator_test_fmt",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_fmt()"
     },
     {
@@ -5391,7 +5400,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L24",
       "id": "tests_test_report_generator_test_fmt_baht",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_fmt_baht()"
     },
     {
@@ -5400,7 +5409,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L30",
       "id": "tests_test_report_generator_test_build_report_data_uses_thai_title",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_build_report_data_uses_thai_title()"
     },
     {
@@ -5409,7 +5418,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L53",
       "id": "tests_test_report_generator_mock_report_data",
-      "community": 12,
+      "community": 13,
       "norm_label": "_mock_report_data()"
     },
     {
@@ -5418,7 +5427,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L69",
       "id": "tests_test_report_generator_test_generate_report_image",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_generate_report_image()"
     },
     {
@@ -5427,7 +5436,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L95",
       "id": "tests_test_report_generator_test_generate_report_returns_none_when_no_data",
-      "community": 12,
+      "community": 13,
       "norm_label": "test_generate_report_returns_none_when_no_data()"
     },
     {
@@ -5436,7 +5445,7 @@
       "source_file": "tests/test_report_generator.py",
       "source_location": "L1",
       "id": "tests_test_report_generator_rationale_1",
-      "community": 12,
+      "community": 13,
       "norm_label": "tests for app.report.generator using mock data (no google sheets required)."
     },
     {
@@ -6246,7 +6255,7 @@
       "source_file": "tests/test_confirmation_service.py",
       "source_location": "L278",
       "id": "tests_test_confirmation_service_testimageprocessingdedupe_test_processed_image_is_rejected",
-      "community": 1,
+      "community": 2,
       "norm_label": ".test_processed_image_is_rejected()"
     },
     {
@@ -6462,7 +6471,7 @@
       "source_file": "tests/test_settings_service.py",
       "source_location": "L1",
       "id": "tests_test_settings_service_py",
-      "community": 33,
+      "community": 32,
       "norm_label": "test_settings_service.py"
     },
     {
@@ -6471,7 +6480,7 @@
       "source_file": "tests/test_settings_service.py",
       "source_location": "L7",
       "id": "tests_test_settings_service_test_current_settings_falls_back_to_env_defaults",
-      "community": 33,
+      "community": 32,
       "norm_label": "test_current_settings_falls_back_to_env_defaults()"
     },
     {
@@ -6480,7 +6489,7 @@
       "source_file": "tests/test_settings_service.py",
       "source_location": "L17",
       "id": "tests_test_settings_service_test_validate_default_rate_requires_positive_number",
-      "community": 33,
+      "community": 32,
       "norm_label": "test_validate_default_rate_requires_positive_number()"
     },
     {
@@ -6489,7 +6498,7 @@
       "source_file": "tests/test_settings_service.py",
       "source_location": "L25",
       "id": "tests_test_settings_service_test_apply_setting_change_updates_sheet_and_logs",
-      "community": 33,
+      "community": 32,
       "norm_label": "test_apply_setting_change_updates_sheet_and_logs()"
     },
     {
@@ -6640,7 +6649,7 @@
       "label": "_as_dict()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L27",
+      "source_location": "L30",
       "id": "tests_test_line_messages_as_dict",
       "community": 0,
       "norm_label": "_as_dict()"
@@ -6649,7 +6658,7 @@
       "label": "_clear_help_image_env()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L31",
+      "source_location": "L34",
       "id": "tests_test_line_messages_clear_help_image_env",
       "community": 0,
       "norm_label": "_clear_help_image_env()"
@@ -6658,7 +6667,7 @@
       "label": "_clear_line_card_image_env()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L39",
+      "source_location": "L42",
       "id": "tests_test_line_messages_clear_line_card_image_env",
       "community": 0,
       "norm_label": "_clear_line_card_image_env()"
@@ -6667,7 +6676,7 @@
       "label": "test_start_collection_flex_keeps_body_contents()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L44",
+      "source_location": "L47",
       "id": "tests_test_line_messages_test_start_collection_flex_keeps_body_contents",
       "community": 0,
       "norm_label": "test_start_collection_flex_keeps_body_contents()"
@@ -6676,7 +6685,7 @@
       "label": "test_start_collection_card_uses_shell_and_https_hero()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L55",
+      "source_location": "L58",
       "id": "tests_test_line_messages_test_start_collection_card_uses_shell_and_https_hero",
       "community": 0,
       "norm_label": "test_start_collection_card_uses_shell_and_https_hero()"
@@ -6685,7 +6694,7 @@
       "label": "test_start_collection_card_uses_base_https_hero_asset()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L77",
+      "source_location": "L80",
       "id": "tests_test_line_messages_test_start_collection_card_uses_base_https_hero_asset",
       "community": 0,
       "norm_label": "test_start_collection_card_uses_base_https_hero_asset()"
@@ -6694,7 +6703,7 @@
       "label": "test_start_collection_card_hides_empty_next_meter_and_visible_cancel()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L89",
+      "source_location": "L92",
       "id": "tests_test_line_messages_test_start_collection_card_hides_empty_next_meter_and_visible_cancel",
       "community": 0,
       "norm_label": "test_start_collection_card_hides_empty_next_meter_and_visible_cancel()"
@@ -6703,7 +6712,7 @@
       "label": "test_start_collection_card_omits_non_https_hero()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L99",
+      "source_location": "L102",
       "id": "tests_test_line_messages_test_start_collection_card_omits_non_https_hero",
       "community": 0,
       "norm_label": "test_start_collection_card_omits_non_https_hero()"
@@ -6712,7 +6721,7 @@
       "label": "test_confirmation_flex_keeps_footer_actions()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L110",
+      "source_location": "L113",
       "id": "tests_test_line_messages_test_confirmation_flex_keeps_footer_actions",
       "community": 0,
       "norm_label": "test_confirmation_flex_keeps_footer_actions()"
@@ -6721,7 +6730,7 @@
       "label": "test_warning_recovery_cards_keep_supported_actions_only()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L128",
+      "source_location": "L131",
       "id": "tests_test_line_messages_test_warning_recovery_cards_keep_supported_actions_only",
       "community": 0,
       "norm_label": "test_warning_recovery_cards_keep_supported_actions_only()"
@@ -6730,7 +6739,7 @@
       "label": "test_duplicate_warning_card_does_not_add_kwh_to_placeholder_old_value()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L145",
+      "source_location": "L148",
       "id": "tests_test_line_messages_test_duplicate_warning_card_does_not_add_kwh_to_placeholder_old_value",
       "community": 0,
       "norm_label": "test_duplicate_warning_card_does_not_add_kwh_to_placeholder_old_value()"
@@ -6739,7 +6748,7 @@
       "label": "test_batch_complete_card_has_safe_followup_actions()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L156",
+      "source_location": "L159",
       "id": "tests_test_line_messages_test_batch_complete_card_has_safe_followup_actions",
       "community": 0,
       "norm_label": "test_batch_complete_card_has_safe_followup_actions()"
@@ -6748,7 +6757,7 @@
       "label": "test_meter_request_message_has_quick_replies()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L173",
+      "source_location": "L176",
       "id": "tests_test_line_messages_test_meter_request_message_has_quick_replies",
       "community": 0,
       "norm_label": "test_meter_request_message_has_quick_replies()"
@@ -6757,7 +6766,7 @@
       "label": "test_meter_request_message_uses_configured_meter_ids_and_no_stale_m8()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L182",
+      "source_location": "L185",
       "id": "tests_test_line_messages_test_meter_request_message_uses_configured_meter_ids_and_no_stale_m8",
       "community": 0,
       "norm_label": "test_meter_request_message_uses_configured_meter_ids_and_no_stale_m8()"
@@ -6766,7 +6775,7 @@
       "label": "test_meter_request_message_caps_configured_meter_quick_replies()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L202",
+      "source_location": "L205",
       "id": "tests_test_line_messages_test_meter_request_message_caps_configured_meter_quick_replies",
       "community": 0,
       "norm_label": "test_meter_request_message_caps_configured_meter_quick_replies()"
@@ -6775,7 +6784,7 @@
       "label": "test_meter_request_uses_select_meter_postbacks_instead_of_m1_text_jump()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L218",
+      "source_location": "L221",
       "id": "tests_test_line_messages_test_meter_request_uses_select_meter_postbacks_instead_of_m1_text_jump",
       "community": 0,
       "norm_label": "test_meter_request_uses_select_meter_postbacks_instead_of_m1_text_jump()"
@@ -6784,7 +6793,7 @@
       "label": "test_status_card_renders_progress_actions()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L229",
+      "source_location": "L232",
       "id": "tests_test_line_messages_test_status_card_renders_progress_actions",
       "community": 0,
       "norm_label": "test_status_card_renders_progress_actions()"
@@ -6793,7 +6802,7 @@
       "label": "test_status_card_uses_configured_total_count_in_meter_grid()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L251",
+      "source_location": "L254",
       "id": "tests_test_line_messages_test_status_card_uses_configured_total_count_in_meter_grid",
       "community": 0,
       "norm_label": "test_status_card_uses_configured_total_count_in_meter_grid()"
@@ -6802,7 +6811,7 @@
       "label": "test_status_card_complete_state_omits_continue_action()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L269",
+      "source_location": "L272",
       "id": "tests_test_line_messages_test_status_card_complete_state_omits_continue_action",
       "community": 0,
       "norm_label": "test_status_card_complete_state_omits_continue_action()"
@@ -6811,7 +6820,7 @@
       "label": "test_help_menu_has_topic_quick_replies()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L290",
+      "source_location": "L293",
       "id": "tests_test_line_messages_test_help_menu_has_topic_quick_replies",
       "community": 0,
       "norm_label": "test_help_menu_has_topic_quick_replies()"
@@ -6820,7 +6829,7 @@
       "label": "test_help_flow_without_image_url_returns_text_fallback()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L304",
+      "source_location": "L307",
       "id": "tests_test_line_messages_test_help_flow_without_image_url_returns_text_fallback",
       "community": 0,
       "norm_label": "test_help_flow_without_image_url_returns_text_fallback()"
@@ -6829,7 +6838,7 @@
       "label": "test_help_flow_with_per_topic_https_image_urls_returns_image_and_text()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L312",
+      "source_location": "L315",
       "id": "tests_test_line_messages_test_help_flow_with_per_topic_https_image_urls_returns_image_and_text",
       "community": 0,
       "norm_label": "test_help_flow_with_per_topic_https_image_urls_returns_image_and_text()"
@@ -6838,7 +6847,7 @@
       "label": "test_help_flow_with_base_https_image_urls_uses_ai_board_assets()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L329",
+      "source_location": "L332",
       "id": "tests_test_line_messages_test_help_flow_with_base_https_image_urls_uses_ai_board_assets",
       "community": 0,
       "norm_label": "test_help_flow_with_base_https_image_urls_uses_ai_board_assets()"
@@ -6847,7 +6856,7 @@
       "label": "test_help_flow_requires_explicit_https_preview_url()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L347",
+      "source_location": "L350",
       "id": "tests_test_line_messages_test_help_flow_requires_explicit_https_preview_url",
       "community": 0,
       "norm_label": "test_help_flow_requires_explicit_https_preview_url()"
@@ -6856,7 +6865,7 @@
       "label": "test_help_flow_rejects_non_https_preview_url()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L356",
+      "source_location": "L359",
       "id": "tests_test_line_messages_test_help_flow_rejects_non_https_preview_url",
       "community": 0,
       "norm_label": "test_help_flow_rejects_non_https_preview_url()"
@@ -6865,7 +6874,7 @@
       "label": "test_help_flow_image_assets_use_ai_board_filenames()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L366",
+      "source_location": "L369",
       "id": "tests_test_line_messages_test_help_flow_image_assets_use_ai_board_filenames",
       "community": 0,
       "norm_label": "test_help_flow_image_assets_use_ai_board_filenames()"
@@ -6874,7 +6883,7 @@
       "label": "test_normalize_line_message_payload_wraps_single_message()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L383",
+      "source_location": "L386",
       "id": "tests_test_line_messages_test_normalize_line_message_payload_wraps_single_message",
       "community": 0,
       "norm_label": "test_normalize_line_message_payload_wraps_single_message()"
@@ -6883,7 +6892,7 @@
       "label": "test_normalize_line_message_payload_accepts_mixed_list()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L391",
+      "source_location": "L394",
       "id": "tests_test_line_messages_test_normalize_line_message_payload_accepts_mixed_list",
       "community": 0,
       "norm_label": "test_normalize_line_message_payload_accepts_mixed_list()"
@@ -6892,7 +6901,7 @@
       "label": "test_history_menu_has_usable_actions()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L399",
+      "source_location": "L402",
       "id": "tests_test_line_messages_test_history_menu_has_usable_actions",
       "community": 0,
       "norm_label": "test_history_menu_has_usable_actions()"
@@ -6901,7 +6910,7 @@
       "label": "test_history_batch_list_shows_recent_weeks()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L408",
+      "source_location": "L413",
       "id": "tests_test_line_messages_test_history_batch_list_shows_recent_weeks",
       "community": 0,
       "norm_label": "test_history_batch_list_shows_recent_weeks()"
@@ -6910,7 +6919,7 @@
       "label": "test_settings_operator_menu_does_not_show_edit_actions()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L432",
+      "source_location": "L437",
       "id": "tests_test_line_messages_test_settings_operator_menu_does_not_show_edit_actions",
       "community": 0,
       "norm_label": "test_settings_operator_menu_does_not_show_edit_actions()"
@@ -6919,16 +6928,25 @@
       "label": "test_settings_admin_menu_shows_edit_actions()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L440",
+      "source_location": "L446",
       "id": "tests_test_line_messages_test_settings_admin_menu_shows_edit_actions",
       "community": 0,
       "norm_label": "test_settings_admin_menu_shows_edit_actions()"
     },
     {
+      "label": "test_report_summary_card_shows_week_totals_and_navigation()",
+      "file_type": "code",
+      "source_file": "tests/test_line_messages.py",
+      "source_location": "L455",
+      "id": "tests_test_line_messages_test_report_summary_card_shows_week_totals_and_navigation",
+      "community": 0,
+      "norm_label": "test_report_summary_card_shows_week_totals_and_navigation()"
+    },
+    {
       "label": "test_report_import_preview_has_confirm_and_cancel_when_valid()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L448",
+      "source_location": "L484",
       "id": "tests_test_line_messages_test_report_import_preview_has_confirm_and_cancel_when_valid",
       "community": 0,
       "norm_label": "test_report_import_preview_has_confirm_and_cancel_when_valid()"
@@ -6937,7 +6955,7 @@
       "label": "test_report_import_preview_hides_confirm_when_invalid()",
       "file_type": "code",
       "source_file": "tests/test_line_messages.py",
-      "source_location": "L465",
+      "source_location": "L501",
       "id": "tests_test_line_messages_test_report_import_preview_hides_confirm_when_invalid",
       "community": 0,
       "norm_label": "test_report_import_preview_hides_confirm_when_invalid()"
@@ -6948,7 +6966,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L1",
       "id": "tests_test_richmenu_composer_py",
-      "community": 13,
+      "community": 12,
       "norm_label": "test_richmenu_composer.py"
     },
     {
@@ -6957,7 +6975,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L23",
       "id": "tests_test_richmenu_composer_md5_bytes",
-      "community": 13,
+      "community": 12,
       "norm_label": "_md5_bytes()"
     },
     {
@@ -6966,7 +6984,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L27",
       "id": "tests_test_richmenu_composer_compose",
-      "community": 13,
+      "community": 12,
       "norm_label": "_compose()"
     },
     {
@@ -6975,7 +6993,7 @@
       "source_file": "tests/test_richmenu_composer.py",
       "source_location": "L35",
       "id": "tests_test_richmenu_composer_test_richmenu_composition_is_deterministic_and_schema_complete",
-      "community": 13,
+      "community": 12,
       "norm_label": "test_richmenu_composition_is_deterministic_and_schema_complete()"
     },
     {
@@ -7128,7 +7146,7 @@
       "source_file": "tests/test_line_client.py",
       "source_location": "L1",
       "id": "tests_test_line_client_py",
-      "community": 34,
+      "community": 33,
       "norm_label": "test_line_client.py"
     },
     {
@@ -7137,7 +7155,7 @@
       "source_file": "tests/test_line_client.py",
       "source_location": "L4",
       "id": "tests_test_line_client_test_is_https_url_accepts_https_url",
-      "community": 34,
+      "community": 33,
       "norm_label": "test_is_https_url_accepts_https_url()"
     },
     {
@@ -7146,7 +7164,7 @@
       "source_file": "tests/test_line_client.py",
       "source_location": "L8",
       "id": "tests_test_line_client_test_is_https_url_rejects_http_url",
-      "community": 34,
+      "community": 33,
       "norm_label": "test_is_https_url_rejects_http_url()"
     },
     {
@@ -7155,7 +7173,7 @@
       "source_file": "tests/test_line_client.py",
       "source_location": "L12",
       "id": "tests_test_line_client_test_is_https_url_rejects_local_path",
-      "community": 34,
+      "community": 33,
       "norm_label": "test_is_https_url_rejects_local_path()"
     },
     {
@@ -7216,7 +7234,7 @@
       "label": "_FakeSheetsResponse",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L53",
+      "source_location": "L55",
       "id": "tests_test_line_webhook_postback_fakesheetsresponse",
       "community": 2,
       "norm_label": "_fakesheetsresponse"
@@ -7225,7 +7243,7 @@
       "label": ".json()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L56",
+      "source_location": "L58",
       "id": "tests_test_line_webhook_postback_fakesheetsresponse_json",
       "community": 2,
       "norm_label": ".json()"
@@ -7234,7 +7252,7 @@
       "label": "_clean_sessions()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L67",
+      "source_location": "L69",
       "id": "tests_test_line_webhook_postback_clean_sessions",
       "community": 2,
       "norm_label": "_clean_sessions()"
@@ -7243,7 +7261,7 @@
       "label": "_pending_import()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L76",
+      "source_location": "L78",
       "id": "tests_test_line_webhook_postback_pending_import",
       "community": 2,
       "norm_label": "_pending_import()"
@@ -7252,7 +7270,7 @@
       "label": "test_start_collection_postback_starts_linear_flow()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L100",
+      "source_location": "L102",
       "id": "tests_test_line_webhook_postback_test_start_collection_postback_starts_linear_flow",
       "community": 2,
       "norm_label": "test_start_collection_postback_starts_linear_flow()"
@@ -7261,7 +7279,7 @@
       "label": "test_start_collection_card_uses_batch_expected_meter_count()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L113",
+      "source_location": "L115",
       "id": "tests_test_line_webhook_postback_test_start_collection_card_uses_batch_expected_meter_count",
       "community": 2,
       "norm_label": "test_start_collection_card_uses_batch_expected_meter_count()"
@@ -7270,7 +7288,7 @@
       "label": "test_skip_meter_moves_to_next_machine()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L135",
+      "source_location": "L137",
       "id": "tests_test_line_webhook_postback_test_skip_meter_moves_to_next_machine",
       "community": 2,
       "norm_label": "test_skip_meter_moves_to_next_machine()"
@@ -7279,7 +7297,7 @@
       "label": "test_start_collection_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L155",
+      "source_location": "L157",
       "id": "tests_test_line_webhook_postback_test_start_collection_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_start_collection_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7288,7 +7306,7 @@
       "label": "test_select_meter_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L167",
+      "source_location": "L169",
       "id": "tests_test_line_webhook_postback_test_select_meter_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_select_meter_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7297,7 +7315,7 @@
       "label": "test_skip_meter_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L177",
+      "source_location": "L179",
       "id": "tests_test_line_webhook_postback_test_skip_meter_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_skip_meter_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7306,7 +7324,7 @@
       "label": "test_retake_photo_postback_uses_configured_meter_ids_for_meter_request()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L199",
+      "source_location": "L201",
       "id": "tests_test_line_webhook_postback_test_retake_photo_postback_uses_configured_meter_ids_for_meter_request",
       "community": 2,
       "norm_label": "test_retake_photo_postback_uses_configured_meter_ids_for_meter_request()"
@@ -7315,7 +7333,7 @@
       "label": "test_select_meter_postback_updates_current_meter()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L209",
+      "source_location": "L211",
       "id": "tests_test_line_webhook_postback_test_select_meter_postback_updates_current_meter",
       "community": 2,
       "norm_label": "test_select_meter_postback_updates_current_meter()"
@@ -7324,7 +7342,7 @@
       "label": "test_confirm_postback_moves_state_without_errors()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L223",
+      "source_location": "L225",
       "id": "tests_test_line_webhook_postback_test_confirm_postback_moves_state_without_errors",
       "community": 2,
       "norm_label": "test_confirm_postback_moves_state_without_errors()"
@@ -7333,7 +7351,7 @@
       "label": "test_confirm_postback_sends_batch_complete_card_when_all_meters_done()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L254",
+      "source_location": "L256",
       "id": "tests_test_line_webhook_postback_test_confirm_postback_sends_batch_complete_card_when_all_meters_done",
       "community": 2,
       "norm_label": "test_confirm_postback_sends_batch_complete_card_when_all_meters_done()"
@@ -7342,7 +7360,7 @@
       "label": "test_show_status_postback_returns_progress_card()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L295",
+      "source_location": "L297",
       "id": "tests_test_line_webhook_postback_test_show_status_postback_returns_progress_card",
       "community": 2,
       "norm_label": "test_show_status_postback_returns_progress_card()"
@@ -7351,7 +7369,7 @@
       "label": "test_confirm_postback_uses_pending_meter_in_loading_message()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L318",
+      "source_location": "L320",
       "id": "tests_test_line_webhook_postback_test_confirm_postback_uses_pending_meter_in_loading_message",
       "community": 2,
       "norm_label": "test_confirm_postback_uses_pending_meter_in_loading_message()"
@@ -7360,7 +7378,7 @@
       "label": "test_cancel_collection_marks_pending_cancelled()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L330",
+      "source_location": "L332",
       "id": "tests_test_line_webhook_postback_test_cancel_collection_marks_pending_cancelled",
       "community": 2,
       "norm_label": "test_cancel_collection_marks_pending_cancelled()"
@@ -7369,7 +7387,7 @@
       "label": "test_help_and_history_postback_are_supported()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L348",
+      "source_location": "L350",
       "id": "tests_test_line_webhook_postback_test_help_and_history_postback_are_supported",
       "community": 2,
       "norm_label": "test_help_and_history_postback_are_supported()"
@@ -7378,16 +7396,25 @@
       "label": "test_help_flow_postback_replies_with_selected_topic()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L358",
+      "source_location": "L360",
       "id": "tests_test_line_webhook_postback_test_help_flow_postback_replies_with_selected_topic",
       "community": 2,
       "norm_label": "test_help_flow_postback_replies_with_selected_topic()"
     },
     {
+      "label": "test_history_postback_returns_history_menu_card()",
+      "file_type": "code",
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L375",
+      "id": "tests_test_line_webhook_postback_test_history_postback_returns_history_menu_card",
+      "community": 2,
+      "norm_label": "test_history_postback_returns_history_menu_card()"
+    },
+    {
       "label": "test_history_current_postback_shows_summary_actions()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L372",
+      "source_location": "L387",
       "id": "tests_test_line_webhook_postback_test_history_current_postback_shows_summary_actions",
       "community": 2,
       "norm_label": "test_history_current_postback_shows_summary_actions()"
@@ -7396,7 +7423,7 @@
       "label": "test_history_select_week_postback_shows_recent_batches()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L394",
+      "source_location": "L409",
       "id": "tests_test_line_webhook_postback_test_history_select_week_postback_shows_recent_batches",
       "community": 2,
       "norm_label": "test_history_select_week_postback_shows_recent_batches()"
@@ -7405,16 +7432,34 @@
       "label": "test_settings_postback_branches_by_operator_role()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L414",
+      "source_location": "L429",
       "id": "tests_test_line_webhook_postback_test_settings_postback_branches_by_operator_role",
       "community": 2,
       "norm_label": "test_settings_postback_branches_by_operator_role()"
     },
     {
+      "label": "test_latest_report_postback_returns_report_summary_and_schedules_send()",
+      "file_type": "code",
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L450",
+      "id": "tests_test_line_webhook_postback_test_latest_report_postback_returns_report_summary_and_schedules_send",
+      "community": 2,
+      "norm_label": "test_latest_report_postback_returns_report_summary_and_schedules_send()"
+    },
+    {
+      "label": "test_weekly_summary_postback_returns_report_summary_and_schedules_send()",
+      "file_type": "code",
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L475",
+      "id": "tests_test_line_webhook_postback_test_weekly_summary_postback_returns_report_summary_and_schedules_send",
+      "community": 2,
+      "norm_label": "test_weekly_summary_postback_returns_report_summary_and_schedules_send()"
+    },
+    {
       "label": "test_admin_can_start_report_import_from_settings()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L432",
+      "source_location": "L503",
       "id": "tests_test_line_webhook_postback_test_admin_can_start_report_import_from_settings",
       "community": 2,
       "norm_label": "test_admin_can_start_report_import_from_settings()"
@@ -7423,7 +7468,7 @@
       "label": "test_non_admin_cannot_start_report_import()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L442",
+      "source_location": "L513",
       "id": "tests_test_line_webhook_postback_test_non_admin_cannot_start_report_import",
       "community": 2,
       "norm_label": "test_non_admin_cannot_start_report_import()"
@@ -7432,7 +7477,7 @@
       "label": "test_admin_edit_rate_creates_input_step()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L451",
+      "source_location": "L522",
       "id": "tests_test_line_webhook_postback_test_admin_edit_rate_creates_input_step",
       "community": 2,
       "norm_label": "test_admin_edit_rate_creates_input_step()"
@@ -7441,7 +7486,7 @@
       "label": "test_settings_confirm_change_applies_pending_change()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L462",
+      "source_location": "L533",
       "id": "tests_test_line_webhook_postback_test_settings_confirm_change_applies_pending_change",
       "community": 2,
       "norm_label": "test_settings_confirm_change_applies_pending_change()"
@@ -7450,7 +7495,7 @@
       "label": "test_confirm_report_import_appends_batch_and_readings()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L488",
+      "source_location": "L559",
       "id": "tests_test_line_webhook_postback_test_confirm_report_import_appends_batch_and_readings",
       "community": 2,
       "norm_label": "test_confirm_report_import_appends_batch_and_readings()"
@@ -7459,7 +7504,7 @@
       "label": "test_confirm_report_import_duplicate_batch_does_not_append()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L516",
+      "source_location": "L587",
       "id": "tests_test_line_webhook_postback_test_confirm_report_import_duplicate_batch_does_not_append",
       "community": 2,
       "norm_label": "test_confirm_report_import_duplicate_batch_does_not_append()"
@@ -7468,7 +7513,7 @@
       "label": "test_cancel_report_import_clears_state()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L535",
+      "source_location": "L606",
       "id": "tests_test_line_webhook_postback_test_cancel_report_import_clears_state",
       "community": 2,
       "norm_label": "test_cancel_report_import_clears_state()"
@@ -7477,7 +7522,7 @@
       "label": "test_non_admin_cannot_cancel_report_import()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L546",
+      "source_location": "L617",
       "id": "tests_test_line_webhook_postback_test_non_admin_cannot_cancel_report_import",
       "community": 2,
       "norm_label": "test_non_admin_cannot_cancel_report_import()"
@@ -7486,7 +7531,7 @@
       "label": "test_next_meter_linear_with_skipped_meters()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L559",
+      "source_location": "L630",
       "id": "tests_test_line_webhook_postback_test_next_meter_linear_with_skipped_meters",
       "community": 2,
       "norm_label": "test_next_meter_linear_with_skipped_meters()"
@@ -7495,7 +7540,7 @@
       "label": "test_postback_safety_replies_on_sheets_api_error()",
       "file_type": "code",
       "source_file": "tests/test_line_webhook_postback.py",
-      "source_location": "L576",
+      "source_location": "L647",
       "id": "tests_test_line_webhook_postback_test_postback_safety_replies_on_sheets_api_error",
       "community": 2,
       "norm_label": "test_postback_safety_replies_on_sheets_api_error()"
@@ -7722,7 +7767,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L1",
       "id": "scripts_upload_richmenu_py",
-      "community": 13,
+      "community": 12,
       "norm_label": "upload_richmenu.py"
     },
     {
@@ -7731,7 +7776,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L24",
       "id": "scripts_upload_richmenu_main",
-      "community": 13,
+      "community": 12,
       "norm_label": "main()"
     },
     {
@@ -7740,7 +7785,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L67",
       "id": "scripts_upload_richmenu_parse_args",
-      "community": 13,
+      "community": 12,
       "norm_label": "_parse_args()"
     },
     {
@@ -7749,7 +7794,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L79",
       "id": "scripts_upload_richmenu_resolve_assets",
-      "community": 13,
+      "community": 12,
       "norm_label": "_resolve_assets()"
     },
     {
@@ -7758,7 +7803,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L91",
       "id": "scripts_upload_richmenu_load_json",
-      "community": 13,
+      "community": 12,
       "norm_label": "_load_json()"
     },
     {
@@ -7767,7 +7812,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L99",
       "id": "scripts_upload_richmenu_validate_local_assets",
-      "community": 13,
+      "community": 12,
       "norm_label": "_validate_local_assets()"
     },
     {
@@ -7776,7 +7821,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L140",
       "id": "scripts_upload_richmenu_headers",
-      "community": 13,
+      "community": 12,
       "norm_label": "_headers()"
     },
     {
@@ -7785,7 +7830,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L144",
       "id": "scripts_upload_richmenu_validate_with_line",
-      "community": 13,
+      "community": 12,
       "norm_label": "_validate_with_line()"
     },
     {
@@ -7794,7 +7839,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L154",
       "id": "scripts_upload_richmenu_create_richmenu",
-      "community": 13,
+      "community": 12,
       "norm_label": "_create_richmenu()"
     },
     {
@@ -7803,7 +7848,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L168",
       "id": "scripts_upload_richmenu_upload_richmenu_image",
-      "community": 13,
+      "community": 12,
       "norm_label": "_upload_richmenu_image()"
     },
     {
@@ -7812,7 +7857,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L182",
       "id": "scripts_upload_richmenu_set_default_richmenu",
-      "community": 13,
+      "community": 12,
       "norm_label": "_set_default_richmenu()"
     },
     {
@@ -7821,7 +7866,7 @@
       "source_file": "scripts/upload_richmenu.py",
       "source_location": "L190",
       "id": "scripts_upload_richmenu_raise_for_line",
-      "community": 13,
+      "community": 12,
       "norm_label": "_raise_for_line()"
     },
     {
@@ -7829,7 +7874,7 @@
       "file_type": "code",
       "source_file": "config.py",
       "source_location": "L1",
-      "community": 31,
+      "community": 34,
       "norm_label": "config.py",
       "id": "config_py"
     },
@@ -7892,7 +7937,7 @@
       "file_type": "code",
       "source_file": "sheets/setup.py",
       "source_location": "L1",
-      "community": 32,
+      "community": 31,
       "norm_label": "setup.py",
       "id": "sheets_setup_py"
     },
@@ -8054,7 +8099,7 @@
       "file_type": "code",
       "source_file": "line/richmenu.py",
       "source_location": "L1",
-      "community": 13,
+      "community": 12,
       "norm_label": "richmenu.py",
       "id": "line_richmenu_py"
     },
@@ -8081,7 +8126,7 @@
       "file_type": "code",
       "source_file": "report/generator.py",
       "source_location": "L1",
-      "community": 12,
+      "community": 13,
       "norm_label": "generator.py",
       "id": "report_generator_py"
     },
@@ -14678,17 +14723,6 @@
     {
       "relation": "calls",
       "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "line/webhook.py",
-      "source_location": "L555",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "line_webhook_build_text_reply",
-      "target": "line_webhook_build_status_message"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "line/webhook.py",
@@ -14797,6 +14831,17 @@
       "target": "line_webhook_build_status_message"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "line/webhook.py",
+      "source_location": "L555",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_webhook_build_text_reply",
+      "target": "line_webhook_build_status_message"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "line/webhook.py",
@@ -14816,6 +14861,17 @@
       "confidence_score": 1.0,
       "source": "line_webhook_handle_postback",
       "target": "line_webhook_build_status_message"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/webhook.py",
+      "source_location": "L596",
+      "weight": 1.0,
+      "source": "line_webhook_build_text_reply",
+      "target": "line_webhook_build_status_card_message",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -15486,6 +15542,17 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "app/line/webhook.py",
+      "source_location": "L602",
+      "weight": 1.0,
+      "source": "line_webhook_build_text_reply",
+      "target": "line_messages_build_report_summary_message"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "line/webhook.py",
       "source_location": "L561",
       "weight": 1.0,
@@ -16100,6 +16167,17 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "app/line/webhook.py",
+      "source_location": "L1035",
+      "weight": 1.0,
+      "source": "line_webhook_handle_postback",
+      "target": "line_messages_build_report_summary_message"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "line/webhook.py",
       "source_location": "L930",
       "weight": 1.0,
@@ -16277,6 +16355,17 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L377",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_history_postback_returns_history_menu_card",
+      "target": "line_webhook_handle_postback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L261",
       "weight": 1.0,
       "source": "tests_test_line_webhook_postback_test_history_current_postback_shows_summary_actions",
@@ -16302,6 +16391,28 @@
       "source_location": "L291",
       "weight": 1.0,
       "source": "tests_test_line_webhook_postback_test_settings_postback_branches_by_operator_role",
+      "target": "line_webhook_handle_postback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L464",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_latest_report_postback_returns_report_summary_and_schedules_send",
+      "target": "line_webhook_handle_postback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L488",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_weekly_summary_postback_returns_report_summary_and_schedules_send",
       "target": "line_webhook_handle_postback"
     },
     {
@@ -17612,6 +17723,17 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L377",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_history_postback_returns_history_menu_card",
+      "target": "line_parser_parsedpostback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L261",
       "weight": 1.0,
       "source": "tests_test_line_webhook_postback_test_history_current_postback_shows_summary_actions",
@@ -17637,6 +17759,28 @@
       "source_location": "L291",
       "weight": 1.0,
       "source": "tests_test_line_webhook_postback_test_settings_postback_branches_by_operator_role",
+      "target": "line_parser_parsedpostback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L464",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_latest_report_postback_returns_report_summary_and_schedules_send",
+      "target": "line_parser_parsedpostback"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L490",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_test_weekly_summary_postback_returns_report_summary_and_schedules_send",
       "target": "line_parser_parsedpostback"
     },
     {
@@ -18789,6 +18933,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/line/messages.py",
+      "source_location": "L1409",
+      "weight": 1.0,
+      "source": "app_line_messages_py",
+      "target": "line_messages_build_report_summary_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
       "source_location": "L1100",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -19132,6 +19286,17 @@
       "confidence_score": 1.0,
       "source": "line_messages_build_settings_menu_message",
       "target": "line_messages_build_postback_data"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1419",
+      "weight": 1.0,
+      "source": "line_messages_build_report_summary_message",
+      "target": "line_messages_build_postback_data",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -19486,6 +19651,17 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/line/messages.py",
+      "source_location": "L1438",
+      "weight": 1.0,
+      "source": "line_messages_build_report_summary_message",
+      "target": "line_messages_postback_button",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
       "source_location": "L629",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -19651,6 +19827,17 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/line/messages.py",
+      "source_location": "L1426",
+      "weight": 1.0,
+      "source": "line_messages_build_report_summary_message",
+      "target": "line_messages_metric_row",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
       "source_location": "L548",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -19741,9 +19928,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L821",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_meter_request_message",
-      "target": "line_messages_body_text",
-      "confidence_score": 1.0
+      "target": "line_messages_body_text"
     },
     {
       "relation": "calls",
@@ -19755,6 +19942,28 @@
       "confidence_score": 1.0,
       "source": "line_messages_build_status_card",
       "target": "line_messages_body_text"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1239",
+      "weight": 1.0,
+      "source": "line_messages_build_history_menu_message",
+      "target": "line_messages_body_text",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1395",
+      "weight": 1.0,
+      "source": "line_messages_build_settings_menu_message",
+      "target": "line_messages_body_text",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -19796,9 +20005,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L816",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_meter_request_message",
-      "target": "line_messages_card_shell",
-      "confidence_score": 1.0
+      "target": "line_messages_card_shell"
     },
     {
       "relation": "calls",
@@ -19807,9 +20016,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L895",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_confirmation_card",
-      "target": "line_messages_card_shell",
-      "confidence_score": 1.0
+      "target": "line_messages_card_shell"
     },
     {
       "relation": "calls",
@@ -19818,9 +20027,9 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1015",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_warning_recovery_card",
-      "target": "line_messages_card_shell",
-      "confidence_score": 1.0
+      "target": "line_messages_card_shell"
     },
     {
       "relation": "calls",
@@ -19840,7 +20049,40 @@
       "source_file": "app/line/messages.py",
       "source_location": "L1219",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "line_messages_build_batch_complete_card",
+      "target": "line_messages_card_shell"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1234",
+      "weight": 1.0,
+      "source": "line_messages_build_history_menu_message",
+      "target": "line_messages_card_shell",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1390",
+      "weight": 1.0,
+      "source": "line_messages_build_settings_menu_message",
+      "target": "line_messages_card_shell",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1432",
+      "weight": 1.0,
+      "source": "line_messages_build_report_summary_message",
       "target": "line_messages_card_shell",
       "confidence_score": 1.0
     },
@@ -19886,17 +20128,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "line_messages_build_help_flow_response",
-      "target": "line_messages_text_with_actions"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "line/messages.py",
-      "source_location": "L566",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "line_messages_build_history_menu_message",
       "target": "line_messages_text_with_actions"
     },
     {
@@ -19969,12 +20200,12 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
-      "source_file": "line/messages.py",
-      "source_location": "L698",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1416",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "line_messages_build_settings_menu_message",
-      "target": "line_messages_text_with_actions"
+      "source": "line_messages_build_report_summary_message",
+      "target": "line_messages_text_with_actions",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -20106,6 +20337,28 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "line_messages_build_settings_not_admin_message",
+      "target": "line_messages_text_with_actions"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "line/messages.py",
+      "source_location": "L566",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_messages_build_history_menu_message",
+      "target": "line_messages_text_with_actions"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "line/messages.py",
+      "source_location": "L698",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "line_messages_build_settings_menu_message",
       "target": "line_messages_text_with_actions"
     },
     {
@@ -20952,6 +21205,39 @@
       "confidence_score": 1.0,
       "source": "line_messages_py",
       "target": "line_messages_build_settings_menu_message"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/line/messages.py",
+      "source_location": "L1428",
+      "weight": 1.0,
+      "source": "line_messages_build_report_summary_message",
+      "target": "line_messages_format_number",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app/line/messages.py",
+      "source_location": "L1414",
+      "weight": 1.0,
+      "source": "line_messages_build_report_summary_message",
+      "target": "report_generator_build_report_data"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_line_messages.py",
+      "source_location": "L465",
+      "weight": 1.0,
+      "source": "tests_test_line_messages_test_report_summary_card_shows_week_totals_and_navigation",
+      "target": "line_messages_build_report_summary_message"
     },
     {
       "relation": "contains",
@@ -30365,9 +30651,9 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L182",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_messages_py",
-      "target": "tests_test_line_messages_test_meter_request_message_uses_configured_meter_ids_and_no_stale_m8",
-      "confidence_score": 1.0
+      "target": "tests_test_line_messages_test_meter_request_message_uses_configured_meter_ids_and_no_stale_m8"
     },
     {
       "relation": "contains",
@@ -30375,9 +30661,9 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L202",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_messages_py",
-      "target": "tests_test_line_messages_test_meter_request_message_caps_configured_meter_quick_replies",
-      "confidence_score": 1.0
+      "target": "tests_test_line_messages_test_meter_request_message_caps_configured_meter_quick_replies"
     },
     {
       "relation": "contains",
@@ -30553,6 +30839,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/test_line_messages.py",
+      "source_location": "L455",
+      "weight": 1.0,
+      "source": "tests_test_line_messages_py",
+      "target": "tests_test_line_messages_test_report_summary_card_shows_week_totals_and_navigation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_line_messages.py",
       "source_location": "L263",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -30686,9 +30982,9 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L183",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_messages_test_meter_request_message_uses_configured_meter_ids_and_no_stale_m8",
-      "target": "tests_test_line_messages_as_dict",
-      "confidence_score": 1.0
+      "target": "tests_test_line_messages_as_dict"
     },
     {
       "relation": "calls",
@@ -30697,9 +30993,9 @@
       "source_file": "tests/test_line_messages.py",
       "source_location": "L203",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_messages_test_meter_request_message_caps_configured_meter_quick_replies",
-      "target": "tests_test_line_messages_as_dict",
-      "confidence_score": 1.0
+      "target": "tests_test_line_messages_as_dict"
     },
     {
       "relation": "calls",
@@ -30821,6 +31117,17 @@
       "confidence_score": 1.0,
       "source": "tests_test_line_messages_test_settings_admin_menu_shows_edit_actions",
       "target": "tests_test_line_messages_as_dict"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_line_messages.py",
+      "source_location": "L465",
+      "weight": 1.0,
+      "source": "tests_test_line_messages_test_report_summary_card_shows_week_totals_and_navigation",
+      "target": "tests_test_line_messages_as_dict",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -31271,9 +31578,9 @@
       "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L155",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_webhook_postback_py",
-      "target": "tests_test_line_webhook_postback_test_start_collection_postback_uses_configured_meter_ids_for_meter_request",
-      "confidence_score": 1.0
+      "target": "tests_test_line_webhook_postback_test_start_collection_postback_uses_configured_meter_ids_for_meter_request"
     },
     {
       "relation": "contains",
@@ -31281,9 +31588,9 @@
       "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L167",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_webhook_postback_py",
-      "target": "tests_test_line_webhook_postback_test_select_meter_postback_uses_configured_meter_ids_for_meter_request",
-      "confidence_score": 1.0
+      "target": "tests_test_line_webhook_postback_test_select_meter_postback_uses_configured_meter_ids_for_meter_request"
     },
     {
       "relation": "contains",
@@ -31291,9 +31598,9 @@
       "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L177",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_webhook_postback_py",
-      "target": "tests_test_line_webhook_postback_test_skip_meter_postback_uses_configured_meter_ids_for_meter_request",
-      "confidence_score": 1.0
+      "target": "tests_test_line_webhook_postback_test_skip_meter_postback_uses_configured_meter_ids_for_meter_request"
     },
     {
       "relation": "contains",
@@ -31301,9 +31608,9 @@
       "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L199",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_test_line_webhook_postback_py",
-      "target": "tests_test_line_webhook_postback_test_retake_photo_postback_uses_configured_meter_ids_for_meter_request",
-      "confidence_score": 1.0
+      "target": "tests_test_line_webhook_postback_test_retake_photo_postback_uses_configured_meter_ids_for_meter_request"
     },
     {
       "relation": "contains",
@@ -31389,6 +31696,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L375",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_py",
+      "target": "tests_test_line_webhook_postback_test_history_postback_returns_history_menu_card",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_line_webhook_postback.py",
       "source_location": "L246",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -31414,6 +31731,26 @@
       "confidence_score": 1.0,
       "source": "tests_test_line_webhook_postback_py",
       "target": "tests_test_line_webhook_postback_test_settings_postback_branches_by_operator_role"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L450",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_py",
+      "target": "tests_test_line_webhook_postback_test_latest_report_postback_returns_report_summary_and_schedules_send",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_line_webhook_postback.py",
+      "source_location": "L475",
+      "weight": 1.0,
+      "source": "tests_test_line_webhook_postback_py",
+      "target": "tests_test_line_webhook_postback_test_weekly_summary_postback_returns_report_summary_and_schedules_send",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",

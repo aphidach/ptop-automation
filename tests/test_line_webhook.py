@@ -2,6 +2,7 @@ from unittest.mock import AsyncMock, Mock, patch
 from types import SimpleNamespace
 
 import pytest
+from linebot.v3.messaging import FlexMessage
 
 from decimal import Decimal
 from starlette.requests import ClientDisconnect
@@ -87,32 +88,66 @@ def test_gen_schedules_image_send_for_current_batch():
     set_batch_id("U1", "2026-W19-U1")
 
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
-         patch("app.line.webhook.asyncio.create_task") as mock_create_task:
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch(
+             "app.line.messages.build_report_data",
+             return_value=SimpleNamespace(
+                 week="2026-W19",
+                 readings=[1, 2, 3],
+                 total_produced_unit=Decimal("1234.5"),
+                 total_amount=Decimal("4567.89"),
+             ),
+         ):
         reply = _build_reply(ParsedCommand(type=GEN), "U1")
 
     mock_send_report.assert_called_once_with("2026-W19-U1", "U1")
     mock_create_task.assert_called_once_with("send-report-task")
-    assert "กำลังส่งรูปรายงาน" in reply
+    assert isinstance(reply, FlexMessage)
+    payload = reply.dict(by_alias=True, exclude_none=True)
+    assert payload["altText"] == "รายงานสัปดาห์ 2026-W19"
+    assert "action=latest_report&batch_id=2026-W19-U1" in str(payload)
 
 
 def test_gen_with_week_ref_schedules_image_send_for_source_week():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
-         patch("app.line.webhook.asyncio.create_task") as mock_create_task:
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch(
+             "app.line.messages.build_report_data",
+             return_value=SimpleNamespace(
+                 week="2026-W18",
+                 readings=[1, 2],
+                 total_produced_unit=Decimal("987.6"),
+                 total_amount=Decimal("321"),
+             ),
+         ):
         reply = _build_reply(ParsedCommand(type=GEN, batch_id="2026-w18"), "U1")
 
     mock_send_report.assert_called_once_with("2026-W18-U1", "U1")
     mock_create_task.assert_called_once_with("send-report-task")
-    assert "กำลังส่งรูปรายงาน" in reply
+    assert isinstance(reply, FlexMessage)
+    payload = reply.dict(by_alias=True, exclude_none=True)
+    assert payload["altText"] == "รายงานสัปดาห์ 2026-W18"
 
 
 def test_gen_with_batch_id_schedules_image_send_for_that_batch():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
-         patch("app.line.webhook.asyncio.create_task") as mock_create_task:
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch(
+             "app.line.messages.build_report_data",
+             return_value=SimpleNamespace(
+                 week="2026-W18",
+                 readings=[1],
+                 total_produced_unit=Decimal("50.0"),
+                 total_amount=Decimal("200.0"),
+             ),
+         ):
         reply = _build_reply(ParsedCommand(type=GEN, batch_id="2026-W18-UabcDef"), "U1")
 
     mock_send_report.assert_called_once_with("2026-W18-UabcDef", "U1")
     mock_create_task.assert_called_once_with("send-report-task")
-    assert "กำลังส่งรูปรายงาน" in reply
+    assert isinstance(reply, FlexMessage)
+    payload = reply.dict(by_alias=True, exclude_none=True)
+    assert payload["altText"] == "รายงานสัปดาห์ 2026-W18"
 
 
 def test_resolve_batch_id_uses_current_session_when_empty():
@@ -159,17 +194,37 @@ def test_report_schedules_image_send_for_current_batch():
     set_batch_id("U1", "2026-W19-U1")
 
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
-         patch("app.line.webhook.asyncio.create_task") as mock_create_task:
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch(
+             "app.line.messages.build_report_data",
+             return_value=SimpleNamespace(
+                 week="2026-W19",
+                 readings=[1, 2, 3, 4],
+                 total_produced_unit=Decimal("1234.5"),
+                 total_amount=Decimal("4567.89"),
+             ),
+         ):
         reply = _build_reply(ParsedCommand(type=REPORT), "U1")
 
     mock_send_report.assert_called_once_with("2026-W19-U1", "U1")
     mock_create_task.assert_called_once_with("send-report-task")
-    assert "กำลังส่งรูปรายงาน" in reply
+    assert isinstance(reply, FlexMessage)
+    payload = reply.dict(by_alias=True, exclude_none=True)
+    assert payload["altText"] == "รายงานสัปดาห์ 2026-W19"
 
 
 def test_report_with_batch_id_schedules_image_send_for_that_batch():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
-         patch("app.line.webhook.asyncio.create_task") as mock_create_task:
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch(
+             "app.line.messages.build_report_data",
+             return_value=SimpleNamespace(
+                 week="2026-W18",
+                 readings=[1],
+                 total_produced_unit=Decimal("50.0"),
+                 total_amount=Decimal("200.0"),
+             ),
+         ):
         reply = _build_reply(
             ParsedCommand(type=REPORT, batch_id="2026-W18-U08585bd3f4116f311ae320cab4e9e1b6"),
             "U1",
@@ -180,7 +235,9 @@ def test_report_with_batch_id_schedules_image_send_for_that_batch():
         "U1",
     )
     mock_create_task.assert_called_once_with("send-report-task")
-    assert "กำลังส่งรูปรายงาน" in reply
+    assert isinstance(reply, FlexMessage)
+    payload = reply.dict(by_alias=True, exclude_none=True)
+    assert payload["altText"] == "รายงานสัปดาห์ 2026-W18"
 
 
 def test_help_includes_all_commands():
@@ -289,7 +346,11 @@ def test_status_via_build_reply():
 
     reply = _build_reply(ParsedCommand(type=STATUS), "U1")
 
-    assert "มิเตอร์ปัจจุบัน: M2" in reply
+    assert isinstance(reply, FlexMessage)
+    payload = reply.dict(by_alias=True, exclude_none=True)
+    assert payload["altText"] == "สถานะรอบบันทึก"
+    assert "เครื่องปัจจุบัน" in str(payload)
+    assert "M2" in str(payload)
 
 
 def test_manual_value_state_accepts_bare_number_for_current_meter():

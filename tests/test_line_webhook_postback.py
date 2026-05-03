@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, Mock, patch
 from types import SimpleNamespace
 from decimal import Decimal
 
@@ -16,11 +16,13 @@ from app.line.parser import (
     POSTBACK_HISTORY,
     POSTBACK_HISTORY_CURRENT,
     POSTBACK_HISTORY_SELECT_WEEK,
+    POSTBACK_LATEST_REPORT,
     POSTBACK_RETAKE_PHOTO,
     POSTBACK_SELECT_METER,
     POSTBACK_SHOW_STATUS,
     POSTBACK_SKIP_METER,
     POSTBACK_START_COLLECTION,
+    POSTBACK_WEEKLY_SUMMARY,
     POSTBACK_SETTINGS,
     POSTBACK_SETTINGS_CONFIRM_CHANGE,
     POSTBACK_SETTINGS_EDIT_RATE,
@@ -368,6 +370,19 @@ async def test_help_flow_postback_replies_with_selected_topic():
         payload = payload[-1]
     assert "วิธีดูรายงานล่าสุด" in payload.text
 
+
+@pytest.mark.anyio
+async def test_history_postback_returns_history_menu_card():
+    with patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_HISTORY), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "ประวัติการบันทึก"
+    assert "history_current" in str(payload)
+    assert "latest_report" in str(payload)
+
+
 @pytest.mark.anyio
 async def test_history_current_postback_shows_summary_actions():
     summary = SimpleNamespace(
@@ -417,15 +432,71 @@ async def test_settings_postback_branches_by_operator_role():
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS), "rt")
 
     payload = mock_reply.await_args.args[1]
-    assert "การแก้ไขต้องใช้สิทธิ์ผู้ดูแลระบบ" in payload.text
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "ตั้งค่าระบบ"
+    assert "settings_view" in str(payload)
     assert "settings_edit_rate" not in str(payload)
     assert "settings_import_report" not in str(payload)
+    assert "help" in str(payload)
 
     with patch("app.line.webhook.settings_service.is_admin", return_value=True), \
          patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
         await _handle_postback("U1", ParsedPostback(type=POSTBACK_SETTINGS), "rt")
 
     assert "settings_import_report" in str(mock_reply.await_args.args[1])
+
+
+@pytest.mark.anyio
+async def test_latest_report_postback_returns_report_summary_and_schedules_send():
+    with patch("app.line.webhook.history_service.get_latest_report_batch_id", return_value="2026-W19-U1"), \
+         patch(
+            "app.line.messages.build_report_data",
+            return_value=SimpleNamespace(
+                week="2026-W19",
+                readings=[1, 2, 3],
+                total_produced_unit=Decimal("1234.5"),
+                total_amount=Decimal("4567.89"),
+            ),
+         ), \
+         patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_LATEST_REPORT), "rt")
+
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W19"
+    assert "action=history_batch_detail&batch_id=2026-W19-U1" in str(payload)
+    mock_send_report.assert_called_once_with("2026-W19-U1", "U1")
+    mock_create_task.assert_called_once_with("send-report-task")
+
+
+@pytest.mark.anyio
+async def test_weekly_summary_postback_returns_report_summary_and_schedules_send():
+    with patch(
+         "app.line.messages.build_report_data",
+         return_value=SimpleNamespace(
+            week="2026-W18",
+            readings=[1, 2],
+            total_produced_unit=Decimal("888.0"),
+            total_amount=Decimal("1110.0"),
+         ),
+    ), \
+         patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
+         patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback(
+            "U1",
+            ParsedPostback(type=POSTBACK_WEEKLY_SUMMARY, batch_id="2026-W18-U1"),
+            "rt",
+        )
+
+    payload = mock_reply.await_args.args[1]
+    payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W18"
+    assert "action=latest_report&batch_id=2026-W18-U1" in str(payload)
+    mock_send_report.assert_called_once_with("2026-W18-U1", "U1")
+    mock_create_task.assert_called_once_with("send-report-task")
 
 
 @pytest.mark.anyio

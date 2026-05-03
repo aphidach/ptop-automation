@@ -14,6 +14,7 @@ from linebot.v3.messaging import (
     Configuration,
     ReplyMessageRequest,
     PushMessageRequest,
+    FlexMessage,
     TextMessage,
 )
 from linebot.v3.messaging.exceptions import ApiException
@@ -44,6 +45,7 @@ from app.line.messages import (
     build_settings_confirm_change_message,
     build_settings_edit_prompt_message,
     build_settings_menu_message,
+    build_report_summary_message,
     build_settings_meter_detail_message,
     build_settings_meters_message,
     build_settings_not_admin_message,
@@ -549,11 +551,11 @@ def _after_successful_confirmation(
         return
 
 
-def _build_reply(cmd: ParsedCommand, source_id: str) -> str | None:
+def _build_reply(cmd: ParsedCommand, source_id: str) -> str | TextMessage | FlexMessage | list[str | TextMessage | FlexMessage] | None:
     return _build_text_reply(cmd, source_id)
 
 
-def _build_text_reply(cmd: ParsedCommand, source_id: str) -> str | None:
+def _build_text_reply(cmd: ParsedCommand, source_id: str) -> str | TextMessage | FlexMessage | list[str | TextMessage | FlexMessage] | None:
     state = get_collection_state(source_id)
     if cmd.type == METER:
         if not is_valid_meter(cmd.meter_id, settings.VALID_METER_IDS):
@@ -591,14 +593,15 @@ def _build_text_reply(cmd: ParsedCommand, source_id: str) -> str | None:
         return reply
 
     if cmd.type == STATUS:
-        return _build_status_message(source_id)
+        return _build_status_card_message(source_id)
 
     if cmd.type in (GEN, REPORT):
         batch_id = _resolve_batch_id(cmd.batch_id, source_id)
         if not batch_id:
             return "ยังไม่มีข้อมูลรอบนี้ครับ"
+        report_message = build_report_summary_message(batch_id)
         asyncio.create_task(send_report(batch_id, source_id))
-        return "กำลังส่งรูปรายงานครับ"
+        return report_message
 
     if cmd.type == HELP:
         return (
@@ -1029,16 +1032,16 @@ async def _handle_postback(
         if not batch_id:
             await _reply_to(reply_token, build_history_empty_message("ยังไม่มีรูปรายงานสำหรับรอบนี้ครับ"))
             return
+        await _reply_to(reply_token, build_report_summary_message(batch_id))
         asyncio.create_task(send_report(batch_id, source_id))
-        await _reply_to(reply_token, "กำลังส่งรายงานล่าสุดครับ")
         return
 
     if action == POSTBACK_WEEKLY_SUMMARY:
         if not batch_id:
             await _reply_to(reply_token, "ยังไม่มีข้อมูลรอบนี้ครับ")
             return
+        await _reply_to(reply_token, build_report_summary_message(batch_id))
         asyncio.create_task(send_report(batch_id, source_id))
-        await _reply_to(reply_token, "กำลังส่งสรุปรายสัปดาห์ครับ")
         return
 
     await _reply_to(reply_token, "ไม่รู้จัก postback action นี้")
@@ -1257,19 +1260,19 @@ async def handle_webhook(request: Request):
                 continue
             if cmd.type != UNKNOWN and reply_token:
                 try:
-                    reply_text = _build_text_reply(cmd, source_id)
+                    reply_message = _build_text_reply(cmd, source_id)
                 except APIError as exc:
                     if not _is_sheets_quota_error(exc):
                         log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": str(exc)[:200]})
                         raise
                     logger.warning("Google Sheets quota exceeded while handling LINE command")
                     log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": "quota_exceeded"})
-                    reply_text = (
+                    reply_message = (
                         "Google Sheets ใช้งานเกินโควตาชั่วคราวครับ "
                         "กรุณาลองใหม่อีกครั้ง หรือพิมพ์ STATUS ภายหลัง"
                     )
-                if reply_text:
-                    await _reply_to(reply_token, reply_text)
+                if reply_message:
+                    await _reply_to(reply_token, reply_message)
             elif cmd.type == UNKNOWN and reply_token:
                 await _reply_to(reply_token, "พิมพ์คำสั่งไม่ถูกต้องครับ พิมพ์ HELP เพื่อดูคำสั่งที่ใช้ได้")
             continue
