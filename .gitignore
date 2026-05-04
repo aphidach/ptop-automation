@@ -30,3 +30,5 @@ tmp/
 reports/
 __pycache__/
 *.pyc
+
+output/
