@@ -409,6 +409,16 @@ def test_help_flow_rejects_non_https_preview_url(monkeypatch):
     assert payload.text.startswith("วิธีเริ่มบันทึกค่ามิเตอร์")
 
 
+def test_help_flow_rejects_non_ascii_preview_base_url(monkeypatch):
+    _clear_help_image_env(monkeypatch)
+    monkeypatch.setenv("HELP_FLOW_IMAGE_BASE_URL", "https://cdn.example.com/help/original")
+    monkeypatch.setenv("HELP_FLOW_IMAGE_PREVIEW_BASE_URL", "https://cdn.example.com/help/previewฟ")
+
+    payload = build_help_flow_response("start_collection")
+
+    assert payload.text.startswith("วิธีเริ่มบันทึกค่ามิเตอร์")
+
+
 def test_help_flow_image_assets_use_ai_board_filenames():
     assert HELP_FLOW_IMAGE_ASSETS == {
         "start_collection": "start-collection-board-ai.png",

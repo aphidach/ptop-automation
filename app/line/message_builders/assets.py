@@ -7,6 +7,12 @@ LINE_CARD_START_COLLECTION_HERO_ASSET = "solar-meter-mascot-hero-v0.2.0.png"
 
 
 def _is_https_url(url: str) -> bool:
+    try:
+        url.encode("ascii")
+    except UnicodeEncodeError:
+        return False
+    if any(char.isspace() for char in url):
+        return False
     parsed = urlparse(url)
     return parsed.scheme == "https" and bool(parsed.netloc)
 

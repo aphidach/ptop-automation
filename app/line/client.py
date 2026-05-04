@@ -118,6 +118,12 @@ async def push_message(to: str, messages) -> bool:
 
 
 def _is_https_url(url: str) -> bool:
+    try:
+        url.encode("ascii")
+    except UnicodeEncodeError:
+        return False
+    if any(char.isspace() for char in url):
+        return False
     parsed = urlparse(url)
     return parsed.scheme == "https" and bool(parsed.netloc)
 
