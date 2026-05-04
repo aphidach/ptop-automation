@@ -24,6 +24,7 @@ _UNIT_RE = re.compile(
 )
 _HTML_TAG_RE = re.compile(r"<[^>]+>")
 _WHITESPACE_RE = re.compile(r"\s+")
+_OCR_SPLIT_DECIMAL_RE = re.compile(r"(?<=\d)([.,])\s+(?=\d{1,3}\b)")
 _ENERGY_LABELS = (
     (
         "Total Energy kWh",
@@ -57,6 +58,10 @@ _MPR45S_DECIMAL_RE = re.compile(
 )
 _MPR45S_IMPLIED_DECIMAL_RE = re.compile(
     r"(?P<whole>0\d{6})\s*k\s*w?\s*h",
+    re.IGNORECASE,
+)
+_MPR45S_SPACED_KWH_RE = re.compile(
+    r"\b0?25\s+(?P<value>\d{4,7})\s*k\s*w?\s*h\b",
     re.IGNORECASE,
 )
 
@@ -123,6 +128,7 @@ def _normalize_text(raw_text: str) -> str:
     text = unescape(raw_text)
     text = _HTML_TAG_RE.sub(" ", text)
     text = text.replace("|", " ")
+    text = _OCR_SPLIT_DECIMAL_RE.sub(r"\1", text)
     return _WHITESPACE_RE.sub(" ", text).strip()
 
 
@@ -160,28 +166,61 @@ def _find_energy_value(
     text: str,
     start: int,
     label_unit: str | None,
+    label_start: int | None = None,
 ) -> tuple[Decimal, str | None] | None:
     window = text[start : start + 120]
     inferred_unit = label_unit or _infer_window_unit(window)
-    matches: list[tuple[Decimal, str | None]] = []
+    matches = _collect_energy_candidates(window, inferred_unit)
+    previous_explicit: tuple[Decimal, str | None] | None = None
+
+    if label_start is not None:
+        before_window = text[max(0, label_start - 100) : label_start]
+        before_matches = _collect_energy_candidates(before_window, None)
+        explicit_before = [candidate for candidate in before_matches if candidate[2]]
+        if explicit_before:
+            value, unit, _has_explicit_unit = explicit_before[-1]
+            previous_explicit = (value, unit)
+
+    if not matches:
+        return previous_explicit
+
+    if previous_explicit and not any(candidate[2] for candidate in matches):
+        return previous_explicit
+
+    return _select_energy_candidate(matches, inferred_unit)
+
+def _collect_energy_candidates(
+    window: str,
+    inferred_unit: str | None,
+) -> list[tuple[Decimal, str | None, bool]]:
+    matches: list[tuple[Decimal, str | None, bool]] = []
 
     for match in _FIELD_NUMBER_RE.finditer(window):
         raw_value = match.group("value")
         value = _normalize_number(raw_value)
-        unit = match.group("unit") or inferred_unit
+        raw_unit = match.group("unit")
+        unit = raw_unit or inferred_unit
         if value < METER_VALUE_MIN:
             continue
-        matches.append((_to_kwh(value, unit, raw_value), unit))
+        matches.append((_to_kwh(value, unit, raw_value), unit, raw_unit is not None))
 
-    if not matches:
-        return None
+    return matches
+
+def _select_energy_candidate(
+    matches: list[tuple[Decimal, str | None, bool]],
+    inferred_unit: str | None,
+) -> tuple[Decimal, str | None]:
     if inferred_unit:
-        return max(matches, key=lambda candidate: candidate[0])
+        value, unit, _has_explicit_unit = max(matches, key=lambda candidate: candidate[0])
+        return value, unit
 
-    explicit_unit_matches = [candidate for candidate in matches if candidate[1]]
+    explicit_unit_matches = [candidate for candidate in matches if candidate[2]]
     if explicit_unit_matches:
-        return explicit_unit_matches[0]
-    return matches[0]
+        value, unit, _has_explicit_unit = explicit_unit_matches[0]
+        return value, unit
+
+    value, unit, _has_explicit_unit = matches[0]
+    return value, unit
 
 
 def _log_parse_result(result: ParseResult) -> None:
@@ -238,7 +277,12 @@ def parse_energy_meter_value(raw_text: str) -> ParseResult:
 
     for source_label, label_re, label_unit in _ENERGY_LABELS:
         for match in label_re.finditer(normalized_text):
-            selected = _find_energy_value(normalized_text, match.end(), label_unit)
+            selected = _find_energy_value(
+                normalized_text,
+                match.end(),
+                label_unit,
+                match.start(),
+            )
             if not selected:
                 continue
 
@@ -286,10 +330,16 @@ def _parse_mpr45s_energy_value(
         )
 
     if "[google_vision_mpr45s_detail]" not in normalized_text:
+        spaced = _parse_mpr45s_spaced_kwh(normalized_text, fallback, raw_text)
+        if spaced.success:
+            return spaced
         return ParseResult(value=None, candidates=[], raw_text=raw_text)
 
     implied = _MPR45S_IMPLIED_DECIMAL_RE.search(normalized_text)
     if not implied:
+        spaced = _parse_mpr45s_spaced_kwh(normalized_text, fallback, raw_text)
+        if spaced.success:
+            return spaced
         return ParseResult(value=None, candidates=[], raw_text=raw_text)
 
     value = _clean_decimal(Decimal(f"{int(implied.group('whole'))}.1"))
@@ -301,6 +351,26 @@ def _parse_mpr45s_energy_value(
         unit="kWh",
         confidence="low",
         reason="model_specific_implied_decimal_tail",
+    )
+
+def _parse_mpr45s_spaced_kwh(
+    normalized_text: str,
+    fallback: ParseResult,
+    raw_text: str,
+) -> ParseResult:
+    match = _MPR45S_SPACED_KWH_RE.search(normalized_text)
+    if not match:
+        return ParseResult(value=None, candidates=[], raw_text=raw_text)
+
+    value = _clean_decimal(Decimal(match.group("value")))
+    return ParseResult(
+        value=value,
+        candidates=_merge_candidates([value], fallback.candidates),
+        raw_text=raw_text,
+        source_label="MPR-45S energy row",
+        unit="kWh",
+        confidence="high",
+        reason="model_specific_energy_row",
     )
 
 

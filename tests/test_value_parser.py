@@ -195,6 +195,20 @@ class TestParseEnergyMeterValue:
         assert result.source_label == "Total Energy"
         assert result.unit == "kWh"
 
+    def test_total_energy_handles_ocr_split_decimal(self):
+        result = parse_energy_meter_value("Total Energy kWh\n50.0 135755. 07")
+        assert result.value == Decimal("135755.07")
+        assert result.source_label == "Total Energy kWh"
+        assert result.unit == "kWh"
+
+    def test_e_del_uses_energy_value_before_label_when_ocr_reorders_lines(self):
+        result = parse_energy_meter_value(
+            "Ptot 15.2334 k\nkW\n62.683 Muh\nE Del\nU-U\nPQS\n6"
+        )
+        assert result.value == Decimal("62683")
+        assert result.source_label == "E Del"
+        assert result.unit == "MWh"
+
     def test_mpr45s_detail_crop_combines_decimal_tail(self):
         result = parse_energy_meter_value("ENTES\nMPR-45S\n0250509. IkW h")
         assert result.value == Decimal("250509.1")
@@ -209,6 +223,12 @@ class TestParseEnergyMeterValue:
         assert result.source_label == "MPR-45S energy row"
         assert result.confidence == "low"
         assert result.reason == "model_specific_implied_decimal_tail"
+
+    def test_mpr45s_spaced_counter_prefix_is_supported(self):
+        result = parse_energy_meter_value("ENTES\nMPR-45S\n025 10868kW h")
+        assert result.value == Decimal("10868")
+        assert result.source_label == "MPR-45S energy row"
+        assert result.unit == "kWh"
 
     def test_fallback_still_supports_plain_manual_value(self):
         result = parse_energy_meter_value("M1 12508")
