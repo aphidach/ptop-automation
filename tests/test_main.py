@@ -11,7 +11,7 @@ from app.version import __version__
 
 
 def test_app_version_is_current_release():
-    assert __version__ == "0.3.1"
+    assert __version__ == "0.3.2"
 
 
 def test_package_version_matches_app_version():
