@@ -326,6 +326,7 @@ async def test_replace_postback_confirms_with_replace_existing():
         "U1",
         allow_lower_value=False,
         replace_existing=True,
+        line_user_id="",
     )
 
 
@@ -506,6 +507,36 @@ async def test_history_select_week_postback_shows_recent_batches():
     assert "ประวัติย้อนหลัง 1 เดือน" in rendered
     assert "2026-W18" in rendered
     assert "history_batch" in rendered
+
+
+@pytest.mark.anyio
+async def test_admin_history_select_week_shows_all_sources():
+    summaries = [
+        SimpleNamespace(
+            batch_id="2026-W18-U2",
+            week="2026-W18",
+            expected_meter_count=8,
+            confirmed_meter_count=8,
+        )
+    ]
+
+    with patch(
+        "app.line.webhook.history_service.get_recent_batch_summaries",
+        return_value=summaries,
+    ) as mock_recent, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback(
+            "UADMIN",
+            ParsedPostback(type=POSTBACK_HISTORY_SELECT_WEEK),
+            "rt",
+            operator_id="UADMIN",
+            can_view_all=True,
+        )
+
+    mock_recent.assert_called_once_with(None)
+    rendered = str(mock_reply.await_args.args[1])
+    assert "2026-W18" in rendered
+    assert "2026-W18-U2" in rendered
 
 @pytest.mark.anyio
 async def test_settings_postback_branches_by_operator_role():

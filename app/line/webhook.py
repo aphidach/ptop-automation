@@ -228,7 +228,7 @@ def _line_chat_id(source) -> str | None:
 
 
 def _data_scope_id(chat_id: str, user_id: str | None) -> str:
-    return user_id or chat_id
+    return chat_id
 
 
 def _is_line_event_allowed(chat_id: str | None, user_id: str | None) -> bool:
@@ -1206,13 +1206,16 @@ async def _process_report_import_image(
     source_id: str,
     image_path: str,
     message_id: str,
+    *,
+    delivery_source_id: str | None = None,
 ) -> None:
+    delivery_id = delivery_source_id or source_id
     try:
         ocr_result = await _read_ocr_image(image_path)
         if not ocr_result.success:
             log_event(EVENT_OCR_FAILED, source_id, "", {"error": ocr_result.error[:200]})
             set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
-            await _push_to(source_id, "อ่านรายงานเก่าไม่ได้ครับ กรุณาส่งรูปใหม่อีกครั้ง")
+            await _push_to(delivery_id, "อ่านรายงานเก่าไม่ได้ครับ กรุณาส่งรูปใหม่อีกครั้ง")
             return
 
         pending_import = report_import_service.build_report_import_preview(
@@ -1227,12 +1230,12 @@ async def _process_report_import_image(
             set_report_import_state(source_id, REPORT_IMPORT_WAITING_CONFIRMATION)
         else:
             set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
-        await _push_to(source_id, build_report_import_preview_message(pending_import))
+        await _push_to(delivery_id, build_report_import_preview_message(pending_import))
     except Exception:
         logger.exception("Report import OCR failed for source=%s", source_id)
         log_event(EVENT_OCR_FAILED, source_id, "", {"phase": "report_import"})
         set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
-        await _push_to(source_id, "เกิดข้อผิดพลาดในการอ่านรายงานเก่าครับ กรุณาลองใหม่")
+        await _push_to(delivery_id, "เกิดข้อผิดพลาดในการอ่านรายงานเก่าครับ กรุณาลองใหม่")
     finally:
         finish_image_processing(source_id, message_id)
 
@@ -1242,20 +1245,24 @@ async def _process_ocr_and_confirm(
     meter_id: str,
     image_path: str,
     message_id: str,
+    *,
+    line_user_id: str = "",
+    delivery_source_id: str | None = None,
 ) -> None:
+    delivery_id = delivery_source_id or source_id
     try:
         ocr_result = await _read_ocr_image(image_path)
         if not ocr_result.success:
             log_event(EVENT_OCR_FAILED, source_id, meter_id, {"error": ocr_result.error[:200]})
             set_collection_state(source_id, COLLECTION_WAITING_MANUAL_VALUE)
-            await _push_to(source_id, build_unreadable_prompt(meter_id))
+            await _push_to(delivery_id, build_unreadable_prompt(meter_id))
             return
 
         parsed = parse_meter_value(ocr_result.raw_text)
         if not parsed.success:
             log_event(EVENT_OCR_UNREADABLE, source_id, meter_id, {"raw_text": ocr_result.raw_text[:200]})
             set_collection_state(source_id, COLLECTION_WAITING_MANUAL_VALUE)
-            await _push_to(source_id, build_unreadable_prompt(meter_id))
+            await _push_to(delivery_id, build_unreadable_prompt(meter_id))
             return
 
         confidence = score_ocr_reading(
@@ -1263,6 +1270,7 @@ async def _process_ocr_and_confirm(
             parsed_value=parsed.value,
             parse_reason=parsed.reason or "",
             raw_text=ocr_result.raw_text,
+            line_source_id=source_id,
             parse_confidence=parsed.confidence,
             unit=parsed.unit,
             candidates=parsed.candidates,
@@ -1275,12 +1283,13 @@ async def _process_ocr_and_confirm(
             ocr_raw_text=ocr_result.raw_text[:200],
             image_message_id=message_id,
             batch_id=batch_id,
+            line_user_id=line_user_id,
         )
-        calc = calculate_reading(meter_id, parsed.value)
+        calc = calculate_reading(meter_id, parsed.value, source_id)
         if confidence.is_low:
             set_collection_state(source_id, COLLECTION_WAITING_MANUAL_VALUE)
             await _push_to(
-                source_id,
+                delivery_id,
                 build_ocr_review_message(
                     meter_id=pending.meter_id,
                     current_value=parsed.value,
@@ -1291,7 +1300,7 @@ async def _process_ocr_and_confirm(
 
         set_collection_state(source_id, COLLECTION_WAITING_CONFIRMATION)
         await _push_to(
-            source_id,
+            delivery_id,
             build_confirmation_card(
                 meter_id=pending.meter_id,
                 current_value=parsed.value,
@@ -1306,7 +1315,7 @@ async def _process_ocr_and_confirm(
         logger.exception("OCR processing failed for source=%s meter=%s", source_id, meter_id)
         log_event(EVENT_OCR_FAILED, source_id, meter_id, {"phase": "ocr_processing"})
         set_collection_state(source_id, COLLECTION_WAITING_MANUAL_VALUE)
-        await _push_to(source_id, "เกิดข้อผิดพลาดในการอ่านค่ามิเตอร์ครับ กรุณาลองใหม่")
+        await _push_to(delivery_id, "เกิดข้อผิดพลาดในการอ่านค่ามิเตอร์ครับ กรุณาลองใหม่")
     finally:
         finish_image_processing(source_id, message_id)
 
@@ -1360,13 +1369,18 @@ async def handle_webhook(request: Request):
             )
             continue
 
+        data_source_id = _data_scope_id(source_id, source_user_id)
+        is_admin_operator = _is_admin_operator(source_id, source_user_id)
+
         if event_type == "postback":
             parsed = parse_postback_action(getattr(getattr(event, "postback", None), "data", ""))
             await _handle_postback_safely(
-                source_id,
+                data_source_id,
                 parsed,
                 getattr(event, "reply_token", ""),
                 source_user_id,
+                delivery_source_id=source_id,
+                can_view_all=is_admin_operator,
             )
             continue
 
@@ -1393,35 +1407,41 @@ async def handle_webhook(request: Request):
         )
 
         reply_token = getattr(event, "reply_token", None)
-        collection_state = get_collection_state(source_id)
+        collection_state = get_collection_state(data_source_id)
         if message_type == "text":
             text = getattr(message, "text", "")
-            cmd = _coerce_manual_value_command(parse_command(text), text, source_id)
+            cmd = _coerce_manual_value_command(parse_command(text), text, data_source_id)
             try:
                 settings_reply = (
-                    _build_settings_input_reply(text, source_id, source_user_id)
+                    _build_settings_input_reply(text, data_source_id, source_user_id)
                     if cmd.type == UNKNOWN
                     else None
                 )
             except APIError as exc:
                 if not _is_sheets_quota_error(exc):
-                    log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": str(exc)[:200]})
+                    log_event(EVENT_SHEETS_WRITE_FAILED, data_source_id, "", {"error": str(exc)[:200]})
                     raise
                 logger.warning("Google Sheets quota exceeded while handling settings input")
-                log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": "quota_exceeded"})
+                log_event(EVENT_SHEETS_WRITE_FAILED, data_source_id, "", {"error": "quota_exceeded"})
                 settings_reply = _SHEETS_RETRY_MESSAGE
             if settings_reply and reply_token:
                 await _reply_to(reply_token, settings_reply)
                 continue
             if cmd.type != UNKNOWN and reply_token:
                 try:
-                    reply_message = _build_text_reply(cmd, source_id)
+                    reply_message = _build_text_reply(
+                        cmd,
+                        data_source_id,
+                        line_user_id=source_user_id or "",
+                        delivery_source_id=source_id,
+                        can_view_all=is_admin_operator,
+                    )
                 except APIError as exc:
                     if not _is_sheets_quota_error(exc):
-                        log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": str(exc)[:200]})
+                        log_event(EVENT_SHEETS_WRITE_FAILED, data_source_id, "", {"error": str(exc)[:200]})
                         raise
                     logger.warning("Google Sheets quota exceeded while handling LINE command")
-                    log_event(EVENT_SHEETS_WRITE_FAILED, source_id, "", {"error": "quota_exceeded"})
+                    log_event(EVENT_SHEETS_WRITE_FAILED, data_source_id, "", {"error": "quota_exceeded"})
                     reply_message = (
                         "Google Sheets ใช้งานเกินโควตาชั่วคราวครับ "
                         "กรุณาลองใหม่อีกครั้ง หรือพิมพ์ STATUS ภายหลัง"
@@ -1433,47 +1453,52 @@ async def handle_webhook(request: Request):
             continue
 
         if message_type == "image":
-            report_import_state = get_report_import_state(source_id)
+            report_import_state = get_report_import_state(data_source_id)
             if report_import_state in (
                 REPORT_IMPORT_WAITING_IMAGE,
                 REPORT_IMPORT_PROCESSING_OCR,
                 REPORT_IMPORT_WAITING_CONFIRMATION,
             ):
-                if not _is_admin_operator(source_id, source_user_id):
+                if not is_admin_operator:
                     await _reply_to(reply_token, build_settings_not_admin_message())
                     continue
                 if report_import_state == REPORT_IMPORT_PROCESSING_OCR:
                     await _reply_to(reply_token, "กำลังอ่านรายงานเก่าอยู่ครับ")
                     continue
                 if report_import_state == REPORT_IMPORT_WAITING_CONFIRMATION:
-                    pending_import = get_pending_report_import(source_id)
+                    pending_import = get_pending_report_import(data_source_id)
                     if pending_import:
                         await _reply_to(reply_token, build_report_import_preview_message(pending_import))
                     else:
-                        set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
+                        set_report_import_state(data_source_id, REPORT_IMPORT_WAITING_IMAGE)
                         await _reply_to(reply_token, build_report_import_prompt_message())
                     continue
 
-                if not start_image_processing(source_id, message_id):
+                if not start_image_processing(data_source_id, message_id):
                     logger.info("Skipping duplicate report import image message_id=%s", message_id)
                     continue
 
                 try:
                     image_path = await download_image(message_id)
                     logger.info("Downloaded report import image: %s", image_path)
-                    set_report_import_state(source_id, REPORT_IMPORT_PROCESSING_OCR)
+                    set_report_import_state(data_source_id, REPORT_IMPORT_PROCESSING_OCR)
                     if reply_token:
                         await _reply_to(reply_token, "รับรูปรายงานเก่าแล้วครับ กำลังอ่านตาราง...")
                     asyncio.create_task(
-                        _process_report_import_image(source_id, str(image_path), message_id)
+                        _process_report_import_image(
+                            data_source_id,
+                            str(image_path),
+                            message_id,
+                            delivery_source_id=source_id,
+                        )
                     )
                 except ImageDownloadError as exc:
-                    finish_image_processing(source_id, message_id)
-                    set_report_import_state(source_id, REPORT_IMPORT_WAITING_IMAGE)
+                    finish_image_processing(data_source_id, message_id)
+                    set_report_import_state(data_source_id, REPORT_IMPORT_WAITING_IMAGE)
                     logger.error("Report import image download failed: %s", exc)
                     log_event(
                         EVENT_LINE_DOWNLOAD_FAILED,
-                        source_id,
+                        data_source_id,
                         "",
                         {"message_id": message_id, "error": str(exc)[:200]},
                     )
@@ -1484,10 +1509,10 @@ async def handle_webhook(request: Request):
                         )
                 continue
 
-            meter_id = get_collection_current_meter(source_id) or get_latest_meter(source_id)
+            meter_id = get_collection_current_meter(data_source_id) or get_latest_meter(data_source_id)
             if not meter_id:
-                meter_id = _restore_collection_from_current_batch(source_id)
-                collection_state = get_collection_state(source_id)
+                meter_id = _restore_collection_from_current_batch(data_source_id)
+                collection_state = get_collection_state(data_source_id)
 
             if collection_state in (COLLECTION_WAITING_CONFIRMATION, COLLECTION_PROCESSING_OCR):
                 if meter_id:
@@ -1501,23 +1526,23 @@ async def handle_webhook(request: Request):
                     await _reply_to(reply_token, "กรุณาพิมพ์ meter id ก่อนส่งรูปครับ เช่น M1")
                     continue
                 if collection_state == COLLECTION_COLLECTING:
-                    meter_id = _next_meter_to_capture(source_id, get_session_batch_id(source_id))
+                    meter_id = _next_meter_to_capture(data_source_id, get_session_batch_id(data_source_id))
                     if meter_id:
-                        set_collection_current_meter(source_id, meter_id)
-                        set_latest_meter(source_id, meter_id)
+                        set_collection_current_meter(data_source_id, meter_id)
+                        set_latest_meter(data_source_id, meter_id)
 
             if not meter_id:
                 await _reply_to(reply_token, "กรุณาเริ่มรอบบันทึกก่อนส่งรูป")
                 continue
 
-            if not start_image_processing(source_id, message_id):
+            if not start_image_processing(data_source_id, message_id):
                 logger.info("Skipping duplicate image message_id=%s", message_id)
                 continue
 
             try:
                 image_path = await download_image(message_id)
                 logger.info("Downloaded image for meter_id=%s: %s", meter_id, image_path)
-                set_collection_state(source_id, COLLECTION_PROCESSING_OCR)
+                set_collection_state(data_source_id, COLLECTION_PROCESSING_OCR)
                 if reply_token:
                     await _reply_to(
                         reply_token,
@@ -1525,15 +1550,20 @@ async def handle_webhook(request: Request):
                     )
                 asyncio.create_task(
                     _process_ocr_and_confirm(
-                        source_id, meter_id, str(image_path), message_id
+                        data_source_id,
+                        meter_id,
+                        str(image_path),
+                        message_id,
+                        line_user_id=source_user_id or "",
+                        delivery_source_id=source_id,
                     )
                 )
             except ImageDownloadError as exc:
-                finish_image_processing(source_id, message_id)
+                finish_image_processing(data_source_id, message_id)
                 logger.error("Image download failed: %s", exc)
                 log_event(
                     EVENT_LINE_DOWNLOAD_FAILED,
-                    source_id,
+                    data_source_id,
                     meter_id,
                     {"message_id": message_id, "error": str(exc)[:200]},
                 )

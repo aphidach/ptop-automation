@@ -174,6 +174,36 @@ def test_recent_batch_summaries_include_reading_only_batches_from_last_month(moc
 
 
 @patch("app.services.history_service.repositories")
+def test_recent_batch_summaries_can_include_all_sources_for_admin(mock_repo):
+    mock_repo.get_all_batches.return_value = [
+        {"batch_id": "2026-W18-U1", "week": "2026-W18", "date": "2026-05-01", "line_source_id": "U1"},
+        {"batch_id": "2026-W18-U2", "week": "2026-W18", "date": "2026-05-02", "line_source_id": "U2"},
+    ]
+    mock_repo.get_all_readings.return_value = []
+
+    def get_batch(batch_id):
+        return {
+            "batch_id": batch_id,
+            "week": "2026-W18",
+            "status": "complete",
+            "expected_meter_count": "8",
+            "line_source_id": batch_id.rsplit("-", 1)[-1],
+        }
+
+    mock_repo.get_batch_by_id.side_effect = get_batch
+    mock_repo.get_readings_by_batch.return_value = [
+        {"meter_id": "M1", "produced_unit": "1", "amount": "4.2"}
+    ]
+
+    summaries = history_service.get_recent_batch_summaries(
+        None,
+        now=datetime(2026, 5, 4, tzinfo=timezone.utc),
+    )
+
+    assert [summary.batch_id for summary in summaries] == ["2026-W18-U2", "2026-W18-U1"]
+
+
+@patch("app.services.history_service.repositories")
 def test_meter_history_filters_by_selected_period(mock_repo):
     mock_repo.get_readings_by_meter.return_value = [
         {
