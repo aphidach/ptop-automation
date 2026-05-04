@@ -1,5 +1,7 @@
 # Solar Meter LINE Bot Documentation
 
+![Start Collection Board AI](docs/help-flows/original/start-collection-board-ai.png)
+
 เอกสารชุดนี้เป็น technical spec สำหรับระบบ:
 
 ```text
