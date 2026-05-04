@@ -10,6 +10,7 @@ from app.line.parser import (
     POSTBACK_CONFIRM_READING,
     POSTBACK_EDIT_READING,
     POSTBACK_FORCE_CONFIRM_READING,
+    POSTBACK_REPLACE_READING,
     POSTBACK_RETAKE_PHOTO,
     POSTBACK_LATEST_REPORT,
     POSTBACK_HELP,
@@ -346,12 +347,20 @@ def build_duplicate_warning_card(
     return _warning_recovery_card(
         meter_id=meter_id,
         reason=f"รอบนี้มีค่า {meter_id} แล้ว",
-        guidance="เวอร์ชันนี้ยังไม่รองรับการแทนที่ข้อมูล ให้ตรวจสถานะหรือถ่ายใหม่",
+        guidance="กดแทนที่เพื่ออัปเดตค่าเดิมในรอบนี้ หรือแก้ไข/ถ่ายใหม่",
         rows=(
             ("ค่าเดิม", _kwh_display_value(old_value)),
             ("ค่าใหม่", _kwh_display_value(new_value)),
         ),
         footer_buttons=(
+            _postback_button(
+                "แทนที่",
+                POSTBACK_REPLACE_READING,
+                meter_id=meter_id,
+                style="primary",
+                color=CARD_COLORS["energy_yellow"],
+            ),
+            _postback_button("แก้ไข", POSTBACK_EDIT_READING, meter_id=meter_id),
             _postback_button("ถ่ายใหม่", POSTBACK_RETAKE_PHOTO, meter_id=meter_id),
             _postback_button("ดูสถานะ", POSTBACK_SHOW_STATUS),
         ),

@@ -121,6 +121,21 @@ class TestValidateReading:
         result = validate_reading("M1", Decimal(12500), "2026-W19-U1")
         assert result.is_valid is True
 
+    def test_duplicate_replacement_uses_existing_row_last_value(self, _mock_repos):
+        _mock_repos.get_latest_reading.return_value = {"current_value": 13000}
+        _mock_repos.get_readings_by_batch.return_value = [
+            {"meter_id": "M1", "current_value": "13000", "last_value": "12000"}
+        ]
+
+        result = validate_reading(
+            "M1",
+            Decimal(12500),
+            "2026-W19-U1",
+            allow_duplicate=True,
+        )
+
+        assert result.is_valid is True
+
 
 class TestSaveReading:
     def test_save_calls_append_reading(self, _mock_repos):
@@ -217,3 +232,31 @@ class TestSaveReading:
         assert call_args["current_value"] == "135420.1"
         assert call_args["produced_unit"] == "420.1"
         assert calc.produced_unit == Decimal("420.1")
+
+    def test_replace_existing_reading_updates_existing_row(self, _mock_repos):
+        _mock_repos.get_readings_by_batch.return_value = [
+            {
+                "reading_id": "rdg_old_M6",
+                "meter_id": "M6",
+                "last_value": "62677.0",
+                "rate": "4.2",
+            }
+        ]
+
+        calc = save_reading(
+            meter_id="M6",
+            current_value=Decimal("62683"),
+            batch_id="2026-W19-U1",
+            line_source_id="U1",
+            confirmation_method="manual_edit",
+            replace_existing=True,
+        )
+
+        call_args = _mock_repos.upsert_reading.call_args.args[0]
+        assert call_args["reading_id"] == "rdg_old_M6"
+        assert call_args["current_value"] == "62683.0"
+        assert call_args["last_value"] == "62677.0"
+        assert call_args["produced_unit"] == "6.0"
+        assert call_args["amount"] == "25.20"
+        assert calc.produced_unit == Decimal("6.0")
+        _mock_repos.append_reading.assert_not_called()

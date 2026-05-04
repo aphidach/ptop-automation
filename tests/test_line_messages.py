@@ -138,8 +138,10 @@ def test_warning_recovery_cards_keep_supported_actions_only():
         _as_dict(build_unreadable_prompt("M2")),
         _as_dict(build_ocr_review_message("M2", Decimal("12508"), ["confidence ต่ำ"])),
         _as_dict(build_lower_value_warning("M2", Decimal("13000"), Decimal("12508"))),
-        _as_dict(build_duplicate_warning_card("M2", old_value="13000", new_value="12508")),
     ]
+    duplicate_payload = _as_dict(
+        build_duplicate_warning_card("M2", old_value="13000", new_value="12508")
+    )
 
     rendered = "\n".join(str(payload) for payload in payloads)
     assert "ตรวจสอบก่อนบันทึก" in rendered
@@ -147,6 +149,7 @@ def test_warning_recovery_cards_keep_supported_actions_only():
     assert "show_status" in rendered
     assert "cancel_collection" in rendered
     assert "replace_reading" not in rendered
+    assert "replace_reading" in str(duplicate_payload)
     assert "share_report" not in rendered
 
 

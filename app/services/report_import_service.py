@@ -220,7 +220,7 @@ def _build_reading(
     meter_id = row["meter_id"]
     current_value = format_reading_value(Decimal(str(row["current_value"])))
     return {
-        "reading_id": f"rdg_import_{pending.date.replace('-', '')}_{meter_id}",
+        "reading_id": f"rdg_import_{pending.batch_id}_{meter_id}",
         "batch_id": pending.batch_id,
         "date": pending.date,
         "week": pending.week,

@@ -39,11 +39,10 @@ def get_meter_by_id(meter_id: str) -> dict | None:
     return _row_client().get_meter_by_id(meter_id)
 
 
-def get_latest_reading(meter_id: str) -> dict | None:
-    rows = _row_client().find_rows("readings", "meter_id", meter_id)
+def get_latest_reading(meter_id: str, line_source_id: str | None = None) -> dict | None:
+    rows = get_readings_by_meter(meter_id, line_source_id)
     if not rows:
         return None
-    rows.sort(key=lambda r: r.get("created_at", ""), reverse=True)
     return rows[0]
 
 
@@ -53,8 +52,32 @@ def append_reading(reading: dict) -> None:
     logger.info("Appended reading: %s/%s", reading.get("meter_id"), reading.get("reading_id"))
 
 
+def upsert_reading(reading: dict) -> None:
+    reading_id = str(reading.get("reading_id", "")).strip()
+    if not reading_id:
+        append_reading(reading)
+        return
+
+    if _use_sqlite():
+        updated = sqlite_client.update_rows("readings", "reading_id", reading_id, reading)
+        if not updated:
+            sqlite_client.append_row("readings", reading)
+        _enqueue_if_sqlite("readings", reading)
+        logger.info("Upserted reading: %s/%s", reading.get("meter_id"), reading_id)
+        return
+
+    sheets_client.upsert_row("readings", "reading_id", reading)
+    logger.info("Upserted reading: %s/%s", reading.get("meter_id"), reading_id)
+
+
 def get_readings_by_batch(batch_id: str) -> list[dict]:
     return _row_client().find_rows("readings", "batch_id", batch_id)
+
+
+def get_all_readings() -> list[dict]:
+    rows = _row_client().read_all("readings")
+    rows.sort(key=lambda r: r.get("created_at", ""), reverse=True)
+    return rows
 
 
 def get_readings_by_source(line_source_id: str) -> list[dict]:
@@ -139,6 +162,14 @@ def update_pending_confirmation_status(confirmation_id: str, status: str) -> boo
 
 def get_batches_by_source(line_source_id: str) -> list[dict]:
     rows = _row_client().find_rows("batches", "line_source_id", line_source_id)
+    return _sort_batches(rows)
+
+
+def get_all_batches() -> list[dict]:
+    return _sort_batches(_row_client().read_all("batches"))
+
+
+def _sort_batches(rows: list[dict]) -> list[dict]:
     rows.sort(
         key=lambda r: (
             str(r.get("week", "")),

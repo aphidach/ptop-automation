@@ -149,6 +149,7 @@ def test_gen_with_week_ref_schedules_image_send_for_source_week():
 def test_gen_with_batch_id_schedules_image_send_for_that_batch():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook.history_service.batch_belongs_to_source", return_value=True), \
          patch(
              "app.line.message_builders.reports.build_report_data",
              return_value=SimpleNamespace(
@@ -178,7 +179,8 @@ def test_resolve_batch_id_converts_week_ref_to_source_batch_id():
 
 
 def test_resolve_batch_id_preserves_full_batch_id_case():
-    assert _resolve_batch_id("2026-W18-UabcDef", "U1") == "2026-W18-UabcDef"
+    with patch("app.line.webhook.history_service.batch_belongs_to_source", return_value=True):
+        assert _resolve_batch_id("2026-W18-UabcDef", "U1") == "2026-W18-UabcDef"
 
 
 def test_restore_collection_from_current_batch_uses_sheet_progress():
@@ -233,6 +235,7 @@ def test_report_schedules_image_send_for_current_batch():
 def test_report_with_batch_id_schedules_image_send_for_that_batch():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook.history_service.batch_belongs_to_source", return_value=True), \
          patch(
              "app.line.message_builders.reports.build_report_data",
              return_value=SimpleNamespace(

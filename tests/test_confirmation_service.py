@@ -213,6 +213,24 @@ class TestConfirmPending:
         assert batch_id is None
         _mock_meter_service[5].assert_not_called()
 
+    def test_replace_existing_allows_duplicate_and_upserts(self, _mock_meter_service):
+        create_pending_confirmation(source_id="U1", meter_id="M6", ocr_value=62683, batch_id="2026-W19-U1")
+
+        pending, reply, batch_id = confirm_pending("U1", replace_existing=True)
+
+        assert pending is not None
+        assert "แทนที่" in reply
+        assert batch_id == "2026-W19-U1"
+        _mock_meter_service[0].assert_called_once_with(
+            "M6",
+            62683,
+            "2026-W19-U1",
+            allow_duplicate=True,
+            allow_lower_value=False,
+            line_source_id="U1",
+        )
+        assert _mock_meter_service[1].call_args.kwargs["replace_existing"] is True
+
 
 class TestManualConfirm:
     def test_manual_confirm_immediately_saves(self):
