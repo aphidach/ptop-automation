@@ -149,6 +149,7 @@ def test_gen_with_week_ref_schedules_image_send_for_source_week():
 def test_gen_with_batch_id_schedules_image_send_for_that_batch():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook.history_service.batch_belongs_to_source", return_value=True), \
          patch(
              "app.line.message_builders.reports.build_report_data",
              return_value=SimpleNamespace(
@@ -178,7 +179,20 @@ def test_resolve_batch_id_converts_week_ref_to_source_batch_id():
 
 
 def test_resolve_batch_id_preserves_full_batch_id_case():
-    assert _resolve_batch_id("2026-W18-UabcDef", "U1") == "2026-W18-UabcDef"
+    with patch("app.line.webhook.history_service.batch_belongs_to_source", return_value=True):
+        assert _resolve_batch_id("2026-W18-UabcDef", "U1") == "2026-W18-UabcDef"
+
+
+def test_resolve_batch_id_blocks_other_user_batch_for_regular_user():
+    with patch("app.line.webhook.history_service.batch_belongs_to_source", return_value=False):
+        assert _resolve_batch_id("2026-W18-U2", "U1") is None
+
+
+def test_resolve_batch_id_allows_other_user_batch_for_admin_view():
+    with patch("app.line.webhook.history_service.batch_belongs_to_source") as mock_belongs:
+        assert _resolve_batch_id("2026-W18-U2", "U1", can_view_all=True) == "2026-W18-U2"
+
+    mock_belongs.assert_not_called()
 
 
 def test_restore_collection_from_current_batch_uses_sheet_progress():
@@ -233,6 +247,7 @@ def test_report_schedules_image_send_for_current_batch():
 def test_report_with_batch_id_schedules_image_send_for_that_batch():
     with patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
+         patch("app.line.webhook.history_service.batch_belongs_to_source", return_value=True), \
          patch(
              "app.line.message_builders.reports.build_report_data",
              return_value=SimpleNamespace(
@@ -477,6 +492,8 @@ async def test_handle_webhook_allows_group_chat_and_uses_chat_source_id(monkeypa
 
     assert response == {"ok": True}
     assert mock_build_reply.call_args.args[1] == "G1"
+    assert mock_build_reply.call_args.kwargs["delivery_source_id"] == "G1"
+    assert mock_build_reply.call_args.kwargs["line_user_id"] == "U1"
     mock_reply.assert_awaited_once_with("reply-token", "ok")
 
 
@@ -525,7 +542,12 @@ async def test_handle_webhook_image_in_import_mode_skips_meter_ocr(monkeypatch):
         response = await handle_webhook(_FakeLineRequest())
 
     assert response == {"ok": True}
-    mock_import.assert_called_once_with("G1", "report.jpg", "img-1")
+    mock_import.assert_called_once_with(
+        "G1",
+        "report.jpg",
+        "img-1",
+        delivery_source_id="G1",
+    )
     mock_meter.assert_not_called()
     mock_create_task.assert_called_once_with("report-task")
     assert "รับรูปรายงานเก่า" in mock_reply.await_args.args[1]

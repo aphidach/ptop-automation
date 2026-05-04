@@ -31,7 +31,7 @@ class BatchSummary:
 
 def get_current_batch_summary(source_id: str, session_batch_id: str | None = None) -> BatchSummary | None:
     batch_id = session_batch_id or generate_batch_id(source_id)
-    return get_batch_summary(batch_id)
+    return get_batch_summary(batch_id, source_id)
 
 
 def get_previous_batch_summary(source_id: str, current_batch_id: str | None = None) -> BatchSummary | None:
@@ -41,12 +41,12 @@ def get_previous_batch_summary(source_id: str, current_batch_id: str | None = No
         batch_id = str(batch.get("batch_id", ""))
         if batch_id == current_batch_id:
             continue
-        return get_batch_summary(batch_id)
+        return get_batch_summary(batch_id, source_id)
     return None
 
 
 def get_recent_batch_summaries(
-    source_id: str,
+    source_id: str | None,
     *,
     days: int = 31,
     limit: int = 5,
@@ -55,7 +55,7 @@ def get_recent_batch_summaries(
     cutoff = (now or datetime.now(timezone.utc)) - timedelta(days=days)
     batch_refs: dict[str, datetime] = {}
 
-    for batch in repositories.get_batches_by_source(source_id):
+    for batch in _batches_for_source(source_id):
         batch_id = str(batch.get("batch_id", "")).strip()
         if not batch_id:
             continue
@@ -63,7 +63,7 @@ def get_recent_batch_summaries(
         if seen_at and seen_at >= cutoff:
             batch_refs[batch_id] = seen_at
 
-    for reading in repositories.get_readings_by_source(source_id):
+    for reading in _readings_for_source(source_id):
         batch_id = str(reading.get("batch_id", "")).strip()
         if not batch_id:
             continue
@@ -75,7 +75,7 @@ def get_recent_batch_summaries(
 
     summaries = []
     for batch_id, seen_at in sorted(batch_refs.items(), key=lambda item: item[1], reverse=True):
-        summary = get_batch_summary(batch_id)
+        summary = get_batch_summary(batch_id, source_id)
         if summary:
             summaries.append(summary)
         if len(summaries) >= limit:
@@ -83,8 +83,8 @@ def get_recent_batch_summaries(
     return summaries
 
 
-def get_latest_report_batch_id(source_id: str) -> str | None:
-    batches = repositories.get_batches_by_source(source_id)
+def get_latest_report_batch_id(source_id: str | None) -> str | None:
+    batches = _batches_for_source(source_id)
     for batch in batches:
         if str(batch.get("report_image_url", "")).strip():
             return str(batch.get("batch_id", "")) or None
@@ -107,9 +107,18 @@ def _has_report_data(batch: dict) -> bool:
     return status in {"complete", "reported"} or len(confirmed_ids) >= expected
 
 
-def get_batch_summary(batch_id: str) -> BatchSummary | None:
+def get_batch_summary(batch_id: str, source_id: str | None = None) -> BatchSummary | None:
     batch = repositories.get_batch_by_id(batch_id)
     readings = repositories.get_readings_by_batch(batch_id)
+    if source_id:
+        batch_source = str((batch or {}).get("line_source_id", "")).strip()
+        if batch and batch_source != source_id:
+            return None
+        readings = [
+            row
+            for row in readings
+            if str(row.get("line_source_id", "")).strip() == source_id
+        ]
     if not batch and not readings:
         return None
 
@@ -138,9 +147,21 @@ def get_batch_summary(batch_id: str) -> BatchSummary | None:
     )
 
 
+def batch_belongs_to_source(batch_id: str, source_id: str | None) -> bool:
+    if source_id is None:
+        return True
+    batch = repositories.get_batch_by_id(batch_id)
+    if batch:
+        return str(batch.get("line_source_id", "")).strip() == source_id
+    return any(
+        str(row.get("line_source_id", "")).strip() == source_id
+        for row in repositories.get_readings_by_batch(batch_id)
+    )
+
+
 def get_meter_history(
     meter_id: str,
-    source_id: str,
+    source_id: str | None,
     period_days: int = 7,
     *,
     now: datetime | None = None,
@@ -160,6 +181,18 @@ def get_meter_history(
         if len(rows) >= limit:
             break
     return rows
+
+
+def _batches_for_source(source_id: str | None) -> list[dict]:
+    if source_id is None:
+        return repositories.get_all_batches()
+    return repositories.get_batches_by_source(source_id)
+
+
+def _readings_for_source(source_id: str | None) -> list[dict]:
+    if source_id is None:
+        return repositories.get_all_readings()
+    return repositories.get_readings_by_source(source_id)
 
 
 def _to_decimal(value) -> Decimal:

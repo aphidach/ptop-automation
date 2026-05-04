@@ -18,6 +18,7 @@ from app.line.parser import (
     POSTBACK_HISTORY_METER,
     POSTBACK_HISTORY_SELECT_WEEK,
     POSTBACK_LATEST_REPORT,
+    POSTBACK_REPLACE_READING,
     POSTBACK_RETAKE_PHOTO,
     POSTBACK_SELECT_METER,
     POSTBACK_SHOW_STATUS,
@@ -297,6 +298,39 @@ async def test_confirm_postback_sends_batch_complete_card_when_all_meters_done()
 
 
 @pytest.mark.anyio
+async def test_replace_postback_confirms_with_replace_existing():
+    set_pending_confirmation(source_id="U1", meter_id="M6", batch_id="2026-W19-U1")
+
+    with patch("app.line.webhook.confirm_pending", return_value=(
+        PendingConfirmation(meter_id="M6"),
+        "แทนที่ M6 เรียบร้อย",
+        "2026-W19-U1",
+    )) as mock_confirm, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply, \
+         patch("app.line.webhook._push_to", new_callable=AsyncMock), \
+         patch(
+             "app.line.webhook.get_batch_progress",
+             return_value=BatchProgress(
+                batch_id="2026-W19-U1",
+                week="2026-W19",
+                status="collecting",
+                expected_meter_count=8,
+                confirmed_meter_count=6,
+                missing_meter_ids=["M7", "M8"],
+              ),
+         ):
+        await _handle_postback("U1", ParsedPostback(type=POSTBACK_REPLACE_READING, meter_id="M6"), "rt")
+
+    mock_reply.assert_awaited_once_with("rt", "กำลังแทนที่ M6 ครับ...")
+    mock_confirm.assert_called_once_with(
+        "U1",
+        allow_lower_value=False,
+        replace_existing=True,
+        line_user_id="",
+    )
+
+
+@pytest.mark.anyio
 async def test_show_status_postback_returns_progress_card():
     set_batch_id("U1", "2026-W19-U1")
     set_collection_current_meter("U1", "M2")
@@ -474,6 +508,36 @@ async def test_history_select_week_postback_shows_recent_batches():
     assert "2026-W18" in rendered
     assert "history_batch" in rendered
 
+
+@pytest.mark.anyio
+async def test_admin_history_select_week_shows_all_sources():
+    summaries = [
+        SimpleNamespace(
+            batch_id="2026-W18-U2",
+            week="2026-W18",
+            expected_meter_count=8,
+            confirmed_meter_count=8,
+        )
+    ]
+
+    with patch(
+        "app.line.webhook.history_service.get_recent_batch_summaries",
+        return_value=summaries,
+    ) as mock_recent, \
+         patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
+        await _handle_postback(
+            "UADMIN",
+            ParsedPostback(type=POSTBACK_HISTORY_SELECT_WEEK),
+            "rt",
+            operator_id="UADMIN",
+            can_view_all=True,
+        )
+
+    mock_recent.assert_called_once_with(None)
+    rendered = str(mock_reply.await_args.args[1])
+    assert "2026-W18" in rendered
+    assert "2026-W18-U2" in rendered
+
 @pytest.mark.anyio
 async def test_settings_postback_branches_by_operator_role():
     with patch("app.line.webhook.settings_service.is_admin", return_value=False), \
@@ -535,8 +599,10 @@ async def test_latest_report_postback_returns_report_summary_and_schedules_send(
 
     payload = mock_reply.await_args.args[1]
     payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    rendered = str(payload_dict)
     assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W19"
-    assert "action=history_batch_detail&batch_id=2026-W19-U1" in str(payload)
+    assert "history_batch_detail" in rendered
+    assert "batch_id=2026-W19-U1" in rendered
     mock_send_report.assert_called_once_with("2026-W19-U1", "U1")
     mock_create_task.assert_called_once_with("send-report-task")
 
@@ -552,6 +618,7 @@ async def test_weekly_summary_postback_returns_report_summary_and_schedules_send
             total_amount=Decimal("1110.0"),
          ),
     ), \
+         patch("app.line.webhook.history_service.batch_belongs_to_source", return_value=True), \
          patch("app.line.webhook.send_report", new=Mock(return_value="send-report-task")) as mock_send_report, \
          patch("app.line.webhook.asyncio.create_task") as mock_create_task, \
          patch("app.line.webhook._reply_to", new_callable=AsyncMock) as mock_reply:
@@ -563,9 +630,11 @@ async def test_weekly_summary_postback_returns_report_summary_and_schedules_send
 
     payload = mock_reply.await_args.args[1]
     payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    rendered = str(payload_dict)
     assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W18"
-    assert "action=history_batch_detail&batch_id=2026-W18-U1" in str(payload)
-    assert "action=latest_report&batch_id=2026-W18-U1" in str(payload)
+    assert "history_batch_detail" in rendered
+    assert "latest_report" in rendered
+    assert "batch_id=2026-W18-U1" in rendered
     mock_send_report.assert_called_once_with("2026-W18-U1", "U1")
     mock_create_task.assert_called_once_with("send-report-task")
 
@@ -590,8 +659,10 @@ async def test_weekly_summary_postback_uses_session_batch_when_no_batch_id():
 
     payload = mock_reply.await_args.args[1]
     payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    rendered = str(payload_dict)
     assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W19"
-    assert "action=history_batch_detail&batch_id=2026-W19-U1" in str(payload)
+    assert "history_batch_detail" in rendered
+    assert "batch_id=2026-W19-U1" in rendered
     assert "action=latest_report&batch_id=2026-W19-U1" in str(payload)
     mock_send_report.assert_called_once_with("2026-W19-U1", "U1")
     mock_create_task.assert_called_once_with("send-report-task")
@@ -617,8 +688,10 @@ async def test_weekly_summary_postback_uses_current_week_when_no_session_batch()
 
     payload = mock_reply.await_args.args[1]
     payload_dict = payload.dict(by_alias=True, exclude_none=True)
+    rendered = str(payload_dict)
     assert payload_dict["altText"] == "รายงานสัปดาห์ 2026-W19"
-    assert "action=history_batch_detail&batch_id=2026-W19-U1" in str(payload)
+    assert "history_batch_detail" in rendered
+    assert "batch_id=2026-W19-U1" in rendered
     assert "action=latest_report&batch_id=2026-W19-U1" in str(payload)
     mock_latest_batch.assert_not_called()
     mock_send_report.assert_called_once_with("2026-W19-U1", "U1")

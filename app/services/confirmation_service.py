@@ -160,6 +160,7 @@ def create_pending_confirmation(
     ocr_raw_text: str = "",
     image_message_id: str = "",
     batch_id: Optional[str] = None,
+    line_user_id: str = "",
 ) -> PendingConfirmation:
     existing = get_pending_confirmation(source_id)
     if existing:
@@ -172,6 +173,7 @@ def create_pending_confirmation(
         ocr_raw_text=ocr_raw_text,
         image_message_id=image_message_id,
         batch_id=batch_id,
+        line_user_id=line_user_id,
     )
 
 def _create_pending_confirmation_record(
@@ -182,6 +184,7 @@ def _create_pending_confirmation_record(
     ocr_raw_text: str = "",
     image_message_id: str = "",
     batch_id: Optional[str] = None,
+    line_user_id: str = "",
 ) -> PendingConfirmation:
     created_at = time.time()
     expires_at = created_at + settings.CONFIRMATION_EXPIRY_SECONDS
@@ -190,7 +193,7 @@ def _create_pending_confirmation_record(
         {
             "confirmation_id": confirmation_id,
             "line_source_id": source_id,
-            "line_user_id": "",
+            "line_user_id": line_user_id,
             "meter_id": meter_id,
             "batch_id": batch_id or "",
             "image_message_id": image_message_id,
@@ -274,6 +277,8 @@ def confirm_pending(
     source_id: str,
     *,
     allow_lower_value: bool = False,
+    replace_existing: bool = False,
+    line_user_id: str = "",
 ) -> tuple[Optional[PendingConfirmation], str, Optional[str]]:
     """Handle OK command. Returns (pending, reply_message, batch_id)."""
     pending = get_pending_confirmation(source_id)
@@ -291,7 +296,9 @@ def confirm_pending(
         pending.meter_id,
         value,
         batch_id,
+        allow_duplicate=replace_existing,
         allow_lower_value=allow_lower_value,
+        line_source_id=source_id,
     )
     if not validation.is_valid:
         warning_text = "\n".join(validation.warnings)
@@ -306,10 +313,12 @@ def confirm_pending(
             current_value=value,
             batch_id=batch_id,
             line_source_id=source_id,
+            line_user_id=line_user_id,
             ocr_raw_text=pending.ocr_raw_text,
             ocr_value=pending.ocr_value,
             confirmation_method=confirmation_method,
             image_message_id=pending.image_message_id,
+            replace_existing=replace_existing,
         )
     except Exception as exc:
         logger.exception("Failed to save reading: meter=%s value=%s", pending.meter_id, value)
@@ -325,11 +334,17 @@ def confirm_pending(
 
     progress = update_batch_after_reading(batch_id)
     progress_msg = format_progress_message(progress)
-    reply = f"บันทึก {pending.meter_id} = {format_meter_value(value)} เรียบร้อยครับ\n{progress_msg}"
+    verb = "แทนที่" if replace_existing else "บันทึก"
+    reply = f"{verb} {pending.meter_id} = {format_meter_value(value)} เรียบร้อยครับ\n{progress_msg}"
     return pending, reply, batch_id
 
 
-def manual_confirm(source_id: str, meter_id: str, value: Decimal) -> tuple[Optional[PendingConfirmation], str, Optional[str]]:
+def manual_confirm(
+    source_id: str,
+    meter_id: str,
+    value: Decimal,
+    line_user_id: str = "",
+) -> tuple[Optional[PendingConfirmation], str, Optional[str]]:
     """Handle M1 12508 command. Creates pending with manual value and immediately confirms.
     Returns (pending, reply_message, batch_id).
     """
@@ -360,9 +375,10 @@ def manual_confirm(source_id: str, meter_id: str, value: Decimal) -> tuple[Optio
             ocr_value=value,
             manual_value=value,
             batch_id=batch_id,
+            line_user_id=line_user_id,
         )
     logger.info("Manual confirm: source=%s meter=%s value=%s", source_id, meter_id, value)
-    return confirm_pending(source_id)
+    return confirm_pending(source_id, line_user_id=line_user_id)
 
 
 def cancel_pending(source_id: str) -> str:

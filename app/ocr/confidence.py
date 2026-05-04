@@ -33,6 +33,7 @@ def score_ocr_reading(
     parse_reason: str,
     raw_text: str,
     *,
+    line_source_id: str | None = None,
     parse_confidence: str | None = None,
     unit: str | None = None,
     candidates: Sequence[Decimal] | None = None,
@@ -52,7 +53,7 @@ def score_ocr_reading(
     max_produced = max_produced_unit or _get_max_produced_unit()
     previous = last_value if last_value is not None else None
     if previous is None and use_history and meter_id:
-        previous = _get_last_value(meter_id)
+        previous = _get_last_value(meter_id, line_source_id)
     produced = parsed_value - previous if previous is not None else None
 
     if parse_reason == "fallback_generic_number":
@@ -119,8 +120,8 @@ def score_ocr_reading(
     )
 
 
-def _get_last_value(meter_id: str) -> Decimal | None:
-    latest = repositories.get_latest_reading(meter_id)
+def _get_last_value(meter_id: str, line_source_id: str | None = None) -> Decimal | None:
+    latest = repositories.get_latest_reading(meter_id, line_source_id)
     if latest is None:
         return None
     raw = latest.get("current_value", "")
