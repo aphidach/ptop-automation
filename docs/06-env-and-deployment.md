@@ -4,7 +4,7 @@
 
 ```bash
 APP_ENV=development
-APP_VERSION=0.3.1
+APP_VERSION=0.3.2
 APP_BASE_URL=https://your-domain.example.com
 LOG_LEVEL=INFO
 TIMEZONE=Asia/Bangkok
@@ -30,7 +30,7 @@ Release and package steps are maintained in [Release and Packaging](10-release-a
 Tagged releases publish Docker images to GitHub Container Registry:
 
 ```text
-ghcr.io/<owner>/<repo>:0.3.1
+ghcr.io/<owner>/<repo>:0.3.2
 ```
 
 ## Local Development

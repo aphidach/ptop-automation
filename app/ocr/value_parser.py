@@ -61,7 +61,7 @@ _MPR45S_IMPLIED_DECIMAL_RE = re.compile(
     re.IGNORECASE,
 )
 _MPR45S_SPACED_KWH_RE = re.compile(
-    r"\b0?25\s+(?P<value>\d{4,7})\s*k\s*w?\s*h\b",
+    r"\b(?P<prefix>0?25)\s+(?P<value>\d{4,7})(?:[.,]\s*(?P<tail>\d))?\s*k\s*w?\s*h\b",
     re.IGNORECASE,
 )
 
@@ -362,7 +362,11 @@ def _parse_mpr45s_spaced_kwh(
     if not match:
         return ParseResult(value=None, candidates=[], raw_text=raw_text)
 
-    value = _clean_decimal(Decimal(match.group("value")))
+    value = _parse_mpr45s_spaced_value(
+        match.group("prefix"),
+        match.group("value"),
+        match.group("tail"),
+    )
     return ParseResult(
         value=value,
         candidates=_merge_candidates([value], fallback.candidates),
@@ -372,6 +376,16 @@ def _parse_mpr45s_spaced_kwh(
         confidence="high",
         reason="model_specific_energy_row",
     )
+
+def _parse_mpr45s_spaced_value(
+    prefix: str,
+    raw_value: str,
+    tail: str | None,
+) -> Decimal:
+    whole = f"{prefix}{raw_value}"
+    if tail is not None:
+        return _clean_decimal(Decimal(f"{int(whole)}.{tail}"))
+    return _clean_decimal(Decimal(whole) / Decimal("10"))
 
 
 def parse_meter_value(raw_text: str) -> ParseResult:

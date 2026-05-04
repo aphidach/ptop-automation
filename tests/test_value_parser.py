@@ -226,7 +226,13 @@ class TestParseEnergyMeterValue:
 
     def test_mpr45s_spaced_counter_prefix_is_supported(self):
         result = parse_energy_meter_value("ENTES\nMPR-45S\n025 10868kW h")
-        assert result.value == Decimal("10868")
+        assert result.value == Decimal("251086.8")
+        assert result.source_label == "MPR-45S energy row"
+        assert result.unit == "kWh"
+
+    def test_mpr45s_spaced_counter_with_visible_decimal_is_supported(self):
+        result = parse_energy_meter_value("ENTES\nMPR-45S\n025 1086.8kW h")
+        assert result.value == Decimal("251086.8")
         assert result.source_label == "MPR-45S energy row"
         assert result.unit == "kWh"
 
